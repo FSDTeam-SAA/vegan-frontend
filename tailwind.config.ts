@@ -9,6 +9,17 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      container: {
+        center: true,
+        padding: "24px",
+        screens: {
+          xsm: "327px",
+          sm: "640px",
+          md: "768px",
+          lg: "1024px",
+          xl: "1248px",
+        },
+      },
       colors: {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
@@ -62,6 +73,5 @@ const config: Config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
 };
 export default config;
