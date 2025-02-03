@@ -1,4 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
+import { Star } from "lucide-react";
 import Image from "next/image";
 import React from "react";
 
@@ -19,14 +20,14 @@ export default function TestimonialCard({
         <CardContent className="p-6">
           <div className="pb-6">
             <Image src={img} alt={name} width={56} height={56} />
-            <h2 className="text-[#111827] text-[18px] py-2">{name}</h2>
-            <div>
+            <h2 className="py-2 text-[18px] text-[#111827]">{name}</h2>
+            <div className="flex gap-1 border-none">
               {Array.from({ length: ratings }, (_, i) => (
-                <span key={i}>⭐️</span>
+                <Star key={i} className="fill-yellow-400 text-yellow-400" />
               ))}
             </div>
           </div>
-          <p className="text-[18px] ">{description}</p>
+          <p className="text-[18px]">{description}</p>
         </CardContent>
       </Card>
     </div>
