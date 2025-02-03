@@ -6,6 +6,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "as2.ftcdn.net",
       },
+      {
+        protocol: "https",
+        hostname: "i.postimg.cc",
+      },
     ],
   },
 };
