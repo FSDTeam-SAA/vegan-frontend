@@ -9,6 +9,7 @@ import {
 import TestimonialCard from "./testimonial-card";
 import Autoplay from "embla-carousel-autoplay";
 import React from "react";
+import img from "../../../../Public/assets/testimonial.png";
 
 const data = [
   {
@@ -67,7 +68,7 @@ export function TestimonialCarousel({}) {
             className="pl-1 md:basis-1/2 lg:basis-1/3"
           >
             <TestimonialCard
-              img={items.img}
+              img={img}
               name={items.name}
               ratings={items.ratings}
               description={items.description}

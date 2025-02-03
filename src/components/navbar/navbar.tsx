@@ -6,6 +6,7 @@ import { Menu } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import logo from "../../../Public/assets/logo_white.png"
 
 // Components
 import { cn } from "@/lib/utils";
@@ -59,7 +60,7 @@ const Navbar = () => {
           <div>
             <Link href={"/"} className="flex items-center font-semibold">
               <Image
-                src="/assets/logo_white.png"
+                src={logo}
                 alt="logo"
                 width={56}
                 height={56}

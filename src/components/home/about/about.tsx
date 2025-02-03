@@ -1,15 +1,16 @@
 import Image from "next/image";
 import React from "react";
+import about_img from "../../../../Public/assets/hero-about.png";
 
 export default function HomeAboutSection() {
   return (
-    <div className="md:container mx-auto px-4 py-[80px]">
-      <div className="lg:flex  items-center justify-between gap-4">
-        <div className="lg:max-w-[464px] mb-4">
+    <div className="mx-auto px-4 py-[80px] md:container">
+      <div className="items-center justify-between gap-4 lg:flex">
+        <div className="mb-4 lg:max-w-[464px]">
           <h2 className="text-[32px] font-medium leading-[48px] text-[#1D3557]">
             About Vegan Collective
           </h2>
-          <p className="text-[20px] font-normal leading-[30px] pt-[34px] text-[#364153]">
+          <p className="pt-[34px] text-[20px] font-normal leading-[30px] text-[#364153]">
             We invite vegans — and those curious about veganism — to explore our
             marketplace. Connect with verified plant-based professionals, shop
             100% cruelty-free products, learn from registered organizations
@@ -21,11 +22,11 @@ export default function HomeAboutSection() {
           </p>
         </div>
         <Image
-          src="/assets/hero-about.png"
+          src={about_img}
           alt="About"
           width={500}
           height={500}
-          className="object-cover rounded-xl bg-no-repeat md:min-w-fit"
+          className="rounded-xl bg-no-repeat object-cover md:min-w-fit"
         />
       </div>
     </div>
