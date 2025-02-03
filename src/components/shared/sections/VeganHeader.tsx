@@ -2,7 +2,7 @@ import { StaticImageData } from "next/image";
 import React from "react";
 
 export default function VeganHeader({
-  img,
+  //   img,
   heading,
   subheading,
 }: {
