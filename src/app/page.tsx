@@ -1,5 +1,6 @@
 import HomeAboutSection from "@/components/home/about/about";
 import CTA_section from "@/components/home/CTA/CTA_section";
+import FeatureSection from "@/components/home/features/feature-section";
 import HeroSection from "@/components/home/hero-section/hero";
 
 export default function Home() {
@@ -8,6 +9,7 @@ export default function Home() {
       <HeroSection />
       <HomeAboutSection />
       <CTA_section />
+      <FeatureSection />
     </div>
   );
 }
