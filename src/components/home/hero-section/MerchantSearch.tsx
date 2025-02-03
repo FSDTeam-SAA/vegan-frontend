@@ -20,7 +20,7 @@ export default function MerchantSearch() {
         >
           <Button
             variant="ghost"
-            className="gap-2 font-[] text-[14px] leading-[16px] text-[#4B5563]"
+            className="max-w-[113px] gap-2 text-[14px] font-[14px] leading-[16px] text-[#4B5563]"
           >
             Merchants
             <ChevronDown className="h-4 w-4" />
@@ -35,9 +35,9 @@ export default function MerchantSearch() {
       <Input
         type="text"
         placeholder="search merchants..."
-        className="flex-1 border-0 bg-transparent text-[#9CA3AF] shadow-none focus-visible:ring-0 focus-visible:ring-offset-0"
+        className="flex-1 border-0 bg-transparent text-xs text-[#9CA3AF] shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 md:text-sm"
       />
-      <Button className="bg-[#1D3557] px-[31px] py-[12px] font-medium hover:bg-[#263c5f]">
+      <Button className="bg-[#1D3557] py-[12px] font-medium hover:bg-[#263c5f] md:px-[31px]">
         Search
       </Button>
     </div>
