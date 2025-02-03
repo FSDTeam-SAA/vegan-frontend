@@ -1,3 +1,4 @@
+"use client";
 import {
   Carousel,
   CarouselContent,
@@ -6,6 +7,8 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import TestimonialCard from "./testimonial-card";
+import Autoplay from "embla-carousel-autoplay";
+import React from "react";
 
 const data = [
   {
@@ -51,8 +54,12 @@ const data = [
 ];
 
 export function TestimonialCarousel({}) {
+  const plugin = React.useRef(
+    Autoplay({ delay: 2000, stopOnInteraction: true }),
+  );
+
   return (
-    <Carousel className="w-full">
+    <Carousel className="w-full" plugins={[plugin.current]}>
       <CarouselContent className="-ml-1">
         {data.map((items) => (
           <CarouselItem
@@ -68,9 +75,9 @@ export function TestimonialCarousel({}) {
           </CarouselItem>
         ))}
       </CarouselContent>
-      <div className="absolute -top-[6.2rem] right-12 flex  justify-center">
-        <CarouselPrevious className="bg-transparent border border-[#1D3557] w-10 h-10" />
-        <CarouselNext className="bg-transparent border border-[#1D3557] w-10 h-10" />
+      <div className="absolute -top-[6.2rem] right-12 flex justify-center">
+        <CarouselPrevious className="h-10 w-10 border border-[#1D3557] bg-transparent" />
+        <CarouselNext className="h-10 w-10 border border-[#1D3557] bg-transparent" />
       </div>
     </Carousel>
   );
