@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Star } from "lucide-react";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import React from "react";
 
 export default function TestimonialCard({
@@ -9,7 +9,7 @@ export default function TestimonialCard({
   ratings,
   description,
 }: {
-  img: string;
+  img: string | StaticImageData;
   name: string;
   ratings: number;
   description: string;

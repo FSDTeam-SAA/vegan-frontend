@@ -2,6 +2,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import Image from "next/image";
+import logo from "../../../../Public/assets/logo_black.png";
+import facebook from "../../../../Public/assets/facebook.svg";
+import instagram from "../../../../Public/assets/instagram.svg";
+import twitter from "../../../../Public/assets/twitter.svg";
+import linkedin from "../../../../Public/assets/linkedin.svg";
 
 export default function Footer() {
   return (
@@ -9,7 +14,7 @@ export default function Footer() {
       <div className="container mx-auto max-w-[1200px] px-4">
         <div className="flex items-center gap-2 pb-2">
           <Image
-            src="/assets/logo_black.png"
+            src={logo}
             alt="Vegan Collective Logo"
             width={32}
             height={32}
@@ -100,20 +105,20 @@ export default function Footer() {
             © 2025 Vegan Collective. All rights reserved.
           </p>
           <div className="flex gap-6">
-            {["facebook", "twitter", "instagram", "linkedin"].map((social) => (
+            {[facebook, twitter, instagram, linkedin].map((social, i) => (
               <Link
-                key={social}
+                key={i}
                 href="#"
                 className="flex items-center justify-center rounded-full bg-[#1B365D] p-2 transition-all hover:scale-105"
               >
                 <Image
-                  src={`/assets/${social}.svg`}
-                  alt={social}
+                  src={social}
+                  alt={"social"}
                   width={12}
                   height={12}
                   className="text-white"
                 />
-                <span className="sr-only">{social}</span>
+                <span className="sr-only">{"social"}</span>
               </Link>
             ))}
           </div>
