@@ -4,7 +4,9 @@ import FeatureCard from "./feature-card";
 export default function FeatureSection() {
   return (
     <div className="container mx-auto my-[80px]">
-      <h1 className="text-[32px] font-medium md:pb-[55px]">Features</h1>
+      <h1 className="text-[32px] font-medium md:pb-[55px] text-[#1D3557]">
+        Features
+      </h1>
       <div className="md:flex justify-between items-center gap-4 mx-auto ">
         <FeatureCard
           img="/assets/search.svg"
