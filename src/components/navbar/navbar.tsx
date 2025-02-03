@@ -45,29 +45,30 @@ const Navbar = () => {
 
   return (
     <div
-      className={`py-4 fixed top-0 z-50 text-white w-full  border-b-[1px] ${
-        scrolling && "backdrop-blur-lg " // Add background when scrolling
-      }  ${
+      className={`fixed top-0 z-50 w-full border-b-[1px] py-4 text-white ${
+        scrolling &&
+        "bg-[#E8DFD6]/80 backdrop-blur-lg *:text-[18px] *:text-[#4B5563]" // Add background when scrolling
+      } ${
         pathname === "/"
           ? !scrolling && "md:py-4" // Add margin on homepage when not scrolling
-          : "backdrop-blur-lg mt-0" // Default background for other pages
+          : "mt-0 backdrop-blur-lg" // Default background for other pages
       } transition duration-300`}
     >
-      <div className=" md:container px-4">
-        <div className="flex justify-between items-center ">
+      <div className="px-4 md:container">
+        <div className="flex items-center justify-between">
           <div>
-            <Link href={"/"} className="font-semibold  flex items-center">
+            <Link href={"/"} className="flex items-center font-semibold">
               <Image
                 src="/assets/logo_white.png"
                 alt="logo"
                 width={56}
                 height={56}
-                className="w-[56px] h-[56px]"
+                className="h-[56px] w-[56px]"
               />
               VEGAN COLLECTIVE
             </Link>
           </div>
-          <div className="hidden lg:flex items-center md:gap-x-5 lg:gap-x-10">
+          <div className="hidden items-center md:gap-x-5 lg:flex lg:gap-x-10">
             {/* Desktop Menu Links */}
             {menus.map((menu) => (
               <Link
@@ -100,15 +101,15 @@ const Navbar = () => {
             </SignedOut> */}
             <Button
               className={cn(
-                "border-[1px] border-white bg-transparent rounded-[8px] font-medium py-[10px] px-[20px] mx-4" // Change hover color for button
+                `mx-4 rounded-[8px] border-[1px] border-white bg-transparent px-[20px] py-[10px] font-medium ${scrolling && "border-black/50 text-[#4B5563]"}`, // Change hover color for button
               )}
             >
               Login
             </Button>
             <Button
               className={cn(
-                scrolling && " border-white/10", // Add border when scrolling
-                "bg-tourHub-green-dark bg-[#1D3557] raounded-[8px] font-medium py-[10px] px-[20px]" // Change hover color for button
+                scrolling && "border-white/10", // Add border when scrolling
+                "bg-tourHub-green-dark raounded-[8px] bg-[#1D3557] px-[20px] py-[10px] font-medium", // Change hover color for button
               )}
             >
               Get Started
@@ -122,11 +123,11 @@ const Navbar = () => {
           </div>
 
           {/* Mobile Responsive */}
-          <div className="lg:hidden flex items-center gap-x-4">
+          <div className="flex items-center gap-x-4 lg:hidden">
             <div>
               <Button
                 className={cn(
-                  "border-[1px] border-white bg-transparent rounded-[8px] font-medium py-[10px] px-[20px] mx-4" // Change hover color for button
+                  "mx-4 rounded-[8px] border-[1px] border-white bg-transparent px-[20px] py-[10px] font-medium", // Change hover color for button
                 )}
               >
                 Login
@@ -134,24 +135,24 @@ const Navbar = () => {
             </div>
             <Sheet>
               <SheetTrigger asChild>
-                <Button variant="ghost" className="p-1 ">
+                <Button variant="ghost" className="p-1">
                   <Menu />
                 </Button>
               </SheetTrigger>
               <SheetContent
                 side="top"
-                className="backdrop-blur-lg *:text-white bg-transparent "
+                className="bg-transparent backdrop-blur-lg *:text-white"
               >
-                <div className="flex flex-col items-center gap-y-8 mt-6 ">
+                <div className="mt-6 flex flex-col items-center gap-y-8">
                   {/* Login button for mobile */}
 
-                  <div className="flex flex-col items-center gap-y-5 ">
+                  <div className="flex flex-col items-center gap-y-5">
                     {/* Mobile Menu Links */}
                     {menus.map((menu) => (
                       <Link
                         key={menu.id}
                         href={menu.href}
-                        className={`*:hover:scale-105 *:-translate-y-2 *:transition-all *:duration-300" ${
+                        className={`*:duration-300" *:-translate-y-2 *:transition-all *:hover:scale-105 ${
                           pathname === menu.href
                             ? "font-semibold"
                             : "font-light" // Highlight active menu on mobile
