@@ -6,6 +6,7 @@ import TestimonialSection from "@/components/home/testimonials/testimonial-secti
 import TopMarchants from "@/components/home/top-marchants/top-marchants";
 import TopOrganizations from "@/components/home/top-organizations/top-organizatins";
 import TopProfessionals from "@/components/home/top-professional/top-professionals";
+import OrganizationCard from "@/components/shared/cards/organization-card";
 
 export default function Home() {
   return (
@@ -15,9 +16,12 @@ export default function Home() {
       <TopProfessionals />
       <TopMarchants />
       <TopOrganizations />
-      <CTA_section />
       <FeatureSection />
       <TestimonialSection />
+      <CTA_section />
+      <div className="container flex min-h-screen w-full items-center justify-center">
+        <OrganizationCard />
+      </div>
     </div>
   );
 }
