@@ -15,9 +15,9 @@ export default function Home() {
       <TopProfessionals />
       <TopMarchants />
       <TopOrganizations />
-      <CTA_section />
       <FeatureSection />
       <TestimonialSection />
+      <CTA_section />
     </div>
   );
 }
