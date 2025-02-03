@@ -1,4 +1,3 @@
-import React from "react";
 import MerchantSearch from "./MerchantSearch";
 import Image from "next/image";
 
