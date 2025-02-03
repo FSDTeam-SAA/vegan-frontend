@@ -10,15 +10,15 @@ export default function FeatureCard({
   description: string;
 }) {
   return (
-    <div className="flex flex-col items-center text-center gap-4 max-w-[360px] md:my-0 my-[88px]">
-      <div className="h-[50px] w-[50px] rounded-[8px] bg-[#1D3557] flex items-center justify-center">
+    <div className="mx-auto my-[88px] flex max-w-[360px] flex-col items-center gap-4 text-center md:my-0">
+      <div className="flex h-[50px] w-[50px] items-center justify-center rounded-[8px] bg-[#1D3557]">
         <Image src={img} alt={title} width={26} height={26} />
       </div>
       <div>
-        <h2 className="text-[20px] font-semibold text-[#1F2937] pb-2">
+        <h2 className="pb-2 text-[20px] font-semibold text-[#1F2937]">
           {title}
         </h2>
-        <p className="text-[#374151] leading-[28px]">{description}</p>
+        <p className="leading-[28px] text-[#374151]">{description}</p>
       </div>
     </div>
   );

@@ -4,10 +4,13 @@ import FeatureCard from "./feature-card";
 export default function FeatureSection() {
   return (
     <div className="container mx-auto my-[80px]">
-      <h1 className="text-[32px] font-medium text-[#1D3557] md:pb-[55px]">
+      <h1 className="hidden text-[32px] font-medium text-[#1D3557] md:block">
         Features
       </h1>
-      <div className="mx-auto items-center justify-between gap-4 md:flex">
+      <h1 className="block text-[24px] font-medium text-[#1D3557] md:hidden md:pb-[48px]">
+        Some Of Our Key Features
+      </h1>
+      <div className="mx-auto -mt-[40px] items-center justify-between gap-4 md:mt-[48px] md:flex">
         <FeatureCard
           img="/assets/search.svg"
           title="Transparency"
