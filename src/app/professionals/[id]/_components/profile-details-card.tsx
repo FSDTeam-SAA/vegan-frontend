@@ -20,7 +20,6 @@ export function ProfileCard({
   location,
   rating,
   reviews,
-  image,
 }: ProfileCardProps) {
   return (
     <Card className="container mx-auto min-h-[248px] w-full px-0 shadow-none">
