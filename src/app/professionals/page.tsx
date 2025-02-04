@@ -1,4 +1,5 @@
 import dynamic from "next/dynamic";
+import HowWeVerify from "./_components/how-we-verify/how-we-verify";
 import ProfessionalFilterContainer, {
   ProfessionalFilterContainerMobile,
 } from "./_components/professionals-filter-container";
@@ -17,6 +18,10 @@ const Page = () => {
         <ProfessionalFilterContainerMobile />
       </div>
       <ProfessionalContainer />
+
+      <div>
+        <HowWeVerify />
+      </div>
     </div>
   );
 };
