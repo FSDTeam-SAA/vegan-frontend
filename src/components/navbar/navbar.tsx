@@ -6,13 +6,13 @@ import { Menu } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import logo from "../../../Public/assets/logo_white.png"
+import logo from "../../../Public/assets/logo_white.png";
 
 // Components
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 import { Button } from "../ui/button";
 import { Sheet, SheetClose, SheetContent, SheetTrigger } from "../ui/sheet";
-import Image from "next/image";
 
 const Navbar = () => {
   const [scrolling, setScrolling] = useState(false); // Track scrolling state for styling changes
@@ -20,7 +20,7 @@ const Navbar = () => {
   const pathname = usePathname(); // Get current route to highlight active menu
 
   const menus = [
-    { id: 1, href: "/", linkText: "Professional" },
+    { id: 1, href: "/professionals", linkText: "Professional" },
     { id: 2, href: "/packages", linkText: "Merchant" },
     { id: 3, href: "/news", linkText: "Organiation" },
     { id: 4, href: "/about", linkText: "Profit-sharing" },

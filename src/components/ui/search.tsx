@@ -11,6 +11,7 @@ interface SearchProps {
   type?: "text" | "search";
   value: string;
   onChange: ChangeEventHandler<HTMLInputElement>;
+  iconClassName?: string;
 }
 
 const Search: FC<SearchProps> = ({
@@ -18,13 +19,19 @@ const Search: FC<SearchProps> = ({
   placeholder = "Search...",
   className = "",
   inputClassName = "",
+  iconClassName,
   type = "search",
   value,
   onChange,
 }) => {
   return (
     <div className={cn("relative", className)}>
-      <div className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground">
+      <div
+        className={cn(
+          "absolute left-2.5 top-3 h-4 w-4 text-muted-foreground",
+          iconClassName,
+        )}
+      >
         <SearchIcon className="h-4 w-4" />
       </div>
       <Input
