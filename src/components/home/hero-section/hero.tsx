@@ -5,7 +5,7 @@ export default function HeroSection() {
   return (
     <div
       className={
-        "hero-section relative h-screen w-screen bg-[url('https://res.cloudinary.com/dgnustmny/image/upload/v1738650556/hero-img_h42gjh.png')] bg-cover bg-no-repeat"
+        "hero-section relative h-screen bg-[url('https://res.cloudinary.com/dgnustmny/image/upload/v1738650556/hero-img_h42gjh.png')] bg-cover bg-no-repeat"
       }
     >
       <div className="bg-opacity absolute z-10 flex h-full w-full flex-col items-center justify-center bg-black/40 bg-[url('https://res.cloudinary.com/dgnustmny/image/upload/v1738649859/logo_white_zsmua3.png')] bg-center bg-no-repeat text-center backdrop:blur-md" />
