@@ -59,7 +59,9 @@ const Navbar = () => {
           <div>
             <Link href={"/"} className="flex items-center font-semibold">
               <Image
-                src={"https://i.postimg.cc/kXD65xZG/logo-white.png"}
+                src={
+                  "https://res.cloudinary.com/dgnustmny/image/upload/v1738649859/logo_white_zsmua3.png"
+                }
                 alt="logo"
                 width={56}
                 height={56}

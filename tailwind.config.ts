@@ -69,6 +69,12 @@ const config: Config = {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      backgroundImage: {
+        cta_gradient: `
+          linear-gradient(269.89deg, rgba(181, 198, 224, 0.05) -18.5%, rgba(255, 255, 255, 0.5) 49.52%, rgba(181, 198, 224, 0.05) 147.51%),
+          linear-gradient(179.96deg, rgba(235, 244, 245, 0.4) -10.83%, rgba(181, 198, 224, 0.04) 48.54%, rgba(235, 244, 245, 0.4) 99.96%)
+        `,
+      },
     },
   },
 };

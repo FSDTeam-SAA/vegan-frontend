@@ -1,10 +1,10 @@
-import { ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ArrowUpRight } from "lucide-react";
 
 export default function CTA_section() {
   return (
     <div
-      className="relative flex min-h-screen items-center justify-center bg-[url('https://i.postimg.cc/cHmgvT0g/CTA-img.png')]"
+      className="relative flex min-h-screen items-center justify-center bg-[url('https://res.cloudinary.com/dgnustmny/image/upload/v1738650698/CTA-img_zqhyjt.png')]"
       style={{
         backgroundSize: "cover",
         backgroundPosition: "center",

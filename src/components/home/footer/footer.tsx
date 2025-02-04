@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 
 const socials = [
   {
@@ -24,11 +24,13 @@ const socials = [
 
 export default function Footer() {
   return (
-    <footer className="bg-[#F5EDE6] py-12">
+    <footer className="bg-transparent py-12">
       <div className="container mx-auto max-w-[1200px] px-4">
         <div className="flex items-center gap-2 pb-2">
           <Image
-            src={"https://i.postimg.cc/wxwRHWwn/logo-black.png"}
+            src={
+              "https://res.cloudinary.com/dgnustmny/image/upload/v1738650472/logo_black_eeyvxr.png"
+            }
             alt="Vegan Collective Logo"
             width={32}
             height={32}
