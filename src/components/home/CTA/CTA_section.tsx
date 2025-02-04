@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 export default function CTA_section() {
   return (
     <div
-      className="CTA-section relative flex min-h-screen items-center justify-center"
+      className="relative flex min-h-screen items-center justify-center bg-[url('https://i.postimg.cc/cHmgvT0g/CTA-img.png')]"
       style={{
         backgroundSize: "cover",
         backgroundPosition: "center",
