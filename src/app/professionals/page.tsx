@@ -1,16 +1,22 @@
-import VeganHeader from "@/components/shared/sections/VeganHeader";
-// import HeadImg from "../../../Public/assets/vegan-header.png";
+import dynamic from "next/dynamic";
+import ProfessionalFilterContainer, {
+  ProfessionalFilterContainerMobile,
+} from "./_components/professionals-filter-container";
+const ProfessionalContainer = dynamic(
+  () => import("./_components/professional-container"),
+  { ssr: false },
+);
 
 const Page = () => {
   return (
-    <div>
-      <VeganHeader
-        img="https://i.postimg.cc/fyVD860M/vegan-header.png"
-        heading={"'Find a Professional"}
-        subheading={
-          "Connect with expert vegan professionals for personalized guidiance"
-        }
-      />
+    <div className="mt-[200px]">
+      <div className="container mb-[109px] mt-[70px] hidden lg:block">
+        <ProfessionalFilterContainer />
+      </div>
+      <div className="mb-[40px] mt-[24px] lg:hidden">
+        <ProfessionalFilterContainerMobile />
+      </div>
+      <ProfessionalContainer />
     </div>
   );
 };
