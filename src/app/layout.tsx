@@ -1,8 +1,9 @@
+import Footer from "@/components/home/footer/footer";
+import Navbar from "@/components/navbar/navbar";
+import NProgress from "@/provider/NProgress";
 import type { Metadata } from "next";
 import { Inter, Lexend_Deca } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/navbar/navbar";
-import Footer from "@/components/home/footer/footer";
 // import { ClerkProvider } from "@clerk/nextjs";
 
 const inter = Inter({
@@ -36,6 +37,7 @@ export default function RootLayout({
         <Navbar />
         {children}
         <Footer />
+        <NProgress />
       </body>
     </html>
     // </ClerkProvider>
