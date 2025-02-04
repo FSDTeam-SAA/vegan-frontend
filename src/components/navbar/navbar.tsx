@@ -45,12 +45,15 @@ const Navbar = () => {
 
   return (
     <div
-      className={`fixed top-0 z-50 w-full border-b-[1px] py-4 text-white ${
-        scrolling &&
-        "bg-[#E8DFD6]/80 backdrop-blur-lg *:text-[18px] *:text-[#4B5563]" // Add background when scrolling
+      className={`fixed top-0 z-50 w-full border-b-[1px] py-4 text-white *:text-[18px] ${
+        scrolling && "bg-[#E8DFD6]/80 backdrop-blur-lg *:text-[#4B5563]" // Add background when scrolling
       } ${
         pathname === "/"
           ? !scrolling && "md:py-4" // Add margin on homepage when not scrolling
+          : "mt-0 backdrop-blur-lg" // Default background for other pages
+      } ${
+        pathname === "/professionals/details"
+          ? !scrolling && "*:text-[#4B5563] md:py-4" // Add margin on homepage when not scrolling
           : "mt-0 backdrop-blur-lg" // Default background for other pages
       } transition duration-300`}
     >
