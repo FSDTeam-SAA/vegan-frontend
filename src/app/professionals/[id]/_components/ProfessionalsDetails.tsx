@@ -1,20 +1,20 @@
 "use client";
 
-import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useState } from "react";
 import { ProfileCard } from "./profile-details-card";
 import { AboutTab } from "./tabs/about-tab";
 import { ExperienceTab } from "./tabs/experience-tab";
-import { ServicesTab } from "./tabs/services-tab";
-import { LiveStreamTab } from "./tabs/live-stream-tab";
 import { FAQsTab } from "./tabs/faqs-tab";
+import { LiveStreamTab } from "./tabs/live-stream-tab";
 import { ReviewsTab } from "./tabs/reviews-tab";
+import { ServicesTab } from "./tabs/services-tab";
 
 export default function Page() {
   const [activeTab, setActiveTab] = useState("about");
 
   return (
-    <div className="min-h-screen bg-[#f5f0eb]">
+    <div className="min-h-screen bg-[#f5f0eb] pt-[56px]">
       <main className="mx-auto px-4 py-8">
         <ProfileCard
           name="Dr Sarah Green"
@@ -22,7 +22,7 @@ export default function Page() {
           location="New York, USA"
           rating={4.8}
           reviews={127}
-          image="https://i.ibb.co.com/yBhwqJWJ/pexels-los-muertos-crew-10041258.png"
+          image="https://res.cloudinary.com/dgnustmny/image/upload/v1738670389/pexels-elly-fairytale-3822688_1_pn1lrl.png"
         />
 
         <Tabs
@@ -30,7 +30,7 @@ export default function Page() {
           onValueChange={setActiveTab}
           className="container mt-8"
         >
-          <TabsList className="grid w-full grid-cols-2 border-b-[#6B7280] bg-transparent text-[20px] text-[#6B7280] md:grid-cols-6">
+          <TabsList className="grid w-full grid-cols-2 border-b-[#6B7280] bg-transparent text-[#6B7280] *:text-[20px] md:grid-cols-6">
             <TabsTrigger value="about">About</TabsTrigger>
             <TabsTrigger value="experience">Experience</TabsTrigger>
             <TabsTrigger value="services">Services</TabsTrigger>
