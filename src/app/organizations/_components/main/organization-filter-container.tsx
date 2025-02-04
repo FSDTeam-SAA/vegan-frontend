@@ -15,11 +15,11 @@ import {
 } from "@/components/ui/sheet";
 import VeganSelector from "@/components/ui/vegan-selector";
 import { ListFilter } from "lucide-react";
-import { categoryList, LocationList, SortByList } from "./data";
+import { eventTypeList, LocationList, SortByList } from "./data";
 
-const ProfessionalFilterContainer = () => {
+const OrganizationFilterContainer = () => {
   const [value, setValue] = useState("");
-  const [category, setCategory] = useState("expertise");
+  const [event, setEvent] = useState("conference");
   const [location, setLocation] = useState("washington");
   const [sortBy, setSortBy] = useState("newest");
   const [price, setPrice] = useState<number[]>([0, 50]);
@@ -32,9 +32,9 @@ const ProfessionalFilterContainer = () => {
         inputClassName="h-[40px] "
       />
       <VeganSelector
-        list={categoryList}
-        selectedValue={category}
-        onValueChange={(value) => setCategory(value)}
+        list={eventTypeList}
+        selectedValue={event}
+        onValueChange={(value) => setEvent(value)}
       />
       <VeganSelector
         list={LocationList}
@@ -57,11 +57,11 @@ const ProfessionalFilterContainer = () => {
   );
 };
 
-export default ProfessionalFilterContainer;
+export default OrganizationFilterContainer;
 
-export const ProfessionalFilterContainerMobile = () => {
+export const OrganizationFilterContainerMobile = () => {
   const [value, setValue] = useState("");
-  const [category, setCategory] = useState("expertise");
+  const [event, setEvent] = useState("conference");
   const [location, setLocation] = useState("washington");
   const [sortBy, setSortBy] = useState("newest");
   const [price, setPrice] = useState<number[]>([0, 50]);
@@ -86,9 +86,9 @@ export const ProfessionalFilterContainerMobile = () => {
           </SheetHeader>
           <div className="space-y-6 pt-[20px]">
             <VeganSelector
-              list={categoryList}
-              selectedValue={category}
-              onValueChange={(value) => setCategory(value)}
+              list={eventTypeList}
+              selectedValue={event}
+              onValueChange={(value) => setEvent(value)}
             />
             <VeganSelector
               list={LocationList}

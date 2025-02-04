@@ -1,5 +1,11 @@
+import ProfitCalculatorHero from "./_components/profit-calculator-hero";
+
 const Page = () => {
-  return <div>Profit Calculator Page</div>;
+  return (
+    <div>
+      <ProfitCalculatorHero />
+    </div>
+  );
 };
 
 export default Page;

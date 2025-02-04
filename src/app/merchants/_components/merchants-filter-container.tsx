@@ -17,7 +17,7 @@ import VeganSelector from "@/components/ui/vegan-selector";
 import { ListFilter } from "lucide-react";
 import { categoryList, LocationList, SortByList } from "./data";
 
-const ProfessionalFilterContainer = () => {
+const MerchantFilterContainer = () => {
   const [value, setValue] = useState("");
   const [category, setCategory] = useState("expertise");
   const [location, setLocation] = useState("washington");
@@ -57,9 +57,9 @@ const ProfessionalFilterContainer = () => {
   );
 };
 
-export default ProfessionalFilterContainer;
+export default MerchantFilterContainer;
 
-export const ProfessionalFilterContainerMobile = () => {
+export const MerchantFilterContainerMobile = () => {
   const [value, setValue] = useState("");
   const [category, setCategory] = useState("expertise");
   const [location, setLocation] = useState("washington");

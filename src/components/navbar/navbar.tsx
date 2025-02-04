@@ -9,9 +9,9 @@ import { useEffect, useState } from "react";
 
 // Components
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 import { Button } from "../ui/button";
 import { Sheet, SheetClose, SheetContent, SheetTrigger } from "../ui/sheet";
-import Image from "next/image";
 
 const Navbar = () => {
   const [scrolling, setScrolling] = useState(false); // Track scrolling state for styling changes
@@ -19,10 +19,10 @@ const Navbar = () => {
   const pathname = usePathname(); // Get current route to highlight active menu
 
   const menus = [
-    { id: 1, href: "/", linkText: "Professional" },
-    { id: 2, href: "/packages", linkText: "Merchant" },
-    { id: 3, href: "/news", linkText: "Organiation" },
-    { id: 4, href: "/about", linkText: "Profit-sharing" },
+    { id: 1, href: "/professionals", linkText: "Professional" },
+    { id: 2, href: "/merchants", linkText: "Merchant" },
+    { id: 3, href: "/organizations", linkText: "Organiation" },
+    { id: 4, href: "/profit-calculator", linkText: "Profit-sharing" },
     { id: 5, href: "/Contact", linkText: "Store" },
   ];
 
@@ -62,7 +62,9 @@ const Navbar = () => {
           <div>
             <Link href={"/"} className="flex items-center font-semibold">
               <Image
-                src={"https://i.postimg.cc/kXD65xZG/logo-white.png"}
+                src={
+                  "https://res.cloudinary.com/dgnustmny/image/upload/v1738649859/logo_white_zsmua3.png"
+                }
                 alt="logo"
                 width={56}
                 height={56}

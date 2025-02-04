@@ -7,7 +7,7 @@ const MerchantCard = () => {
 
   text = truncateText(text, 46);
   return (
-    <div className="h-[488px] w-full rounded-[16px] bg-white p-[24px] md:w-[400px]">
+    <div className="h-[488px] w-full rounded-[16px] bg-white p-[24px] lg:w-[390px]">
       <div className="relative h-[232px] w-full rounded-[12px]">
         <Image
           src="https://i.postimg.cc/Gm5rJB66/image-fx-6.png"
