@@ -5,7 +5,7 @@ export default function HeroSection() {
   return (
     <div
       className={
-        "hero-section relative h-screen w-screen bg-[url('https://i.postimg.cc/MGJvtgGf/hero-img.png')] bg-cover bg-no-repeat"
+        "hero-section relative h-screen bg-[url('https://i.postimg.cc/MGJvtgGf/hero-img.png')] bg-cover bg-no-repeat"
       }
     >
       <div className="bg-opacity absolute z-10 flex h-full w-full flex-col items-center justify-center bg-black/40 bg-[url('https://i.postimg.cc/kXD65xZG/logo-white.png')] bg-center bg-no-repeat text-center backdrop:blur-md" />
