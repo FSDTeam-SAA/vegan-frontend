@@ -23,19 +23,24 @@ export function ProfileCard({
   image,
 }: ProfileCardProps) {
   return (
-    <Card className="container mx-auto min-h-[248px] px-0">
-      <CardContent className="flex justify-between p-6">
-        <div className="items-center gap-6 md:flex">
-          <Image
-            src={image || "/placeholder.svg"}
-            alt={name}
-            className="rounded-lg object-cover md:min-h-[200px] md:min-w-[200px]"
-            width={200}
-            height={200}
-          />
-          <div className="">
-            <h2 className="text-[20px] text-[#1D3557]">{name}</h2>
-            <p className="leading-[19px] text-[#4B5563]">{title}</p>
+    <Card className="container mx-auto min-h-[248px] w-full px-0 shadow-none">
+      <CardContent className="flex w-full justify-between p-[16px] md:p-6">
+        <div className="w-full items-center gap-6 md:flex">
+          <div className="relative h-[200px] w-full rounded-[16px] md:w-[200px]">
+            <Image
+              src="https://res.cloudinary.com/dgnustmny/image/upload/v1738670389/pexels-elly-fairytale-3822688_1_pn1lrl.png"
+              alt={name}
+              className="rounded-[16px] object-cover"
+              fill
+            />
+          </div>
+          <div className="pt-[24px] md:pt-0">
+            <h2 className="font-lexend text-[16px] font-normal leading-[20px] text-[#1D3557] md:text-[20px] md:leading-[25px]">
+              {name}
+            </h2>
+            <p className="mt-[4px] font-inter text-[14px] font-normal leading-[16.94px] text-[#4B5563] md:text-[16px] md:leading-[19.36px]">
+              {title}
+            </p>
 
             <div className="*text-[#4B5563] flex flex-col justify-center gap-2 pt-6">
               <div className="flex items-center gap-1">
