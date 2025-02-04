@@ -7,7 +7,6 @@ export default function VeganHeader({
   heading: string;
   subheading: string;
 }) {
-  console.log(img);
   return (
     <div
       className={`min-w-screen flex min-h-[504px] flex-col items-center justify-center bg-gray-100 bg-cover`}
