@@ -3,7 +3,7 @@ import Image from "next/image";
 
 const ProfessionalCard = () => {
   return (
-    <div className="w-full rounded-[16px] bg-white p-[24px] md:w-[400px]">
+    <div className="w-full rounded-[16px] bg-white p-[24px] lg:w-[400px]">
       <div className="relative h-[232px] w-full rounded-[12px]">
         <Image
           src="https://i.postimg.cc/qqPMLNtk/pexels-los-muertos-crew-10041258.png"
