@@ -1,9 +1,24 @@
+import { HeroVideoDialog } from "@/components/ui/hero-video-dialog";
+import HowItWorks from "./_components/how-it-works";
 import ProfitCalculatorHero from "./_components/profit-calculator-hero";
 
 const Page = () => {
   return (
     <div>
       <ProfitCalculatorHero />
+      <HowItWorks />
+
+      <div className="container py-[80px]">
+        <div className="relative h-[454px]">
+          <HeroVideoDialog
+            className="block h-[454px] dark:hidden"
+            animationStyle="from-center"
+            videoSrc="https://www.youtube.com/embed/N8tnM9KyLos?si=At0fyXPZjPYutssz?autoplay=1"
+            thumbnailSrc="https://res.cloudinary.com/dgnustmny/image/upload/v1738663361/image_fx__9_1_1_n5h56k.png"
+            thumbnailAlt="Hero Video"
+          />
+        </div>
+      </div>
     </div>
   );
 };
