@@ -1,11 +1,14 @@
 import MerchantSearch from "./MerchantSearch";
 import Image from "next/image";
-import headerImage from "../../../../Public/assets/hero-Vector.png";
 
 export default function HeroSection() {
   return (
-    <div className={"hero-section relative h-screen bg-cover bg-no-repeat"}>
-      <div className="bg-opacity logo absolute z-10 flex h-full w-full flex-col items-center justify-center bg-black/40 bg-center bg-no-repeat text-center backdrop:blur-md" />
+    <div
+      className={
+        "hero-section relative h-screen w-screen bg-[url('https://i.postimg.cc/MGJvtgGf/hero-img.png')] bg-cover bg-no-repeat"
+      }
+    >
+      <div className="bg-opacity absolute z-10 flex h-full w-full flex-col items-center justify-center bg-black/40 bg-[url('https://i.postimg.cc/kXD65xZG/logo-white.png')] bg-center bg-no-repeat text-center backdrop:blur-md" />
       {/* hero content  */}
       <div className="absolute z-20 flex h-full w-full flex-col items-center justify-center bg-black/60 backdrop:blur-sm">
         <div className="container flex max-w-[792px] flex-col items-center">
@@ -13,7 +16,7 @@ export default function HeroSection() {
             The World&apos;s First All Vegan Marketplace
           </h1>
           <Image
-            src={headerImage}
+            src={"https://i.postimg.cc/LsjZp2WV/hero-Vector.png"}
             alt=""
             width={500}
             height={500}

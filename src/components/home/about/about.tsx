@@ -1,6 +1,5 @@
 import Image from "next/image";
 import React from "react";
-import about_img from "../../../../Public/assets/hero-about.png";
 
 export default function HomeAboutSection() {
   return (
@@ -22,7 +21,7 @@ export default function HomeAboutSection() {
           </p>
         </div>
         <Image
-          src={about_img}
+          src={"https://i.postimg.cc/vBMx8CFw/hero-about.png"}
           alt="About"
           width={500}
           height={500}
