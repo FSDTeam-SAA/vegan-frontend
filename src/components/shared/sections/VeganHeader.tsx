@@ -7,7 +7,6 @@ export default function VeganHeader({
   heading: string;
   subheading: string;
 }) {
-  console.log(img);
   return (
     <div
       style={{ backgroundImage: `url(${img})` }}
