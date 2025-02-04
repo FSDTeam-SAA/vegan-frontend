@@ -14,8 +14,7 @@ const config: Config = {
         padding: "16px",
         screens: {
           md: "768px",
-          lg: "1024px",
-          xl: "1248px",
+          lg: "1248px",
         },
       },
       colors: {

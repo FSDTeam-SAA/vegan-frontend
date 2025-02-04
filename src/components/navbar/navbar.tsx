@@ -20,9 +20,9 @@ const Navbar = () => {
 
   const menus = [
     { id: 1, href: "/professionals", linkText: "Professional" },
-    { id: 2, href: "/packages", linkText: "Merchant" },
-    { id: 3, href: "/news", linkText: "Organiation" },
-    { id: 4, href: "/about", linkText: "Profit-sharing" },
+    { id: 2, href: "/merchants", linkText: "Merchant" },
+    { id: 3, href: "/organizations", linkText: "Organiation" },
+    { id: 4, href: "/profit-calculator", linkText: "Profit-sharing" },
     { id: 5, href: "/Contact", linkText: "Store" },
   ];
 
