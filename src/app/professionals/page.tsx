@@ -5,7 +5,7 @@ const Page = () => {
   return (
     <div>
       <VeganHeader
-        img={"/assets/vegan-header.png"}
+        img="https://i.postimg.cc/fyVD860M/vegan-header.png"
         heading={"'Find a Professional"}
         subheading={
           "Connect with expert vegan professionals for personalized guidiance"
