@@ -9,12 +9,11 @@ import {
 import TestimonialCard from "./testimonial-card";
 import Autoplay from "embla-carousel-autoplay";
 import React from "react";
-import img from "../../../../Public/assets/testimonial.png";
 
 const data = [
   {
     id: 1,
-    img: "/assets/testimonial.png",
+    img: "https://i.postimg.cc/8P3Ff7QH/testimonial.png",
     name: "Maya Russo",
     ratings: 5,
     description:
@@ -22,7 +21,7 @@ const data = [
   },
   {
     id: 2,
-    img: "/assets/testimonial.png",
+    img: "https://i.postimg.cc/8P3Ff7QH/testimonial.png",
     name: "Maya Russo",
     ratings: 5,
     description:
@@ -30,7 +29,7 @@ const data = [
   },
   {
     id: 3,
-    img: "/assets/testimonial.png",
+    img: "https://i.postimg.cc/8P3Ff7QH/testimonial.png",
     name: "Maya Russo",
     ratings: 5,
     description:
@@ -38,7 +37,7 @@ const data = [
   },
   {
     id: 4,
-    img: "/assets/testimonial.png",
+    img: "https://i.postimg.cc/8P3Ff7QH/testimonial.png",
     name: "Maya Russo",
     ratings: 5,
     description:
@@ -46,7 +45,7 @@ const data = [
   },
   {
     id: 5,
-    img: "/assets/testimonial.png",
+    img: "https://i.postimg.cc/8P3Ff7QH/testimonial.png",
     name: "Maya Russo",
     ratings: 5,
     description:
@@ -68,7 +67,7 @@ export function TestimonialCarousel({}) {
             className="pl-1 md:basis-1/2 lg:basis-1/3"
           >
             <TestimonialCard
-              img={img}
+              img={items.img}
               name={items.name}
               ratings={items.ratings}
               description={items.description}

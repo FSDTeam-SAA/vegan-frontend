@@ -12,7 +12,7 @@ const ProfessionalContainer = dynamic(
 
 const Page = () => {
   return (
-    <div className="mt-[200px]">
+    <div>
       <VeganHeader
         img="https://res.cloudinary.com/dgnustmny/image/upload/v1738649578/vegan-header_ufz7o8.png"
         heading="Find a Professional"
