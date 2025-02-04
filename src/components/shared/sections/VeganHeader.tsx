@@ -9,10 +9,15 @@ export default function VeganHeader({
 }) {
   return (
     <div
-      className={`min-w-screen flex min-h-[504px] flex-col items-center justify-center bg-gray-100 bg-[url("${img}")] bg-cover`}
+      style={{ backgroundImage: `url(${img})` }}
+      className={`min-w-screen h-[504px] bg-cover bg-center bg-no-repeat text-white`}
     >
-      <h1 className="text-12 pb-2 font-medium text-white">{heading}</h1>
-      <p>{subheading}</p>
+      <div className="container flex min-h-[504px] min-w-full flex-col items-center justify-center bg-black/50 bg-opacity-80">
+        <h1 className="pb-2 text-[32px] font-medium text-white md:text-[48px]">
+          {heading}
+        </h1>
+        <p>{subheading}</p>
+      </div>
     </div>
   );
 }

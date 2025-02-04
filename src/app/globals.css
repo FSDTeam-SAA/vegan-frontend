@@ -88,13 +88,3 @@ body {
 }
 
 
-.hero-section {
-  background-image: url("/assets/hero-img.png");
-}
-
-.hero-section .logo{
-  background-image: url("/assets/logo_white.png");
-}
-.CTA-section{
-  background-image: url("/assets/CTA-img.png");
-}
