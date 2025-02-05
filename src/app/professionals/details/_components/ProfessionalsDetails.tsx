@@ -15,7 +15,7 @@ export default function Page() {
 
   return (
     <div className="min-h-screen bg-[#f5f0eb]">
-      <main className="mx-auto px-4 py-8">
+      <main className="mx-auto px-4 py-14">
         <ProfileCard
           name="Dr Sarah Green"
           title="Vegan Nutritionist & Wellness Coach"
@@ -28,9 +28,9 @@ export default function Page() {
         <Tabs
           value={activeTab}
           onValueChange={setActiveTab}
-          className="container mt-8"
+          className="container mt-9 px-0"
         >
-          <TabsList className="grid w-full grid-cols-2 border-b-[#6B7280] bg-transparent text-[20px] text-[#6B7280] md:grid-cols-6">
+          <TabsList className="mb-[55px] grid w-full max-w-[892px] grid-cols-2 border-b-[#6B7280] bg-transparent text-[20px] text-[#6B7280] md:grid-cols-6">
             <TabsTrigger value="about">About</TabsTrigger>
             <TabsTrigger value="experience">Experience</TabsTrigger>
             <TabsTrigger value="services">Services</TabsTrigger>
