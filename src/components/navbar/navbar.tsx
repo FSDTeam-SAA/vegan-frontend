@@ -137,7 +137,7 @@ const Navbar = () => {
                     "mx-4 rounded-[8px] border-[1px] border-white bg-transparent px-[20px] py-[10px] font-medium", // Change hover color for button
                   )}
                 >
-                  Login
+                  <Link href="/onboarding">Login</Link>
                 </Button>
               </div>
               <Sheet>
