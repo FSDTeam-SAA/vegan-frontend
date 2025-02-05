@@ -19,7 +19,7 @@ export default function AuthLayout({ children }: Props) {
           VEGAN COLLECTIVE
         </p>
       </div>
-      <div className="flex min-h-[calc(100vh-58px)] items-center justify-center">
+      <div className="container flex min-h-[calc(100vh-58px)] items-center justify-center">
         <div>{children}</div>
       </div>
     </div>
