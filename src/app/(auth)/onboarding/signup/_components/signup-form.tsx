@@ -57,6 +57,7 @@ const formSchema = z
     accountType: z.string().optional(),
   })
   .superRefine((data, ctx) => {
+    // esline-disabled-next-line @typescript-eslint/no-explicit-any
     const context = ctx as any;
     if (context?.role === "vendor" && !data.accountType) {
       ctx.addIssue({
