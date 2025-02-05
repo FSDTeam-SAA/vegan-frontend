@@ -15,10 +15,10 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { HeroVideoDialog } from "@/components/ui/hero-video-dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { ProfileFormData, profileSchema } from "@/lib/ProfileSetupSchema";
-import { PlayCircle } from "lucide-react";
 
 export default function ProfileSetupForm() {
   const searchParams = useSearchParams();
@@ -288,12 +288,17 @@ export default function ProfileSetupForm() {
         <h2 className="mb-8 text-center text-2xl font-semibold">
           How It Works
         </h2>
-        <div className="relative my-[50px] aspect-video rounded-lg bg-black/20">
-          <div className="absolute inset-0 flex items-center justify-center">
-            <PlayCircle className="h-12 w-12 text-white/80" />
-          </div>
+        <div className="relative h-[382px]">
+          <HeroVideoDialog
+            className="block h-[382px] dark:hidden"
+            animationStyle="from-center"
+            videoSrc="https://www.youtube.com/embed/N8tnM9KyLos?si=At0fyXPZjPYutssz?autoplay=1"
+            thumbnailSrc="https://res.cloudinary.com/dgnustmny/image/upload/v1738663361/image_fx__9_1_1_n5h56k.png"
+            thumbnailAlt="Hero Video"
+            imageWrapperClassName="h-[382px]"
+          />
         </div>
-        <p className="pointer-events-none rounded-[12px] bg-white p-[24px] text-[#4B5563]">
+        <p className="pointer-events-none mt-[51px] rounded-[12px] bg-white p-[24px] text-[#4B5563]">
           Watch our quick guide on setting up your profile and maximizing your
           success on our platform.
         </p>

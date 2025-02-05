@@ -20,6 +20,7 @@ const Page = () => {
             videoSrc="https://www.youtube.com/embed/N8tnM9KyLos?si=At0fyXPZjPYutssz?autoplay=1"
             thumbnailSrc="https://res.cloudinary.com/dgnustmny/image/upload/v1738663361/image_fx__9_1_1_n5h56k.png"
             thumbnailAlt="Hero Video"
+            title="Watch how it works in a 5 minutes video"
           />
         </div>
       </div>
