@@ -14,7 +14,7 @@ import Image from "next/image";
 import { Button } from "../ui/button";
 import { Sheet, SheetClose, SheetContent, SheetTrigger } from "../ui/sheet";
 
-const hideRoutes = ["/login", "/signup"];
+const hideRoutes = ["/login", "/signup", "/profile-setup"];
 
 const Navbar = () => {
   const [scrolling, setScrolling] = useState(false); // Track scrolling state for styling changes
