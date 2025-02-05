@@ -1,6 +1,7 @@
 import Footer from "@/components/home/footer/footer";
 import Navbar from "@/components/navbar/navbar";
 import NProgress from "@/provider/NProgress";
+import "@smastrom/react-rating/style.css";
 import type { Metadata } from "next";
 import { Inter, Lexend_Deca } from "next/font/google";
 import { Toaster } from "sonner";

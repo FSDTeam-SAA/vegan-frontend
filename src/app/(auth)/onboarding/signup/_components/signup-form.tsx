@@ -1,4 +1,12 @@
 "use client";
+
+// Packages
+import { Loader2 } from "lucide-react";
+import Image from "next/image";
+import { useSearchParams } from "next/navigation";
+import { useState } from "react";
+
+// Local imports
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -16,9 +24,6 @@ import * as z from "zod";
 
 import { Checkbox } from "@/components/ui/checkbox";
 import { PasswordInput } from "@/components/ui/password-input";
-import { Loader2 } from "lucide-react";
-import Image from "next/image";
-import { useState } from "react";
 
 const formSchema = z.object({
   fullName: z
@@ -197,26 +202,33 @@ export default function SignUpForm() {
 }
 
 const SocialLogin = () => {
-  return (
-    <div>
-      <Button className="h-[48px] w-full rounded-[10px] border-[1px] border-[#F4F0EB] bg-white text-[#374151] shadow-none transition-colors duration-300 hover:bg-gray-50">
-        <Image
-          src="https://res.cloudinary.com/dgnustmny/image/upload/v1738667858/flat-color-icons_google_rdpzpr.png"
-          alt="Google"
-          height={24}
-          width={24}
-        />
-        <span>Continue with Google</span>
-      </Button>
+  const searchParams = useSearchParams();
+  const role = searchParams.get("role");
 
-      <div className="mt-[24px] flex items-center gap-[15px]">
-        <div className="h-[1.17px] w-full bg-[#D1D5DB]" />
-        <span className="text-[14px] font-normal leading-[16.41px] text-[#6B7280]">
-          OR
-        </span>
-        <div className="h-[1.17px] w-full bg-[#D1D5DB]" />
-        <div />
+  if (role === "customer") {
+    return (
+      <div>
+        <Button className="h-[48px] w-full rounded-[10px] border-[1px] border-[#F4F0EB] bg-white text-[#374151] shadow-none transition-colors duration-300 hover:bg-gray-50">
+          <Image
+            src="https://res.cloudinary.com/dgnustmny/image/upload/v1738667858/flat-color-icons_google_rdpzpr.png"
+            alt="Google"
+            height={24}
+            width={24}
+          />
+          <span>Continue with Google</span>
+        </Button>
+
+        <div className="mt-[24px] flex items-center gap-[15px]">
+          <div className="h-[1.17px] w-full bg-[#D1D5DB]" />
+          <span className="text-[14px] font-normal leading-[16.41px] text-[#6B7280]">
+            OR
+          </span>
+          <div className="h-[1.17px] w-full bg-[#D1D5DB]" />
+          <div />
+        </div>
       </div>
-    </div>
-  );
+    );
+  } else {
+    return <></>;
+  }
 };

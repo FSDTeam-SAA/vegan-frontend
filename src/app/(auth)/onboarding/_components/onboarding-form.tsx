@@ -58,7 +58,7 @@ export default function OnBoardingForm() {
                   <RadioGroup
                     onValueChange={field.onChange}
                     defaultValue={field.value}
-                    className="grid grid-cols-2 gap-[36px]"
+                    className="grid grid-cols-1 gap-[36px] md:grid-cols-2"
                   >
                     <FormItem>
                       <FormControl>
@@ -70,12 +70,17 @@ export default function OnBoardingForm() {
                           />
                           <FormLabel
                             htmlFor="customer"
-                            className="hover:bg-gray-10 flex h-[174px] cursor-pointer flex-col items-start justify-center rounded-md border-[1px] border-muted bg-white p-4 peer-data-[state=checked]:border-[#1D3557] peer-data-[state=checked]:bg-[#F9FAFB] [&:has([data-state=checked])]:border-[#1D3557]"
+                            className="hover:bg-gray-10 flex h-[104px] cursor-pointer flex-col items-start justify-center rounded-md border-[1px] border-muted bg-white p-4 peer-data-[state=checked]:border-[#1D3557] peer-data-[state=checked]:bg-[#F9FAFB] md:h-[174px] [&:has([data-state=checked])]:border-[#1D3557]"
                           >
+                            <div className="absolute right-4 top-4 flex h-[20px] w-[20px] items-center justify-center rounded-full border-[1px] border-black">
+                              {role === "customer" && (
+                                <div className="h-[8px] w-[8px] rounded-full bg-[#1D3557] transition-all" />
+                              )}
+                            </div>
                             <span className="mb-[16px] text-left font-inter text-[16px] font-medium leading-[24px] text-[#1D3557]">
                               Join as a Customer
                             </span>
-                            <span className="text-left font-inter text-[12px] text-xs font-normal italic leading-[18px] text-[#9CA3AF]">
+                            <span className="hidden text-left font-inter text-[12px] text-xs font-normal italic leading-[18px] text-[#9CA3AF] md:block">
                               to offer services, products or non-profit
                               initiatives
                             </span>
@@ -93,12 +98,17 @@ export default function OnBoardingForm() {
                           />
                           <FormLabel
                             htmlFor="vendor"
-                            className="hover:bg-gray-10 flex h-[174px] cursor-pointer flex-col items-start justify-center rounded-md border-[1px] border-muted bg-white p-4 peer-data-[state=checked]:border-[#1D3557] [&:has([data-state=checked])]:border-[#1D3557] [&:has([data-state=checked])]:bg-[#F9FAFB]"
+                            className="hover:bg-gray-10 flex h-[104px] cursor-pointer flex-col items-start justify-center rounded-md border-[1px] border-muted bg-white p-4 peer-data-[state=checked]:border-[#1D3557] md:h-[174px] [&:has([data-state=checked])]:border-[#1D3557] [&:has([data-state=checked])]:bg-[#F9FAFB]"
                           >
+                            <div className="absolute right-4 top-4 flex h-[20px] w-[20px] items-center justify-center rounded-full border-[1px] border-black">
+                              {role === "vendor" && (
+                                <div className="h-[8px] w-[8px] rounded-full bg-[#1D3557] transition-all" />
+                              )}
+                            </div>
                             <span className="mb-[16px] text-left font-inter text-[16px] font-medium leading-[24px] text-[#1D3557]">
                               Join as a Vendor
                             </span>
-                            <span className="text-left font-inter text-[12px] text-xs font-normal italic leading-[18px] text-[#9CA3AF]">
+                            <span className="hidden text-left font-inter text-[12px] text-xs font-normal italic leading-[18px] text-[#9CA3AF] md:block">
                               to discover vegan services, products and support
                               ethical initiatives
                             </span>
