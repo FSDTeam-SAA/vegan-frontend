@@ -1,4 +1,4 @@
-import { ServiceCard } from "../service-card";
+import ServiceCard from "@/components/shared/cards/service-card";
 
 const services = [
   {
@@ -54,15 +54,9 @@ const services = [
 export function ServicesTab() {
   return (
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-      {services.map((service, index) => (
+      {services.map((_, index) => (
         <div key={index}>
-          <ServiceCard
-            title={service.title}
-            description={service.description}
-            price={service.price}
-            image={service.image}
-            type={"One-Time Payment"}
-          />
+          <ServiceCard />
         </div>
       ))}
     </div>
