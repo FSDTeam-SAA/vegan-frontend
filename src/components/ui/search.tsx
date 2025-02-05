@@ -38,7 +38,7 @@ const Search: FC<SearchProps> = ({
         id={id}
         type={type}
         placeholder={placeholder}
-        className={cn("rounded-lg bg-background pl-8", inputClassName)}
+        className={cn("w-full rounded-lg bg-background pl-8", inputClassName)}
         value={value}
         onChange={onChange}
       />

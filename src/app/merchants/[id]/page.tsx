@@ -1,4 +1,5 @@
 import VeganHeader from "@/components/shared/sections/VeganHeader";
+import MerchantCTA from "../_components/cta/merchant_cta";
 import MerchantHeader from "./_components/merchant-header";
 import MerchantsTabs from "./_components/merchant-tabs";
 
@@ -12,6 +13,10 @@ const Page = () => {
       />
       <MerchantHeader />
       <MerchantsTabs />
+
+      <div className="container">
+        <MerchantCTA />
+      </div>
     </div>
   );
 };

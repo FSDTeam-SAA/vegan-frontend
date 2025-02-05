@@ -26,15 +26,15 @@ const MerchantsTabs = () => {
           <TabsTrigger value="reviews">Reviews</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="products" className="mt-[40px]">
+        <TabsContent value="products" className="pt-[40px]">
           <MerchantProducts />
         </TabsContent>
 
-        <TabsContent value="about" className="mt-[40px]">
+        <TabsContent value="about" className="pt-[40px]">
           <MerchantAbout />
         </TabsContent>
 
-        <TabsContent value="reviews" className="mt-[40px]">
+        <TabsContent value="reviews" className="pt-[40px]">
           <Merchantreviews />
         </TabsContent>
       </Tabs>
