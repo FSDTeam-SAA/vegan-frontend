@@ -1,5 +1,14 @@
+import { Suspense } from "react";
+import ProfileSetupForm from "./_components/profile-setup-form";
+
 const Page = () => {
-  return <div className="mt-[200px]">Profile Setup</div>;
+  return (
+    <div>
+      <Suspense>
+        <ProfileSetupForm />
+      </Suspense>
+    </div>
+  );
 };
 
 export default Page;
