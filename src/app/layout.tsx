@@ -1,6 +1,7 @@
 import Footer from "@/components/home/footer/footer";
 import Navbar from "@/components/navbar/navbar";
 import NProgress from "@/provider/NProgress";
+import "@smastrom/react-rating/style.css";
 import type { Metadata } from "next";
 import { Inter, Lexend_Deca } from "next/font/google";
 import { Toaster } from "sonner";
@@ -13,6 +14,7 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const lexendDeca = Lexend_Deca({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700", "800"],
@@ -32,9 +34,7 @@ export default function RootLayout({
   return (
     // <ClerkProvider>
     <html lang="en">
-      <body
-        className={`bg-[#E8DFD6] ${inter.className} ${lexendDeca.className} antialiased`}
-      >
+      <body className={`bg-[#E8DFD6] ${inter.className} antialiased`}>
         <Navbar />
         {children}
         <Footer />

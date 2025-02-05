@@ -1,10 +1,14 @@
 import { HeroVideoDialog } from "@/components/ui/hero-video-dialog";
+import EarnMoreCard from "./_components/earn-more-card";
+import FAQProfitCalculator from "./_components/faq-profit-calculator";
 import HowItWorks from "./_components/how-it-works";
+import ProfitCalculator from "./_components/profit-calculator";
 import ProfitCalculatorHero from "./_components/profit-calculator-hero";
+import TopReferrers from "./_components/top-referrer";
 
 const Page = () => {
   return (
-    <div>
+    <div className="overflow-x-hidden">
       <ProfitCalculatorHero />
       <HowItWorks />
 
@@ -19,6 +23,10 @@ const Page = () => {
           />
         </div>
       </div>
+      <ProfitCalculator />
+      <TopReferrers />
+      <FAQProfitCalculator />
+      <EarnMoreCard />
     </div>
   );
 };

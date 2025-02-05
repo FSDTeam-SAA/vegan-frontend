@@ -1,3 +1,5 @@
+import { Loader2 } from "lucide-react";
+import { Suspense } from "react";
 import SignUpForm from "./_components/signup-form";
 
 const Page = () => {
@@ -12,7 +14,15 @@ const Page = () => {
             Provide your email and choose a password
           </p>
         </div>
-        <SignUpForm />
+        <Suspense
+          fallback={
+            <div className="flex h-full w-full items-center justify-center">
+              <Loader2 className="animate-spin" />
+            </div>
+          }
+        >
+          <SignUpForm />
+        </Suspense>
       </div>
 
       <p className="mt-[65px] max-w-[486px] text-center font-inter text-[14px] font-normal leading-[21px]">
