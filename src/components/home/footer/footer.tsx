@@ -4,7 +4,12 @@ import Hideon from "@/provider/HideOn";
 import Image from "next/image";
 import Link from "next/link";
 
-const hideRoutes = ["/login", "/signup", "/profile-setup"];
+const hideRoutes = [
+  "/onboarding",
+  "/onboarding/login",
+  "/onboarding/signup",
+  "/profile-setup",
+];
 
 const socials = [
   {
