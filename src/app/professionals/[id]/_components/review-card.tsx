@@ -1,42 +1,213 @@
-import { Star } from "lucide-react";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+"use client";
 
-interface ReviewCardProps {
-  name: string;
-  rating: number;
-  review: string;
-  image?: string;
-}
+import { Star, ChevronDown, SlidersHorizontal } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Badge } from "@/components/ui/badge";
+import Image from "next/image";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 
-export function ReviewCard({ name, rating, review, image }: ReviewCardProps) {
+const reviews = [
+  {
+    id: 1,
+    author: "Jane Smith",
+    rating: 5,
+    content:
+      "Dr. Green was incredibly helpful in helping me transition to a vegan diet. Her knowledge and support made the process much easier than I expected.",
+    avatar: "https://i.postimg.cc/2yf4KSLx/pexels-yankrukov-8436587-1.png",
+  },
+  {
+    id: 2,
+    author: "Jane Smith",
+    rating: 5,
+    content:
+      "Dr. Green was incredibly helpful in helping me transition to a vegan diet. Her knowledge and support made the process much easier than I expected.",
+    avatar: "https://i.postimg.cc/2yf4KSLx/pexels-yankrukov-8436587-1.png",
+  },
+  {
+    id: 3,
+    author: "Jane Smith",
+    rating: 5,
+    content:
+      "Dr. Green was incredibly helpful in helping me transition to a vegan diet. Her knowledge and support made the process much easier than I expected.",
+    avatar: "https://i.postimg.cc/2yf4KSLx/pexels-yankrukov-8436587-1.png",
+  },
+];
+
+export function ReviewCard() {
   return (
-    <Card>
-      <CardHeader className="flex flex-row items-center gap-4 space-y-0">
-        <Avatar>
-          <AvatarImage src={image} />
-          <AvatarFallback>
-            {name
-              .split(" ")
-              .map((n) => n[0])
-              .join("")}
-          </AvatarFallback>
-        </Avatar>
-        <div>
-          <h4 className="font-semibold">{name}</h4>
-          <div className="flex">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <Star
-                key={i}
-                className={`h-4 w-4 ${i < rating ? "fill-yellow-400 text-yellow-400" : "text-muted-foreground"}`}
-              />
-            ))}
-          </div>
+    <div className="min-h-screen bg-[#f5f0ea] dark:bg-gray-950">
+      <div className="mx-auto max-w-4xl">
+        {/* Desktop Filters */}
+        <div className="mb-6 hidden gap-3 md:flex">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="outline"
+                className="bg-transparent font-inter font-normal leading-[19.36px] text-[#4B5563]"
+              >
+                Most Recent
+                <ChevronDown className="ml-2 h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem>Most Recent</DropdownMenuItem>
+              <DropdownMenuItem>Oldest</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="outline"
+                className="bg-transparent font-inter font-normal leading-[19.36px] text-[#4B5563]"
+              >
+                Relevant
+                <ChevronDown className="ml-2 h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem>Most Relevant</DropdownMenuItem>
+              <DropdownMenuItem>Least Relevant</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="outline"
+                className="bg-transparent font-inter font-normal leading-[19.36px] text-[#4B5563]"
+              >
+                Ratings
+                <ChevronDown className="ml-2 h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem>Highest Rating</DropdownMenuItem>
+              <DropdownMenuItem>Lowest Rating</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
-      </CardHeader>
-      <CardContent>
-        <p className="text-muted-foreground">{review}</p>
-      </CardContent>
-    </Card>
+
+        {/* Mobile Filter */}
+        <div className="mb-6 md:hidden">
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="outline" className="bg-white">
+                <SlidersHorizontal className="mr-2" />
+                Filter
+                <Badge
+                  className="-mt-6 h-4 w-4 rounded-full bg-red-500 p-0 pl-1 text-[10px] text-white"
+                  variant="secondary"
+                >
+                  3
+                </Badge>
+              </Button>
+            </SheetTrigger>
+            <SheetContent>
+              <SheetHeader>
+                <SheetTitle>Filter Reviews</SheetTitle>
+              </SheetHeader>
+              <div className="grid gap-6 py-4">
+                <div className="space-y-4">
+                  <Label>Sort By</Label>
+                  <RadioGroup defaultValue="recent">
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="recent" id="recent" />
+                      <Label htmlFor="recent">Most Recent</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="oldest" id="oldest" />
+                      <Label htmlFor="oldest">Oldest</Label>
+                    </div>
+                  </RadioGroup>
+                </div>
+                <div className="space-y-4">
+                  <Label>Relevance</Label>
+                  <RadioGroup defaultValue="most-relevant">
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem
+                        value="most-relevant"
+                        id="most-relevant"
+                      />
+                      <Label htmlFor="most-relevant">Most Relevant</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem
+                        value="least-relevant"
+                        id="least-relevant"
+                      />
+                      <Label htmlFor="least-relevant">Least Relevant</Label>
+                    </div>
+                  </RadioGroup>
+                </div>
+                <div className="space-y-4">
+                  <Label>Rating</Label>
+                  <RadioGroup defaultValue="highest">
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="highest" id="highest" />
+                      <Label htmlFor="highest">Highest First</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="lowest" id="lowest" />
+                      <Label htmlFor="lowest">Lowest First</Label>
+                    </div>
+                  </RadioGroup>
+                </div>
+              </div>
+            </SheetContent>
+          </Sheet>
+        </div>
+
+        <h2 className="mb-6 font-lexend text-lg font-medium leading-[22.5px] text-[#1D3557] dark:text-white">
+          Client Reviews
+        </h2>
+        {/* Reviews Grid */}
+        <div className="space-y-4">
+          {reviews.map((review) => (
+            <div key={review.id} className="rounded-xl bg-white p-6 shadow-sm">
+              <div className="mb-5 flex items-center gap-3">
+                <Image
+                  src={review.avatar || "/placeholder.svg"}
+                  alt={review.author}
+                  width={40}
+                  height={40}
+                  className="h-10 w-10 rounded-full object-cover"
+                />
+                <div>
+                  <h3 className="tracting-[3%] font-inter text-base font-semibold leading-[24px] text-[#1F2937]">
+                    {review.author}
+                  </h3>
+                  <div className="flex pt-[7px]">
+                    {[...Array(review.rating)].map((_, i) => (
+                      <Star
+                        key={i}
+                        className="h-4 w-4 fill-[#FDE047] text-[#FDE047]"
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <p className="font-inter text-base font-normal leading-[28px] text-[#374151]">
+                {review.content}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 }

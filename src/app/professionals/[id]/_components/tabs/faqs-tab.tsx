@@ -1,47 +1,98 @@
-import { Card, CardContent } from "@/components/ui/card";
+"use client";
+
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Button } from "@/components/ui/button";
 
 const faqs = [
   {
     question: "What can I expect in our first session?",
     answer:
-      "In our first session, we'll discuss your health goals, current diet, and lifestyle. I'll perform a comprehensive nutritional assessment and create a personalized plan tailored to your needs. We'll also address any concerns or questions you may have about transitioning to or maintaining a vegan diet.",
+      "In our first session, we'll discuss your health goals, current diet, and lifestyle. I'll perform a comprehensive nutritional assessment and create a personalized plan tailored to your needs",
   },
   {
     question: "Do you provide meal plans?",
     answer:
-      "Yes, I provide customized meal plans based on your nutritional needs, preferences, and lifestyle. These plans are designed to ensure you're getting all the necessary nutrients while enjoying delicious, varied meals.",
+      "Yes, we provide customized meal plans based on your nutritional needs and preferences.",
   },
   {
-    question: "How often should we have follow-up sessions?",
+    question: "What can I expect in our first session?",
     answer:
-      "The frequency of follow-up sessions depends on your individual needs and goals. Typically, I recommend bi-weekly sessions for the first month, then monthly sessions as you become more comfortable with your new dietary habits. We can adjust this schedule as needed.",
+      "In our first session, we'll discuss your health goals, current diet, and lifestyle. I'll perform a comprehensive nutritional assessment and create a personalized plan tailored to your needs",
   },
   {
-    question: "Can you help with specific health conditions?",
+    question: "Do you provide meal plans?",
     answer:
-      "Absolutely. I have experience working with clients who have various health conditions such as diabetes, heart disease, and autoimmune disorders. I can help create nutrition plans that support your overall health while addressing specific dietary needs related to your condition.",
+      "Yes, we provide customized meal plans based on your nutritional needs and preferences.",
+  },
+  {
+    question: "What can I expect in our first session?",
+    answer:
+      "In our first session, we'll discuss your health goals, current diet, and lifestyle. I'll perform a comprehensive nutritional assessment and create a personalized plan tailored to your needs",
+  },
+  {
+    question: "Do you provide meal plans?",
+    answer:
+      "Yes, we provide customized meal plans based on your nutritional needs and preferences.",
+  },
+  {
+    question: "What can I expect in our first session?",
+    answer:
+      "In our first session, we'll discuss your health goals, current diet, and lifestyle. I'll perform a comprehensive nutritional assessment and create a personalized plan tailored to your needs",
+  },
+  {
+    question: "Do you provide meal plans?",
+    answer:
+      "Yes, we provide customized meal plans based on your nutritional needs and preferences.",
+  },
+  {
+    question: "What can I expect in our first session?",
+    answer:
+      "In our first session, we'll discuss your health goals, current diet, and lifestyle. I'll perform a comprehensive nutritional assessment and create a personalized plan tailored to your needs",
+  },
+  {
+    question: "Do you provide meal plans?",
+    answer:
+      "Yes, we provide customized meal plans based on your nutritional needs and preferences.",
   },
 ];
 
 export function FAQsTab() {
   return (
-    <Card>
-      <CardContent className="p-6">
-        <Accordion type="single" collapsible className="w-full">
-          {faqs.map((faq, index) => (
-            <AccordionItem key={index} value={`item-${index}`}>
-              <AccordionTrigger>{faq.question}</AccordionTrigger>
-              <AccordionContent>{faq.answer}</AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
-      </CardContent>
-    </Card>
+    <div className="max-w-[848px] p-4">
+      <h1 className="mb-6 font-lexend text-xl font-medium leading-[25px] text-[#1D3557]">
+        Frequently Asked Questions
+      </h1>
+
+      <Accordion type="single" collapsible className="space-y-6">
+        {faqs.map((faq, index) => (
+          <AccordionItem
+            key={index}
+            value={`item-${index}`}
+            className="rounded-xl bg-white p-6 shadow-sm"
+          >
+            <AccordionTrigger className="py-0 text-left font-inter text-base font-medium leading-[24px] text-[#1F2937] hover:no-underline md:text-lg md:leading-[22px]">
+              {faq.question}
+            </AccordionTrigger>
+            <AccordionContent className="pb-0 pt-4 font-inter text-sm font-normal leading-[24px] text-[#374151] md:text-base md:leading-[28px]">
+              {faq.answer}
+            </AccordionContent>
+          </AccordionItem>
+        ))}
+      </Accordion>
+
+      <div className="mt-[68px]">
+        <h3 className="mb-6 font-inter text-lg font-medium leading-[21.78px] text-[#1E2939]">
+          Still have a question that is not on the list?
+        </h3>
+        <Button className="rounded-[8px] bg-[#1D3557] px-[20px] py-[10px] text-center font-lexend text-sm font-medium leading-[20.3px] tracking-[-3%]">
+          Contact Me
+        </Button>
+      </div>
+    </div>
   );
 }

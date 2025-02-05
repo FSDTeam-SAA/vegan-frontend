@@ -6,9 +6,9 @@ import { ProfileCard } from "./profile-details-card";
 import { AboutTab } from "./tabs/about-tab";
 import { ExperienceTab } from "./tabs/experience-tab";
 import { FAQsTab } from "./tabs/faqs-tab";
-import { LiveStreamTab } from "./tabs/live-stream-tab";
 import { ReviewsTab } from "./tabs/reviews-tab";
 import { ServicesTab } from "./tabs/services-tab";
+import { LiveStreamTab } from "./tabs/live-stream-tab";
 
 export default function Page() {
   const [activeTab, setActiveTab] = useState("about");
@@ -28,9 +28,9 @@ export default function Page() {
         <Tabs
           value={activeTab}
           onValueChange={setActiveTab}
-          className="container mt-8"
+          className="container mt-9 px-0"
         >
-          <TabsList className="grid w-full grid-cols-2 border-b-[#6B7280] bg-transparent text-[#6B7280] *:text-[20px] md:grid-cols-6">
+          <TabsList className="no-scrollbar flex w-full justify-start gap-4 overflow-x-scroll rounded-none border-b- border-b-[#6B7280] bg-transparent text-[#6B7280] *:text-[16px] md:*:mx-[42px] md:*:my-[10px] md:*:text-[20px]">
             <TabsTrigger value="about">About</TabsTrigger>
             <TabsTrigger value="experience">Experience</TabsTrigger>
             <TabsTrigger value="services">Services</TabsTrigger>
@@ -43,23 +43,23 @@ export default function Page() {
             <AboutTab />
           </TabsContent>
 
-          <TabsContent value="experience" className="mt-6">
+          <TabsContent value="experience" className="mt-[55px]">
             <ExperienceTab />
           </TabsContent>
 
-          <TabsContent value="services" className="mt-6">
+          <TabsContent value="services" className="mt-10">
             <ServicesTab />
           </TabsContent>
 
-          <TabsContent value="live-stream" className="mt-6">
+          <TabsContent value="live-stream" className="mt-10">
             <LiveStreamTab />
           </TabsContent>
 
-          <TabsContent value="faqs" className="mt-6">
+          <TabsContent value="faqs" className="mt-10">
             <FAQsTab />
           </TabsContent>
 
-          <TabsContent value="reviews" className="mt-6">
+          <TabsContent value="reviews" className="mt-10 max-w-[848px]">
             <ReviewsTab />
           </TabsContent>
         </Tabs>
