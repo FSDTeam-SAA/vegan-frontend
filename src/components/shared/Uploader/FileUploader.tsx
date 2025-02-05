@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { FileIcon, UploadIcon, XIcon } from "lucide-react";
+import { FileIcon, XIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 
