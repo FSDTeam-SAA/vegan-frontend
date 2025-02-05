@@ -1,6 +1,7 @@
 import { truncateText } from "@/lib/helper";
 import { MapPin } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 const MerchantCard = () => {
   let text = "Cruelty-free personal care and beauty products";
@@ -29,9 +30,12 @@ const MerchantCard = () => {
           <MapPin className="h-[16.3px] w-[13.5px] text-[#4B5563] md:h-[20px] md:w-[20px]" />{" "}
           Newyork, USA
         </p>
-        <button className="flex h-[48px] w-full items-center justify-center rounded-[8px] bg-[#1D3557] text-[16px] font-medium leading-[19.36px] text-white transition-colors duration-300 hover:bg-[#1D3557]/90">
+        <Link
+          href="/merchants/123"
+          className="flex h-[48px] w-full items-center justify-center rounded-[8px] bg-[#1D3557] text-[16px] font-medium leading-[19.36px] text-white transition-colors duration-300 hover:bg-[#1D3557]/90"
+        >
           View Details
-        </button>
+        </Link>
       </div>
     </div>
   );
