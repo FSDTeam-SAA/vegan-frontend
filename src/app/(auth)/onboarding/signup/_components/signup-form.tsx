@@ -3,8 +3,8 @@
 // Packages
 import { Loader2 } from "lucide-react";
 import Image from "next/image";
-import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 // Local imports
 import { Button } from "@/components/ui/button";
@@ -80,12 +80,19 @@ export default function SignUpForm() {
 
   const searchParams = useSearchParams();
   const role = searchParams.get("role");
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
 
     context: { role },
   });
+
+  useEffect(() => {
+    return () => {
+      setLoading(false);
+    };
+  }, []);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     setLoading(true);
@@ -96,14 +103,16 @@ export default function SignUpForm() {
           position: "bottom-right",
           richColors: true,
         });
+
+        router.push(`/onboarding/verify_email?role=${role}`);
       } catch (error) {
+        setLoading(false);
         console.error("Form submission error", error);
         toast.error("Failed to submit the form. Please try again.", {
           position: "bottom-right",
           richColors: true,
         });
       } finally {
-        setLoading(false);
         form.reset();
       }
     }, 3000);
@@ -157,7 +166,6 @@ export default function SignUpForm() {
                     <Input
                       placeholder="John Doe"
                       className="h-[48px] rounded-[10px] border-[1px] border-[#F4F0EB] font-inter"
-                      type=""
                       {...field}
                     />
                   </FormControl>
@@ -237,7 +245,7 @@ export default function SignUpForm() {
             className="relative mt-[24px] h-[48px] w-full rounded-[10px] bg-[#1D3557] transition-colors duration-300 hover:bg-[#1D3557]/90 disabled:opacity-60"
             disabled={loading}
           >
-            Sign Up{" "}
+            Sign Up
             {loading && <Loader2 className="absolute right-5 animate-spin" />}
           </Button>
         </form>

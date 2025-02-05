@@ -126,6 +126,7 @@ export default function OnBoardingForm() {
             type="submit"
             className="h-[48px] w-full rounded-[10px] bg-[#1D3557] font-inter text-[16px] font-medium leading-[19.36px] text-white shadow-[0px_1px_40px_0px_rgba(12,_12,_13,_0.05)] transition-colors duration-300 hover:bg-[#1D3557]/80"
             disabled={isDisabled}
+            asChild
           >
             <Link
               href={`/onboarding/signup?role=${role}`}

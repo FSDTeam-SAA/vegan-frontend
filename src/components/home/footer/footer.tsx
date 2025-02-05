@@ -9,6 +9,7 @@ const hideRoutes = [
   "/onboarding/login",
   "/onboarding/signup",
   "/profile-setup",
+  "/onboarding/verify_email",
 ];
 
 const socials = [
