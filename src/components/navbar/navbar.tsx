@@ -113,7 +113,7 @@ const Navbar = () => {
             </SignedOut> */}
               <Button
                 className={cn(
-                  `mx-4 rounded-[8px] border-[1px] border-white bg-transparent px-[20px] py-[10px] font-medium ${scrolling && "border-black/50 text-[#4B5563]"}`, // Change hover color for button
+                  `mx-4 rounded-[8px] border-[1px] border-white bg-transparent px-[20px] py-[10px] font-medium hover:bg-black/5 ${scrolling && "border-black/50 text-[#4B5563]"}`, // Change hover color for button
                 )}
               >
                 <Link href="/onboarding">Login</Link>
