@@ -33,7 +33,7 @@ export default function RootLayout({
 }>) {
   return (
     // <ClerkProvider>
-    <html lang="en">
+    <html lang="en" className="scrollbar-thin">
       <body className={`bg-[#E8DFD6] ${inter.className} antialiased`}>
         <Navbar />
         {children}

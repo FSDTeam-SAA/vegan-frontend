@@ -31,6 +31,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import Link from "next/link";
 
 const formSchema = z
   .object({
@@ -250,6 +251,15 @@ export default function SignUpForm() {
           </Button>
         </form>
       </Form>
+      <p className="mt-[32px] text-center text-[14px] font-normal leading-[16.94px] text-[#9CA3AF]">
+        Already have an account?{" "}
+        <Link
+          href={`/onboarding/login?role=${role}`}
+          className="font-medium text-[#1D3557] hover:underline"
+        >
+          Log in
+        </Link>
+      </p>
     </div>
   );
 }
