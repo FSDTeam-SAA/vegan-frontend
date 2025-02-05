@@ -3,6 +3,7 @@ import Navbar from "@/components/navbar/navbar";
 import NProgress from "@/provider/NProgress";
 import type { Metadata } from "next";
 import { Inter, Lexend_Deca } from "next/font/google";
+import { Toaster } from "sonner";
 import "./globals.css";
 // import { ClerkProvider } from "@clerk/nextjs";
 
@@ -38,6 +39,7 @@ export default function RootLayout({
         {children}
         <Footer />
         <NProgress />
+        <Toaster />
       </body>
     </html>
     // </ClerkProvider>
