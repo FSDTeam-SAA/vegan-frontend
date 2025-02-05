@@ -1,7 +1,6 @@
 import { MapPin, Star } from "lucide-react";
 import { BiShoppingBag } from "react-icons/bi";
 
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import CartModal from "@/provider/CartModal";
 import Image from "next/image";
@@ -61,16 +60,13 @@ export function ProfileCard({
         <div>
           <CartModal
             trigger={
-              <Button
-                variant="ghost"
-                className="relative mt-[62px] hidden pr-0 *:text-[#1D3557] md:flex"
-              >
+              <div className="relative mt-[62px] hidden items-center text-nowrap pr-0 *:text-[#1D3557] md:flex">
                 View Cart
                 <BiShoppingBag className="h-[15.5px] w-[19.1px] text-white" />
                 <span className="absolute -right-2 bottom-0 flex h-4 w-4 items-center justify-center rounded-full bg-[#1D3557] text-[7.5px] font-light !text-white">
                   2
                 </span>
-              </Button>
+              </div>
             }
           />
         </div>
