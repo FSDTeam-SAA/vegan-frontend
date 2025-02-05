@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
 import { Card } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { User } from "lucide-react";
 import Image from "next/image";
+import { useState } from "react";
 
 export default function ProfitCalculator() {
   const [profit, setProfit] = useState("100");
@@ -27,8 +27,8 @@ export default function ProfitCalculator() {
   const estimatedEarnings = calculateEarnings();
 
   return (
-    <div className="relative w-full">
-      <div className="container py-[80px]">
+    <div className="relative w-full overflow-x-hidden">
+      <div className="py-[80px]">
         {/* bg-dotts */}
 
         <Image
@@ -67,7 +67,7 @@ export default function ProfitCalculator() {
             See how much you could earn through our referral program
           </p>
         </div>
-        <Card className="mx-auto px-[40px] py-[29px] lg:max-w-[1042px]">
+        <Card className="mx-auto px-[40px] py-[29px] shadow-none lg:max-w-[1042px]">
           <div className="flex flex-wrap justify-between gap-5">
             <div className="space-y-5">
               <div className="space-y-2">
