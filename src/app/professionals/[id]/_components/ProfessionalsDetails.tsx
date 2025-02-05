@@ -30,7 +30,7 @@ export default function Page() {
           onValueChange={setActiveTab}
           className="container mt-9 px-0"
         >
-          <TabsList className="grid w-full grid-cols-2 border-b-[#6B7280] bg-transparent text-[#6B7280] *:text-[20px] md:grid-cols-6">
+          <TabsList className="no-scrollbar flex w-full justify-between overflow-x-scroll border-b-[#6B7280] bg-transparent text-[#6B7280] *:text-[20px]">
             <TabsTrigger value="about">About</TabsTrigger>
             <TabsTrigger value="experience">Experience</TabsTrigger>
             <TabsTrigger value="services">Services</TabsTrigger>
@@ -43,7 +43,7 @@ export default function Page() {
             <AboutTab />
           </TabsContent>
 
-          <TabsContent value="experience" className="mt-6">
+          <TabsContent value="experience" className="mt-[55px]">
             <ExperienceTab />
           </TabsContent>
 

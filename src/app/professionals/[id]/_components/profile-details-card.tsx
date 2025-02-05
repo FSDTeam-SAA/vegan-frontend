@@ -22,7 +22,7 @@ export function ProfileCard({
   reviews,
 }: ProfileCardProps) {
   return (
-    <Card className="container mx-auto min-h-[248px] w-full px-0 shadow-none">
+    <Card className="container mx-auto min-h-[248px] px-0 shadow-none">
       <CardContent className="flex w-full justify-between p-[16px] md:p-6">
         <div className="w-full items-center gap-6 md:flex">
           <div className="relative h-[200px] w-full rounded-[16px] md:w-[200px]">
