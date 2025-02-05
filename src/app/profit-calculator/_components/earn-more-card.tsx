@@ -1,5 +1,3 @@
-import { ArrowUpRight } from "lucide-react";
-
 const EarnMoreCard = () => {
   return (
     <div className="container mx-auto mb-[57px] w-[90%] rounded-[20px] border-[1.2px] border-[#E7EBEE] bg-cta_gradient px-[24px] py-[55px] md:w-full lg:mt-[-50px] lg:py-[85px]">

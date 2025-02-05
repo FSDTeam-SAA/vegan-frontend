@@ -32,10 +32,12 @@ export default function ReferralLeaderboard() {
           <div className="lg:my-[70px]">
             {tabKeys.map((key) => (
               <TabsContent key={key} value={key}>
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-                  <TopReferrersCard />
-                  <TopReferrersCard />
-                  <TopReferrersCard />
+                <div className="flex justify-center">
+                  <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                    <TopReferrersCard />
+                    <TopReferrersCard />
+                    <TopReferrersCard />
+                  </div>
                 </div>
               </TabsContent>
             ))}
