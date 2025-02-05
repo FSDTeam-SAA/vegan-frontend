@@ -24,6 +24,8 @@ interface HeroVideoProps {
   thumbnailSrc: string;
   thumbnailAlt?: string;
   className?: string;
+  imageWrapperClassName?: string;
+  title?: string;
 }
 
 const animationVariants = {
@@ -75,6 +77,8 @@ export function HeroVideoDialog({
   thumbnailSrc,
   thumbnailAlt = "Video thumbnail",
   className,
+  imageWrapperClassName,
+  title,
 }: HeroVideoProps) {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const selectedAnimation = animationVariants[animationStyle];
@@ -85,7 +89,7 @@ export function HeroVideoDialog({
         className="group relative cursor-pointer"
         onClick={() => setIsVideoOpen(true)}
       >
-        <div className="relative h-[454px] w-full">
+        <div className={cn("relative h-[454px] w-full", imageWrapperClassName)}>
           <Image
             src={thumbnailSrc}
             alt={thumbnailAlt}
@@ -93,7 +97,7 @@ export function HeroVideoDialog({
             className="w-full rounded-[25px] border object-cover shadow-lg brightness-[0.7] transition-all duration-200 ease-out group-hover:brightness-[0.6]"
           />
           <p className="absolute inset-0 flex items-start justify-center px-[30px] pt-[80px] text-center font-lexend text-[24px] font-semibold leading-[34.8px] text-white lg:text-[32px] lg:leading-[46.4px]">
-            Watch how it works in a 5 minutes video
+            {title}
           </p>
         </div>
 
