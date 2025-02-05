@@ -110,7 +110,7 @@ const Navbar = () => {
                   `mx-4 rounded-[8px] border-[1px] border-white bg-transparent px-[20px] py-[10px] font-medium ${scrolling && "border-black/50 text-[#4B5563]"}`, // Change hover color for button
                 )}
               >
-                Login
+                <Link href="/onboarding">Login</Link>
               </Button>
               <Button
                 className={cn(
@@ -119,7 +119,7 @@ const Navbar = () => {
                 )}
                 asChild
               >
-                <Link href="/signup">Get Started</Link>
+                <Link href="/onboarding">Get Started</Link>
               </Button>
 
               {/* <SignedIn>
@@ -137,7 +137,7 @@ const Navbar = () => {
                     "mx-4 rounded-[8px] border-[1px] border-white bg-transparent px-[20px] py-[10px] font-medium", // Change hover color for button
                   )}
                 >
-                  Login
+                  <Link href="/onboarding">Login</Link>
                 </Button>
               </div>
               <Sheet>

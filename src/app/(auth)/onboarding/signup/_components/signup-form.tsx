@@ -24,50 +24,67 @@ import * as z from "zod";
 
 import { Checkbox } from "@/components/ui/checkbox";
 import { PasswordInput } from "@/components/ui/password-input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
-const formSchema = z.object({
-  fullName: z
-    .string()
-    .min(2, { message: "Full name must be at least 2 characters long." })
-    .max(50, { message: "Full name must be at most 50 characters long." })
-    .regex(/^[a-zA-Z\s'-]+$/, {
-      message:
-        "Full name can only contain letters, spaces, hyphens, and apostrophes.",
+const formSchema = z
+  .object({
+    fullName: z.string().optional(),
+    email: z.string().email({ message: "Invalid email address." }),
+    password: z
+      .string()
+      .min(8, { message: "Password must be at least 8 characters long." })
+      .max(128, { message: "Password must be at most 128 characters long." })
+      .regex(/[A-Z]/, {
+        message: "Password must contain at least one uppercase letter.",
+      })
+      .regex(/[a-z]/, {
+        message: "Password must contain at least one lowercase letter.",
+      })
+      .regex(/[0-9]/, { message: "Password must contain at least one number." })
+      .regex(/[@$!%*?&]/, {
+        message:
+          "Password must contain at least one special character (@, $, !, %, *, ?, &).",
+      }),
+    agree: z.boolean().refine((val) => val === true, {
+      message: "You must agree to the terms and conditions.",
     }),
-
-  email: z.string().email({ message: "Invalid email address." }),
-
-  password: z
-    .string()
-    .min(8, { message: "Password must be at least 8 characters long." })
-    .max(128, { message: "Password must be at most 128 characters long." })
-    .regex(/[A-Z]/, {
-      message: "Password must contain at least one uppercase letter.",
-    })
-    .regex(/[a-z]/, {
-      message: "Password must contain at least one lowercase letter.",
-    })
-    .regex(/[0-9]/, { message: "Password must contain at least one number." })
-    .regex(/[@$!%*?&]/, {
-      message:
-        "Password must contain at least one special character (@, $, !, %, *, ?, &).",
-    }),
-
-  agree: z.boolean().refine((val) => val === true, {
-    message: "You must agree to the terms and conditions.",
-  }),
-});
+    accountType: z.string().optional(),
+  })
+  .superRefine((data, ctx) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const context = ctx as any;
+    if (context?.role === "vendor" && !data.accountType) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["accountType"],
+        message: "Account type is required for vendors.",
+      });
+    }
+    if (context?.role === "customer" && !data.fullName) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["fullName"],
+        message: "Full name is required for customers.",
+      });
+    }
+  });
 
 export default function SignUpForm() {
   const [loading, setLoading] = useState<true | false>(false);
+
+  const searchParams = useSearchParams();
+  const role = searchParams.get("role");
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      fullName: "",
-      email: "",
-      password: "",
-      agree: false,
-    },
+
+    context: { role },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
@@ -100,27 +117,56 @@ export default function SignUpForm() {
           onSubmit={form.handleSubmit(onSubmit)}
           className="mx-auto max-w-3xl space-y-[16px] pt-[24px]"
         >
-          <FormField
-            control={form.control}
-            name="fullName"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="font-inter text-[14px] font-medium leading-[16.94px] text-[#111827]">
-                  Full Name
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="John Doe"
-                    className="h-[48px] rounded-[10px] border-[1px] border-[#F4F0EB] font-inter"
-                    type=""
-                    {...field}
-                  />
-                </FormControl>
+          {role === "vendor" && (
+            <FormField
+              control={form.control}
+              name="accountType"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Account Type</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select Account type" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="merchant">Merchant</SelectItem>
+                      <SelectItem value="organization">Organization</SelectItem>
+                      <SelectItem value="professional">Professional</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
+          {role === "customer" && (
+            <FormField
+              control={form.control}
+              name="fullName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="font-inter text-[14px] font-medium leading-[16.94px] text-[#111827]">
+                    Full Name
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="John Doe"
+                      className="h-[48px] rounded-[10px] border-[1px] border-[#F4F0EB] font-inter"
+                      type=""
+                      {...field}
+                    />
+                  </FormControl>
 
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
 
           <FormField
             control={form.control}
@@ -134,7 +180,6 @@ export default function SignUpForm() {
                   <Input
                     placeholder="johndoe@gmail.com"
                     className="h-[48px] rounded-[10px] border-[1px] border-[#F4F0EB] font-inter"
-                    type="email"
                     {...field}
                   />
                 </FormControl>
