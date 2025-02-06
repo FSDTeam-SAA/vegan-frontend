@@ -1,67 +1,73 @@
 "use client";
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
-import { ProfileCard } from "./profile-details-card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AboutTab } from "./tabs/about-tab";
+import { ProfileCard } from "./profile-details-card";
 import { ExperienceTab } from "./tabs/experience-tab";
 import { FAQsTab } from "./tabs/faqs-tab";
+import { LiveStreamTab } from "./tabs/live-stream-tab";
 import { ReviewsTab } from "./tabs/reviews-tab";
 import { ServicesTab } from "./tabs/services-tab";
-import { LiveStreamTab } from "./tabs/live-stream-tab";
+
+// Mock data for a vendor profile
+const vendorProfile = {
+  name: "Dr Sarah Green",
+  title: "Vegan Nutritionist & Wellness Coach",
+  location: "New York, USA",
+  rating: 4.8,
+  reviews: 127,
+  image:
+    "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Professionial%20detail-vD0HtZP25Z4ygrNjwxW74dhI3OxbpU.png",
+  heroTitle: "Dr Sarah Green",
+  heroDescription:
+    "Empowering you to thrive on a plant-based diet. Expert nutrition guidance for optimal health and wellness.",
+  heroImage:
+    "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Professionial%20detail-vD0HtZP25Z4ygrNjwxW74dhI3OxbpU.png",
+};
+
+const tabsData = [
+  { id: "about", label: "About", component: AboutTab },
+  { id: "experience", label: "Experience", component: ExperienceTab },
+  { id: "services", label: "Services", component: ServicesTab },
+  { id: "live-stream", label: "Live Stream", component: LiveStreamTab },
+  { id: "faqs", label: "FAQs", component: FAQsTab },
+  { id: "reviews", label: "Reviews", component: ReviewsTab },
+];
 
 export default function Page() {
   const [activeTab, setActiveTab] = useState("about");
 
   return (
-    <div className="min-h-screen bg-[#f5f0eb] pt-[56px]">
-      <main className="mx-auto px-4 py-8">
+    <div className="min-h-screen bg-[#f5f0eb]">
+      <main className="mx-auto max-w-7xl px-4 py-8">
         <ProfileCard
-          name="Dr Sarah Green"
-          title="Vegan Nutritionist & Wellness Coach"
-          location="New York, USA"
-          rating={4.8}
-          reviews={127}
-          image="https://res.cloudinary.com/dgnustmny/image/upload/v1738670389/pexels-elly-fairytale-3822688_1_pn1lrl.png"
+          name={vendorProfile.name}
+          title={vendorProfile.title}
+          location={vendorProfile.location}
+          rating={vendorProfile.rating}
+          reviews={vendorProfile.reviews}
+          image={vendorProfile.image}
         />
 
-        <Tabs
-          value={activeTab}
-          onValueChange={setActiveTab}
-          className="container mt-9 px-0"
-        >
-          <TabsList className="no-scrollbar flex w-full justify-start gap-4 overflow-x-scroll rounded-none border-b- border-b-[#6B7280] bg-transparent text-[#6B7280] *:text-[16px] md:*:mx-[42px] md:*:my-[10px] md:*:text-[20px]">
-            <TabsTrigger value="about">About</TabsTrigger>
-            <TabsTrigger value="experience">Experience</TabsTrigger>
-            <TabsTrigger value="services">Services</TabsTrigger>
-            <TabsTrigger value="live-stream">Live Stream</TabsTrigger>
-            <TabsTrigger value="faqs">FAQs</TabsTrigger>
-            <TabsTrigger value="reviews">Reviews</TabsTrigger>
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="mt-8">
+          <TabsList className="no-scrollbar flex w-full space-x-6 overflow-x-auto overflow-y-hidden border-b">
+            {tabsData.map((tab) => (
+              <TabsTrigger
+                key={tab.id}
+                value={tab.id}
+                className="flex-shrink-0 rounded-none bg-transparent px-0 text-base data-[state=active]:border-b-2 data-[state=active]:border-[#1F2937] data-[state=active]:text-[#1F2937]"
+              >
+                {tab.label}
+              </TabsTrigger>
+            ))}
           </TabsList>
 
-          <TabsContent value="about" className="mt-6">
-            <AboutTab />
-          </TabsContent>
-
-          <TabsContent value="experience" className="mt-[55px]">
-            <ExperienceTab />
-          </TabsContent>
-
-          <TabsContent value="services" className="mt-10">
-            <ServicesTab />
-          </TabsContent>
-
-          <TabsContent value="live-stream" className="mt-10">
-            <LiveStreamTab />
-          </TabsContent>
-
-          <TabsContent value="faqs" className="mt-10">
-            <FAQsTab />
-          </TabsContent>
-
-          <TabsContent value="reviews" className="mt-10 max-w-[848px]">
-            <ReviewsTab />
-          </TabsContent>
+          {tabsData.map((tab) => (
+            <TabsContent key={tab.id} value={tab.id} className="mt-6">
+              <tab.component />
+            </TabsContent>
+          ))}
         </Tabs>
       </main>
     </div>
