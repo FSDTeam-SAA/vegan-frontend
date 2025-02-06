@@ -15,5 +15,5 @@ export function getProfileType(searchParams: { type?: string }) {
   ) {
     return type;
   }
-  return "merchant"; // Default to merchant if no valid type provided
+  return null;
 }
