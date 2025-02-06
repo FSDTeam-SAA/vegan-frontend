@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { FileIcon, XIcon } from "lucide-react";
+import { XIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 
@@ -21,6 +21,10 @@ export default function FileUploader({
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleFile = (file: File) => {
+    if (file.size > 3 * 1024 * 1024) {
+      alert("File size must be less than 3MB.");
+      return;
+    }
     setFile(file);
     onFileSelect?.(file);
   };
@@ -73,7 +77,7 @@ export default function FileUploader({
         "relative flex h-[250px] w-[334px] cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed transition-colors",
         isDragging
           ? "border-primary bg-primary/5"
-          : "border-gray-300 hover:border-primary",
+          : "border-gray-200 hover:border-gray-400",
         "bg-white",
       )}
     >
@@ -87,10 +91,18 @@ export default function FileUploader({
 
       <div className="flex flex-col items-center justify-center pb-6 pt-5">
         {file ? (
-          <>
-            <FileIcon className="mb-3 h-[47px] w-[47px] text-gray-400" />
-            <p className="mx-auto mb-2 w-[80%] text-sm text-gray-500">
-              <span className="font-semibold">{file.name}</span>
+          <div className="flex flex-col items-center">
+            <Image
+              src="/assets/docIcon.png"
+              alt="file-upload"
+              width={50}
+              height={50}
+              className="mb-3 h-[50px] w-[50px]"
+            />
+            <p className="mx-auto mb-3 w-[95%] text-center text-sm text-gray-500">
+              <span className="text-center text-[16px] font-semibold">
+                {file.name}
+              </span>
             </p>
             <button
               onClick={handleRemove}
@@ -99,18 +111,18 @@ export default function FileUploader({
             >
               <XIcon className="h-5 w-5 text-gray-500" />
             </button>
-          </>
+          </div>
         ) : (
-          <>
+          <div className="flex translate-y-[-20px] flex-col items-center">
             <Image
               src="/assets/fileupload.png"
               alt="file-upload"
-              width={52}
-              height={52}
-              className="mb-3 h-[52px] w-[52px]"
+              width={55}
+              height={55}
+              className="mb-3 h-[55px] w-[55px]"
             />
             <p className="text-[16px] text-[#1D3557] underline">{title}</p>
-          </>
+          </div>
         )}
       </div>
     </div>
