@@ -55,9 +55,10 @@ export default function VerifyProfile() {
 
         {/* Upload Section */}
         <div className="grid gap-[50px] md:grid-cols-2 lg:grid-cols-3 lg:pt-10">
-          <div className="space-y-2">
+          <div className="max-w-[334px] space-y-2">
             <p className="text-sm font-medium text-[#1D3557]">
-              Government-Issued ID
+              Government-Issued ID (Upload a government-issued ID of the
+              business owner)
             </p>
             <FileUploader
               onFileSelect={handleFileSelect("government-id")}
@@ -65,9 +66,10 @@ export default function VerifyProfile() {
             />
           </div>
 
-          <div className="space-y-2">
+          <div className="max-w-[334px] space-y-2">
             <p className="text-sm font-medium text-[#1D3557]">
-              Business License
+              Business License (Upload proof of business registration or
+              license)
             </p>
             <FileUploader
               onFileSelect={handleFileSelect("business-license")}
@@ -75,8 +77,10 @@ export default function VerifyProfile() {
             />
           </div>
 
-          <div className="space-y-2">
-            <p className="text-sm font-medium text-[#1D3557]">Photo with ID</p>
+          <div className="max-w-[334px] space-y-2">
+            <p className="text-sm font-medium text-[#1D3557]">
+              Photo with ID (Upload a photo of the owner holding their ID)
+            </p>
             <FileUploader
               onFileSelect={handleFileSelect("photo-with-id")}
               accept=".pdf,.jpg,.jpeg,.png"
@@ -85,10 +89,11 @@ export default function VerifyProfile() {
         </div>
 
         {/* Continue Button */}
-        <div className="flex justify-end lg:mr-[20px]">
+        <div className="flex justify-end">
           <Button
-            className="h-[48px] w-[180px] bg-gray-400 px-8 text-white hover:bg-gray-500"
+            className="h-[48px] w-[180px]"
             onClick={handleContinue}
+            disabled={files.length < 3}
           >
             Continue
           </Button>

@@ -13,7 +13,7 @@ interface FileUploadProps {
 
 export default function FileUploader({
   onFileSelect,
-  accept = ".pdf,.doc,.docx",
+  accept = ".pdf,.jpg,.jpeg,.png",
   title = "Click to upload or drag and drop",
 }: FileUploadProps) {
   const [file, setFile] = useState<File | null>(null);
@@ -74,7 +74,7 @@ export default function FileUploader({
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
       className={cn(
-        "relative flex h-[250px] w-[334px] cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed transition-colors",
+        "relative flex h-[250px] max-w-[334px] cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed transition-colors",
         isDragging
           ? "border-primary bg-primary/5"
           : "border-gray-200 hover:border-gray-400",
