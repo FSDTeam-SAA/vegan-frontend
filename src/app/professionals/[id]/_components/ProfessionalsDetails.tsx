@@ -50,13 +50,13 @@ export default function Page() {
           image={vendorProfile.image}
         />
 
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="mt-8">
-          <TabsList className="no-scrollbar flex w-full space-x-6 overflow-x-auto">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="mt-9">
+          <TabsList className="no-scrollbar flex w-full overflow-x-auto">
             {tabsData.map((tab) => (
               <TabsTrigger
                 key={tab.id}
                 value={tab.id}
-                className="flex-shrink-0 rounded-none bg-transparent px-0 text-base md:text-2xl"
+                className="flex-shrink-0 rounded-none bg-transparent text-base md:text-2xl"
               >
                 {tab.label}
               </TabsTrigger>
@@ -64,7 +64,11 @@ export default function Page() {
           </TabsList>
 
           {tabsData.map((tab) => (
-            <TabsContent key={tab.id} value={tab.id} className="mt-6">
+            <TabsContent
+              key={tab.id}
+              value={tab.id}
+              className="mt-10 md:mt-[50px]"
+            >
               <tab.component />
             </TabsContent>
           ))}
