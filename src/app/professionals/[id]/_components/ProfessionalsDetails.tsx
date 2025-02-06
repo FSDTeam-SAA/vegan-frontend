@@ -51,7 +51,7 @@ export default function Page() {
         />
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="mt-9">
-          <TabsList className="no-scrollbar flex w-full overflow-x-auto">
+          <TabsList className="">
             {tabsData.map((tab) => (
               <TabsTrigger
                 key={tab.id}
