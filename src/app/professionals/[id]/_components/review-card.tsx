@@ -50,7 +50,7 @@ const reviews = [
 export function ReviewCard() {
   return (
     <div className="min-h-screen bg-[#f5f0ea] dark:bg-gray-950">
-      <div className="mx-auto max-w-4xl">
+      <div className="max-w-4xl">
         {/* Desktop Filters */}
         <div className="mb-6 hidden gap-3 md:flex">
           <DropdownMenu>

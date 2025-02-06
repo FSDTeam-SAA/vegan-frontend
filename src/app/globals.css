@@ -55,6 +55,14 @@ body {
     background-repeat: no-repeat;
     background-position: center;
   }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
 }
 
 @layer base {
@@ -122,6 +130,3 @@ body {
   }
 }
 
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}

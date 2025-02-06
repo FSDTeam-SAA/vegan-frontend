@@ -1,6 +1,7 @@
 import { truncateText } from "@/lib/helper";
 import { CalendarDays, MapPin } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 const OrganizationCard = () => {
   let text =
@@ -36,9 +37,12 @@ const OrganizationCard = () => {
             12 Active Events
           </p>
         </div>
-        <button className="flex h-[48px] w-full items-center justify-center rounded-[8px] bg-[#1D3557] text-[16px] font-medium leading-[19.36px] text-white transition-colors duration-300 hover:bg-[#1D3557]/90">
+        <Link
+          href={`/organizations/123`}
+          className="flex h-[48px] w-full items-center justify-center rounded-[8px] bg-[#1D3557] text-[16px] font-medium leading-[19.36px] text-white transition-colors duration-300 hover:bg-[#1D3557]/90"
+        >
           View Details
-        </button>
+        </Link>
       </div>
     </div>
   );
