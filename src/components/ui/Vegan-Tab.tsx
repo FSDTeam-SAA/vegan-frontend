@@ -11,14 +11,12 @@ interface AnimatedTabsProps {
   tabs: VeganTab[];
   defaultActiveTab?: string;
   onTabChange?: (tabId: string) => void;
-  activeColor?: string;
 }
 
 const AnimatedTabs: FC<AnimatedTabsProps> = ({
   tabs,
   defaultActiveTab,
   onTabChange,
-  activeColor = "bg-white",
 }) => {
   const [activeTab, setActiveTab] = useState<string>(
     defaultActiveTab || tabs[0]?.id,

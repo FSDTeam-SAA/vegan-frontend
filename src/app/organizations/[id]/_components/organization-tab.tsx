@@ -35,7 +35,6 @@ const OrganizationTab = () => {
         onTabChange={(id) =>
           setActiveTab(id as "about" | "news" | "events" | "volunteer")
         }
-        activeColor="#FFFFFF"
       />
 
       <div className="mt-[40px]">
