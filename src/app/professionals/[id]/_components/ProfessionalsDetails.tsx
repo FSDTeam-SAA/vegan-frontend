@@ -3,28 +3,11 @@
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AboutTab } from "./tabs/about-tab";
-import { ProfileCard } from "./profile-details-card";
 import { ExperienceTab } from "./tabs/experience-tab";
 import { FAQsTab } from "./tabs/faqs-tab";
 import { LiveStreamTab } from "./tabs/live-stream-tab";
 import { ReviewsTab } from "./tabs/reviews-tab";
 import { ServicesTab } from "./tabs/services-tab";
-
-// Mock data for a vendor profile
-const vendorProfile = {
-  name: "Dr Sarah Green",
-  title: "Vegan Nutritionist & Wellness Coach",
-  location: "New York, USA",
-  rating: 4.8,
-  reviews: 127,
-  image:
-    "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Professionial%20detail-vD0HtZP25Z4ygrNjwxW74dhI3OxbpU.png",
-  heroTitle: "Dr Sarah Green",
-  heroDescription:
-    "Empowering you to thrive on a plant-based diet. Expert nutrition guidance for optimal health and wellness.",
-  heroImage:
-    "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Professionial%20detail-vD0HtZP25Z4ygrNjwxW74dhI3OxbpU.png",
-};
 
 const tabsData = [
   { id: "about", label: "About", component: AboutTab },
@@ -41,15 +24,6 @@ export default function Page() {
   return (
     <div className="min-h-screen bg-[#f5f0eb]">
       <main className="mx-auto max-w-7xl px-4 py-8">
-        <ProfileCard
-          name={vendorProfile.name}
-          title={vendorProfile.title}
-          location={vendorProfile.location}
-          rating={vendorProfile.rating}
-          reviews={vendorProfile.reviews}
-          image={vendorProfile.image}
-        />
-
         <Tabs value={activeTab} onValueChange={setActiveTab} className="mt-9">
           <TabsList className="">
             {tabsData.map((tab) => (
