@@ -1,10 +1,12 @@
 "use client";
 
-import { getProfileType } from "@/lib/utils";
+// Packages
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useSearchParams } from "next/navigation";
+import { redirect, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
-// import { profileSchema, type ProfileFormData } from "@/lib/schema"
+
+// Local imports
+
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -19,10 +21,14 @@ import { HeroVideoDialog } from "@/components/ui/hero-video-dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { ProfileFormData, profileSchema } from "@/lib/ProfileSetupSchema";
+import { getProfileType } from "@/lib/utils";
+import Link from "next/link";
 
 export default function ProfileSetupForm() {
   const searchParams = useSearchParams();
   const type = getProfileType({ type: searchParams.get("type") ?? undefined });
+
+  if (!type) redirect("/");
 
   const form = useForm<ProfileFormData>({
     resolver: zodResolver(profileSchema),
@@ -274,9 +280,15 @@ export default function ProfileSetupForm() {
               <div className="flex justify-end">
                 <Button
                   type="submit"
-                  className="mt-[40px] h-[51px] w-full rounded-[8px] bg-[#1D3557] p-[16px] lg:w-[200px]"
+                  className="ro duration-300unded-[8px] mt-[40px] h-[51px] w-full bg-[#1D3557] p-[16px] transition-colors hover:bg-[#1D3557]/80 lg:w-[200px]"
+                  asChild
                 >
-                  Continue
+                  <Link
+                    className="w-full"
+                    href={`/profile-setup/verify_documents?type=${type}`}
+                  >
+                    Continue
+                  </Link>
                 </Button>
               </div>
             </form>
