@@ -51,12 +51,12 @@ export default function Page() {
         />
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="mt-8">
-          <TabsList className="no-scrollbar no-scrollbar flex w-full space-x-6 overflow-x-auto">
+          <TabsList className="no-scrollbar flex w-full space-x-6 overflow-x-auto">
             {tabsData.map((tab) => (
               <TabsTrigger
                 key={tab.id}
                 value={tab.id}
-                className="flex-shrink-0 rounded-none bg-transparent px-0 text-base text-[#6B7280] data-[state=active]:border-b-2 data-[state=active]:border-[#1F2937] data-[state=active]:text-[#1F2937] md:text-2xl"
+                className="flex-shrink-0 rounded-none bg-transparent px-0 text-base md:text-2xl"
               >
                 {tab.label}
               </TabsTrigger>
