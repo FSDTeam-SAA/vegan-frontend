@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import FileUploader from "@/components/shared/Uploader/FileUploader";
 import { Button } from "@/components/ui/button";
 import { InfoIcon } from "lucide-react";
 import Link from "next/link";
-import FileUploader from "@/components/shared/Uploader/FileUploader";
+import { useState } from "react";
 
 export default function VerifyProfile() {
   const [files, setFiles] = useState<{ type: string; file: File }[]>([]);
@@ -27,7 +27,7 @@ export default function VerifyProfile() {
   };
 
   return (
-    <div className="container min-h-screen p-6">
+    <div className="mt-[48px ] container pb-[48px] lg:mt-[110px]">
       <div className="space-y-6">
         {/* Header */}
         <div className="space-y-2 text-center">
@@ -91,7 +91,7 @@ export default function VerifyProfile() {
         {/* Continue Button */}
         <div className="flex justify-end">
           <Button
-            className="h-[48px] w-[180px]"
+            className="h-[48px] w-[180px] bg-[#1D3557] transition-colors duration-300 hover:bg-[#1D3557]/90"
             onClick={handleContinue}
             disabled={files.length < 3}
           >
