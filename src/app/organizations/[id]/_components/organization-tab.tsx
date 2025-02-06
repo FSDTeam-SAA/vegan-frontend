@@ -3,6 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import OrganizationEventContainer from "./tab/events/organization-event-container";
 import OrganizationNewsContainer from "./tab/news/organization-news-container";
+import VolunteerContainer from "./tab/volunteer/volunteer-container";
 
 const OrganizationTab = () => {
   const [activeTab, setActiveTab] = useState("about");
@@ -29,7 +30,9 @@ const OrganizationTab = () => {
         <TabsContent value="events" className="pt-[40px]">
           <OrganizationEventContainer />
         </TabsContent>
-        <TabsContent value="reviews" className="pt-[40px]"></TabsContent>
+        <TabsContent value="volunteer" className="pt-[40px]">
+          <VolunteerContainer />
+        </TabsContent>
       </Tabs>
     </div>
   );
