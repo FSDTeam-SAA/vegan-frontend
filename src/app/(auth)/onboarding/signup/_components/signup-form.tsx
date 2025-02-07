@@ -1,8 +1,10 @@
 "use client";
 
 // Packages
+import { useMutation } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -19,7 +21,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 import * as z from "zod";
 
 import { Checkbox } from "@/components/ui/checkbox";
@@ -31,7 +32,24 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import Link from "next/link";
+import { toast } from "sonner";
+
+type ApiResponse = {
+  status: boolean; // Indicates the success or failure of the request
+  message: string; // A general message describing the result
+  error?: string; // Optional field for error details
+  user?: {
+    joinAs: string; // Role or type of the user (e.g., "customer")
+    fullName: string; // Full name of the user
+    email: string; // Email address of the user
+    password: string; // Hashed password
+    verifyEmail: boolean; // Indicates if the email is verified
+    _id: string; // Unique identifier for the user
+    createdAt: string; // Timestamp when the user was created
+    updatedAt: string; // Timestamp when the user was last updated
+    __v: number; // Version key (used by MongoDB)
+  };
+};
 
 const formSchema = z
   .object({
@@ -78,6 +96,48 @@ const formSchema = z
 
 export default function SignUpForm() {
   const [loading, setLoading] = useState<true | false>(false);
+  const { mutate, isPending } = useMutation({
+    mutationKey: ["signup"],
+    mutationFn: (data: {
+      joinAs: string | null;
+      email: string;
+      password: string;
+      fullName?: string;
+      accountType?: string;
+    }) =>
+      fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/signup`, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }).then((res) => res.json()),
+    onSuccess: (data: ApiResponse) => {
+      setLoading(true);
+      console.log("SIGNUP_RESPONSE:", data);
+      if (data.status) {
+        toast.success("Sign up successful! 🎉", {
+          position: "top-right",
+          richColors: true,
+        });
+        router.push(`/onboarding/verify_email?joinAs=${role}`);
+      } else {
+        toast.error(`${data.message} ❌`, {
+          position: "top-right",
+          richColors: true,
+        });
+      }
+    },
+    onError: () => {
+      toast.error(
+        " Sign up failed. Please check your details and try again. ❌",
+        {
+          position: "top-right",
+          richColors: true,
+        },
+      );
+    },
+  });
 
   const searchParams = useSearchParams();
   const role = searchParams.get("role");
@@ -96,27 +156,15 @@ export default function SignUpForm() {
   }, []);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    setLoading(true);
-    setTimeout(() => {
-      try {
-        console.log(values);
-        toast.success("Registration successfully", {
-          position: "bottom-right",
-          richColors: true,
-        });
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { agree, ...proccedData } = {
+      ...values,
+      joinAs: role,
+    };
 
-        router.push(`/onboarding/verify_email?role=${role}`);
-      } catch (error) {
-        setLoading(false);
-        console.error("Form submission error", error);
-        toast.error("Failed to submit the form. Please try again.", {
-          position: "bottom-right",
-          richColors: true,
-        });
-      } finally {
-        form.reset();
-      }
-    }, 3000);
+    console.log(proccedData);
+
+    mutate(proccedData);
   }
 
   return (
@@ -244,10 +292,13 @@ export default function SignUpForm() {
           <Button
             type="submit"
             className="relative mt-[24px] h-[48px] w-full rounded-[10px] bg-[#1D3557] transition-colors duration-300 hover:bg-[#1D3557]/90 disabled:opacity-60"
-            disabled={loading}
+            disabled={loading || isPending}
           >
-            Sign Up
-            {loading && <Loader2 className="absolute right-5 animate-spin" />}
+            {loading || isPending ? "Creating an account..." : "Sign Up"}
+            {loading ||
+              (isPending && (
+                <Loader2 className="absolute right-5 animate-spin" />
+              ))}
           </Button>
         </form>
       </Form>
