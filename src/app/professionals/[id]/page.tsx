@@ -1,6 +1,7 @@
 import React from "react";
-import ProfessionalsDetails from "./_components/ProfessionalsDetails";
 import VeganHeader from "@/components/shared/sections/VeganHeader";
+import { ProfileCard } from "./_components/profile-details-card";
+import ProfessionalTab from "./_components/tabs/professional-tab";
 
 export default function page() {
   return (
@@ -14,7 +15,10 @@ export default function page() {
           "A leading environmental organization dedicated to protecting and preserving our natural environment through community action, education, and sustainable practices."
         }
       />
-      <ProfessionalsDetails />
+      <div className="mt-[56px]">
+        <ProfileCard />
+      </div>
+      <ProfessionalTab />
     </div>
   );
 }
