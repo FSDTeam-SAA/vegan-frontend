@@ -1,12 +1,12 @@
 import Footer from "@/components/home/footer/footer";
 import Navbar from "@/components/navbar/navbar";
+import AppProvider from "@/provider/AppProvider";
 import NProgress from "@/provider/NProgress";
 import "@smastrom/react-rating/style.css";
 import type { Metadata } from "next";
 import { Inter, Lexend_Deca } from "next/font/google";
 import { Toaster } from "sonner";
 import "./globals.css";
-// import { ClerkProvider } from "@clerk/nextjs";
 
 const inter = Inter({
   weight: ["300", "400", "500", "600", "700"],
@@ -33,15 +33,17 @@ export default function RootLayout({
 }>) {
   return (
     // <ClerkProvider>
-    <html lang="en" className="scrollbar-thin">
-      <body className={`bg-[#E8DFD6] ${inter.className} antialiased`}>
-        <Navbar />
-        {children}
-        <Footer />
-        <NProgress />
-        <Toaster />
-      </body>
-    </html>
+    <AppProvider>
+      <html lang="en" className="scrollbar-thin">
+        <body className={`bg-[#E8DFD6] ${inter.className} antialiased`}>
+          <Navbar />
+          {children}
+          <Footer />
+          <NProgress />
+          <Toaster />
+        </body>
+      </html>
+    </AppProvider>
     // </ClerkProvider>
   );
 }
