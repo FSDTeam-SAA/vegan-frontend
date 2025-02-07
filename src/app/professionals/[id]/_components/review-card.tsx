@@ -49,7 +49,7 @@ const reviews = [
 
 export function ReviewCard() {
   return (
-    <div className="min-h-screen bg-[#f5f0ea] dark:bg-gray-950">
+    <div className="min-h-screen">
       <div className="max-w-4xl">
         {/* Desktop Filters */}
         <div className="mb-6 hidden gap-3 md:flex">
@@ -57,7 +57,7 @@ export function ReviewCard() {
             <DropdownMenuTrigger asChild>
               <Button
                 variant="outline"
-                className="bg-transparent font-inter font-normal leading-[19.36px] text-[#4B5563]"
+                className="border border-gray-400 bg-transparent font-inter font-normal leading-[19.36px] text-[#4B5563]"
               >
                 Most Recent
                 <ChevronDown className="ml-2 h-4 w-4" />
@@ -73,7 +73,7 @@ export function ReviewCard() {
             <DropdownMenuTrigger asChild>
               <Button
                 variant="outline"
-                className="bg-transparent font-inter font-normal leading-[19.36px] text-[#4B5563]"
+                className="border border-gray-400 bg-transparent font-inter font-normal leading-[19.36px] text-[#4B5563]"
               >
                 Relevant
                 <ChevronDown className="ml-2 h-4 w-4" />
@@ -89,7 +89,7 @@ export function ReviewCard() {
             <DropdownMenuTrigger asChild>
               <Button
                 variant="outline"
-                className="bg-transparent font-inter font-normal leading-[19.36px] text-[#4B5563]"
+                className="border border-gray-400 bg-transparent font-inter font-normal leading-[19.36px] text-[#4B5563]"
               >
                 Ratings
                 <ChevronDown className="ml-2 h-4 w-4" />

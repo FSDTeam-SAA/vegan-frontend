@@ -5,22 +5,22 @@ import { Card, CardContent } from "@/components/ui/card";
 import CartModal from "@/provider/CartModal";
 import Image from "next/image";
 
-interface ProfileCardProps {
-  name: string;
-  title: string;
-  location: string;
-  rating: number;
-  reviews: number;
-  image: string;
-}
-
-export function ProfileCard({
-  name,
-  title,
-  location,
-  rating,
-  reviews,
-}: ProfileCardProps) {
+// Mock data for a vendor profile
+const vendorProfile = {
+  name: "Dr Sarah Green",
+  title: "Vegan Nutritionist & Wellness Coach",
+  location: "New York, USA",
+  rating: 4.8,
+  reviews: 127,
+  image:
+    "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Professionial%20detail-vD0HtZP25Z4ygrNjwxW74dhI3OxbpU.png",
+  heroTitle: "Dr Sarah Green",
+  heroDescription:
+    "Empowering you to thrive on a plant-based diet. Expert nutrition guidance for optimal health and wellness.",
+  heroImage:
+    "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Professionial%20detail-vD0HtZP25Z4ygrNjwxW74dhI3OxbpU.png",
+};
+export function ProfileCard() {
   return (
     <Card className="container mx-auto min-h-[248px] px-0 shadow-none">
       <CardContent className="flex w-full justify-between p-[16px] md:p-6">
@@ -28,30 +28,30 @@ export function ProfileCard({
           <div className="relative h-[200px] w-full rounded-[16px] md:w-[200px]">
             <Image
               src="https://res.cloudinary.com/dgnustmny/image/upload/v1738670389/pexels-elly-fairytale-3822688_1_pn1lrl.png"
-              alt={name}
+              alt={vendorProfile.name}
               className="rounded-[16px] object-cover"
               fill
             />
           </div>
           <div className="pt-[24px] md:pt-0">
             <h2 className="font-lexend text-[16px] font-normal leading-[20px] text-[#1D3557] md:text-[20px] md:leading-[25px]">
-              {name}
+              {vendorProfile.name}
             </h2>
             <p className="mt-[4px] font-inter text-[14px] font-normal leading-[16.94px] text-[#4B5563] md:text-[16px] md:leading-[19.36px]">
-              {title}
+              {vendorProfile.title}
             </p>
 
             <div className="*text-[#4B5563] flex flex-col justify-center gap-2 pt-6">
               <div className="flex items-center gap-1">
                 <MapPin className="h-4 w-4 text-muted-foreground" />
                 <span className="text-sm text-muted-foreground">
-                  {location}
+                  {vendorProfile.location}
                 </span>
               </div>
               <div className="flex items-center gap-1">
                 <Star className="h-4 w-4 text-yellow-400" />
                 <span className="text-sm text-muted-foreground">
-                  {rating} ({reviews} Reviews)
+                  {vendorProfile.rating} ({vendorProfile.reviews} Reviews)
                 </span>
               </div>
             </div>
