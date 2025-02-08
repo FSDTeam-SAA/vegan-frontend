@@ -15,7 +15,7 @@ export function Sidebar() {
       <div className="p-6">
         <Link href="/" className="flex items-center gap-2">
           <Image
-            src="/placeholder.svg?height=32&width=32"
+            src="https://res.cloudinary.com/dgnustmny/image/upload/v1739002910/logo_white_tne296.png"
             alt="Vegan Collective"
             width={32}
             height={32}

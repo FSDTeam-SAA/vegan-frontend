@@ -1,19 +1,19 @@
-import { auth } from "@/auth";
 import Footer from "@/components/home/footer/footer";
-import Navbar from "@/components/navbar/navbar";
 import { ReactNode } from "react";
+import { Sidebar } from "./_components/sidebar";
 
-const WebsiteLayout = async ({ children }: { children: ReactNode }) => {
-  const session = await auth();
+const DashboardLayout = async ({ children }: { children: ReactNode }) => {
   return (
     <div>
-      <Navbar loggedin={!!session} />
-      {children}
+      <div className="flex min-h-screen">
+        <Sidebar />
+        <main className="flex-1">{children}</main>
+      </div>
       <Footer />
     </div>
   );
 };
 
-export default WebsiteLayout;
+export default DashboardLayout;
 
 // test commit
