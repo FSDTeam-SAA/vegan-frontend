@@ -8,9 +8,19 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 // Components
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 import Hideon from "@/provider/HideOn";
 import Image from "next/image";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
 import { Sheet, SheetClose, SheetContent, SheetTrigger } from "../ui/sheet";
 
@@ -26,6 +36,7 @@ const Navbar = () => {
   const [scrolling, setScrolling] = useState(false); // Track scrolling state for styling changes
 
   const pathname = usePathname(); // Get current route to highlight active menu
+  const loggedin = true;
 
   const menus = [
     { id: 1, href: "/professionals", linkText: "Professional" },
@@ -96,37 +107,52 @@ const Navbar = () => {
             </div>
             {/* Login button */}
             <div className="hidden md:block">
-              {/* <SignedOut>
-              <SignInButton
-                fallbackRedirectUrl="/"
-                signUpFallbackRedirectUrl="/wizard"
-              >
-                <Button
-                  className={cn(
-                    scrolling && "border-[1px] border-white/10", // Add border when scrolling
-                    "bg-tourHub-green-dark hover:bg-[#3a6f54]" // Change hover color for button
-                  )}
-                >
-                  Sign In
-                </Button>
-              </SignInButton>
-            </SignedOut> */}
-              <Button
-                className={cn(
-                  `mx-4 rounded-[8px] border-[1px] border-white bg-transparent px-[20px] py-[10px] font-medium hover:bg-black/5 ${scrolling && "border-black/50 text-[#4B5563]"}`, // Change hover color for button
-                )}
-              >
-                <Link href="/onboarding">Login</Link>
-              </Button>
-              <Button
-                className={cn(
-                  scrolling && "border-white/10", // Add border when scrolling
-                  "bg-tourHub-green-dark raounded-[8px] h-[40px] bg-[#1D3557] px-[20px] font-medium hover:bg-[#1D3557]/80", // Change hover color for button
-                )}
-                asChild
-              >
-                <Link href="/onboarding">Get Started</Link>
-              </Button>
+              {loggedin ? (
+                <>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger>
+                      <div>
+                        <Avatar>
+                          <AvatarImage
+                            src="https://github.com/shadcn.png"
+                            alt="@shadcn"
+                          />
+                          <AvatarFallback>VC</AvatarFallback>
+                        </Avatar>
+                      </div>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                      <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuGroup>
+                        <DropdownMenuItem>Profile</DropdownMenuItem>
+                        <DropdownMenuItem>Settings</DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem>Log out</DropdownMenuItem>
+                      </DropdownMenuGroup>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </>
+              ) : (
+                <>
+                  <Button
+                    className={cn(
+                      `mx-4 rounded-[8px] border-[1px] border-white bg-transparent px-[20px] py-[10px] font-medium hover:bg-black/5 ${scrolling && "border-black/50 text-[#4B5563]"}`, // Change hover color for button
+                    )}
+                  >
+                    <Link href="/onboarding">Login</Link>
+                  </Button>
+                  <Button
+                    className={cn(
+                      scrolling && "border-white/10", // Add border when scrolling
+                      "bg-tourHub-green-dark raounded-[8px] h-[40px] bg-[#1D3557] px-[20px] font-medium hover:bg-[#1D3557]/80", // Change hover color for button
+                    )}
+                    asChild
+                  >
+                    <Link href="/onboarding">Get Started</Link>
+                  </Button>
+                </>
+              )}
 
               {/* <SignedIn>
               <div className="flex items-center mt-[3px]">

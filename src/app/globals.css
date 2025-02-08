@@ -5,6 +5,8 @@
 body {
   font-family: Arial, Helvetica, sans-serif;
   overflow: visible !important;
+  overflow-y: scroll;
+  scrollbar-gutter: stable;
 }
 
 :root {
@@ -57,12 +59,12 @@ body {
   }
   .no-scrollbar::-webkit-scrollbar {
     display: none;
-}
-/* Hide scrollbar for IE, Edge and Firefox */
-.no-scrollbar {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
-}
+  }
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
 }
 
 @layer base {
@@ -129,4 +131,3 @@ body {
     @apply bg-background text-foreground;
   }
 }
-
