@@ -6,14 +6,14 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import TestimonialCard from "./testimonial-card";
 import Autoplay from "embla-carousel-autoplay";
 import React from "react";
+import TestimonialCard from "./testimonial-card";
 
 const data = [
   {
     id: 1,
-    img: "https://i.postimg.cc/8P3Ff7QH/testimonial.png",
+    img: "https://res.cloudinary.com/dgnustmny/image/upload/v1738988846/testimonial_yzyq6x.png",
     name: "Maya Russo",
     ratings: 5,
     description:
@@ -21,7 +21,7 @@ const data = [
   },
   {
     id: 2,
-    img: "https://i.postimg.cc/8P3Ff7QH/testimonial.png",
+    img: "https://res.cloudinary.com/dgnustmny/image/upload/v1738988846/testimonial_yzyq6x.png",
     name: "Maya Russo",
     ratings: 5,
     description:
@@ -29,7 +29,7 @@ const data = [
   },
   {
     id: 3,
-    img: "https://i.postimg.cc/8P3Ff7QH/testimonial.png",
+    img: "https://res.cloudinary.com/dgnustmny/image/upload/v1738988846/testimonial_yzyq6x.png",
     name: "Maya Russo",
     ratings: 5,
     description:
@@ -37,7 +37,7 @@ const data = [
   },
   {
     id: 4,
-    img: "https://i.postimg.cc/8P3Ff7QH/testimonial.png",
+    img: "https://res.cloudinary.com/dgnustmny/image/upload/v1738988846/testimonial_yzyq6x.png",
     name: "Maya Russo",
     ratings: 5,
     description:
@@ -45,7 +45,7 @@ const data = [
   },
   {
     id: 5,
-    img: "https://i.postimg.cc/8P3Ff7QH/testimonial.png",
+    img: "https://res.cloudinary.com/dgnustmny/image/upload/v1738988846/testimonial_yzyq6x.png",
     name: "Maya Russo",
     ratings: 5,
     description:

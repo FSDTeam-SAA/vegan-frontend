@@ -4,7 +4,7 @@
 // import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import { Menu } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 // Components
@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 import Hideon from "@/provider/HideOn";
+import { signOut } from "next-auth/react";
 import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
@@ -32,11 +33,15 @@ const hideRoutes = [
   "/onboarding/verify_email",
 ];
 
-const Navbar = () => {
+interface Props {
+  loggedin: boolean;
+}
+
+const Navbar = ({ loggedin }: Props) => {
   const [scrolling, setScrolling] = useState(false); // Track scrolling state for styling changes
 
   const pathname = usePathname(); // Get current route to highlight active menu
-  const loggedin = true;
+  const router = useRouter();
 
   const menus = [
     { id: 1, href: "/professionals", linkText: "Professional" },
@@ -62,6 +67,14 @@ const Navbar = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  const logout = async () => {
+    await signOut({
+      redirectTo: "/",
+    });
+
+    router.refresh();
+  };
 
   return (
     <Hideon routes={hideRoutes}>
@@ -128,7 +141,12 @@ const Navbar = () => {
                         <DropdownMenuItem>Profile</DropdownMenuItem>
                         <DropdownMenuItem>Settings</DropdownMenuItem>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem>Log out</DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={logout}
+                          className="cursor-pointer"
+                        >
+                          Log out
+                        </DropdownMenuItem>
                       </DropdownMenuGroup>
                     </DropdownMenuContent>
                   </DropdownMenu>
