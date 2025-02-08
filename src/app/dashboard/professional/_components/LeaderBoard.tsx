@@ -5,7 +5,7 @@ import {
 
 const LeaderBoard = () => {
     return (
-        <div className='px-[40px] pb-[105px] pt-[56px]'>
+        <div className='pl-[40px] pb-[105px] pt-[56px]'>
             <div className='bg-[#F8F5F2] rounded-[16px] p-[40px]'>
                 <h4 className='text-xl font-medium text-[#1F2937] leading-[24px] pb-[40px]'>Leader Board Of Top Professionals</h4>
                 <div>
