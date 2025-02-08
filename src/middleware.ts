@@ -4,7 +4,7 @@ import {
   apiAuthPrefix,
   authRoutes,
   DEFAULT_LOGIN_REDIRECT,
-  publicRoutes,
+  protectedRoutes,
 } from "./routes";
 
 export default auth((req) => {
@@ -12,27 +12,27 @@ export default auth((req) => {
   const isLoggedin = !!req.auth;
 
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
-  const isPublicRoutes = publicRoutes.includes(nextUrl.pathname);
+
+  if (isApiAuthRoute) {
+    return NextResponse.next();
+  }
 
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 
-  if (isApiAuthRoute) {
-    if (isLoggedin) {
-      return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
-    }
+  const isProtectedRoutes = protectedRoutes.includes(nextUrl.pathname);
 
-    console.log("HITTEDD");
-    return NextResponse.next();
+  if (isProtectedRoutes) {
+    if (!isLoggedin) {
+      return Response.redirect(new URL("/onboarding", nextUrl));
+    } else {
+      return NextResponse.next();
+    }
   }
 
   if (isAuthRoute) {
     if (isLoggedin) {
       return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
     }
-  }
-
-  if (!isLoggedin && !isPublicRoutes) {
-    return Response.redirect(new URL("/onboarding", nextUrl));
   }
 
   return NextResponse.next();
