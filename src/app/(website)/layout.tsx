@@ -8,7 +8,7 @@ import type { Metadata } from "next";
 import { SessionProvider } from "next-auth/react";
 import { Inter, Lexend_Deca } from "next/font/google";
 import { Toaster } from "sonner";
-import "./globals.css";
+import "../globals.css";
 
 const inter = Inter({
   weight: ["300", "400", "500", "600", "700"],

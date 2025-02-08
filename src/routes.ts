@@ -11,13 +11,19 @@ export const publicRoutes = [
   "/onboarding/signup",
 ];
 
+export const protectedRoutes = ["/profit-calculator"];
+
 /**
  * An array of routes that are used for authentication
  * These routes will redirect loggedin users to homepage
  * @type {string[]}
  */
 
-export const authRoutes = [""];
+export const authRoutes = [
+  "/onboarding",
+  "/onboarding/login",
+  "/onboarding/signup",
+];
 
 /**
  * The prefix for API authentication routes
