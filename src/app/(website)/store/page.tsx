@@ -4,6 +4,7 @@ import StoreProducts from "./_components/store_products";
 import StoreVideo from "./_components/store_video";
 
 const Page = () => {
+  
   return (
     <>
       <StoreHeader />
