@@ -5,13 +5,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { professionalTabsList } from "@/data/dashboard";
+import { merchantTabsList } from "@/data/dashboard";
 
 export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <div className="flex w-[240px] flex-col bg-[#1E2A3B] text-white">
+    <div className="fixed left-0 top-0 flex h-screen w-[272px] flex-col overflow-y-auto bg-[#1D3557] text-white">
       <div className="p-6">
         <Link href="/" className="flex items-center gap-2">
           <Image
@@ -24,7 +24,7 @@ export function Sidebar() {
         </Link>
       </div>
       <nav className="flex-1 px-4">
-        {professionalTabsList.map((item) => {
+        {merchantTabsList.map((item) => {
           const Icon = item.icon;
           return (
             <Link
@@ -32,12 +32,14 @@ export function Sidebar() {
               href={item.path}
               className={`mb-1 flex items-center gap-3 rounded-lg px-4 py-3 transition-colors ${
                 pathname === item.path
-                  ? "bg-white/10 text-white"
-                  : "text-gray-400 hover:bg-white/5 hover:text-white"
+                  ? "bg-white text-[#1D3557]"
+                  : "text-[#F8F5F2] hover:bg-white/5 hover:text-white"
               }`}
             >
               <Icon className="h-5 w-5" />
-              <span className="text-sm">{item.linkText}</span>
+              <span className="font-inter text-sm font-medium leading-[20.3px]">
+                {item.linkText}
+              </span>
             </Link>
           );
         })}
