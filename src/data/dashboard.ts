@@ -1,11 +1,16 @@
 "use client";
 import {
+  Briefcase,
+  CircleHelp,
   CreditCard,
   Info,
   LayoutDashboard,
   ListVideo,
   PhoneCallIcon,
   Truck,
+  Users,
+  Video,
+  Wallet,
 } from "lucide-react";
 import { FaProductHunt, FaSalesforce } from "react-icons/fa";
 
@@ -65,5 +70,50 @@ export const dashboardTabsList = [
     icon: Info,
     linkText: "Help & Support Center",
     roles: ["admin", "delivery man"],
+  },
+];
+
+export const professionalTabsList = [
+  {
+    id: crypto.randomUUID(),
+    path: "/dashboard/professional",
+    icon: LayoutDashboard,
+    linkText: "Overview",
+    roles: ["professional"],
+  },
+  {
+    id: crypto.randomUUID(),
+    path: "/dashboard/professional/service-management",
+    icon: Briefcase,
+    linkText: "Service Management",
+    roles: ["professional"],
+  },
+  {
+    id: crypto.randomUUID(),
+    path: "/dashboard/professional/client-mnagement",
+    icon: Users,
+    linkText: "Client Management",
+    roles: ["professional"],
+  },
+  {
+    id: crypto.randomUUID(),
+    path: "/dashboard/professional/go-live",
+    icon: Video,
+    linkText: "Go Live",
+    roles: ["professional"],
+  },
+  {
+    id: crypto.randomUUID(),
+    path: "/dashboard/professional/payment",
+    icon: Wallet,
+    linkText: "Payment",
+    roles: ["professional"],
+  },
+  {
+    id: crypto.randomUUID(),
+    path: "/dashboard/professional/help",
+    icon: CircleHelp,
+    linkText: "Help Center & Support",
+    roles: ["professional"],
   },
 ];
