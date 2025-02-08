@@ -1,29 +1,19 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import { Sidebar } from "./_components/sidebar";
-import "./globals.css";
-import type React from "react";
+import { auth } from "@/auth";
+import Footer from "@/components/home/footer/footer";
+import Navbar from "@/components/navbar/navbar";
+import { ReactNode } from "react";
 
-const inter = Inter({ subsets: ["latin"] });
-
-export const metadata: Metadata = {
-  title: "Vegan Collective Dashboard",
-  description: "Dashboard for Vegan Collective",
+const WebsiteLayout = async ({ children }: { children: ReactNode }) => {
+  const session = await auth();
+  return (
+    <div>
+      <Navbar loggedin={!!session} />
+      {children}
+      <Footer />
+    </div>
+  );
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <html lang="en">
-      <body className={inter.className}>
-        <div className="flex min-h-screen">
-          <Sidebar />
-          <main className="flex-1 bg-[#F5F1ED]">{children}</main>
-        </div>
-      </body>
-    </html>
-  );
-}
+export default WebsiteLayout;
+
+// test commit
