@@ -53,12 +53,12 @@ const ServiceBookModal = ({ open, onOpenChange, trigger }: Props) => {
           </div>
         </AlertDialogHeader>
 
-        <div className="flex w-full gap-x-5">
+        <div className="flex w-full flex-col gap-x-5 md:flex-row">
           <Calendar
             mode="single"
             selected={date}
             onSelect={setDate}
-            className="flex-1"
+            className="mx-auto flex-1"
             components={{
               IconLeft: () => <ChevronLeft className="h-4 w-4" />,
               IconRight: () => <ChevronRight className="h-4 w-4" />,
@@ -87,7 +87,7 @@ const ServiceBookModal = ({ open, onOpenChange, trigger }: Props) => {
           </div>
         </div>
         <AlertDialogFooter>
-          <Button variant="outline" className="h-[48px]">
+          <Button variant="outline" className="mt-4 h-[48px] md:mt-0">
             <ShoppingBasket /> Add To Cart
           </Button>
           <AlertDialogAction className="h-[48px]" disabled={isDisabled}>
