@@ -8,6 +8,7 @@ const WebsiteLayout = async ({ children }: { children: ReactNode }) => {
   return (
     <div>
       <Navbar loggedin={!!session} />
+
       {children}
       <Footer />
     </div>
