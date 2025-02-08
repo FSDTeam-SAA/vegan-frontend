@@ -36,7 +36,7 @@ const Navbar = () => {
   const [scrolling, setScrolling] = useState(false); // Track scrolling state for styling changes
 
   const pathname = usePathname(); // Get current route to highlight active menu
-  const loggedin = true;
+  const loggedin = false;
 
   const menus = [
     { id: 1, href: "/professionals", linkText: "Professional" },
