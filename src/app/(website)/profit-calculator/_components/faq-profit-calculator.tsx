@@ -10,28 +10,28 @@ export default function FAQProfitCalculator() {
   return (
     <div className="relative min-h-screen px-4 py-16 md:px-6 lg:px-8">
       <Image
-        src="/assets/Ornament-left.png"
+        src="https://res.cloudinary.com/dgnustmny/image/upload/v1739013974/Ornament-left_ro4nzk.png"
         alt="from_bottom"
         width={300}
         height={300}
         className="absolute left-[-25px] top-0 hidden lg:h-[200px] lg:w-[100px] xl:h-[300px] xl:w-[150px] 2xl:block"
       />
       <Image
-        src="/assets/Ornament-left.png"
+        src="https://res.cloudinary.com/dgnustmny/image/upload/v1739013974/Ornament-left_ro4nzk.png"
         alt="from_bottom"
         width={300}
         height={300}
         className="absolute bottom-0 left-[-25px] hidden lg:h-[200px] lg:w-[100px] xl:h-[300px] xl:w-[150px] 2xl:block"
       />
       <Image
-        src="/assets/Ornament-right.png"
+        src="https://res.cloudinary.com/dgnustmny/image/upload/v1739014003/Ornament-right_wtmzel.png"
         alt="from_bottom"
         width={300}
         height={300}
         className="absolute right-[-25px] top-0 hidden lg:h-[200px] lg:w-[100px] xl:w-[150px] 2xl:block 2xl:h-[300px]"
       />
       <Image
-        src="/assets/Ornament-right.png"
+        src="https://res.cloudinary.com/dgnustmny/image/upload/v1739014003/Ornament-right_wtmzel.png"
         alt="from_bottom"
         width={300}
         height={300}

@@ -9,6 +9,12 @@ import {
   Users,
   Video,
   Wallet,
+  Heart,
+  Package,
+  HandHeart,
+  CircleDotDashed,
+  CalendarCheck,
+  Info,
 } from "lucide-react";
 import { LuVideo } from "react-icons/lu";
 import { MdStorefront } from "react-icons/md";
@@ -124,5 +130,65 @@ export const professionalTabsList = [
     icon: CircleHelp,
     linkText: "Help Center & Support",
     roles: ["professional"],
+  },
+] as NavigationItem[];
+
+// User Dashboard Menu Item
+export const usersTabsList = [
+  {
+    id: crypto.randomUUID(),
+    path: "/dashboard/users",
+    icon: LayoutDashboard,
+    linkText: "Overview",
+    roles: ["user"],
+  },
+  {
+    id: crypto.randomUUID(),
+    path: "/dashboard/users/",
+    icon: CalendarCheck,
+    linkText: "Bookings Management",
+    roles: ["user"],
+  },
+  {
+    id: crypto.randomUUID(),
+    path: "/dashboard/users/",
+    icon: Heart,
+    linkText: "Wishlist Management",
+    roles: ["user"],
+  },
+  {
+    id: crypto.randomUUID(),
+    path: "/dashboard/users/",
+    icon: Video,
+    linkText: "Go Live",
+    roles: ["user", "delivery man"],
+  },
+  {
+    id: crypto.randomUUID(),
+    path: "/dashboard/users/",
+    icon: Package,
+    linkText: "Product Order Management",
+    roles: ["admin", "delivery man"],
+  },
+  {
+    id: crypto.randomUUID(),
+    path: "/dashboard/users/",
+    icon: HandHeart,
+    linkText: "Volunteering Management",
+    roles: ["user"],
+  },
+  {
+    id: crypto.randomUUID(),
+    path: "/dashboard/users/",
+    icon: CircleDotDashed,
+    linkText: "Profile & Settings",
+    roles: ["user"],
+  },
+  {
+    id: crypto.randomUUID(),
+    path: "/dashboard/users/",
+    icon: Info,
+    linkText: "Support & Help Center",
+    roles: ["admin", "delivery man"],
   },
 ] as NavigationItem[];
