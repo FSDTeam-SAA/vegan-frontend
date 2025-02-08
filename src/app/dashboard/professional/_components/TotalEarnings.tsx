@@ -31,7 +31,7 @@ const chartConfig = {
 
 const TotalEarnings = () => {
     return (
-        <div>
+        <div className="px-[40px]">
             <Card>
                 <CardHeader>
                     <CardTitle>Line Chart</CardTitle>
