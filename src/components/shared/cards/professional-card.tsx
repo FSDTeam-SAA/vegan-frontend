@@ -1,5 +1,6 @@
 import { MapPin } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 const ProfessionalCard = () => {
   return (
@@ -40,9 +41,12 @@ const ProfessionalCard = () => {
         <h3 className="font-lexend text-[20px] font-normal leading-[25px] text-[#1D3557]">
           $100/<span>hour</span>
         </h3>
-        <button className="flex h-[48px] w-full items-center justify-center rounded-[8px] bg-[#1D3557] text-[16px] font-medium leading-[19.36px] text-white transition-colors duration-300 hover:bg-[#1D3557]/90">
+        <Link
+          href={`/professionals/123`}
+          className="flex h-[48px] w-full items-center justify-center rounded-[8px] bg-[#1D3557] text-[16px] font-medium leading-[19.36px] text-white transition-colors duration-300 hover:bg-[#1D3557]/90"
+        >
           View Details
-        </button>
+        </Link>
       </div>
     </div>
   );
