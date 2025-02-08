@@ -21,6 +21,8 @@ export default auth((req) => {
 
   const isProtectedRoutes = protectedRoutes.includes(nextUrl.pathname);
 
+  return NextResponse.next();
+
   if (isProtectedRoutes) {
     if (!isLoggedin) {
       return Response.redirect(new URL("/onboarding", nextUrl));
