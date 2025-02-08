@@ -65,14 +65,14 @@ export default function LoginForm() {
             router.refresh();
           } else {
             toast.error(res.message, {
-              position: "top-center",
+              position: "top-right",
               richColors: true,
             });
           }
         })
         .catch((err) => {
           toast.error(err.message, {
-            position: "bottom-right",
+            position: "top-right",
             richColors: true,
           });
         });

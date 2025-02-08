@@ -11,26 +11,11 @@ export type User = {
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
     Credentials({
-      async authorize(credentials) {
+      async authorize(credentials, req) {
         if (!credentials) return null;
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/login`,
-          {
-            method: "POST",
-            headers: {
-              "content-type": "application/json",
-            },
-            body: JSON.stringify(credentials),
-          },
-        );
+        const body = await req.json();
 
-        const data = await response.json();
-
-        if (!response.ok || !data.status) {
-          throw new Error(data.message || "Login failed");
-        }
-
-        return data.user as User;
+        return body;
       },
     }),
   ],
