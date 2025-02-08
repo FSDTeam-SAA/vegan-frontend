@@ -141,6 +141,7 @@ export function VerifyOTPForm({ onVerified }: VerifyOTPFormProps) {
       // handle success
       onVerified();
     },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onError: (err: any) => {
       toast.error("Something went wrong!", err);
     },
