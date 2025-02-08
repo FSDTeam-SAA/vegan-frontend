@@ -1,6 +1,13 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 
+export type User = {
+  _id: string;
+  fullName: string;
+  email: string;
+  joinAs: "customer" | "admin" | "vendor"; // Assuming there are fixed possible roles
+};
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
     Credentials({
@@ -23,13 +30,30 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           throw new Error(data.message || "Login failed");
         }
 
-        return data.user;
+        return data.user as User;
       },
     }),
   ],
   pages: {
     signIn: "/login",
     signOut: "/",
+  },
+  callbacks: {
+    async session({ session, token }) {
+      if (token.user) {
+        session.user = {
+          ...session.user,
+          ...token.user,
+        };
+      }
+      return session;
+    },
+    async jwt({ token, user }) {
+      if (user) {
+        token.user = user;
+      }
+      return token;
+    },
   },
   secret: process.env.NEXTAUTH_SECRET,
 });

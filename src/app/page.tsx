@@ -1,4 +1,3 @@
-import { auth } from "@/auth";
 import HomeAboutSection from "@/components/home/about/about";
 import CTA_section from "@/components/home/CTA/CTA_section";
 import FeatureSection from "@/components/home/features/feature-section";
@@ -9,8 +8,6 @@ import TopOrganizations from "@/components/home/top-organizations/top-organizati
 import TopProfessionals from "@/components/home/top-professional/top-professionals";
 
 export default async function Home() {
-  const user = await auth();
-  console.log(user);
   return (
     <div className="">
       <HeroSection />
