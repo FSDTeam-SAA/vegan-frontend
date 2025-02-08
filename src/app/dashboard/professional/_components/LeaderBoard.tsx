@@ -1,5 +1,7 @@
-import React from 'react';
-import { ProfessionalLeaderBoardData, ProfessionalLeaderBoardDataType } from "../../../../data/professional-leader-board-data";
+import {
+    ProfessionalLeaderBoardData,
+    ProfessionalLeaderBoardDataType,
+} from "@/data/professional-leader-board-data";
 
 const LeaderBoard = () => {
     return (
