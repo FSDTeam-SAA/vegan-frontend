@@ -3,10 +3,8 @@ import Dashboard from "./_components/dashboard-home";
 
 export default function page() {
   return (
-    <div>
+    <div className="p-10">
       <Dashboard />
     </div>
   );
 }
-
-//ds
