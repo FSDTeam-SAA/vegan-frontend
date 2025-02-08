@@ -1,6 +1,5 @@
 "use client"
-import { TrendingUp } from "lucide-react"
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
+import { CartesianGrid, Line, LineChart, XAxis } from "recharts"
 import {
     Card,
     CardContent,
@@ -32,17 +31,15 @@ const chartConfig = {
 
 const TotalEarnings = () => {
     return (
-        <div>
+        <div className="px-[40px]">
             <Card>
                 <CardHeader>
-                    <CardTitle>Area Chart</CardTitle>
-                    <CardDescription>
-                        Showing total visitors for the last 6 months
-                    </CardDescription>
+                    <CardTitle>Line Chart</CardTitle>
+                    <CardDescription>January - June 2024</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <ChartContainer config={chartConfig}>
-                        <AreaChart
+                        <LineChart
                             accessibilityLayer
                             data={chartData}
                             margin={{
@@ -60,28 +57,21 @@ const TotalEarnings = () => {
                             />
                             <ChartTooltip
                                 cursor={false}
-                                content={<ChartTooltipContent indicator="line" />}
+                                content={<ChartTooltipContent hideLabel />}
                             />
-                            <Area
+                            <Line
                                 dataKey="desktop"
                                 type="natural"
-                                fill="var(--color-desktop)"
-                                fillOpacity={0.4}
                                 stroke="var(--color-desktop)"
+                                strokeWidth={2}
+                                dot={false}
                             />
-                        </AreaChart>
+                        </LineChart>
                     </ChartContainer>
                 </CardContent>
-                <CardFooter>
-                    <div className="flex w-full items-start gap-2 text-sm">
-                        <div className="grid gap-2">
-                            <div className="flex items-center gap-2 font-medium leading-none">
-                                Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-                            </div>
-                            <div className="flex items-center gap-2 leading-none text-muted-foreground">
-                                January - June 2024
-                            </div>
-                        </div>
+                <CardFooter className="flex-col items-start gap-2 text-sm">
+                    <div className="leading-none text-muted-foreground">
+                        Showing total visitors for the last 6 months
                     </div>
                 </CardFooter>
             </Card>
