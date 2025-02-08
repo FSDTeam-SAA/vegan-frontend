@@ -2,23 +2,24 @@
 import {
   Box,
   Briefcase,
+  CalendarCheck,
+  CircleDotDashed,
   CircleHelp,
+  HandHeart,
+  Heart,
+  Info,
   LayoutDashboard,
+  Package,
   PhoneCallIcon,
   Truck,
   Users,
   Video,
   Wallet,
-  Heart,
-  Package,
-  HandHeart,
-  CircleDotDashed,
-  CalendarCheck,
 } from "lucide-react";
-import { LuVideo } from "react-icons/lu";
-import { MdStorefront } from "react-icons/md";
 import { BsCreditCard } from "react-icons/bs";
 import { IoIosHelpCircleOutline } from "react-icons/io";
+import { LuVideo } from "react-icons/lu";
+import { MdStorefront } from "react-icons/md";
 
 export type NavigationItem = {
   id: string;
@@ -57,7 +58,6 @@ export const merchantTabsList = [
     icon: LuVideo,
     linkText: "Go Live",
     roles: ["merchant"],
-
   },
   {
     id: crypto.randomUUID(),
@@ -72,7 +72,6 @@ export const merchantTabsList = [
     icon: BsCreditCard,
     linkText: "Payments & Transactions",
     roles: ["merchant"],
-
   },
   {
     id: crypto.randomUUID(),
@@ -80,7 +79,6 @@ export const merchantTabsList = [
     icon: PhoneCallIcon,
     linkText: "Customer Management",
     roles: ["merchant"],
-
   },
   {
     id: crypto.randomUUID(),
