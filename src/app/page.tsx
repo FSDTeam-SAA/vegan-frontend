@@ -7,7 +7,7 @@ import TopMarchants from "@/components/home/top-marchants/top-marchants";
 import TopOrganizations from "@/components/home/top-organizations/top-organizatins";
 import TopProfessionals from "@/components/home/top-professional/top-professionals";
 
-export default function Home() {
+export default async function Home() {
   return (
     <div className="">
       <HeroSection />
