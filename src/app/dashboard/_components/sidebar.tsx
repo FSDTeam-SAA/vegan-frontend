@@ -51,8 +51,13 @@ export function Sidebar({ lists }: Props) {
         })}
         <hr className="mt-6" />
       </nav>
-      <div className="p-4">
-        <div className="flex items-center justify-between gap-3">
+
+      <div className="border-t border-white/10 p-4">
+        <div className="flex items-center gap-3">
+          <Avatar>
+            <AvatarImage src="/placeholder-avatar.jpg" alt="Alison Eyo" />
+            <AvatarFallback>AE</AvatarFallback>
+          </Avatar>
           <div>
             <Avatar>
               <AvatarImage src="/placeholder-avatar.jpg" alt="Alison Eyo" />
