@@ -24,8 +24,8 @@ const LeaderBoard = () => {
 
                                 </div>
                                 <div>
-                                    <h5 className='text-[22px] font-medium text-[#1F2937] leading-[26px]'>{data?.amount}</h5>
-                                    <p className='text-base font-normal text-[#4B5563] leading-[19px] pt-[12px]'>{data?.review}</p>
+                                    <h5 className='text-[22px] font-medium text-[#1F2937] leading-[26px] text-right'>{data?.amount}</h5>
+                                    <p className='text-base font-normal text-[#4B5563] leading-[19px] pt-[12px] text-right' >{data?.review}</p>
                                 </div>
                             </div>
                         })
