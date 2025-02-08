@@ -47,6 +47,7 @@ export function Sidebar({ lists }: Props) {
           );
         })}
       </nav>
+
       <div className="border-t border-white/10 p-4">
         <div className="flex items-center gap-3">
           <Avatar>
