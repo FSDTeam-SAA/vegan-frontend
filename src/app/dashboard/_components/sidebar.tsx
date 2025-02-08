@@ -1,11 +1,11 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
-import { dashboardTabsList } from "@/data/dashboard";
+import { professionalTabsList } from "@/data/dashboard";
 
 export function Sidebar() {
   const pathname = usePathname();
@@ -24,7 +24,7 @@ export function Sidebar() {
         </Link>
       </div>
       <nav className="flex-1 px-4">
-        {dashboardTabsList.map((item) => {
+        {professionalTabsList.map((item) => {
           const Icon = item.icon;
           return (
             <Link
