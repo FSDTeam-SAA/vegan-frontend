@@ -1,13 +1,16 @@
 "use client";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { NavigationItem } from "@/data/dashboard";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { merchantTabsList } from "@/data/dashboard";
+interface Props {
+  lists: NavigationItem[];
+}
 
-export function Sidebar() {
+export function Sidebar({ lists }: Props) {
   const pathname = usePathname();
 
   return (
@@ -24,7 +27,7 @@ export function Sidebar() {
         </Link>
       </div>
       <nav className="flex-1 px-4">
-        {merchantTabsList.map((item) => {
+        {lists.map((item: NavigationItem) => {
           const Icon = item.icon;
           return (
             <Link

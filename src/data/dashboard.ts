@@ -14,6 +14,14 @@ import {
 } from "lucide-react";
 import { FaProductHunt, FaSalesforce } from "react-icons/fa";
 
+export type NavigationItem = {
+  id: string;
+  path: string;
+  icon: React.ComponentType<{ className?: string }>;
+  linkText: string;
+  roles: string[];
+};
+
 export const merchantTabsList = [
   {
     id: crypto.randomUUID(),
@@ -71,7 +79,7 @@ export const merchantTabsList = [
     linkText: "Help & Support Center",
     roles: ["admin", "delivery man"],
   },
-];
+] as NavigationItem[];
 
 export const professionalTabsList = [
   {
@@ -116,4 +124,4 @@ export const professionalTabsList = [
     linkText: "Help Center & Support",
     roles: ["professional"],
   },
-];
+] as NavigationItem[];
