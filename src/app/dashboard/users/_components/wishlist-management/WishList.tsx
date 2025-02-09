@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Heart } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { wishlistData } from "@/data/wishlistData";
+import { wishlistData } from "@/app/dashboard/users/_components/wishlist-management/wishlistData";
 import Image from "next/image";
 
 export default function WishlistManagement() {

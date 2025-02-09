@@ -1,10 +1,10 @@
 import React from "react";
+import Volunteering from "../_components/volunteering-management/Volunteering";
 
 const page = () => {
   return (
     <div>
-      page
-      <h1>Volunteering-management</h1>
+      <Volunteering />
     </div>
   );
 };
