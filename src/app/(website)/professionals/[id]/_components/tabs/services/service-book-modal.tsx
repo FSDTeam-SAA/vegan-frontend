@@ -41,10 +41,10 @@ const ServiceBookModal = ({ open, onOpenChange, trigger }: Props) => {
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogTrigger className="w-full">{trigger}</AlertDialogTrigger>
-      <AlertDialogContent className="py-[24px]">
+      <AlertDialogContent className="max-w-[380px] py-[24px]">
         <AlertDialogHeader>
           <div className="flex items-center justify-between">
-            <AlertDialogTitle className="max-w-[350px] font-inter text-[18px] font-medium leading-[21.78px] text-[#1F2937]">
+            <AlertDialogTitle className="max-w-[350px] text-left font-inter text-[18px] font-medium leading-[21.78px] text-[#1F2937]">
               Check & Select Available Date & Time
             </AlertDialogTitle>
             <button onClick={onOpenChange}>
@@ -53,12 +53,12 @@ const ServiceBookModal = ({ open, onOpenChange, trigger }: Props) => {
           </div>
         </AlertDialogHeader>
 
-        <div className="flex w-full flex-col gap-x-5 md:flex-row">
+        <div className="flex w-full flex-col gap-x-5">
           <Calendar
             mode="single"
             selected={date}
             onSelect={setDate}
-            className="mx-auto flex-1"
+            className=""
             components={{
               IconLeft: () => <ChevronLeft className="h-4 w-4" />,
               IconRight: () => <ChevronRight className="h-4 w-4" />,
