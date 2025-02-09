@@ -2,7 +2,7 @@ import { CalendarDays, Clock } from "lucide-react";
 
 const LiveStreamCard = () => {
   return (
-    <div className="flex h-[360px] w-full flex-col justify-between rounded-[16px] bg-white p-[24px] md:w-[390px]">
+    <div className="flex h-[360px] w-full flex-col justify-between rounded-[16px] bg-white p-[24px] lg:w-[390px]">
       <div className="h-auto w-full">
         <div className="flex items-center justify-between">
           <h3 className="text-[18px] font-normal leading-[22.5px] text-[#1D3557]">
