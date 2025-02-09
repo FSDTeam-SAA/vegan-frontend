@@ -74,7 +74,7 @@ export default function ProductsManagement() {
       </div>
 
       <div className="mb-6 flex items-center justify-between">
-        <div className="relative w-[300px]">
+        <div className="relative w-[300px] rounded-lg border border-[#9CA3AF]">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-gray-500" />
           <Input
             placeholder="Search by product"
@@ -123,7 +123,7 @@ export default function ProductsManagement() {
             {filteredProducts.map((product) => (
               <div
                 key={product.id}
-                className="grid grid-cols-[2fr,1fr,1fr,1fr,1fr] items-center border-b px-6 py-4"
+                className="grid grid-cols-[2fr,1fr,1fr,1fr,1fr] items-center border-b bg-[#F8F5F2] px-6 py-4"
               >
                 <div className="flex items-center gap-4">
                   <Image
