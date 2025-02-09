@@ -1,11 +1,5 @@
-import React from 'react'
-import DeliveryManagement from '../_components/delivery/delivery-management'
+import React from "react";
 
 export default function page() {
-  return (
-    <div>
-      <DeliveryManagement />
-      
-    </div>
-  )
+  return <div>page</div>;
 }

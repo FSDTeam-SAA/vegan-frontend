@@ -27,9 +27,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { ChevronLeft, ChevronRight, MoreVertical } from "lucide-react";
-import { AddTrackingDialog } from "./add-tracking-dialog";
-import { UpdateStatusDialog } from "./update-status-dialog";
-import { useToast } from "@/components/ui/use-toast";
+// import { AddTrackingDialog } from "./add-tracking-dialog";
+// import { UpdateStatusDialog } from "./update-status-dialog";
+// import { useToast } from "@/components/ui/use-toast";
 
 interface Order {
   id: number;
@@ -65,96 +65,96 @@ export default function DeliveryManagement() {
   const [mounted, setMounted] = useState(false);
   const [orders, setOrders] = useState<Order[]>([]);
   const [currentPage, setCurrentPage] = useState(3);
-  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
-  const [isAddTrackingOpen, setIsAddTrackingOpen] = useState(false);
-  const [isUpdateStatusOpen, setIsUpdateStatusOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  // const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+  // const [isAddTrackingOpen, setIsAddTrackingOpen] = useState(false);
+  // const [isUpdateStatusOpen, setIsUpdateStatusOpen] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
   const totalPages = 30;
-  const { toast } = useToast();
+  // const { toast } = useToast();
 
   useEffect(() => {
     setOrders(generateInitialOrders());
     setMounted(true);
   }, []);
-  const handleOpenAddTracking = (order: Order) => {
-    setSelectedOrder(order);
-    setIsAddTrackingOpen(true);
-  };
+  // const handleOpenAddTracking = (order: Order) => {
+  //   setSelectedOrder(order);
+  //   setIsAddTrackingOpen(true);
+  // };
 
-  const handleCloseAddTracking = () => {
-    setIsAddTrackingOpen(false);
-    setTimeout(() => setSelectedOrder(null), 300); // Ensures reactivity issues are avoided
-  };
+  // const handleCloseAddTracking = () => {
+  //   setIsAddTrackingOpen(false);
+  //   setTimeout(() => setSelectedOrder(null), 300); // Ensures reactivity issues are avoided
+  // };
 
-  const handleAddTracking = useCallback(
-    async (trackingNumber: string) => {
-      if (!selectedOrder) return;
+  // const handleAddTracking = useCallback(
+  //   async (trackingNumber: string) => {
+  //     if (!selectedOrder) return;
 
-      setIsLoading(true);
-      try {
-        // Simulating an API call
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+  //     setIsLoading(true);
+  //     try {
+  //       // Simulating an API call
+  //       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-        setOrders((prevOrders) =>
-          prevOrders.map((order) =>
-            order.id === selectedOrder.id
-              ? { ...order, trackingNumber }
-              : order,
-          ),
-        );
-        toast({
-          title: "Tracking number added",
-          description: `Tracking number ${trackingNumber} has been added to order ${selectedOrder.orderNo}.`,
-        });
-      } catch (error) {
-        console.error("Error adding tracking number:", error);
-        toast({
-          title: "Error",
-          description: "Failed to add tracking number. Please try again.",
-          variant: "destructive",
-        });
-      } finally {
-        setIsLoading(false);
-        setIsAddTrackingOpen(false);
-        setSelectedOrder(null);
-      }
-    },
-    [selectedOrder, toast], // Added toast to dependencies
-  );
+  //       setOrders((prevOrders) =>
+  //         prevOrders.map((order) =>
+  //           order.id === selectedOrder.id
+  //             ? { ...order, trackingNumber }
+  //             : order,
+  //         ),
+  //       );
+  //       toast({
+  //         title: "Tracking number added",
+  //         description: `Tracking number ${trackingNumber} has been added to order ${selectedOrder.orderNo}.`,
+  //       });
+  //     } catch (error) {
+  //       console.error("Error adding tracking number:", error);
+  //       toast({
+  //         title: "Error",
+  //         description: "Failed to add tracking number. Please try again.",
+  //         variant: "destructive",
+  //       });
+  //     } finally {
+  //       setIsLoading(false);
+  //       setIsAddTrackingOpen(false);
+  //       setSelectedOrder(null);
+  //     }
+  //   },
+  //   [selectedOrder, toast], // Added toast to dependencies
+  // );
 
-  const handleUpdateStatus = useCallback(
-    async (status: string) => {
-      if (!selectedOrder) return;
+  // const handleUpdateStatus = useCallback(
+  //   async (status: string) => {
+  //     if (!selectedOrder) return;
 
-      setIsLoading(true);
-      try {
-        // Simulating an API call
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+  //     setIsLoading(true);
+  //     try {
+  //       // Simulating an API call
+  //       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-        setOrders((prevOrders) =>
-          prevOrders.map((order) =>
-            order.id === selectedOrder.id ? { ...order, status } : order,
-          ),
-        );
-        toast({
-          title: "Status updated",
-          description: `Order ${selectedOrder.orderNo} status has been updated to ${status}.`,
-        });
-      } catch (error) {
-        console.error("Error updating status:", error);
-        toast({
-          title: "Error",
-          description: "Failed to update status. Please try again.",
-          variant: "destructive",
-        });
-      } finally {
-        setIsLoading(false);
-        setIsUpdateStatusOpen(false);
-        setSelectedOrder(null);
-      }
-    },
-    [selectedOrder, toast], // Added toast to dependencies
-  );
+  //       setOrders((prevOrders) =>
+  //         prevOrders.map((order) =>
+  //           order.id === selectedOrder.id ? { ...order, status } : order,
+  //         ),
+  //       );
+  //       toast({
+  //         title: "Status updated",
+  //         description: `Order ${selectedOrder.orderNo} status has been updated to ${status}.`,
+  //       });
+  //     } catch (error) {
+  //       console.error("Error updating status:", error);
+  //       toast({
+  //         title: "Error",
+  //         description: "Failed to update status. Please try again.",
+  //         variant: "destructive",
+  //       });
+  //     } finally {
+  //       setIsLoading(false);
+  //       setIsUpdateStatusOpen(false);
+  //       setSelectedOrder(null);
+  //     }
+  //   },
+  //   [selectedOrder, toast], // Added toast to dependencies
+  // );
 
   const renderPaginationNumbers = useCallback(() => {
     const pages = [];
@@ -290,16 +290,16 @@ export default function DeliveryManagement() {
                     <DropdownMenuContent align="end">
                       {!order.trackingNumber && (
                         <DropdownMenuItem
-                          onClick={() => handleOpenAddTracking(order)}
+                        // onClick={() => handleOpenAddTracking(order)}
                         >
                           Add Tracking
                         </DropdownMenuItem>
                       )}
                       <DropdownMenuItem
-                        onClick={() => {
-                          setSelectedOrder(order);
-                          setIsUpdateStatusOpen(true);
-                        }}
+                      // onClick={() => {
+                      //   setSelectedOrder(order);
+                      //   setIsUpdateStatusOpen(true);
+                      // }}
                       >
                         Update Status
                       </DropdownMenuItem>
@@ -341,7 +341,7 @@ export default function DeliveryManagement() {
         </div>
       </div>
 
-      <AddTrackingDialog
+      {/* <AddTrackingDialog
         open={isAddTrackingOpen}
         onOpenChange={handleCloseAddTracking} // Updated to use the function
         onAddTracking={handleAddTracking}
@@ -354,7 +354,7 @@ export default function DeliveryManagement() {
         onUpdateStatus={handleUpdateStatus}
         currentStatus={selectedOrder?.status || "Shipped"}
         isLoading={isLoading}
-      />
+      /> */}
     </div>
   );
 }

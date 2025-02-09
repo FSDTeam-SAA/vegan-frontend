@@ -1,10 +1,9 @@
-import React from "react";
-import TableAndFormToggler from "../_components/settings/_components/TableAndFormToggler";
+import DeliveryManagement from "../_components/delivery/delivery-management";
 
 export default function page() {
   return (
     <div>
-      <TableAndFormToggler />
+      <DeliveryManagement />
     </div>
   );
 }

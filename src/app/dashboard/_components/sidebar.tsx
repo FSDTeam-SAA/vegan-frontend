@@ -19,7 +19,7 @@ export function Sidebar({ lists }: Props) {
   const [isOpen, setIsOpen] = useState(false);
 
   const NavigationContent = () => (
-    <nav className="flex-1 px-4">
+    <nav className="min-w-[272px] flex-1 px-4">
       {lists.map((item) => {
         const Icon = item.icon;
         return (
@@ -54,15 +54,15 @@ export function Sidebar({ lists }: Props) {
 
   // Mobile Header
   const MobileHeader = () => (
-    <div className="fixed left-0 right-0 top-0 z-50 flex h-16 items-center justify-between bg-[#1E2A3B] px-4 md:hidden">
+    <div className="fixed left-0 right-0 top-0 z-50 flex h-16 items-center justify-between bg-[#1E2A3B] p-0 md:hidden">
       <Link href="/" className="flex items-center gap-2">
         <Image
           src="https://res.cloudinary.com/dgnustmny/image/upload/v1739002910/logo_white_tne296.png"
           alt="Vegan Collective"
-          width={32}
-          height={32}
+          width={56}
+          height={56}
         />
-        <span className="text-lg font-semibold text-white">
+        <span className="text-center font-lexend text-lg font-semibold leading-[23.2px] text-white">
           VEGAN COLLECTIVE
         </span>
       </Link>
