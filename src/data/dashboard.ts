@@ -152,7 +152,7 @@ export const usersTabsList = [
   },
   {
     id: crypto.randomUUID(),
-    path: "/dashboard/users/",
+    path: "/dashboard/users/wishlist-management",
     icon: Heart,
     linkText: "Wishlist Management",
     roles: ["user"],
@@ -173,7 +173,7 @@ export const usersTabsList = [
   },
   {
     id: crypto.randomUUID(),
-    path: "/dashboard/users/",
+    path: "/dashboard/users/Volunteering-management",
     icon: HandHeart,
     linkText: "Volunteering Management",
     roles: ["user"],

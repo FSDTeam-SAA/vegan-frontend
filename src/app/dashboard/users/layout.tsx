@@ -7,7 +7,7 @@ const DashboardLayout = async ({ children }: { children: ReactNode }) => {
     <div className="flex min-h-screen">
       <Sidebar lists={usersTabsList} />
 
-      <main className="min-h-screen flex-1 overflow-y-auto bg-[#F5F1ED] p-2 md:ml-[240px] lg:p-[50px]">
+      <main className="min-h-screen flex-1 overflow-y-auto bg-[#F5F1ED] p-2 pt-[80px] md:ml-[240px] lg:p-[50px]">
         {children}
       </main>
     </div>

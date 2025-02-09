@@ -97,7 +97,7 @@ export default function ReferralEarningsChart() {
               (range) => (
                 <button
                   key={range}
-                  className={`px-3 py-1 ${selectedRange === range ? "rounded-[8px] border-[1px] border-gray-100 bg-white shadow-sm" : "hover:bg-gray-100"}`}
+                  className={`px-3 py-1 ${selectedRange === range ? "rounded-[8px] border-[1px] border-gray-100 bg-white shadow-md" : "rounded-[8px] bg-white hover:bg-gray-100"}`}
                   onClick={() => setSelectedRange(range)}
                 >
                   {range}
