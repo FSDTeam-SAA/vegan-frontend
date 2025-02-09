@@ -1,6 +1,8 @@
+
 "use client"
+import React from 'react';
 import { TrendingUp } from "lucide-react"
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
+import { CartesianGrid, Line, LineChart, XAxis } from "recharts"
 import {
     Card,
     CardContent,
@@ -23,6 +25,7 @@ const chartData = [
     { month: "May", desktop: 209 },
     { month: "June", desktop: 214 },
 ]
+
 const chartConfig = {
     desktop: {
         label: "Desktop",
@@ -32,61 +35,68 @@ const chartConfig = {
 
 const TotalEarnings = () => {
     return (
-        <div>
-            <Card>
-                <CardHeader>
-                    <CardTitle>Area Chart</CardTitle>
-                    <CardDescription>
-                        Showing total visitors for the last 6 months
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <ChartContainer config={chartConfig}>
-                        <AreaChart
-                            accessibilityLayer
-                            data={chartData}
-                            margin={{
-                                left: 12,
-                                right: 12,
-                            }}
-                        >
-                            <CartesianGrid vertical={false} />
-                            <XAxis
-                                dataKey="month"
-                                tickLine={false}
-                                axisLine={false}
-                                tickMargin={8}
-                                tickFormatter={(value) => value.slice(0, 3)}
-                            />
-                            <ChartTooltip
-                                cursor={false}
-                                content={<ChartTooltipContent indicator="line" />}
-                            />
-                            <Area
-                                dataKey="desktop"
-                                type="natural"
-                                fill="var(--color-desktop)"
-                                fillOpacity={0.4}
-                                stroke="var(--color-desktop)"
-                            />
-                        </AreaChart>
-                    </ChartContainer>
-                </CardContent>
-                <CardFooter>
-                    <div className="flex w-full items-start gap-2 text-sm">
-                        <div className="grid gap-2">
-                            <div className="flex items-center gap-2 font-medium leading-none">
-                                Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+        <div className='pl-[40px] pt-[56px]'>
+            <div className='bg-[#F8F5F2] rounded-[16px] p-[40px]'>
+                <div className="space-y-1 ">
+                    <div className="text-sm text-muted-foreground">Total Earnings</div>
+                    <div className="text-4xl font-bold">$5,240.00</div>
+                    <div className="text-sm text-muted-foreground">Last updated: Today at 12:00 PM</div>
+                </div>
+                <Card className='min-h-[418px] mt-[41px]'>
+                    <CardHeader>
+                        <CardTitle>Line Chart</CardTitle>
+                        <CardDescription>January - June 2024</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <ChartContainer config={chartConfig}>
+                            <div className='min-h-[400px]'>
+                                <LineChart
+                                    accessibilityLayer
+                                    data={chartData}
+                                    width={1400}
+                                    height={300}
+                                    margin={{
+                                        left: 12,
+                                        right: 12,
+                                    }}
+                                >
+                                    <CartesianGrid vertical={false} />
+                                    <XAxis
+                                        dataKey="month"
+                                        tickLine={false}
+                                        axisLine={false}
+                                        tickMargin={8}
+                                        tickFormatter={(value) => value.slice(0, 3)}
+                                    />
+                                    <ChartTooltip
+                                        cursor={false}
+                                        content={<ChartTooltipContent hideLabel />}
+                                    />
+                                    <Line
+                                        dataKey="desktop"
+                                        type="natural"
+                                        stroke="var(--color-desktop)"
+                                        strokeWidth={2}
+                                        dot={false}
+                                    />
+                                </LineChart>
                             </div>
-                            <div className="flex items-center gap-2 leading-none text-muted-foreground">
-                                January - June 2024
-                            </div>
+                        </ChartContainer>
+                    </CardContent>
+                    <CardFooter className="flex-col items-start gap-2 text-sm">
+                        <div className="flex gap-2 font-medium leading-none">
+                            Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
                         </div>
-                    </div>
-                </CardFooter>
-            </Card>
+                        <div className="leading-none text-muted-foreground">
+                            Showing total visitors for the last 6 months
+                        </div>
+                    </CardFooter>
+                </Card>
+            </div>
+
         </div>
     );
 };
 
 export default TotalEarnings;
+

@@ -1,23 +1,25 @@
 "use client";
 import {
+  Box,
   Briefcase,
+  CalendarCheck,
+  CircleDotDashed,
   CircleHelp,
-  CreditCard,
+  HandHeart,
+  Heart,
   Info,
   LayoutDashboard,
-  ListVideo,
+  Package,
   PhoneCallIcon,
   Truck,
   Users,
   Video,
   Wallet,
-  Heart,
-  Package,
-  HandHeart,
-  CircleDotDashed,
-  CalendarCheck,
 } from "lucide-react";
-import { FaProductHunt, FaSalesforce } from "react-icons/fa";
+import { BsCreditCard } from "react-icons/bs";
+import { IoIosHelpCircleOutline } from "react-icons/io";
+import { LuVideo } from "react-icons/lu";
+import { MdStorefront } from "react-icons/md";
 
 export type NavigationItem = {
   id: string;
@@ -33,56 +35,57 @@ export const merchantTabsList = [
     path: "/dashboard/merchant",
     icon: LayoutDashboard,
     linkText: "Dashboard Overview",
-    roles: ["user"],
+    roles: ["merchant"],
   },
   {
     id: crypto.randomUUID(),
     path: "/dashboard/merchant/products-management",
-    icon: FaProductHunt,
+    icon: Box,
     linkText: "Product Management",
-    roles: ["user"],
+    roles: ["merchant"],
   },
   {
     id: crypto.randomUUID(),
     path: "/dashboard/merchant/delivery-management",
     icon: Truck,
     linkText: "Delivery Management",
-    roles: ["user"],
+    roles: ["merchant"],
   },
   {
     id: crypto.randomUUID(),
     path: "/dashboard/merchant/go-live",
-    icon: ListVideo,
-    linkText: "Go Live & Streaming",
-    roles: ["user", "delivery man"],
+
+    icon: LuVideo,
+    linkText: "Go Live",
+    roles: ["merchant"],
   },
   {
     id: crypto.randomUUID(),
     path: "/dashboard/merchant/sales-management",
-    icon: FaSalesforce,
+    icon: MdStorefront,
     linkText: "Sales & Revenue",
-    roles: ["admin", "delivery man"],
+    roles: ["merchant"],
   },
   {
     id: crypto.randomUUID(),
     path: "/dashboard/merchant/payment",
-    icon: CreditCard,
+    icon: BsCreditCard,
     linkText: "Payments & Transactions",
-    roles: ["user"],
+    roles: ["merchant"],
   },
   {
     id: crypto.randomUUID(),
     path: "/dashboard/merchant/customer-management",
     icon: PhoneCallIcon,
-    linkText: "Customer Relations",
-    roles: ["user"],
+    linkText: "Customer Management",
+    roles: ["merchant"],
   },
   {
     id: crypto.randomUUID(),
     path: "/dashboard/merchant/support-center",
-    icon: Info,
+    icon: IoIosHelpCircleOutline,
     linkText: "Help & Support Center",
-    roles: ["admin", "delivery man"],
+    roles: ["merchant"],
   },
 ] as NavigationItem[];
 
