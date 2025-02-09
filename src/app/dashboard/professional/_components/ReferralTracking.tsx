@@ -6,7 +6,7 @@ import React from 'react';
 
 const ReferralTracking = () => {
     return (
-        <div className='px-[40px] pt-[56px]'>
+        <div className='pl-[40px] pt-[56px]'>
             <div className='bg-[#F8F5F2] rounded-[16px] p-[40px]'>
                 <h4 className='text-xl font-medium text-[#1F2937] leading-[24px] pb-[40px]'>Referral Tracking</h4>
                 <div className='grid grid-cols-1 md:grid-cols-3 gap-[16px] pb-[56px]'>
