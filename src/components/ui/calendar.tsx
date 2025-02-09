@@ -44,12 +44,12 @@ function Calendar({
         ),
         day: cn(
           buttonVariants({ variant: "ghost" }),
-          "h-8 w-8 p-0 font-normal aria-selected:opacity-100",
+          "h-11 w-11 p-0 font-normal aria-selected:opacity-100 rounded-full",
         ),
         day_range_start: "day-range-start",
         day_range_end: "day-range-end",
         day_selected:
-          "bg-[#1D3557] text-primary-foreground hover:bg-[#1D3557] hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground",
+          "bg-[#1D3557] text-primary-foreground hover:bg-[#1D3557] hover:text-primary-foreground focus:bg-[#1D3557] focus:text-primary-foreground ",
         day_today: "bg-accent text-accent-foreground",
         day_outside:
           "day-outside text-muted-foreground aria-selected:bg-accent/50 aria-selected:text-muted-foreground",

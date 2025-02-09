@@ -52,7 +52,7 @@ export function ForgotPasswordForm() {
   >({
     mutationKey: ["forget-password"],
     mutationFn: (data) =>
-      fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/forget-password`, {
+      fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/forgot-password`, {
         method: "POST",
         headers: {
           "content-type": "application/json",
@@ -60,23 +60,28 @@ export function ForgotPasswordForm() {
         body: JSON.stringify(data),
       }).then((res) => res.json()),
     onSuccess: (data) => {
+      console.log(data);
       setLoading(true);
+
       if (!data.status) {
-        form.setError("email", {
-          type: "manual",
-          message: data.message,
+        toast.error(data.message, {
+          position: "top-right",
+          richColors: true,
         });
 
         setLoading(false);
         return;
       }
+
       // handle success
       toast.success(data.message, {
         position: "bottom-right",
         richColors: true,
       });
 
-      router.push(`/reset-password?email=${form.getValues("email")}`);
+      router.push(
+        `/onboarding/reset-password?email=${form.getValues("email")}`,
+      );
     },
     onError: () => {
       toast.error("Something went wrong");
@@ -139,7 +144,7 @@ export function ForgotPasswordForm() {
           </div>
           <Button
             type="submit"
-            className="w-full"
+            className="h-[46px] w-full"
             disabled={loadiing || isPending}
           >
             {isPending

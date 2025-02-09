@@ -60,14 +60,14 @@ export function ResetPasswordForm() {
     mutationFn: async (data) => {
       try {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/reset-password`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/reset-password`,
           {
             method: "POST",
             headers: {
               "content-type": "application/json",
             },
             body: JSON.stringify(data),
-          }
+          },
         );
 
         if (!response.ok) {
@@ -97,7 +97,7 @@ export function ResetPasswordForm() {
         position: "bottom-right",
         richColors: true,
       });
-      router.push("/login");
+      router.push("/onboarding/login?role=customer");
     },
     onError: () => {
       toast.error("Failed to update your password!");
@@ -136,7 +136,7 @@ export function ResetPasswordForm() {
         {
           position: "bottom-right",
           richColors: true,
-        }
+        },
       );
       return;
     }
@@ -157,20 +157,22 @@ export function ResetPasswordForm() {
         opacity: 0,
         transition: { duration: 0.5 },
       }}
-      className="w-full "
+      className="w-full"
     >
       {/* Page heading */}
       <div className="space-y-2 text-center">
-        <h1 className="text-[36px] leading-[43.2px] font-semibold text-gradient">
+        <h1 className="text-[28px] font-medium leading-[33.89px] text-[#1F2937]">
           Reset Password
         </h1>
-        <p className="text-[#444444] text-[16px]">Create your new password</p>
+        <p className="text-[14px] font-normal text-[#6B7280]">
+          Create your new password
+        </p>
       </div>
 
       {/* Form component */}
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="space-y-[36px]">
+          <div className="mt-4 space-y-[16px]">
             {/* New Password field */}
             <FormField
               name="password"
@@ -183,7 +185,7 @@ export function ResetPasswordForm() {
                       <Input
                         type={showPassword ? "text" : "password"}
                         placeholder="Enter your new password"
-                        className=" h-[50px] w-full"
+                        className="h-[40px] w-full md:min-w-[350px]"
                         {...field}
                       />
                       <button
@@ -219,7 +221,7 @@ export function ResetPasswordForm() {
                       <Input
                         type={showConfirmPassword ? "text" : "password"}
                         placeholder="Confirm your new password"
-                        className=" h-[50px]"
+                        className="h-[40px] md:min-w-[350px]"
                         {...field}
                       />
                       <button
@@ -251,21 +253,21 @@ export function ResetPasswordForm() {
           {/* Submit button */}
           <Button
             type="submit"
-            className="w-full mt-[24px]"
+            className="mt-[24px] h-[40px] w-full"
             disabled={loading || isPending}
           >
             {isPending
               ? "Updating new password..."
               : loading
-              ? "Redirecting to login..."
-              : "Update Password"}
+                ? "Redirecting to login..."
+                : "Update Password"}
           </Button>
         </form>
       </Form>
 
       {/* Loading message */}
       {loading && (
-        <p className="text-gray-500 text-[14px] text-center mt-2">
+        <p className="mt-2 text-center text-[14px] text-gray-500">
           You will be redirected within 10 seconds
         </p>
       )}
