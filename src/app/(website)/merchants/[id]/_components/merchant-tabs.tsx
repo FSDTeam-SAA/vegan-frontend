@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import { useState } from "react";
 import MerchantAbout from "./tabs/about/merchant-about";
 import Merchantreviews from "./tabs/reviews/merchant-reviews";
+import { AboutCarousel } from "@/app/(website)/professionals/[id]/_components/tabs/AboutCarousel";
 const MerchantProducts = dynamic(
   () => import("./tabs/products/merchants-product"),
   {
@@ -30,8 +31,9 @@ const MerchantsTabs = () => {
           <MerchantProducts />
         </TabsContent>
 
-        <TabsContent value="about" className="pt-[40px]">
+        <TabsContent value="about" className="space-y-8 pt-[40px]">
           <MerchantAbout />
+          <AboutCarousel />
         </TabsContent>
 
         <TabsContent value="reviews" className="pt-[40px]">

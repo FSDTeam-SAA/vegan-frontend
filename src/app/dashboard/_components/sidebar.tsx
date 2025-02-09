@@ -51,16 +51,15 @@ export function Sidebar({ lists }: Props) {
         })}
         <hr className="mt-6" />
       </nav>
-
-      <div className="border-t border-white/10 p-4">
-        <div className="flex items-center gap-3">
-          <Avatar>
-            <AvatarImage src="/placeholder-avatar.jpg" alt="Alison Eyo" />
-            <AvatarFallback>AE</AvatarFallback>
-          </Avatar>
-          <div>
-            <Avatar>
-              <AvatarImage src="/placeholder-avatar.jpg" alt="Alison Eyo" />
+      <div className="p-4">
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <Avatar className="cursor-pointer">
+              <AvatarImage
+                src="https://res.cloudinary.com/dw5wizivl/image/upload/v1739021727/fsmn6sn66vi5eygntrze.png"
+                alt="Alison Eyo"
+                className="h-10 w-10 rounded-full border-2 border-white"
+              />
               <AvatarFallback>AE</AvatarFallback>
             </Avatar>
             <div>
@@ -69,7 +68,7 @@ export function Sidebar({ lists }: Props) {
             </div>
           </div>
           <span>
-            <MdLogout className="h-5 w-5 text-gray-400" />
+            <MdLogout className="h-5 w-5 cursor-pointer text-gray-400" />
           </span>
         </div>
       </div>
