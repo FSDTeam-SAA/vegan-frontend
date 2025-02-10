@@ -1,10 +1,9 @@
 import React from "react";
-
+import GoLive from "../_components/go-live/Go-live";
 export default function page() {
   return (
     <div>
-      page
-      <h1>Go Live</h1>
+      <GoLive />
     </div>
   );
 }
