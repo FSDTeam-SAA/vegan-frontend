@@ -22,7 +22,6 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { ProfileFormData, profileSchema } from "@/lib/ProfileSetupSchema";
 import { getProfileType } from "@/lib/utils";
-import Link from "next/link";
 
 export default function ProfileSetupForm() {
   const searchParams = useSearchParams();
@@ -56,12 +55,7 @@ export default function ProfileSetupForm() {
   });
 
   async function onSubmit(data: ProfileFormData) {
-    try {
-      // Here you would typically send the data to your server
-      console.log(data);
-    } catch (error) {
-      console.error(error);
-    }
+    console.log(data);
   }
 
   return (
@@ -280,15 +274,9 @@ export default function ProfileSetupForm() {
               <div className="flex justify-end">
                 <Button
                   type="submit"
-                  className="ro duration-300unded-[8px] mt-[40px] h-[51px] w-full bg-[#1D3557] p-[16px] transition-colors hover:bg-[#1D3557]/80 lg:w-[200px]"
-                  asChild
+                  className="duration-300unded-[8px] mt-[40px] h-[51px] w-full bg-[#1D3557] p-[16px] transition-colors hover:bg-[#1D3557]/80 lg:w-[200px]"
                 >
-                  <Link
-                    className="w-full"
-                    href={`/profile-setup/verify_documents?type=${type}`}
-                  >
-                    Continue
-                  </Link>
+                  <span className="cursor-pointer">Continue</span>
                 </Button>
               </div>
             </form>

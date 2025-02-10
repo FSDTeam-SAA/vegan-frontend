@@ -31,9 +31,10 @@ export const loginWithEmailAndPassword = async (
     if (!response.ok || !resData.status) {
       throw new Error(resData.message || "Login failed");
     }
+
     // // Attempt to sign in with credentials
     await signIn("credentials", {
-      data: resData.data,
+      data: resData.user,
       redirect: false, // Disable automatic redirect to handle it manually
       email: data.email,
       password: data.password,
