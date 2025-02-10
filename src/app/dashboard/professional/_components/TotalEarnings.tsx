@@ -41,7 +41,7 @@ const TotalEarnings = () => {
                     <ChartContainer config={chartConfig}>
                         <div className="max-h-[165px]">
                             <LineChart
-                                width={1400}
+                                width={1450}
                                 height={165}
                                 className="w-full "
                                 accessibilityLayer
