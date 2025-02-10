@@ -15,7 +15,7 @@ const ServiceCard = () => {
   };
   return (
     <>
-      <div className="h-auto w-full space-y-[24px] rounded-[20px] bg-white p-[16px] md:h-[508px] md:w-[390px] md:p-[24px]">
+      <div className="h-auto w-full space-y-[24px] rounded-[20px] bg-white p-[16px] md:h-[508px] md:p-[24px] lg:w-[390px]">
         <div className="relative h-[184px] w-full rounded-[12px] md:h-[160px]">
           <Image
             src="https://i.postimg.cc/2yf4KSLx/pexels-yankrukov-8436587-1.png"
