@@ -261,7 +261,7 @@ interface OrderRowProps {
 }
 
 const OrderRow = ({ order, onSelect }: OrderRowProps) => (
-  <TableRow className="bg-[#F8F5F2]">
+  <TableRow className="bg-[#F8F5F2] *:pt-4">
     <TableCell className="">
       <Checkbox
         checked={order.isChecked}
@@ -272,7 +272,7 @@ const OrderRow = ({ order, onSelect }: OrderRowProps) => (
     </TableCell>
     <TableCell>{order.orderNo}</TableCell>
     <TableCell>
-      <div className="flex items-center justify-end gap-2 py-4">
+      <div className="flex items-center gap-2">
         <Avatar className="h-8 w-8">
           <AvatarImage src={order.customer.avatar} alt={order.customer.name} />
           <AvatarFallback>

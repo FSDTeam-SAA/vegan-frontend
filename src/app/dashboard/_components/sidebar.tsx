@@ -26,14 +26,17 @@ export function Sidebar({ lists }: Props) {
           <Link
             key={item.id}
             href={item.path}
-            className={`mb-1 flex items-center gap-3 rounded-lg px-4 py-3 transition-colors ${pathname === item.path ? "bg-white/10 text-white" : "text-gray-400 hover:bg-white/5 hover:text-white"}`}
+            className={`my-4 mb-1 flex items-center gap-3 rounded-lg px-4 py-3 transition-colors ${pathname === item.path ? "bg-white/100 text-[#1D3557]" : "text-gray-400 hover:bg-white/5 hover:text-white"}`}
             onClick={() => setIsOpen(false)}
           >
             <Icon className="h-5 w-5" />
-            <span className="text-sm">{item.linkText}</span>
+            <span className="font-inter text-sm font-medium leading-[20.3px]">
+              {item.linkText}
+            </span>
           </Link>
         );
       })}
+      <hr className="mt-6 bg-[#F0F2F5]" />
     </nav>
   );
 
@@ -99,19 +102,20 @@ export function Sidebar({ lists }: Props) {
 
   // Desktop Sidebar
   const DesktopSidebar = () => (
-    <div className="fixed left-0 top-0 hidden h-screen w-[240px] flex-col overflow-y-auto bg-[#1E2A3B] text-white md:flex">
-      <div className="p-6">
+    <div className="fixed left-0 top-0 hidden h-screen min-w-[272px] flex-col overflow-y-auto bg-[#1D3557] text-white md:flex">
+      <div className="py-6">
         <Link href="/" className="flex items-center gap-2">
           <Image
             src="https://res.cloudinary.com/dgnustmny/image/upload/v1739002910/logo_white_tne296.png"
             alt="Vegan Collective"
-            width={32}
-            height={32}
+            width={56}
+            height={56}
           />
           <span className="text-lg font-semibold">VEGAN COLLECTIVE</span>
         </Link>
       </div>
       <NavigationContent />
+
       <UserProfile />
     </div>
   );
