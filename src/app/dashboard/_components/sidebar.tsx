@@ -54,7 +54,7 @@ export function Sidebar({ lists }: Props) {
 
   // Mobile Header
   const MobileHeader = () => (
-    <div className="fixed left-0 right-0 top-0 z-50 flex h-16 items-center justify-between bg-[#1E2A3B] p-0 md:hidden">
+    <div className="fixed left-0 right-0 top-0 z-50 flex h-16 items-center justify-between bg-[#1D3557] p-0 md:hidden">
       <Link href="/" className="flex items-center gap-2">
         <Image
           src="https://res.cloudinary.com/dgnustmny/image/upload/v1739002910/logo_white_tne296.png"
@@ -75,7 +75,7 @@ export function Sidebar({ lists }: Props) {
         </SheetTrigger>
         <SheetContent
           side="left"
-          className="w-[300px] bg-[#1E2A3B] p-0 text-white"
+          className="w-[300px] bg-[#1D3557] p-0 text-white"
         >
           <div className="flex h-full flex-col">
             <div className="p-6">
