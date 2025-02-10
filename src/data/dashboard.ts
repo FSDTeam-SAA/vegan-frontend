@@ -1,12 +1,14 @@
 "use client";
 import {
   Briefcase,
+  Calendar,
   CircleHelp,
   CreditCard,
   Info,
   LayoutDashboard,
   ListVideo,
   PhoneCallIcon,
+  Target,
   Truck,
   Users,
   Video,
@@ -123,5 +125,43 @@ export const professionalTabsList = [
     icon: CircleHelp,
     linkText: "Help Center & Support",
     roles: ["professional"],
+  },
+] as NavigationItem[];
+
+export const organizationTabsList = [
+  {
+    id: crypto.randomUUID(),
+    path: "/dashboard/organization",
+    icon: LayoutDashboard,
+    linkText: "Overview",
+    roles: ["admin", "user"],
+  },
+  {
+    id: crypto.randomUUID(),
+    path: "/dashboard/organization/event-management",
+    icon: Calendar,
+    linkText: "Event Management",
+    roles: ["admin", "user"],
+  },
+  {
+    id: crypto.randomUUID(),
+    path: "/dashboard/organization/fundraising-management",
+    icon: Target,
+    linkText: "Fundraising Management",
+    roles: ["admin", "user"],
+  },
+  {
+    id: crypto.randomUUID(),
+    path: "/dashboard/organization/go-live",
+    icon: ListVideo,
+    linkText: "Go Live",
+    roles: ["admin", "user", "delivery man"],
+  },
+  {
+    id: crypto.randomUUID(),
+    path: "/dashboard/organization/support-center",
+    icon: Info,
+    linkText: "Support & Help Center",
+    roles: ["admin", "delivery man"],
   },
 ] as NavigationItem[];
