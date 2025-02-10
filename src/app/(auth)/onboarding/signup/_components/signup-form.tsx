@@ -126,6 +126,7 @@ export default function SignUpForm() {
           position: "top-right",
           richColors: true,
         });
+        setLoading(false);
       }
     },
     onError: () => {
