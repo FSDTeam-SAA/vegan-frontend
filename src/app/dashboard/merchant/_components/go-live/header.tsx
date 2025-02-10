@@ -8,11 +8,11 @@ interface HeaderProps {
 
 export function Header({ onCreateClick }: HeaderProps) {
   return (
-    <header className="border-b bg-white">
-      <div className="container flex h-16 items-center justify-between px-4">
+    <header className="">
+      <div className="flex items-center justify-between px-4">
         <DashboardHeading
           title="Go Live"
-          subTitle="Keep track of your earnings, breakdowns, and payout preferences.Keep track of your earnings, breakdowns, and payout preferences."
+          subTitle="Keep track of your earnings, breakdowns, and payout preferences."
         />
         <div className="flex items-center gap-4">
           <Button variant="outline" className="gap-2">

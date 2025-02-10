@@ -24,11 +24,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { X } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 
-interface EventFormData {
+export interface EventFormData {
   title: string;
   description: string;
   date: string;
@@ -72,14 +71,6 @@ export function EventDialog({
         <DialogHeader>
           <DialogTitle className="flex items-center justify-between">
             {mode === "add" ? "Add New Event" : "Edit Event"}
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-6 w-6 rounded-full"
-              onClick={() => onOpenChange(false)}
-            >
-              <X className="h-4 w-4" />
-            </Button>
           </DialogTitle>
         </DialogHeader>
         <Form {...form}>

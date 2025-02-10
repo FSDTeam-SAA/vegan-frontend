@@ -3,7 +3,7 @@ import GoLive from "../_components/go-live/go-live";
 
 export default function page() {
   return (
-    <div>
+    <div className="p-10">
       <GoLive />
     </div>
   );

@@ -1,63 +1,63 @@
-// import { UpComingEvents } from "./upcoming-events";
+"use client";
 
-// export default function Page() {
-//   return (
-//     <div className="max-w-3xl mx-auto p-6">
-//       <UpComingEvents
-//         type="Paid"
-//         title="Vegan Cooking Class"
-//         description="Learn to cook delicious plant-based meals with professional guidance."
-//         date="20th January, 2025"
-//         timeRange="10:00am - 11:00am"
-//         price={49.99}
-//         metrics={{
-//           registeredParticipants: 32,
-//           totalAmountPaid: 1249.75,
-//         }}
-//         onEdit={() => console.log("Edit clicked")}
-//         onDelete={() => console.log("Delete clicked")}
-//       />
-//       <UpComingEvents
-//         type="Free"
-//         title="Meal Planning Consultation"
-//         description="Personalized meal planning services for individuals and families."
-//         date="20th January, 2025"
-//         timeRange="10:00am - 11:00am"
-//         price={0}
-//         onEdit={() => console.log("Edit clicked")}
-//         onDelete={() => console.log("Delete clicked")}
-//       />
-//     </div>
-//   )
-// }
-
+import { useState } from "react";
+import { cn } from "@/lib/utils";
 import { PastEvents } from "./past-events";
+import { UpComingEvents } from "./upcoming-events";
+import { EventsData } from "../data";
 
-export default function Page() {
+export default function EventsManagement() {
+  const [activeTab, setActiveTab] = useState("upcoming-events");
+  // interface EventItem {
+  //   type: "Paid" | "Free";
+  //   title: string;
+  //   description: string;
+  //   date: string;
+  //   timeRange: string;
+  //   price: number;
+  //   metrics?: {
+  //     registeredParticipants: number;
+  //     totalAmountPaid: number;
+  //   };
+  //   defaultExpanded?: boolean;
+  // }
+
   return (
-    <div className="mx-auto max-w-3xl p-6">
-      <PastEvents
-        type="Free"
-        title="Vegan Cooking Class"
-        description="Learn to cook delicious plant-based meals with professional guidance."
-        date="20th January, 2025"
-        timeRange="10:00am - 11:00am"
-        price={0}
-        metrics={{
-          registeredParticipants: 32,
-          totalAmountPaid: 0,
-        }}
-        defaultExpanded={true}
-      />
-      <PastEvents
-        type="Paid"
-        title="Meal Planning Consultation"
-        description="Personalized meal planning services for individuals and families."
-        date="20th January, 2025"
-        timeRange="10:00am - 11:00am"
-        price={49.99}
-        defaultExpanded={false}
-      />
+    <div className="mx-auto w-full">
+      <div className="mb-6 overflow-x-auto">
+        <nav className="flex space-x-1 border-b-2 border-white">
+          {EventsData.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={cn(
+                "relative px-4 py-2 text-[18px] font-medium",
+                activeTab === tab.id
+                  ? "border-b-2 border-primary text-primary"
+                  : "text-gray-500 hover:text-gray-700",
+              )}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </nav>
+      </div>
+
+      <div className="space-y-4 bg-[#F8F5F2] p-[20px] lg:p-[40px]">
+        {EventsData.find((tab) => tab.id === activeTab)?.items.map(
+          (event, index) =>
+            activeTab === "upcoming-events" ? (
+              <UpComingEvents
+                key={index}
+                {...event}
+                onEdit={() => {}}
+                onDelete={() => {}}
+              />
+            ) : (
+              <PastEvents key={index} {...event} />
+            ),
+        )}
+      </div>
     </div>
   );
 }
