@@ -1,8 +1,14 @@
+"use client"
 import { Button } from '@/components/ui/button';
-import React from 'react';
+import React, { useState } from 'react';
 import { SubmittedTicketData } from './SubmittedTicketData';
+import ContactSupportForm from './ContactSupportForm';
 
 const SubmittedTicket = () => {
+    const [isOpen, setIsOpen] = useState(false);
+    const handleContactSupport = () => {
+        setIsOpen(!isOpen)
+    }
     return (
         <div className='pb-[56px]'>
             <div className='p-[24px] md:p-[32px] lg:p-[40px] bg-[#F8F5F2] rounded-[16px]'>
@@ -10,7 +16,7 @@ const SubmittedTicket = () => {
 
                 <h6 className='text-base md:text-lg font-medium leading-[19px] md:leading-[21px] text-[#4B5563]'>Need Help?</h6>
                 <p className='text-sm md:text-base font-normal text-[#4B5563] leading-[24px] pt-[8px] pb-[32px] md:pb-[40px]'>Our professional support team is here to assist you with any issues you may have.</p>
-                <Button size="xl" className='text-base font-medium leading-[19px] text-white'>Contact Support</Button>
+                <Button onClick={handleContactSupport} size="xl" className='text-base font-medium leading-[19px] text-white'>Contact Support</Button>
                 <div className='border-b border-[#E8DFD6] pt-[40px] md:pt-[48px] lg:pt-[56px]' />
 
                 {/* cart part  */}
@@ -32,10 +38,10 @@ const SubmittedTicket = () => {
                                     <div>
                                         <button
                                             className={`text-sm font-medium leading-[16px] py-[12px] px-[20px] rounded-[20px] ${data?.status === "Resolved"
-                                                    ? "text-[#16A34A] bg-[#F0FDF4]"
-                                                    : data?.status === "In Progress"
-                                                        ? "text-[#EAB308] bg-[#FEFCE8]"
-                                                        : "text-[#1F2937] bg-[#F9FAFB]"
+                                                ? "text-[#16A34A] bg-[#F0FDF4]"
+                                                : data?.status === "In Progress"
+                                                    ? "text-[#EAB308] bg-[#FEFCE8]"
+                                                    : "text-[#1F2937] bg-[#F9FAFB]"
                                                 }`}
                                         >
                                             {data?.status}
@@ -47,6 +53,23 @@ const SubmittedTicket = () => {
                         }
                     </div>
                 </div>
+
+                {/* modal part  */}
+                {isOpen && (
+
+                    <section
+                        className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-30 backdrop-blur-sm z-50"
+                        onClick={() => setIsOpen(false)} // Close modal when clicking outside
+                    >
+                        
+                        {/* Modal content */}
+                        <div className="relative z-10 ">
+                            <ContactSupportForm setIsOpen={setIsOpen} />
+                        </div>
+                    </section>
+
+                )
+                }
             </div>
         </div>
     );
