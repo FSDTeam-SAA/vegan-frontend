@@ -4,7 +4,7 @@ export default function page() {
   return (
     <div>
       page
-      <h1>Go Live</h1>
+      <h1>BooKing management</h1>
     </div>
   );
 }
