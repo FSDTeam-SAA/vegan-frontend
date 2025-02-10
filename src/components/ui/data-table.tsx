@@ -1,9 +1,11 @@
 "use client";
 
 import {
-  ColumnDef,
+  type ColumnDef,
   flexRender,
-  Table as ReactTable,
+  getCoreRowModel,
+  getPaginationRowModel,
+  useReactTable,
 } from "@tanstack/react-table";
 
 import {
@@ -14,46 +16,32 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { cn } from "@/lib/utils";
 
 interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]; // Columns for the table
-  table: ReactTable<TData>; // Correctly typed table instance
-  title?: string;
-  titleClass?: string;
+  columns: ColumnDef<TData, TValue>[];
+  data: TData[];
 }
 
 export function DataTable<TData, TValue>({
   columns,
-  table,
-  title = "Data Table",
-  titleClass,
+  data,
 }: DataTableProps<TData, TValue>) {
+  const table = useReactTable({
+    data,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+  });
+
   return (
-    <div className="rounded-[24px] bg-white pt-[32px] dark:bg-[482D721A]">
-      <div
-        className={cn(
-          titleClass,
-          "dark:bg-pinkGradient mx-[32px] flex h-[78px] items-center rounded-t-[24px] bg-primary px-4 py-3 pl-[32px] text-[32px] text-white",
-        )}
-      >
-        {title}
-      </div>
-      <Table>
-        <TableHeader>
+    <div className="rounded-lg border">
+      <Table className="rounded-lg">
+        <TableHeader className="bg-[#FFFFFF] text-[#6B7280]">
           {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow
-              key={headerGroup.id}
-              style={{
-                boxShadow: "none",
-              }}
-            >
+            <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 return (
-                  <TableHead
-                    key={header.id}
-                    className="text-center text-[#444444]"
-                  >
+                  <TableHead key={header.id}>
                     {header.isPlaceholder
                       ? null
                       : flexRender(
@@ -66,13 +54,12 @@ export function DataTable<TData, TValue>({
             </TableRow>
           ))}
         </TableHeader>
-        <TableBody>
+        <TableBody className="bg-[#F8F5F2]">
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
-                className="text-center"
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>

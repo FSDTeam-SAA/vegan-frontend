@@ -1,5 +1,6 @@
-import Dashboard from "./_components/dashboard-home";
 // import Dashboard from "./_components/dashboard/dashboard";
+
+import Dashboard from "./_components/dashobard-home/dashboard-home";
 
 export default function page() {
   return (
