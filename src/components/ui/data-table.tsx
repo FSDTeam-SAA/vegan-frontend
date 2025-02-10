@@ -14,7 +14,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { cn } from "@/lib/utils";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]; // Columns for the table
@@ -26,19 +25,9 @@ interface DataTableProps<TData, TValue> {
 export function DataTable<TData, TValue>({
   columns,
   table,
-  title = "Data Table",
-  titleClass,
 }: DataTableProps<TData, TValue>) {
   return (
-    <div className="rounded-[24px] bg-white pt-[32px] dark:bg-[482D721A]">
-      <div
-        className={cn(
-          titleClass,
-          "dark:bg-pinkGradient mx-[32px] flex h-[78px] items-center rounded-t-[24px] bg-primary px-4 py-3 pl-[32px] text-[32px] text-white",
-        )}
-      >
-        {title}
-      </div>
+    <div className="rounded-[24px] bg-[#F8F5F2] pt-[32px] dark:bg-[482D721A]">
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -52,7 +41,7 @@ export function DataTable<TData, TValue>({
                 return (
                   <TableHead
                     key={header.id}
-                    className="text-center text-[#444444]"
+                    className="text-left text-[#444444]"
                   >
                     {header.isPlaceholder
                       ? null
