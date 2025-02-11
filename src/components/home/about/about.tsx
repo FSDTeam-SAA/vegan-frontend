@@ -1,7 +1,16 @@
 import Image from "next/image";
-import React from "react";
+import { getPlaiceholder } from "plaiceholder";
 
-export default function HomeAboutSection() {
+const image =
+  "https://res.cloudinary.com/dgnustmny/image/upload/v1739246388/hero-about_i5ntin.png";
+
+export default async function HomeAboutSection() {
+  const buffer = await fetch(image).then(async (res) =>
+    Buffer.from(await res.arrayBuffer()),
+  );
+
+  const { base64 } = await getPlaiceholder(buffer);
+
   return (
     <div className="mx-auto px-4 py-[80px] md:container">
       <div className="items-center justify-between gap-4 lg:flex">
@@ -21,11 +30,15 @@ export default function HomeAboutSection() {
           </p>
         </div>
         <Image
-          src={"https://i.postimg.cc/vBMx8CFw/hero-about.png"}
+          src={
+            "https://res.cloudinary.com/dgnustmny/image/upload/v1739246388/hero-about_i5ntin.png"
+          }
           alt="About"
           width={500}
           height={500}
           className="rounded-xl bg-no-repeat object-cover md:min-w-fit"
+          placeholder="blur"
+          blurDataURL={base64}
         />
       </div>
     </div>

@@ -14,19 +14,19 @@ const hideRoutes = [
 
 const socials = [
   {
-    icon: "https://i.postimg.cc/dVxzYKCD/facebook.png",
+    icon: "https://res.cloudinary.com/dgnustmny/image/upload/v1739245300/facebook_oihijt.png",
     link: "https://www.facebook.com",
   },
   {
-    icon: "https://i.postimg.cc/sghMY33R/twitter.png",
+    icon: "https://res.cloudinary.com/dgnustmny/image/upload/v1739245301/instagram_kkdpip.png",
     link: "https://www.twitter.com",
   },
   {
-    icon: "https://i.postimg.cc/Zn59p35f/instagram.png",
+    icon: "https://res.cloudinary.com/dgnustmny/image/upload/v1739245301/linkedin_vu28b9.png",
     link: "https://www.instagram.com",
   },
   {
-    icon: "https://i.postimg.cc/6qb8037B/linkedin.png",
+    icon: "https://res.cloudinary.com/dgnustmny/image/upload/v1739245301/twitter_awujgm.png",
     link: "https://www.linkedin.com",
   },
 ];
@@ -64,9 +64,9 @@ export default function Footer() {
                   <Input
                     type="email"
                     placeholder="Enter email"
-                    className="mb-2 w-full border-0 bg-white p-[10px] md:w-[274px]"
+                    className="mb-2 h-[48px] w-full rounded-[8px] border-0 bg-white p-[10px] md:w-[274px] lg:h-[40px]"
                   />
-                  <Button className="w-full rounded-md bg-[#1D3557] px-6 py-[10px] text-[14px] font-medium text-white hover:bg-[#1B365D]/90 md:w-[112px]">
+                  <Button className="h-[48px] w-full rounded-[8px] bg-[#1D3557] px-6 py-[10px] text-[14px] font-medium text-white hover:bg-[#1B365D]/90 md:w-[112px] lg:h-[40px]">
                     Subscribe
                   </Button>
                 </div>

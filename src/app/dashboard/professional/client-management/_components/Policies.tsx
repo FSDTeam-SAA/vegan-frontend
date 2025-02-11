@@ -54,17 +54,17 @@ export default function Policies() {
                   control={form.control}
                   name="beforeAppointment"
                   render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Before Appointment</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
+                    <FormItem >
+                      <FormLabel className="text-sm font-medium leading-[16px] text-[#1F2937]">Before Appointment</FormLabel>
+                      <Select  onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl className="text-sm font-normal leading-[16px] text-[#1F2937] p-[16px] bg-white">
                           <SelectTrigger>
-                            <SelectValue placeholder="Select buffer time" />
+                            <SelectValue  placeholder="Select buffer time" />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent>
+                        <SelectContent >
                           {bufferTimeOptions.map((option) => (
-                            <SelectItem key={option} value={option}>
+                            <SelectItem  key={option} value={option}>
                               {option}
                             </SelectItem>
                           ))}
@@ -78,9 +78,9 @@ export default function Policies() {
                   name="afterAppointment"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>After Appointment</FormLabel>
+                      <FormLabel className="text-sm font-medium leading-[16px] text-[#1F2937]">After Appointment</FormLabel>
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
+                        <FormControl className="text-sm font-normal leading-[16px] text-[#1F2937] p-[16px] bg-white">
                           <SelectTrigger>
                             <SelectValue placeholder="Select buffer time" />
                           </SelectTrigger>
@@ -107,9 +107,9 @@ export default function Policies() {
                   name="cancellationWindow"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Cancellation Window</FormLabel>
+                      <FormLabel className="text-sm font-medium leading-[16px] text-[#1F2937]">Cancellation Window</FormLabel>
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
+                        <FormControl className="text-sm font-normal leading-[16px] text-[#1F2937] p-[16px] bg-white">
                           <SelectTrigger>
                             <SelectValue placeholder="Select cancellation window" />
                           </SelectTrigger>
@@ -130,8 +130,8 @@ export default function Policies() {
                   name="noShowPolicy"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>No Show Policy</FormLabel>
-                      <FormControl>
+                      <FormLabel className="text-sm font-medium leading-[16px] text-[#1F2937]">No Show Policy</FormLabel>
+                      <FormControl className="text-sm font-normal leading-[16px] text-[#1F2937] p-[16px] bg-white">
                         <Textarea placeholder="Enter your no show policy" className="resize-none" {...field} />
                       </FormControl>
                     </FormItem>
