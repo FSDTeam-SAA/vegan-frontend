@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "install": "npm install --os=linux --cpu=x64 sharp"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.10.6",

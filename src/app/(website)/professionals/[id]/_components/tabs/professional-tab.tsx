@@ -1,5 +1,6 @@
 "use client";
 import { VeganTab } from "@/components/ui/Vegan-Tab";
+import { LayoutGroup, motion } from "framer-motion";
 import { useState } from "react";
 import { AboutTab } from "./about-tab";
 import { ExperienceTab } from "./experience-tab";
@@ -44,34 +45,44 @@ const ProfessionalTab = () => {
 
   return (
     <div className="container mt-[40px] md:mt-[56px]">
-      <div className="overflow-x-auto">
-        <nav className="flex space-x-1 border-b-2 border-white">
-          {lists.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() =>
-                setActiveTab(
-                  tab.id as
-                    | "about"
-                    | "experience"
-                    | "services"
-                    | "live-stream"
-                    | "faqs"
-                    | "reviews",
-                )
-              }
-              className={cn(
-                "relative text-nowrap px-4 py-2 text-[18px] font-medium",
-                "",
-                activeTab === tab.id
-                  ? "border-b-2 border-primary text-primary"
-                  : "text-gray-500 hover:text-gray-700",
-              )}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </nav>
+      <div className="no-scrollbar overflow-x-auto">
+        <LayoutGroup>
+          <nav className="flex w-full space-x-1 border-b-2 border-[#9CA3AF]">
+            {lists.map((tab) => (
+              <motion.button
+                key={tab.id}
+                onClick={() =>
+                  setActiveTab(
+                    tab.id as
+                      | "about"
+                      | "experience"
+                      | "services"
+                      | "live-stream"
+                      | "faqs"
+                      | "reviews",
+                  )
+                }
+                animate
+                className={cn(
+                  "relative text-nowrap px-4 py-2 text-[18px] font-medium",
+                  "",
+                  activeTab === tab.id
+                    ? "border-b-0 border-primary text-[#1F2937]"
+                    : "text-[#6B7280] hover:text-gray-700",
+                )}
+              >
+                {activeTab === tab.id && (
+                  <motion.div
+                    className="absolute bottom-[-4px] left-0 h-[4px] w-full"
+                    layoutId="underline"
+                    style={{ backgroundColor: "#1F2937" }}
+                  />
+                )}
+                {tab.label}
+              </motion.button>
+            ))}
+          </nav>
+        </LayoutGroup>
       </div>
       <div className="mt-[40px]">
         {activeTab === "about" && <AboutTab />}
