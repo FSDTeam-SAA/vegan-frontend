@@ -106,7 +106,7 @@ export const professionalTabsList = [
   },
   {
     id: crypto.randomUUID(),
-    path: "/dashboard/professional/client-mnagement",
+    path: "/dashboard/professional/client-management",
     icon: Users,
     linkText: "Client Management",
     roles: ["professional"],
@@ -127,7 +127,7 @@ export const professionalTabsList = [
   },
   {
     id: crypto.randomUUID(),
-    path: "/dashboard/professional/help",
+    path: "/dashboard/professional/help-center-support",
     icon: CircleHelp,
     linkText: "Help Center & Support",
     roles: ["professional"],
@@ -145,7 +145,7 @@ export const usersTabsList = [
   },
   {
     id: crypto.randomUUID(),
-    path: "/dashboard/users/",
+    path: "/dashboard/users/bookings-management",
     icon: CalendarCheck,
     linkText: "Bookings Management",
     roles: ["user"],
@@ -159,14 +159,14 @@ export const usersTabsList = [
   },
   {
     id: crypto.randomUUID(),
-    path: "/dashboard/users/",
+    path: "/dashboard/users/go-live",
     icon: Video,
     linkText: "Go Live",
     roles: ["user", "delivery man"],
   },
   {
     id: crypto.randomUUID(),
-    path: "/dashboard/users/",
+    path: "/dashboard/users/product-order-management",
     icon: Package,
     linkText: "Product Order Management",
     roles: ["admin", "delivery man"],
@@ -187,7 +187,7 @@ export const usersTabsList = [
   },
   {
     id: crypto.randomUUID(),
-    path: "/dashboard/users/",
+    path: "/dashboard/users/support-help-center",
     icon: Info,
     linkText: "Support & Help Center",
     roles: ["admin", "delivery man"],
