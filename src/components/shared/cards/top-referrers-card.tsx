@@ -1,31 +1,32 @@
-import { Card, CardContent } from "@/components/ui/card"
-import Image from "next/image"
+import Image from "next/image";
 
 export default function TopReferrersCard() {
   return (
-    <Card className="max-w-[327px] lg:max-w-[400px] overflow-hidden p-[24px]">
-      <div className="relative aspect-[4/2] w-full overflow-hidden rounded-[12px]">
+    <div className="w-full overflow-hidden rounded-[16px] bg-white p-[24px] shadow-none lg:max-w-[400px]">
+      <div className="relative h-[199px]">
         <Image
-          src="/assets/refferer-card.png"
-          width={352}
-          height={199}
+          src="https://res.cloudinary.com/dgnustmny/image/upload/v1739245185/refferer-card_lz1io7.png"
+          fill
           alt="Profile photo"
-          className="object-cover w-full h-full"
+          className="h-full w-full rounded-[12px] object-cover"
         />
       </div>
-      <CardContent className="px-0 pt-[24px]">
+      <div className="px-0 pt-[24px]">
         <div className="flex items-start justify-between">
           <div className="space-y-1">
-            <h2 className="text-[18px] font-normal text-[#1D3557]">Sarah David</h2>
-            <p className="text-[16px] font-normal text-[#4B5563]">24 Referrals</p>
+            <h2 className="text-[18px] font-normal text-[#1D3557]">
+              Sarah David
+            </h2>
+            <p className="text-[16px] font-normal text-[#4B5563]">
+              24 Referrals
+            </p>
           </div>
-          <div className="text-right space-y-1">
+          <div className="space-y-1 text-right">
             <p className="text-[18px] font-semibold text-[#16A34A]">$2400</p>
-            <p className="text-[16px] text-[#000000] font-normal">Earned</p>
+            <p className="text-[16px] font-normal text-[#000000]">Earned</p>
           </div>
         </div>
-      </CardContent>
-    </Card>
-  )
+      </div>
+    </div>
+  );
 }
-
