@@ -1,6 +1,6 @@
 import React from "react";
-import DashboardDataTable from "@/app/dashboard/_components/dashboard-data-table";
 import DashboardHeading from "../dashboard-heading";
+import DashboardDataTable from "@/app/dashboard/_components/dashboard-data-table";
 
 export default function DeliveryManagement() {
   return (
