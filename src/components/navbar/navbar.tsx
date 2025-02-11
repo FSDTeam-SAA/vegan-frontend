@@ -79,7 +79,7 @@ const Navbar = ({ loggedin }: Props) => {
   return (
     <Hideon routes={hideRoutes}>
       <div
-        className={`fixed top-0 z-50 w-full border-b-[1px] py-4 text-white ${
+        className={`fixed top-0 z-50 w-screen border-b-[1px] py-4 text-white ${
           scrolling &&
           "bg-[#E8DFD6]/80 backdrop-blur-lg *:text-[18px] *:text-[#4B5563]" // Add background when scrolling
         } ${
