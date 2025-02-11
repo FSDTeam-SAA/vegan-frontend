@@ -1,9 +1,7 @@
 import { MapPin, Star } from "lucide-react";
-import { BiShoppingBag } from "react-icons/bi";
 
-import { Card, CardContent } from "@/components/ui/card";
-import CartModal from "@/provider/CartModal";
 import Image from "next/image";
+import ProfileCartButton from "./tabs/profile-cart-button";
 
 // Mock data for a vendor profile
 const vendorProfile = {
@@ -22,8 +20,8 @@ const vendorProfile = {
 };
 export function ProfileCard() {
   return (
-    <Card className="container mx-auto min-h-[248px] px-0 shadow-none">
-      <CardContent className="flex w-full justify-between p-[16px] md:p-6">
+    <div className="container mx-auto min-h-[248px] rounded-[20px] bg-white px-0 shadow-none">
+      <div className="flex w-full flex-col justify-between p-[16px] md:flex-row">
         <div className="w-full items-center gap-6 md:flex">
           <div className="relative h-[200px] w-full rounded-[16px] md:w-[200px]">
             <Image
@@ -57,20 +55,10 @@ export function ProfileCard() {
             </div>
           </div>
         </div>
-        <div>
-          <CartModal
-            trigger={
-              <div className="relative mt-[62px] hidden items-center text-nowrap pr-0 *:text-[#1D3557] md:flex">
-                View Cart
-                <BiShoppingBag className="h-[15.5px] w-[19.1px] text-white" />
-                <span className="absolute -right-2 bottom-0 flex h-4 w-4 items-center justify-center rounded-full bg-[#1D3557] text-[7.5px] font-light !text-white">
-                  2
-                </span>
-              </div>
-            }
-          />
+        <div className="mt-3">
+          <ProfileCartButton />
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }
