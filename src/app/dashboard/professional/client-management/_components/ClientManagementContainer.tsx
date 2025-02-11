@@ -2,6 +2,7 @@ import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import BookingsContainer from './BookingsContainer';
 import Policies from './Policies';
+import Faqs from './Faqs';
 
 
 const ClientManagementContainer = () => {
@@ -22,7 +23,11 @@ const ClientManagementContainer = () => {
                     </div>
 
                 </TabsContent>
-                <TabsContent value="faqs">Change your password here.</TabsContent>
+                <TabsContent value="faqs">
+                    <div className='px-[40px]'>
+                        <Faqs/>
+                    </div>
+                </TabsContent>
             </Tabs>
 
         </div>
