@@ -51,7 +51,7 @@ export default function VeganModal({
         >
           <motion.div
             className={cn(
-              "relative mt-5 w-full max-w-[90%] rounded-2xl bg-white p-4 shadow-xl sm:max-w-[600px] md:max-w-[800px] md:p-6",
+              "relative mt-5 w-full max-w-[90%] rounded-2xl bg-white p-4 shadow-xl sm:max-w-[600px] md:max-w-[700px] md:p-6",
               className,
             )}
             variants={modalVariants}

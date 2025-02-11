@@ -21,7 +21,7 @@ const vendorProfile = {
 export function ProfileCard() {
   return (
     <div className="container mx-auto min-h-[248px] rounded-[20px] bg-white px-0 shadow-none">
-      <div className="flex w-full flex-col justify-between p-[16px] md:flex-row">
+      <div className="flex w-full flex-col justify-between p-[24px] md:flex-row">
         <div className="w-full items-center gap-6 md:flex">
           <div className="relative h-[200px] w-full rounded-[16px] md:w-[200px]">
             <Image
