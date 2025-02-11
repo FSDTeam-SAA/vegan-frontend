@@ -24,10 +24,26 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { X } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-export interface EventFormData {
+interface EventMetrics {
+  registeredParticipants: number;
+  totalAmountPaid: number;
+}
+export interface EventData {
+  type: "Paid" | "Free";
+  title: string;
+  description: string;
+  date: string;
+  timeRange: string;
+  price: number;
+  metrics?: EventMetrics;
+  defaultExpanded?: boolean;
+}
+
+interface EventFormData {
   title: string;
   description: string;
   date: string;
@@ -39,9 +55,37 @@ export interface EventFormData {
 interface EventDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  initialData?: EventFormData;
+  initialData?: EventData;
   mode?: "add" | "edit";
   onSubmit: (data: EventFormData) => void;
+}
+
+function convertDateFormat(dateStr: string): string {
+  if (!dateStr) {
+    console.error("Invalid date string:", dateStr);
+    return "Invalid Date";
+  }
+
+  const date = new Date(dateStr);
+
+  if (isNaN(date.getTime())) {
+    console.error("Could not parse date:", dateStr);
+    return "Invalid Date";
+  }
+
+  return date.toISOString().split("T")[0];
+}
+
+function extractTimeFromRange(timeRange: string) {
+  const startTime = timeRange.split(" - ")[0];
+  const [time, period] = startTime.split(" ");
+  const [hours, minutes] = time.split(":");
+  let hour = Number.parseInt(hours);
+
+  if (period === "PM" && hour !== 12) hour += 12;
+  if (period === "AM" && hour === 12) hour = 0;
+
+  return `${hour.toString().padStart(2, "0")}:${minutes}`;
 }
 
 export function EventDialog({
@@ -51,19 +95,46 @@ export function EventDialog({
   mode = "add",
   onSubmit,
 }: EventDialogProps) {
-  const [description, setDescription] = useState(
-    initialData?.description || "",
-  );
+  const [description, setDescription] = useState("");
+
   const form = useForm<EventFormData>({
-    defaultValues: initialData || {
+    defaultValues: {
       title: "",
       description: "",
       date: "",
       time: "",
-      type: "",
+      type: "free",
       price: "0.00",
     },
   });
+
+  // Reset form when initialData changes
+  useEffect(() => {
+    if (initialData) {
+      const formattedDate = convertDateFormat(initialData.date);
+      const formattedTime = extractTimeFromRange(initialData.timeRange);
+
+      form.reset({
+        title: initialData.title,
+        description: initialData.description,
+        date: formattedDate,
+        time: formattedTime,
+        type: initialData.type.toLowerCase(),
+        price: initialData.price.toString(),
+      });
+      setDescription(initialData.description);
+    } else {
+      form.reset({
+        title: "",
+        description: "",
+        date: "",
+        time: "",
+        type: "free",
+        price: "0.00",
+      });
+      setDescription("");
+    }
+  }, [initialData, form]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -71,10 +142,18 @@ export function EventDialog({
         <DialogHeader>
           <DialogTitle className="flex items-center justify-between">
             {mode === "add" ? "Add New Event" : "Edit Event"}
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-6 w-6 rounded-full"
+              onClick={() => onOpenChange(false)}
+            >
+              <X className="h-4 w-4" />
+            </Button>
           </DialogTitle>
         </DialogHeader>
         <Form {...form}>
-          <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField
               name="title"
               render={({ field }) => (
@@ -118,7 +197,7 @@ export function EventDialog({
                   <FormItem>
                     <FormLabel>Date</FormLabel>
                     <FormControl>
-                      <Input type="date" placeholder="Select date" {...field} />
+                      <Input type="date" {...field} />
                     </FormControl>
                   </FormItem>
                 )}
@@ -129,7 +208,7 @@ export function EventDialog({
                   <FormItem>
                     <FormLabel>Time</FormLabel>
                     <FormControl>
-                      <Input type="time" placeholder="Select time" {...field} />
+                      <Input type="time" {...field} />
                     </FormControl>
                   </FormItem>
                 )}
@@ -140,10 +219,7 @@ export function EventDialog({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Event Type</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
+                  <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Select category" />
@@ -163,31 +239,25 @@ export function EventDialog({
                 <FormItem>
                   <FormLabel>Price (if paid)</FormLabel>
                   <FormControl>
-                    <Input
-                      type="number"
-                      step="0.01"
-                      min="0"
-                      placeholder="0.00"
-                      {...field}
-                    />
+                    <Input type="number" step="0.01" min="0" {...field} />
                   </FormControl>
                 </FormItem>
               )}
             />
+            <DialogFooter className="gap-2 sm:gap-0">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => onOpenChange(false)}
+              >
+                Cancel
+              </Button>
+              <Button type="submit" className="bg-[#1f3a5f] hover:bg-[#162942]">
+                {mode === "add" ? "Add Event" : "Save Changes"}
+              </Button>
+            </DialogFooter>
           </form>
         </Form>
-        <DialogFooter className="gap-2 sm:gap-0">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => onOpenChange(false)}
-          >
-            Cancel
-          </Button>
-          <Button type="submit" className="bg-[#1f3a5f] hover:bg-[#162942]">
-            {mode === "add" ? "Add Event" : "Save Changes"}
-          </Button>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
