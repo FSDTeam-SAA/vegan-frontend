@@ -79,14 +79,15 @@ const Navbar = ({ loggedin }: Props) => {
   return (
     <Hideon routes={hideRoutes}>
       <div
-        className={`fixed top-0 z-50 w-full border-b-[1px] py-4 text-white ${
-          scrolling &&
-          "bg-[#E8DFD6]/80 backdrop-blur-lg *:text-[18px] *:text-[#4B5563]" // Add background when scrolling
+
+        className={`fixed top-0 z-50 w-screen border-b-[1px] border-white/20 py-4 text-[#4B5563] ${
+          scrolling && "bg-[#E8DFD6]/90 backdrop-blur-lg *:text-[#4B5563]" // Add background when scrolling
+
         } ${
           pathname === "/"
-            ? !scrolling && "md:py-4" // Add margin on homepage when not scrolling
+            ? !scrolling && "text-white" // Add margin on homepage when not scrolling
             : "mt-0 backdrop-blur-lg" // Default background for other pages
-        } transition duration-300`}
+        } ${pathname !== "/" && "bg-[#E8DFD6]/90"} transition duration-300`}
       >
         <div className="px-4 md:container">
           <div className="flex items-center justify-between">
@@ -94,7 +95,9 @@ const Navbar = ({ loggedin }: Props) => {
               <Link href={"/"} className="flex items-center font-semibold">
                 <Image
                   src={
-                    "https://res.cloudinary.com/dgnustmny/image/upload/v1738649859/logo_white_zsmua3.png"
+                    pathname === "/" && !scrolling
+                      ? "https://res.cloudinary.com/dgnustmny/image/upload/v1738649859/logo_white_zsmua3.png"
+                      : "https://res.cloudinary.com/dgnustmny/image/upload/v1738925272/Rectangle_yzijtk.png"
                   }
                   alt="logo"
                   width={56}
@@ -155,7 +158,7 @@ const Navbar = ({ loggedin }: Props) => {
                 <>
                   <Button
                     className={cn(
-                      `mx-4 rounded-[8px] border-[1px] border-white bg-transparent px-[20px] py-[10px] font-medium hover:bg-black/5 ${scrolling && "border-black/50 text-[#4B5563]"}`, // Change hover color for button
+                      `mx-4 rounded-[8px] border-[1px] border-white bg-transparent px-[20px] py-[10px] font-medium hover:bg-black/5 ${scrolling && pathname === "/" && "border-black/50 text-[#4B5563]"}`, // Change hover color for button
                     )}
                   >
                     <Link href="/onboarding">Login</Link>
