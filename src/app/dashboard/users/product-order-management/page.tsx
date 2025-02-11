@@ -1,9 +1,10 @@
 import React from "react";
-import GoLive from "../_components/go-live/Go-live";
+
 export default function page() {
   return (
     <div>
-      <GoLive />
+      page
+      <h1>product-order-management</h1>
     </div>
   );
 }
