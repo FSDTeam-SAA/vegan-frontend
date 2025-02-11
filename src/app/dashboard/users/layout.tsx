@@ -1,14 +1,15 @@
 import { usersTabsList } from "@/data/dashboard";
 import { ReactNode } from "react";
 import { Sidebar } from "../_components/sidebar";
+import DashboardNavbar from "../merchant/_components/DashboardNavbar";
 
 const DashboardLayout = async ({ children }: { children: ReactNode }) => {
   return (
     <div className="flex min-h-screen">
       <Sidebar lists={usersTabsList} />
-
-      <main className="min-h-screen flex-1 overflow-y-auto bg-[#F5F1ED] p-2 pt-[80px] md:ml-[272px] lg:p-[50px]">
-        {children}
+      <main className="min-h-screen flex-1 overflow-y-auto bg-[#E8DFD6]">
+        <DashboardNavbar />
+        <div className="p-4 md:ml-[272px] md:p-10">{children}</div>
       </main>
     </div>
   );
