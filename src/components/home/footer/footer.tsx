@@ -64,9 +64,9 @@ export default function Footer() {
                   <Input
                     type="email"
                     placeholder="Enter email"
-                    className="mb-2 w-full border-0 bg-white p-[10px] md:w-[274px]"
+                    className="mb-2 h-[48px] w-full rounded-[8px] border-0 bg-white p-[10px] md:w-[274px] lg:h-[40px]"
                   />
-                  <Button className="w-full rounded-md bg-[#1D3557] px-6 py-[10px] text-[14px] font-medium text-white hover:bg-[#1B365D]/90 md:w-[112px]">
+                  <Button className="h-[48px] w-full rounded-[8px] bg-[#1D3557] px-6 py-[10px] text-[14px] font-medium text-white hover:bg-[#1B365D]/90 md:w-[112px] lg:h-[40px]">
                     Subscribe
                   </Button>
                 </div>
