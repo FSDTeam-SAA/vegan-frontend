@@ -44,8 +44,8 @@ const ProfessionalTab = () => {
 
   return (
     <div className="container mt-[40px] md:mt-[56px]">
-      <div className="mb-6 overflow-x-auto">
-        <nav className="flex space-x-1 border-b-2 border-white">
+      <div className="no-scrollbar mb-6 overflow-x-auto">
+        <nav className="flex w-full space-x-1 border-b-2 border-white">
           {lists.map((tab) => (
             <button
               key={tab.id}
