@@ -14,19 +14,19 @@ const hideRoutes = [
 
 const socials = [
   {
-    icon: "https://i.postimg.cc/dVxzYKCD/facebook.png",
+    icon: "https://res.cloudinary.com/dgnustmny/image/upload/v1739245300/facebook_oihijt.png",
     link: "https://www.facebook.com",
   },
   {
-    icon: "https://i.postimg.cc/sghMY33R/twitter.png",
+    icon: "https://res.cloudinary.com/dgnustmny/image/upload/v1739245301/instagram_kkdpip.png",
     link: "https://www.twitter.com",
   },
   {
-    icon: "https://i.postimg.cc/Zn59p35f/instagram.png",
+    icon: "https://res.cloudinary.com/dgnustmny/image/upload/v1739245301/linkedin_vu28b9.png",
     link: "https://www.instagram.com",
   },
   {
-    icon: "https://i.postimg.cc/6qb8037B/linkedin.png",
+    icon: "https://res.cloudinary.com/dgnustmny/image/upload/v1739245301/twitter_awujgm.png",
     link: "https://www.linkedin.com",
   },
 ];

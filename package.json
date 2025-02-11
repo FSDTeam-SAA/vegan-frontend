@@ -11,6 +11,7 @@
   "dependencies": {
     "@clerk/nextjs": "^6.10.6",
     "@hookform/resolvers": "^3.10.0",
+    "@plaiceholder/next": "^3.0.0",
     "@radix-ui/react-accordion": "^1.2.2",
     "@radix-ui/react-alert-dialog": "^1.1.6",
     "@radix-ui/react-avatar": "^1.1.2",
@@ -40,6 +41,7 @@
     "next": "14.2.22",
     "next-auth": "^5.0.0-beta.25",
     "next-nprogress-bar": "^2.4.4",
+    "plaiceholder": "^3.0.0",
     "react": "^18",
     "react-day-picker": "^8.10.1",
     "react-dom": "^18",
@@ -47,6 +49,7 @@
     "react-icons": "^5.4.0",
     "react-responsive": "^10.0.0",
     "recharts": "^2.15.1",
+    "sharp": "^0.33.5",
     "sonner": "^1.7.4",
     "tailwind-merge": "^3.0.1",
     "zod": "^3.24.1",
