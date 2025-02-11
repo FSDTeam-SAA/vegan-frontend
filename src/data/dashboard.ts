@@ -109,7 +109,7 @@ export const professionalTabsList = [
   },
   {
     id: crypto.randomUUID(),
-    path: "/dashboard/professional/client-mnagement",
+    path: "/dashboard/professional/client-management",
     icon: Users,
     linkText: "Client Management",
     roles: ["professional"],
@@ -130,7 +130,7 @@ export const professionalTabsList = [
   },
   {
     id: crypto.randomUUID(),
-    path: "/dashboard/professional/help",
+    path: "/dashboard/professional/help-center-support",
     icon: CircleHelp,
     linkText: "Help Center & Support",
     roles: ["professional"],

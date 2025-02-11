@@ -81,7 +81,8 @@ export function ResetPasswordForm() {
         throw error;
       }
     },
-    onSuccess: (data) => {
+    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+    onSuccess: (data: any) => {
       setLoading(true); // Show loading when updating
       if (!data.status) {
         toast.error(data.message, {
@@ -97,7 +98,7 @@ export function ResetPasswordForm() {
         position: "bottom-right",
         richColors: true,
       });
-      router.push("/onboarding/login?role=customer");
+      router.push(`/onboarding/login?role=${data?.joinAs}`);
     },
     onError: () => {
       toast.error("Failed to update your password!");
