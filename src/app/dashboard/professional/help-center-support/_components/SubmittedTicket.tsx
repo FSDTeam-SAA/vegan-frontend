@@ -59,9 +59,8 @@ const SubmittedTicket = () => {
 
                     <section
                         className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-30 backdrop-blur-sm z-50"
-                        onClick={() => setIsOpen(false)} // Close modal when clicking outside
                     >
-                        
+
                         {/* Modal content */}
                         <div className="relative z-10 ">
                             <ContactSupportForm setIsOpen={setIsOpen} />

@@ -79,10 +79,8 @@ const Navbar = ({ loggedin }: Props) => {
   return (
     <Hideon routes={hideRoutes}>
       <div
-
         className={`fixed top-0 z-50 w-screen border-b-[1px] border-white/20 py-4 text-[#4B5563] ${
           scrolling && "bg-[#E8DFD6]/90 backdrop-blur-lg *:text-[#4B5563]" // Add background when scrolling
-
         } ${
           pathname === "/"
             ? !scrolling && "text-white" // Add margin on homepage when not scrolling
@@ -122,7 +120,7 @@ const Navbar = ({ loggedin }: Props) => {
               ))}
             </div>
             {/* Login button */}
-            <div className="hidden md:block">
+            <div className="hidden lg:block">
               {loggedin ? (
                 <>
                   <DropdownMenu>

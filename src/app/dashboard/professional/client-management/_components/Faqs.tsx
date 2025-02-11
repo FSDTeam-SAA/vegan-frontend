@@ -43,7 +43,7 @@ export default function Faqs() {
   }
 
   return (
-    <div className="mt-[48px] bg-[#F8F5F2] rounded-[16px] p-[40px]">
+    <div className="mt-[48px] bg-[#F8F5F2] rounded-[16px] p-[24px] md:p-[32px] lg:p-[40px]">
         <Form {...form} >
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 ">
         <div className="space-y-4">
