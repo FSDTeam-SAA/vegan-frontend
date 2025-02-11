@@ -1,5 +1,5 @@
 "use client";
-import { VeganTab } from "@/components/ui/Vegan-Tab";
+import VeganTabs, { VeganTab } from "@/components/ui/Vegan-Tab";
 import { useState } from "react";
 import { AboutTab } from "./about-tab";
 import { ExperienceTab } from "./experience-tab";
@@ -35,43 +35,16 @@ const lists = [
 ] as VeganTab[];
 
 const ProfessionalTab = () => {
-  const [activeTab, setActiveTab] = useState<
-    "about" | "experience" | "services" | "live-stream" | "faqs" | "reviews"
-  >("about");
-  function cn(...classes: string[]): string {
-    return classes.filter(Boolean).join(" ");
-  }
+  const [activeTab, setActiveTab] = useState<string>("about");
 
   return (
     <div className="container mt-[40px] md:mt-[56px]">
-      <div className="no-scrollbar mb-6 overflow-x-auto">
-        <nav className="flex w-full space-x-1 border-b-2 border-white">
-          {lists.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() =>
-                setActiveTab(
-                  tab.id as
-                    | "about"
-                    | "experience"
-                    | "services"
-                    | "live-stream"
-                    | "faqs"
-                    | "reviews",
-                )
-              }
-              className={cn(
-                "relative text-nowrap px-4 py-2 text-[18px] font-medium",
-                "",
-                activeTab === tab.id
-                  ? "border-b-2 border-primary text-primary"
-                  : "text-gray-500 hover:text-gray-700",
-              )}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </nav>
+      <div className="no-scrollbar overflow-x-auto">
+        <VeganTabs
+          tabs={lists}
+          defaultActiveTab={activeTab}
+          onTabChange={(tab) => setActiveTab(tab)}
+        />
       </div>
       <div className="mt-[40px]">
         {activeTab === "about" && <AboutTab />}
