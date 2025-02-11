@@ -83,16 +83,6 @@ const ProfessionalTab = () => {
             )}
           >
             {tab.label}
-            {/* <span
-                className={cn(
-                  "ml-2 rounded-full p-1 px-2 text-xs text-gray-600",
-                  activeTab === tab.id
-                    ? "h-[32px] w-[32px] rounded-full bg-black text-white"
-                    : "bg-gray-100",
-                )}
-              >
-                {tab.count}
-              </span> */}
           </button>
         ))}
       </nav>
