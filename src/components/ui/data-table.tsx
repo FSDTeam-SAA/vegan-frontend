@@ -27,7 +27,7 @@ export function DataTable<TData, TValue>({
   table,
 }: DataTableProps<TData, TValue>) {
   return (
-    <div className="rounded-[24px] bg-[#F8F5F2] pt-[32px] dark:bg-[482D721A]">
+    <div className="rounded-t-[12px] bg-[#F8F5F2] dark:bg-[482D721A]">
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -41,7 +41,7 @@ export function DataTable<TData, TValue>({
                 return (
                   <TableHead
                     key={header.id}
-                    className="text-left text-[#444444]"
+                    className="text-left text-[#444444] py-[15px] bg-white rounded-t-[12px]"
                   >
                     {header.isPlaceholder
                       ? null

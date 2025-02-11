@@ -55,7 +55,7 @@ export function ProfileCard() {
             </div>
           </div>
         </div>
-        <div className="mt-3">
+        <div className="mr-8 mt-5">
           <ProfileCartButton />
         </div>
       </div>

@@ -10,7 +10,7 @@ import { FaRegBell } from "react-icons/fa";
 
 export default function DashboardNavbar() {
   return (
-    <div className="flex h-[80px] items-center justify-end gap-3 border-b border-white p-4 pr-[60px]">
+    <div className="flex h-[80px] items-center justify-end gap-3 border-b border-white/80 p-4 pr-[60px]">
       <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white">
         <FaRegBell className="h-[17.8px] w-[13.73px]" />
       </span>
