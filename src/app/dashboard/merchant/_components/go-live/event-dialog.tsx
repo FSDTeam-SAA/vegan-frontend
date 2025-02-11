@@ -24,7 +24,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { X } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
 
@@ -142,14 +141,6 @@ export function EventDialog({
         <DialogHeader>
           <DialogTitle className="flex items-center justify-between">
             {mode === "add" ? "Add New Event" : "Edit Event"}
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-6 w-6 rounded-full"
-              onClick={() => onOpenChange(false)}
-            >
-              <X className="h-4 w-4" />
-            </Button>
           </DialogTitle>
         </DialogHeader>
         <Form {...form}>
