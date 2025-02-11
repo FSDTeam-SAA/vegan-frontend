@@ -30,31 +30,33 @@ const VeganTabs: FC<AnimatedTabsProps> = ({
 
   return (
     <LayoutGroup>
-      <nav className="flex w-screen space-x-1 border-b-2 border-[#9CA3AF]">
-        {tabs.map((tab) => (
-          <motion.button
-            key={tab.id}
-            onClick={() => handleTabClick(tab.id)}
-            animate
-            className={cn(
-              "relative text-nowrap px-4 py-2 text-[18px] font-medium",
-              "",
-              activeTab === tab.id
-                ? "border-b-0 border-primary text-[#1F2937]"
-                : "text-[#6B7280] hover:text-gray-700",
-            )}
-          >
-            {activeTab === tab.id && (
-              <motion.div
-                className="absolute bottom-[-4px] left-0 h-[4px] w-full"
-                layoutId="underline"
-                style={{ backgroundColor: "#1F2937" }}
-              />
-            )}
-            {tab.label}
-          </motion.button>
-        ))}
-      </nav>
+      <div className="w-full">
+        <nav className="inline-flex min-w-full space-x-1 border-b-2 border-[#9CA3AF]">
+          {tabs.map((tab) => (
+            <motion.button
+              key={tab.id}
+              onClick={() => handleTabClick(tab.id)}
+              animate
+              className={cn(
+                "relative text-nowrap px-4 py-2 text-[18px] font-medium",
+                "",
+                activeTab === tab.id
+                  ? "border-b-0 border-primary text-[#1F2937]"
+                  : "text-[#6B7280] hover:text-gray-700",
+              )}
+            >
+              {activeTab === tab.id && (
+                <motion.div
+                  className="absolute bottom-[-4px] left-0 h-[4px] w-full"
+                  layoutId="underline"
+                  style={{ backgroundColor: "#1F2937" }}
+                />
+              )}
+              {tab.label}
+            </motion.button>
+          ))}
+        </nav>
+      </div>
     </LayoutGroup>
   );
 };
