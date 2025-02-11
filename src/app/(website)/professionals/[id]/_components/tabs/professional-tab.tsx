@@ -44,48 +44,35 @@ const ProfessionalTab = () => {
 
   return (
     <div className="container mt-[40px] md:mt-[56px]">
-      {/* <AnimatedTabs
-        tabs={lists}
-        onTabChange={(id) =>
-          setActiveTab(
-            id as
-              | "about"
-              | "experience"
-              | "services"
-              | "live-stream"
-              | "faqs"
-              | "reviews",
-          )
-        }
-      /> */}
-
-      <nav className="flex space-x-1 border-b-2 border-white">
-        {lists.map((tab) => (
-          <button
-            key={tab.id}
-            onClick={() =>
-              setActiveTab(
-                tab.id as
-                  | "about"
-                  | "experience"
-                  | "services"
-                  | "live-stream"
-                  | "faqs"
-                  | "reviews",
-              )
-            }
-            className={cn(
-              "relative px-4 py-2 text-[18px] font-medium",
-              "",
-              activeTab === tab.id
-                ? "border-b-2 border-primary text-primary"
-                : "text-gray-500 hover:text-gray-700",
-            )}
-          >
-            {tab.label}
-          </button>
-        ))}
-      </nav>
+      <div className="overflow-x-auto">
+        <nav className="flex space-x-1 border-b-2 border-white">
+          {lists.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() =>
+                setActiveTab(
+                  tab.id as
+                    | "about"
+                    | "experience"
+                    | "services"
+                    | "live-stream"
+                    | "faqs"
+                    | "reviews",
+                )
+              }
+              className={cn(
+                "relative text-nowrap px-4 py-2 text-[18px] font-medium",
+                "",
+                activeTab === tab.id
+                  ? "border-b-2 border-primary text-primary"
+                  : "text-gray-500 hover:text-gray-700",
+              )}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </nav>
+      </div>
       <div className="mt-[40px]">
         {activeTab === "about" && <AboutTab />}
         {activeTab === "experience" && <ExperienceTab />}
