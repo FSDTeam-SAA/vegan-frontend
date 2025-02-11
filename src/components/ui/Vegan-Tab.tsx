@@ -1,4 +1,5 @@
-import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
+import { LayoutGroup, motion } from "framer-motion";
 import type { FC } from "react";
 import { useState } from "react";
 
@@ -13,7 +14,7 @@ interface AnimatedTabsProps {
   onTabChange?: (tabId: string) => void;
 }
 
-const AnimatedTabs: FC<AnimatedTabsProps> = ({
+const VeganTabs: FC<AnimatedTabsProps> = ({
   tabs,
   defaultActiveTab,
   onTabChange,
@@ -28,40 +29,34 @@ const AnimatedTabs: FC<AnimatedTabsProps> = ({
   };
 
   return (
-    <div className="flex space-x-1">
-      {tabs.map((tab) => (
-        <button
-          key={tab.id}
-          onClick={() => handleTabClick(tab.id)}
-          className={`${
-            activeTab === tab.id ? "" : "hover:text-[#1D3557]/60"
-          } relative rounded-full px-3 py-1.5 text-[14px] font-medium text-[#1D3557] outline-sky-400 transition focus-visible:outline-2 md:text-[18px]`}
-          style={{ WebkitTapHighlightColor: "transparent" }}
-        >
-          {activeTab === tab.id && (
-            <motion.span
-              layoutId="bubble"
-              className={`absolute inset-0 z-10 bg-[#1D3557] text-white mix-blend-overlay`}
-              style={{ borderRadius: 9999 }}
-              transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-            />
-          )}
-          {tab.label}
-        </button>
-      ))}
-    </div>
+    <LayoutGroup>
+      <nav className="flex w-screen space-x-1 border-b-2 border-[#9CA3AF]">
+        {tabs.map((tab) => (
+          <motion.button
+            key={tab.id}
+            onClick={() => handleTabClick(tab.id)}
+            animate
+            className={cn(
+              "relative text-nowrap px-4 py-2 text-[18px] font-medium",
+              "",
+              activeTab === tab.id
+                ? "border-b-0 border-primary text-[#1F2937]"
+                : "text-[#6B7280] hover:text-gray-700",
+            )}
+          >
+            {activeTab === tab.id && (
+              <motion.div
+                className="absolute bottom-[-4px] left-0 h-[4px] w-full"
+                layoutId="underline"
+                style={{ backgroundColor: "#1F2937" }}
+              />
+            )}
+            {tab.label}
+          </motion.button>
+        ))}
+      </nav>
+    </LayoutGroup>
   );
 };
 
-export default AnimatedTabs;
-
-// Usage Example:
-// import AnimatedTabs from './AnimatedTabs';
-// const tabsData = [
-//   { id: "world", label: "World" },
-//   { id: "ny", label: "N.Y." },
-//   { id: "business", label: "Business" },
-//   { id: "arts", label: "Arts" },
-//   { id: "science", label: "Science" },
-// ];
-// <AnimatedTabs tabs={tabsData} onTabChange={(id) => console.log("Selected tab:", id)} activeColor="bg-blue-500" />
+export default VeganTabs;
