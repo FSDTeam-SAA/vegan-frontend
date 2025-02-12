@@ -1,11 +1,9 @@
 "use client";
 
 import {
-  type ColumnDef,
+  ColumnDef,
   flexRender,
-  getCoreRowModel,
-  getPaginationRowModel,
-  useReactTable,
+  Table as ReactTable,
 } from "@tanstack/react-table";
 
 import {
@@ -18,30 +16,33 @@ import {
 } from "@/components/ui/table";
 
 interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
+  columns: ColumnDef<TData, TValue>[]; // Columns for the table
+  table: ReactTable<TData>; // Correctly typed table instance
+  title?: string;
+  titleClass?: string;
 }
 
 export function DataTable<TData, TValue>({
   columns,
-  data,
+  table,
 }: DataTableProps<TData, TValue>) {
-  const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-  });
-
   return (
-    <div className="rounded-lg border">
-      <Table className="rounded-lg">
-        <TableHeader className="bg-[#FFFFFF] text-[#6B7280]">
+    <div className="rounded-t-[12px] bg-[#F8F5F2] dark:bg-[482D721A]">
+      <Table>
+        <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
+            <TableRow
+              key={headerGroup.id}
+              style={{
+                boxShadow: "none",
+              }}
+            >
               {headerGroup.headers.map((header) => {
                 return (
-                  <TableHead key={header.id}>
+                  <TableHead
+                    key={header.id}
+                    className="rounded-t-[12px] bg-white py-[15px] text-left text-[#444444]"
+                  >
                     {header.isPlaceholder
                       ? null
                       : flexRender(
@@ -54,12 +55,13 @@ export function DataTable<TData, TValue>({
             </TableRow>
           ))}
         </TableHeader>
-        <TableBody className="bg-[#F8F5F2]">
+        <TableBody>
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
+                className="text-center"
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>

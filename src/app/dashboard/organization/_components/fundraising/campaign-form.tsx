@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/popover";
 import { format } from "date-fns";
 
-export default function CampaignForm({ onClose }: any) {
+export default function CampaignForm() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [date, setDate] = useState<Date>();

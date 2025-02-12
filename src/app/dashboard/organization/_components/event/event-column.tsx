@@ -1,20 +1,30 @@
 "use client";
 
-import type { ColumnDef } from "@tanstack/react-table";
+import type { ColumnDef, TableMeta } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 
-// export type Event = {
-//   id: number;
-//   title: string;
-//   type: "Live" | "On-Site";
-//   revenue: number;
-//   attendees: number;
-//   date: string;
-//   time: string;
-// };
+interface Event {
+  id: number;
+  title: string;
+  type: string;
+  revenue: number;
+  attendees: number;
+  date: string;
+  time: string;
+}
 
-export const eventColumns: ColumnDef<unknown, unknown>[] = [
+// Extend TableMeta to include onViewAttendees
+declare module "@tanstack/react-table" {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  interface TableMeta<TData> {
+    onViewAttendees: (eventTitle: string) => void;
+  }
+}
+
+type EventTableMeta = TableMeta<Event>;
+
+export const eventColumns: ColumnDef<Event, EventTableMeta>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -68,12 +78,15 @@ export const eventColumns: ColumnDef<unknown, unknown>[] = [
   },
   {
     id: "actions",
-    header: "Action",
-    cell: ({}) => {
+    header: "Actions",
+    cell: ({ row, table }) => {
       return (
         <Button
           variant="link"
           className="p-0 text-[#1a2b4b] underline hover:text-[#243a64]"
+          onClick={() =>
+            table.options.meta?.onViewAttendees(row.original.title)
+          }
         >
           View Attendees
         </Button>

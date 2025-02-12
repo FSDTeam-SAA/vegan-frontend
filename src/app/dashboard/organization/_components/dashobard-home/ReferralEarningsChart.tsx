@@ -27,10 +27,12 @@ const data = [
   { month: "Dec", Donations: 900, Referrals: 600, "Fundraising Events": 450 },
 ];
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const renderLegend = (props: any) => {
   const { payload } = props;
   return (
     <div className="mb-4 flex gap-4">
+      {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
       {payload.map((entry: any, index: number) => (
         <div key={`item-${index}`} className="flex items-center gap-2">
           <span

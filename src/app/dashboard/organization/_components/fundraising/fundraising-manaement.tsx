@@ -45,7 +45,7 @@ const campaigns: Campaign[] = [
 function CampaignCard({ campaign }: { campaign: Campaign }) {
   return (
     <div className="space-y-4 py-4">
-      <div className="flex items-start justify-between">
+      <div className="flex flex-wrap items-start justify-between gap-5">
         <div>
           <h3 className="text-lg font-medium">{campaign.title}</h3>
           <p className="text-sm text-muted-foreground">
@@ -85,7 +85,7 @@ export default function FundraisingManagement() {
   return (
     <div className="min-h-screen bg-[#f5f0eb] p-6">
       <div className="space-y-6">
-        <div className="flex items-start justify-between">
+        <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
             <h1 className="text-2xl font-semibold text-gray-900">
               Fundraising Management
@@ -103,7 +103,7 @@ export default function FundraisingManagement() {
               </Button>
             </DialogTrigger>
             <DialogContent className="xl:min-w-[705px]">
-              <CampaignForm onClose={() => setOpen(false)} />
+              <CampaignForm />
             </DialogContent>
           </Dialog>
         </div>
