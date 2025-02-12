@@ -17,16 +17,19 @@ const ServiceManagementHeader = () => {
                     <h4 className='text-xl md:text-2xl font-semibold text-[#1F2937] leading-[29px] md:leading-[34px]'>Manage Your Services</h4>
                     <p className='text-sm md:text-base font-normal text-[#4B5563] leading-[20px] md:leading-[23px] pt-[4px]'>Easily add, manage, and optimize your services for greater visibility</p>
                 </div>
-                <div className='flex items-center gap-[16px]'>
-                    <Button onClick={() => setOpen(!open)} variant='outline' size="xl" className='flex items-center gap-[8px] text-base font-medium text-[#6B7280] leading-[19px] py-[14px] px-[18px] rounded-[10px]'><FileUp className='w-[14px] h-[16px] text-[#6B7280]' /> Upload Bulk Services</Button>
-                    <Button onClick={() => setIsOpenService(!isOenService)} size="xl" className='flex items-center gap-[8px] text-base font-medium text-white leading-[19px] py-[14px] px-[20px] rounded-[10px] bg-[#1D3557]'><Plus className='w-[20px] h-[20px] text-white' />Add New Service</Button>
+                <div className='w-full md:w-auto flex items-center justify-between md:gap-[16px]'>
+                    <Button onClick={() => setOpen(!open)} variant='outline' size="xl" className='flex items-center gap-[8px] text-sm md:text-base font-medium text-[#6B7280] leading-[16px] md:leading-[19px] py-[14px] px-[12px] md:px-[15px] lg:px-[18px] rounded-[10px]'><FileUp className='w-[14px] h-[16px] text-[#6B7280]' /> Upload Bulk Services</Button>
+                    <Button onClick={() => setIsOpenService(!isOenService)} size="xl" className='flex items-center gap-[8px] text-sm md:text-base font-medium text-white leading-[16px] md:leading-[19px] py-[14px] px-[12px] md:px-[16px] lg:px-[20px] rounded-[10px] bg-[#1D3557]'><Plus className='w-[20px] h-[20px] text-white' />Add Service</Button>
                 </div>
             </div>
 
             {/* Bulk modal  */}
             {
                 open && (
-                    <BulkUploadDialog open={open} onClose={() => setOpen(false)} />
+                    <div >
+                        <BulkUploadDialog open={open} onClose={() => setOpen(false)} />
+                    </div>
+
                 )
             }
 
@@ -39,7 +42,7 @@ const ServiceManagementHeader = () => {
 
                         {/* Modal content */}
                         <div className="relative z-10 ">
-                            <ScrollArea className='w-[769px] h-[700px] rounded-[16px]'>
+                            <ScrollArea className='w-[327px] md:w-[500px] lg:w-[769px] h-[700px] rounded-[16px]'>
                                 <AddServiceForm setIsOpenService={setIsOpenService} />
                             </ScrollArea>
 

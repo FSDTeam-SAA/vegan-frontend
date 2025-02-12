@@ -75,85 +75,87 @@ export function BulkUploadDialog({ open, onClose }: BulkUploadDialogProps) {
   }
 
   return (
-    <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle>Bulk Upload Services</DialogTitle>
-        </DialogHeader>
-        <div className="grid gap-6">
-          <div
-            className={cn(
-              "relative grid gap-2 place-items-center p-8 border-2 border-dashed rounded-lg transition-colors",
-              isDragging ? "border-primary bg-primary/5" : "border-muted",
-              status === "success" && "border-green-500 bg-green-50",
-              status === "error" && "border-red-500 bg-red-50",
-            )}
-            onDragOver={handleDragOver}
-            onDragLeave={handleDragLeave}
-            onDrop={handleDrop}
-          >
-            {status === "idle" && (
-              <>
-                <FileUp className="h-8 w-8 text-muted-foreground" />
-                <div className="grid gap-1 text-center">
-                  <p className="text-sm font-medium">Drag and drop your CSV file here or</p>
-                  <label htmlFor="file-upload" className="text-sm text-primary underline cursor-pointer">
-                    click to choose file
-                  </label>
+    <div className="">
+      <Dialog open={open} onOpenChange={onClose}>
+        <DialogContent className="max-w-sm sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Bulk Upload Services</DialogTitle>
+          </DialogHeader>
+          <div className="grid gap-6">
+            <div
+              className={cn(
+                "relative grid gap-2 place-items-center p-8 border-2 border-dashed rounded-lg transition-colors",
+                isDragging ? "border-primary bg-primary/5" : "border-muted",
+                status === "success" && "border-green-500 bg-green-50",
+                status === "error" && "border-red-500 bg-red-50",
+              )}
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onDrop={handleDrop}
+            >
+              {status === "idle" && (
+                <>
+                  <FileUp className="h-8 w-8 text-muted-foreground" />
+                  <div className="grid gap-1 text-center">
+                    <p className="text-sm font-medium">Drag and drop your CSV file here or</p>
+                    <label htmlFor="file-upload" className="text-sm text-primary underline cursor-pointer">
+                      click to choose file
+                    </label>
+                  </div>
+                </>
+              )}
+
+              {status === "uploading" && (
+                <div className="grid gap-2 place-items-center">
+                  <Upload className="h-8 w-8 animate-bounce text-primary" />
+                  <p className="text-sm font-medium">Uploading {file?.name}...</p>
                 </div>
-              </>
-            )}
+              )}
 
-            {status === "uploading" && (
-              <div className="grid gap-2 place-items-center">
-                <Upload className="h-8 w-8 animate-bounce text-primary" />
-                <p className="text-sm font-medium">Uploading {file?.name}...</p>
+              {status === "success" && (
+                <div className="grid gap-2 place-items-center">
+                  <CheckCircle className="h-8 w-8 text-green-500" />
+                  <p className="text-sm font-medium text-green-600">Upload completed successfully!</p>
+                  <Button variant="outline" size="sm" onClick={handleReset}>
+                    Upload another file
+                  </Button>
+                </div>
+              )}
+
+              {status === "error" && (
+                <div className="grid gap-2 place-items-center">
+                  <AlertCircle className="h-8 w-8 text-red-500" />
+                  <p className="text-sm font-medium text-red-600">Please upload a valid CSV file</p>
+                  <Button variant="outline" size="sm" onClick={handleReset}>
+                    Try again
+                  </Button>
+                </div>
+              )}
+
+              <input
+                ref={fileInputRef}
+                id="file-upload"
+                type="file"
+                accept=".csv"
+                className="sr-only"
+                onChange={handleFileSelect}
+              />
+            </div>
+
+            {file && status === "idle" && (
+              <div className="grid gap-2">
+                <p className="text-sm">Selected file: {file.name}</p>
+                <Button onClick={handleUpload}>Upload Services</Button>
               </div>
             )}
-
-            {status === "success" && (
-              <div className="grid gap-2 place-items-center">
-                <CheckCircle className="h-8 w-8 text-green-500" />
-                <p className="text-sm font-medium text-green-600">Upload completed successfully!</p>
-                <Button variant="outline" size="sm" onClick={handleReset}>
-                  Upload another file
-                </Button>
-              </div>
-            )}
-
-            {status === "error" && (
-              <div className="grid gap-2 place-items-center">
-                <AlertCircle className="h-8 w-8 text-red-500" />
-                <p className="text-sm font-medium text-red-600">Please upload a valid CSV file</p>
-                <Button variant="outline" size="sm" onClick={handleReset}>
-                  Try again
-                </Button>
-              </div>
-            )}
-
-            <input
-              ref={fileInputRef}
-              id="file-upload"
-              type="file"
-              accept=".csv"
-              className="sr-only"
-              onChange={handleFileSelect}
-            />
           </div>
 
-          {file && status === "idle" && (
-            <div className="grid gap-2">
-              <p className="text-sm">Selected file: {file.name}</p>
-              <Button onClick={handleUpload}>Upload Services</Button>
-            </div>
-          )}
-        </div>
-
-        <div className="flex items-center justify-end pt-4">
+          <div className="flex items-center justify-end pt-4">
             <Button size="lg" className="py-[14px] px-[34px] text-base font-semibold leading-[19px] text-white">Upload Services</Button>
-        </div>
-      </DialogContent>
-    </Dialog>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </div>
   )
 }
 

@@ -4,7 +4,7 @@ import Service from './_components/Service';
 
 const Page = () => {
     return (
-        <div className='px-10 pb-[24px] md:pb-[40px] lg:pb-[56px]'>
+        <div className='px-6 md:px-8 lg:px-10 pb-[24px] md:pb-[40px] lg:pb-[56px]'>
             <ServiceManagementHeader/>
             <Service/>
         </div>

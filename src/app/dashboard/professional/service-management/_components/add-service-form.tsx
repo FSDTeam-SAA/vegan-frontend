@@ -183,7 +183,7 @@ export function AddServiceForm({ setIsOpenService }: AddServiceFormProps) {
                         )}
                     />
 
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <FormField
                             control={form.control}
                             name="paymentType"
@@ -222,7 +222,7 @@ export function AddServiceForm({ setIsOpenService }: AddServiceFormProps) {
                         />
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="space-y-4">
                             <Label className="text-base font-medium leading-[26px] text-[#1F2937]">Add Image</Label>
                             <div
@@ -309,7 +309,7 @@ export function AddServiceForm({ setIsOpenService }: AddServiceFormProps) {
                     </div>
 
                     <div className="flex justify-end gap-4 pt-[20px]">
-                        <Button size="lg" type="submit" disabled={isSubmitting}>
+                        <Button className="w-full md:w-auto" size="lg" type="submit" disabled={isSubmitting}>
                             {isSubmitting ? "Creating..." : "Create Service"}
                         </Button>
                     </div>
