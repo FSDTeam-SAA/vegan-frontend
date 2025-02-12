@@ -49,8 +49,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async jwt({ token }) {
       if (!token.sub) return token;
 
-      console.log("USERID: ", token.sub);
-
       return token;
     },
   },
