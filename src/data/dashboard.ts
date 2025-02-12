@@ -1,5 +1,6 @@
 "use client";
 import {
+  BadgeCheck,
   Box,
   Briefcase,
   CalendarCheck,
@@ -12,6 +13,7 @@ import {
   Package,
   PhoneCallIcon,
   Truck,
+  User,
   Users,
   Video,
   Wallet,
@@ -28,6 +30,44 @@ export type NavigationItem = {
   linkText: string;
   roles: string[];
 };
+
+export const adminDashboardTabsList = [
+  {
+    id: crypto.randomUUID(),
+    path: "/dashboard/admin",
+    icon: LayoutDashboard,
+    linkText: "Overview",
+    roles: ["admin"],
+  },
+  {
+    id: crypto.randomUUID(),
+    path: "/dashboard/admin/vendor-management",
+    icon: User,
+    linkText: "Vendor Management",
+    roles: ["admin"],
+  },
+  {
+    id: crypto.randomUUID(),
+    path: "/dashboard/admin/verification-management",
+    icon: BadgeCheck,
+    linkText: "Verification Management",
+    roles: ["admin"],
+  },
+  {
+    id: crypto.randomUUID(),
+    path: "/dashboard/admin/go-live",
+    icon: Video,
+    linkText: "Go Live",
+    roles: ["admin"],
+  },
+  {
+    id: crypto.randomUUID(),
+    path: "/dashboard/admin/support",
+    icon: CircleHelp,
+    linkText: "Support & Help Center",
+    roles: ["admin"],
+  },
+] as NavigationItem[];
 
 export const merchantTabsList = [
   {
