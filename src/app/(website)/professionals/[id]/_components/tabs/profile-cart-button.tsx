@@ -7,7 +7,7 @@ const ProfileCartButton = () => {
   const { toggleCart } = useCartState();
   return (
     <>
-      <div>
+      <div className="md:pr-8">
         <button
           className="relative flex items-center text-nowrap pr-0 *:text-[#1D3557]"
           onClick={toggleCart}
