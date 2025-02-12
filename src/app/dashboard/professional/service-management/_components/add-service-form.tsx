@@ -46,6 +46,7 @@ export function AddServiceForm({ setIsOpenService }: AddServiceFormProps) {
     const [image, setImage] = useState<File | null>(null)
     const [video, setVideo] = useState<File | null>(null)
     const [isSubmitting, setIsSubmitting] = useState(false)
+    console.log(setIsOpenService)
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -95,12 +96,7 @@ export function AddServiceForm({ setIsOpenService }: AddServiceFormProps) {
     return (
         <div>
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 px-[32px] pt-[40px] pb-[24px] bg-white shadow-lg rounded-lg">
-
-                    <div className="flex items-center justify-between">
-                        <h4 className="text-xl font-medium text-[#1F2937] leading-[24px]">Add A New Service</h4>
-                        <X className="cursor-pointer" onClick={() => setIsOpenService(false)} />
-                    </div>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 px-[32px] pb-[24px] bg-white shadow-lg rounded-b-lg">
 
                     <div className="">
                         <FormField
@@ -108,7 +104,7 @@ export function AddServiceForm({ setIsOpenService }: AddServiceFormProps) {
                             name="serviceName"
                             render={({ field }) => (
                                 <FormItem>
-                                    <div className="flex items-center justify-between">
+                                    <div className="flex items-center justify-between pt-6 md:mt-0">
                                         <FormLabel className="text-lg font-medium leading-[26px] text-[#1F2937]">Service Name</FormLabel>
                                         <span className="text-lg font-normal text-[#6B7280] leading-[26px]">0/100</span>
                                     </div>
@@ -183,7 +179,7 @@ export function AddServiceForm({ setIsOpenService }: AddServiceFormProps) {
                         )}
                     />
 
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <FormField
                             control={form.control}
                             name="paymentType"
@@ -222,7 +218,7 @@ export function AddServiceForm({ setIsOpenService }: AddServiceFormProps) {
                         />
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="space-y-4">
                             <Label className="text-base font-medium leading-[26px] text-[#1F2937]">Add Image</Label>
                             <div
@@ -309,7 +305,7 @@ export function AddServiceForm({ setIsOpenService }: AddServiceFormProps) {
                     </div>
 
                     <div className="flex justify-end gap-4 pt-[20px]">
-                        <Button size="lg" type="submit" disabled={isSubmitting}>
+                        <Button className="w-full md:w-auto" size="lg" type="submit" disabled={isSubmitting}>
                             {isSubmitting ? "Creating..." : "Create Service"}
                         </Button>
                     </div>
