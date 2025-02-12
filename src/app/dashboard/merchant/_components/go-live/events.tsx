@@ -1,30 +1,44 @@
 "use client";
 
 import { useState } from "react";
-import { cn } from "@/lib/utils";
-import { PastEvents } from "./past-events";
-import { UpComingEvents } from "./upcoming-events";
+import { Header } from "./header";
+import { EventDialog } from "./event-dialog";
+import { EventCard, type EventData } from "./EventCard";
 import { EventsData } from "../data";
+import { cn } from "@/lib/utils";
 
-export default function EventsManagement() {
+export default function EventsMangement() {
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [editingEvent, setEditingEvent] = useState<EventData | undefined>();
   const [activeTab, setActiveTab] = useState("upcoming-events");
-  // interface EventItem {
-  //   type: "Paid" | "Free";
-  //   title: string;
-  //   description: string;
-  //   date: string;
-  //   timeRange: string;
-  //   price: number;
-  //   metrics?: {
-  //     registeredParticipants: number;
-  //     totalAmountPaid: number;
-  //   };
-  //   defaultExpanded?: boolean;
-  // }
+  const handleSubmit = (data: unknown) => {
+    if (editingEvent) {
+      console.log("Editing event:", data);
+    } else {
+      console.log("Creating new event:", data);
+    }
+    setDialogOpen(false);
+    setEditingEvent(undefined);
+  };
+
+  const handleEdit = (eventData: EventData) => {
+    setEditingEvent(eventData);
+    setDialogOpen(true);
+  };
+
+  const handleDelete = (sectionId: string, eventIndex: number) => {
+    console.log("Deleting event:", sectionId, eventIndex);
+  };
 
   return (
-    <div className="mx-auto w-full">
-      <div className="mb-6 overflow-x-auto">
+    <div className="min-h-screen">
+      <Header
+        onCreateClick={() => {
+          setEditingEvent(undefined);
+          setDialogOpen(true);
+        }}
+      />
+      <div className="overflow-x-auto md:mb-12">
         <nav className="flex space-x-1 border-b-2 border-white">
           {EventsData.map((tab) => (
             <button
@@ -42,22 +56,30 @@ export default function EventsManagement() {
           ))}
         </nav>
       </div>
-
-      <div className="space-y-4 bg-[#F8F5F2] p-[20px] lg:p-[40px]">
-        {EventsData.find((tab) => tab.id === activeTab)?.items.map(
-          (event, index) =>
-            activeTab === "upcoming-events" ? (
-              <UpComingEvents
-                key={index}
-                {...event}
-                onEdit={() => {}}
-                onDelete={() => {}}
-              />
-            ) : (
-              <PastEvents key={index} {...event} />
-            ),
-        )}
+      <div className="">
+        {EventsData.filter((items) => items.id === activeTab).map((section) => (
+          <div key={section.id}>
+            <div className="space-y-6 rounded-lg bg-[#F8F5F2] p-10">
+              {section.items.map((event, index) => (
+                <EventCard
+                  key={`${section.id}-${index}`}
+                  {...event}
+                  onEdit={() => handleEdit(event)}
+                  onDelete={() => handleDelete(section.id, index)}
+                />
+              ))}
+            </div>
+          </div>
+        ))}
       </div>
+
+      <EventDialog
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+        onSubmit={handleSubmit}
+        mode={editingEvent ? "edit" : "add"}
+        initialData={editingEvent}
+      />
     </div>
   );
 }

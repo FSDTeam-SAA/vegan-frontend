@@ -1,6 +1,5 @@
-import CartModal from "@/provider/CartModal";
+import ProfileCartButton from "@/app/(website)/professionals/[id]/_components/tabs/profile-cart-button";
 import { Star } from "lucide-react";
-import { BiShoppingBag } from "react-icons/bi";
 
 const MerchantHeader = () => {
   return (
@@ -24,17 +23,7 @@ const MerchantHeader = () => {
       </div>
 
       <div>
-        <CartModal
-          trigger={
-            <div className="relative hidden pr-0 *:text-[#1D3557] md:flex">
-              View Cart
-              <BiShoppingBag className="h-[15.5px] w-[19.1px] text-white" />
-              <span className="absolute -right-2 bottom-0 flex h-4 w-4 items-center justify-center rounded-full bg-[#1D3557] text-[7.5px] font-light !text-white">
-                2
-              </span>
-            </div>
-          }
-        />
+        <ProfileCartButton />
       </div>
     </div>
   );

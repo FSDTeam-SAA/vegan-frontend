@@ -1,6 +1,6 @@
 const EarnMoreCard = () => {
   return (
-    <div className="container mx-auto mb-[57px] w-[90%] rounded-[20px] border-[1.2px] border-[#E7EBEE] bg-cta_gradient px-[24px] py-[55px] md:w-full lg:mt-[-50px] lg:py-[85px]">
+    <div className="container mx-auto mb-[57px] w-[90%] rounded-[20px] border-[1.2px] border-[#E7EBEE] bg-cta_gradient px-[24px] py-[55px] md:w-full lg:py-[85px]">
       <div className="mx-auto max-w-[827px]">
         <h1 className="text-center font-lexend text-[28px] font-normal leading-[60px] tracking-[-4%] text-[#1D3557] lg:text-[48px]">
           Ready to Earn More?

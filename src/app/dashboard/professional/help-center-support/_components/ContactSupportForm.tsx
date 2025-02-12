@@ -1,19 +1,3 @@
-// import React from 'react';
-
-// interface ContactSupportProps {
-//     setIsOpen: (open: boolean) => void
-//   }
-
-// const ContactSupport = ({setIsOpen} : ContactSupportProps) => {
-//     return (
-//         <div>
-//             hi
-//         </div>
-//     );
-// };
-
-// export default ContactSupport;
-
 "use client";
 
 import { useForm } from "react-hook-form";

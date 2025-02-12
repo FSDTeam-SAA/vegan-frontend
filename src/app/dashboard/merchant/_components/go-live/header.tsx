@@ -9,7 +9,7 @@ interface HeaderProps {
 export function Header({ onCreateClick }: HeaderProps) {
   return (
     <header className="">
-      <div className="flex items-center justify-between px-4">
+      <div className="items-center justify-between md:mb-10 md:flex">
         <DashboardHeading
           title="Go Live"
           subTitle="Keep track of your earnings, breakdowns, and payout preferences."
