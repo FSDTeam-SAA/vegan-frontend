@@ -14,6 +14,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Label } from "@/components/ui/label"
 import Image from "next/image"
+import { veganCookingDataType } from "./VeganCookingData"
 
 const formSchema = z.object({
     serviceName: z
@@ -38,37 +39,36 @@ const formSchema = z.object({
         .transform((val) => (val === "" ? "0.00" : val)),
 })
 
-interface AddServiceFormProps {
-    setIsOpenService: (open: boolean) => void
-}
 
-export function AddServiceForm({ setIsOpenService }: AddServiceFormProps) {
+
+export function AddServiceForm({data}: { data?: veganCookingDataType }) {
     const [image, setImage] = useState<File | null>(null)
     const [video, setVideo] = useState<File | null>(null)
     const [isSubmitting, setIsSubmitting] = useState(false)
-    console.log(setIsOpenService)
+
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            serviceName: "",
-            metaDescription: "",
-            serviceDescription: "",
-            keywords: "",
+            serviceName: data?.serviceName || "",
+            metaDescription: data?.metaDescription || "",
+            serviceDescription: data?.serviceDescription || "",
+            keywords: data?.keywords?.join(", ") || "", // Assuming keywords are passed as a string
             price: "0.00",
+            paymentType: "", // Set default payment type if needed
         },
-    })
+    });
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
-        setIsSubmitting(true)
+        setIsSubmitting(true);
         try {
             // Simulate API call
-            await new Promise((resolve) => setTimeout(resolve, 1000))
-            console.log(values)
-            console.log("Image:", image)
-            console.log("Video:", video)
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+            console.log(values);
+            console.log("Image:", image);
+            console.log("Video:", video);
         } finally {
-            setIsSubmitting(false)
+            setIsSubmitting(false);
         }
     }
 
