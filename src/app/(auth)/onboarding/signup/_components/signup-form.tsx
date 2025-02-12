@@ -99,13 +99,13 @@ export default function SignUpForm() {
   const { mutate, isPending } = useMutation({
     mutationKey: ["signup"],
     mutationFn: (data: {
-      joinAs: string | null;
+      role: string | null;
       email: string;
       password: string;
       fullName?: string;
       accountType?: string;
     }) =>
-      fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/signup`, {
+      fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/register`, {
         method: "POST",
         headers: {
           "content-type": "application/json",
@@ -160,10 +160,8 @@ export default function SignUpForm() {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { agree, ...proccedData } = {
       ...values,
-      joinAs: role,
+      role: role === "customer" ? "user" : role,
     };
-
-    console.log(proccedData);
 
     mutate(proccedData);
   }

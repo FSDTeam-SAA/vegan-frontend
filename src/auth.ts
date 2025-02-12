@@ -1,21 +1,32 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 
-export type User = {
-  _id: string;
-  fullName: string;
-  email: string;
-  joinAs: "customer" | "admin" | "vendor"; // Assuming there are fixed possible roles
+import { AdapterUser } from "@auth/core/adapters";
+import { getUser, UserData } from "./actions/login";
+
+export type User = AdapterUser & {
+  token: string;
+  userId: string;
+  role: string;
+  accountType: string; // Assuming there are fixed possible roles
 };
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
     Credentials({
-      async authorize(credentials, req) {
+      async authorize(credentials) {
         if (!credentials) return null;
-        const body = await req.json();
+        const user =
+          typeof credentials.data === "string"
+            ? JSON.parse(credentials.data)
+            : credentials.data;
 
-        return body;
+        if (!user) return null;
+
+        return {
+          id: user.userId, // Use userId as the id
+          token: user.token,
+        };
       },
     }),
   ],
@@ -25,20 +36,30 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   callbacks: {
     async session({ session, token }) {
+      console.log("token from session", token);
       if (token.user) {
         session.user = {
           ...session.user,
-          ...token.user,
+          accountType: token.user.accountType,
+          userId: token.user._id,
+          email: token.user.email,
+          role: token.user.role,
         };
       }
       return session;
     },
-    async jwt({ token, user }) {
-      if (user) {
-        token.user = user;
-      }
+    async jwt({ token }) {
+      if (!token.sub) return token;
+
+      const data: UserData = await getUser(token?.sub);
+
+      token.user = { ...data.data };
+
       return token;
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
+  session: {
+    strategy: "jwt",
+  },
 });
