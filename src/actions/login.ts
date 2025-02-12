@@ -57,3 +57,27 @@ export const loginWithEmailAndPassword = async (
     } as ServerResType;
   }
 };
+
+export type UserData = {
+  status: boolean;
+  message: string;
+  data: {
+    _id: string;
+    role: string;
+    email: string;
+    accountType: "merchant" | "professional" | "organization" | null;
+  };
+};
+
+export async function getUser(userId: string) {
+  const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/profile/${userId}`;
+
+  try {
+    const response = await fetch(url);
+    if (!response.ok) return null;
+    return await response.json();
+  } catch (error) {
+    console.error("Failed to fetch user:", error);
+    return null;
+  }
+}

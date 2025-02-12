@@ -2,6 +2,7 @@ import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 
 import { AdapterUser } from "@auth/core/adapters";
+import { getUser, UserData } from "./actions/login";
 
 export type User = AdapterUser & {
   token: string;
@@ -25,9 +26,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         return {
           id: user.userId, // Use userId as the id
           token: user.token,
-          userId: user.userId,
-          role: user.role,
-          accountType: user.accountType,
         };
       },
     }),
@@ -38,16 +36,24 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   callbacks: {
     async session({ session, token }) {
+      console.log("token from session", token);
       if (token.user) {
         session.user = {
           ...session.user,
-          ...token.user,
+          accountType: token.user.accountType,
+          userId: token.user._id,
+          email: token.user.email,
+          role: token.user.role,
         };
       }
       return session;
     },
     async jwt({ token }) {
       if (!token.sub) return token;
+
+      const data: UserData = await getUser(token?.sub);
+
+      token.user = { ...data.data };
 
       return token;
     },
