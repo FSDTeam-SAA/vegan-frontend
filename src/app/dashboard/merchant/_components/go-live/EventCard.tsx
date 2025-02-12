@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
-  Calendar,
+  Calendar1Icon,
   Clock,
   ChevronDown,
   ChevronUp,
@@ -49,11 +49,11 @@ export function EventCard({
   const [isExpanded, setIsExpanded] = useState(defaultExpanded);
 
   return (
-    <Card className="mb-4">
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+    <Card className="bg-tran mb-4 border-[#E5E7EB] shadow-none">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 bg-white pb-0">
         <Badge
           variant={type === "Paid" ? "secondary" : "outline"}
-          className="h-6"
+          className="h-6 font-inter text-sm font-normal leading-[16.94px] text-[#1E2939]"
         >
           {type} Event
         </Badge>
@@ -102,29 +102,45 @@ export function EventCard({
           </Button>
         </div>
       </CardHeader>
-      <CardContent>
+      <CardContent className="bg-[#F9FAFB] p-0">
         <div className="space-y-4">
-          <div>
-            <h2 className="text-xl font-semibold">{title}</h2>
-            <p className="mt-1 text-gray-500">{description}</p>
-          </div>
-          <div className="flex items-center gap-6 text-gray-500">
-            <div className="flex items-center gap-2">
-              <Calendar className="h-4 w-4" />
-              <span>{date}</span>
+          <div className="space-y-6 bg-white p-6">
+            <div className="">
+              <h2 className="pb-2 font-inter text-lg font-medium leading-[26px] text-[#1F2937]">
+                {title}
+              </h2>
+              <p className="font-inter text-base leading-[23px] text-[#364153]">
+                {description}
+              </p>
             </div>
-            <div className="flex items-center gap-2">
-              <Clock className="h-4 w-4" />
-              <span>{timeRange}</span>
+            <div className="flex items-center gap-6 space-x-4 *:text-lg *:leading-[26px] *:text-[#6A7282]">
+              <div className="flex items-center gap-2">
+                <Calendar1Icon className="h-4 w-4" />
+                <span>{date}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Clock className="h-4 w-4" />
+                <span>{timeRange}</span>
+              </div>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="font-inter text-xl font-medium leading-[29px] text-[#1F2937]">
+                ${price.toFixed(2)}
+              </span>
+              <Button className="ml-4 bg-[#1D3557] px-[30px] py-[15px] text-center font-inter text-base !font-medium leading-[19.36px] text-white">
+                Join Event
+              </Button>
             </div>
           </div>
-          <div>
-            <span className="text-xl font-semibold">${price.toFixed(2)}</span>
-          </div>
+
+          {/* Event Metrics Section */}
           {isExpanded && metrics && (
-            <div className="mt-6 space-y-4 border-t pt-6">
-              <h3 className="text-lg font-semibold">Event Metrics</h3>
-              <div className="space-y-3">
+            <div className="m-6 space-y-4">
+              <h3 className="mb-2 bg-transparent text-lg font-semibold">
+                Event Metrics
+              </h3>
+
+              <div className="space-y-3 bg-white p-4">
                 <div>
                   <div className="text-sm text-gray-500">
                     Number Of Registered Participants

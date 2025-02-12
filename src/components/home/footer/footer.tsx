@@ -76,19 +76,19 @@ export default function Footer() {
             <div className="justify-between gap-10 md:flex md:flex-1">
               {/* Middle Column - Navigation */}
               <div className="flex flex-wrap gap-10 py-10 *:font-medium *:text-[#1D3557] md:flex-col md:gap-2 md:py-0">
-                <Link href="#" className="hover:underline">
+                <Link href="/professionals" className="hover:underline">
                   Professionals
                 </Link>
-                <Link href="#" className="hover:underline">
+                <Link href="/merchants" className="hover:underline">
                   Merchants
                 </Link>
-                <Link href="#" className="hover:underline">
+                <Link href="/organizations" className="hover:underline">
                   Organizations
                 </Link>
-                <Link href="#" className="hover:underline">
+                <Link href="/profit-calculator" className="hover:underline">
                   Profit Sharing
                 </Link>
-                <Link href="#" className="hidden hover:underline md:block">
+                <Link href="/store" className="hidden hover:underline md:block">
                   Store
                 </Link>
                 <Link href="#" className="hidden hover:underline md:block">

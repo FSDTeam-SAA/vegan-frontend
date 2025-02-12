@@ -8,7 +8,7 @@ import Image from "next/image";
 
 export default function FAQProfitCalculator() {
   return (
-    <div className="relative min-h-screen px-4 py-16 md:px-6 lg:px-8">
+    <div className="relative h-full px-4 py-16 md:px-6 lg:px-8">
       <Image
         src="https://res.cloudinary.com/dgnustmny/image/upload/v1739013974/Ornament-left_ro4nzk.png"
         alt="from_bottom"

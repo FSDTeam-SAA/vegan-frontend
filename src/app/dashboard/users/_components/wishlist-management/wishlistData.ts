@@ -8,7 +8,7 @@ export type WishlistItem = {
 };
 
 export type TabData = {
-  id: "professionals" | "merchants" | "organizations";
+  id: "professional" | "merchants" | "organizations";
   label: string;
   count: number;
   items: WishlistItem[];
@@ -17,7 +17,7 @@ export type TabData = {
 export const wishlistData: TabData[] = [
   // professionals
   {
-    id: "professionals",
+    id: "professional",
     label: "Professionals",
     count: 2,
     items: [

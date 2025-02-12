@@ -1,13 +1,29 @@
 "use client";
 
-import { useState } from "react";
-import { Heart } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { wishlistData } from "@/app/dashboard/users/_components/wishlist-management/wishlistData";
+import VeganTabs, { VeganTab } from "@/components/ui/Vegan-Tab";
+import { cn } from "@/lib/utils";
+import { Heart } from "lucide-react";
 import Image from "next/image";
+import { useState } from "react";
+
+const tabs = [
+  {
+    id: "professional",
+    label: "Professionals",
+  },
+  {
+    id: "merchants",
+    label: "Merchants",
+  },
+  {
+    id: "organizations",
+    label: "Organizations",
+  },
+] as VeganTab[];
 
 export default function WishlistManagement() {
-  const [activeTab, setActiveTab] = useState("professionals");
+  const [activeTab, setActiveTab] = useState("professional");
   const [favorites, setFavorites] = useState<Record<string, boolean>>(() => {
     const initialFavorites: Record<string, boolean> = {};
     wishlistData.forEach((tab) => {
@@ -36,43 +52,21 @@ export default function WishlistManagement() {
         </p>
       </div>
 
-      <div className="mb-6 overflow-x-auto">
-        <nav className="flex space-x-1 border-b-2 border-white">
-          {wishlistData.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={cn(
-                "relative px-4 py-2 text-[18px] font-medium",
-                "",
-                activeTab === tab.id
-                  ? "border-b-2 border-primary text-primary"
-                  : "text-gray-500 hover:text-gray-700",
-              )}
-            >
-              {tab.label}
-              <span
-                className={cn(
-                  "ml-2 rounded-full p-1 px-2 text-xs text-gray-600",
-                  activeTab === tab.id
-                    ? "h-[32px] w-[32px] rounded-full bg-black text-white"
-                    : "bg-gray-100",
-                )}
-              >
-                {tab.count}
-              </span>
-            </button>
-          ))}
-        </nav>
+      <div className="mb-6">
+        <VeganTabs
+          tabs={tabs}
+          defaultActiveTab={activeTab}
+          onTabChange={(tab) => setActiveTab(tab)}
+        />
       </div>
 
-      <div className="space-y-4 bg-[#F8F5F2] p-[20px] lg:p-[40px]">
+      <div className="space-y-4 rounded-[16px] bg-[#F8F5F2] p-[20px] lg:p-[40px]">
         {wishlistData
           .find((tab) => tab.id === activeTab)
           ?.items.map((item) => (
             <div
               key={item.id}
-              className="rounded-lg bg-white p-4 transition-all hover:shadow-md"
+              className="rounded-lg bg-white p-4 transition-all duration-500 hover:scale-[101%]"
             >
               <div className="flex items-start gap-4">
                 <div className="h-16 w-16 flex-shrink-0 md:h-20 md:w-20">
@@ -101,7 +95,7 @@ export default function WishlistManagement() {
                     >
                       <Heart
                         className={cn(
-                          "h-5 w-5 transition-colors",
+                          "h-7 w-7 transition-colors",
                           favorites[item.id]
                             ? "fill-red-500 stroke-red-500"
                             : "stroke-gray-400",

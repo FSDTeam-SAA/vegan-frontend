@@ -1,20 +1,24 @@
 import TopProfessionaCard from "@/components/shared/cards/top-professional-card";
 import { MoveRight } from "lucide-react";
+import Link from "next/link";
 
 const TopProfessionals = () => {
   return (
-    <div className="py-[48px] md:py-[80px] container ">
-      <div className="flex justify-between items-center w-full ">
-        <h1 className="text-[#1D3557] text-[24px] md:text-[32px] leading-[30px] md:leading-[40px] font-medium font-lexend">
+    <div className="container py-[48px] md:py-[80px]">
+      <div className="flex w-full items-center justify-between">
+        <h1 className="font-lexend text-[24px] font-medium leading-[30px] text-[#1D3557] md:text-[32px] md:leading-[40px]">
           Some Of Our Top Professionals
         </h1>
-        <button className="text-[#1D3557] w-[150px] md:w-fit border-b-[2px] text-[14px] md:text-[16px] h-[30px] md:h-auto  border-[#1D3557] py-[4px] flex gap-[2px] group transition-all duration-300 ">
+        <Link
+          href="/professionals"
+          className="group flex h-[30px] w-[150px] gap-[2px] border-b-[2px] border-[#1D3557] py-[4px] text-[14px] text-[#1D3557] transition-all duration-300 md:h-auto md:w-fit md:text-[16px]"
+        >
           Browse all
-          <MoveRight className="relative transition-transform duration-300 transform group-hover:translate-x-2" />
-        </button>
+          <MoveRight className="relative transform transition-transform duration-300 group-hover:translate-x-2" />
+        </Link>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[24px] mt-[54px] md:mt-[80px]">
+      <div className="mt-[54px] grid grid-cols-1 gap-[24px] md:mt-[80px] md:grid-cols-2 lg:grid-cols-3">
         {[1, 2, 3, 4, 5, 6].map((n) => (
           <TopProfessionaCard key={n} />
         ))}

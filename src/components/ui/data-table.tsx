@@ -41,7 +41,8 @@ export function DataTable<TData, TValue>({
                 return (
                   <TableHead
                     key={header.id}
-                    className="rounded-t-[12px] bg-white py-[15px] text-left text-[#444444]"
+
+                    className="text-left text-[#444444] py-[15px] bg-white rounded-t-[12px]"
                   >
                     {header.isPlaceholder
                       ? null

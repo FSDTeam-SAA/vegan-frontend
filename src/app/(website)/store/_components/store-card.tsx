@@ -72,7 +72,7 @@ export function StoreHeaderCarousel() {
             <CarouselItem key={index}>
               <Card className="border-none bg-transparent shadow-none">
                 <CardContent className="">
-                  <p className="max-w-[920px] font-lexend text-[48px] font-semibold leading-[72px] text-white md:text-[56px] md:leading-[84px] md:tracking-[-4%]">
+                  <p className="max-w-[920px] font-lexend text-[36px] font-semibold text-white md:text-[48px] md:leading-[72px] md:tracking-[-4%] lg:text-[56px] lg:leading-[84px]">
                     {testimonial.content}
                   </p>
                 </CardContent>

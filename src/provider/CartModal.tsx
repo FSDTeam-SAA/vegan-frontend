@@ -1,117 +1,145 @@
 "use client";
 
-import {
-  AlertDialog,
-  AlertDialogContent,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import VeganModal from "@/components/ui/vegan-modal";
 import useCartState from "@/hooks/useCartState";
-import { Calendar, Clock, Info, X } from "lucide-react";
-import { ReactNode } from "react";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Calendar, Clock, Info } from "lucide-react";
 import Image from "next/image";
 
-interface Props {
-  trigger: ReactNode;
-}
-
-const CartModal = ({ trigger }: Props) => {
+const CartsModal = () => {
   const { isOpen, toggleCart } = useCartState();
 
-  // get all the carts items from api or local storage / session storage
-
   return (
-    <AlertDialog open={isOpen} onOpenChange={toggleCart}>
-      <AlertDialogTrigger>{trigger}</AlertDialogTrigger>
-      <AlertDialogContent>
-        <div className="min-h-[868px] min-w-[700px]">
-          <div className="flex w-full items-center justify-between">
-            <p className="font-inter text-[24px] font-semibold leading-[29.05px] text-[#262C40]">
-              Your Cart (2)
-            </p>
-            <Button variant="link" size="icon" onClick={toggleCart}>
-              <X />
-            </Button>
-          </div>
+    <VeganModal
+      className="h-[868px] w-full lg:w-[700px]"
+      open={isOpen}
+      onOpenChange={toggleCart}
+    >
+      <div>
+        <div className="flex w-full items-center justify-between">
+          <p className="font-inter text-lg font-semibold leading-[29.05px] text-[#262C40] md:text-[24px]">
+            Your Cart (5)
+          </p>
+        </div>
 
-          {/* render the children props data here  */}
-          <Card className="mx-auto mt-10 w-full border-none shadow-none">
-            <div className="mb-8 mt-4 flex items-center gap-4 rounded-lg bg-[#FFF7ED] py-[15.5px] font-inter text-[#FF8904]">
-              <Info className="ml-[14px] h-5 w-5" />
-              <p className="text-sm font-normal leading-[16.94px]">
-                Services are reserved for 10 minutes. Please complete checkout
-                before they expire.
-              </p>
-            </div>
+        {/* Info Alert */}
+        <div
+          className="mb-8 mt-4 items-center gap-4 rounded-lg bg-[#FFF7ED] py-[15.5px] font-inter text-[#FF8904]"
+          style={{
+            background: "#FFF7ED",
+            padding: "12px",
+            color: "#FF8904",
+            display: "flex",
+          }}
+        >
+          <Info className="ml-[12px] min-h-6 min-w-6 flex-auto md:ml-[14px]" />
+          <p className="font-inter text-sm font-normal leading-[21px] md:leading-[16.94px]">
+            Services are reserved for 10 minutes. Please complete checkout
+            before they expire.
+          </p>
+        </div>
 
-            {[1, 2].map((item) => (
-              <div key={item} className="mt-10">
-                <div className="flex gap-4">
-                  <div className="relative h-32 w-32 flex-shrink-0">
-                    <Image
-                      src="https://res.cloudinary.com/dgnustmny/image/upload/v1738670389/pexels-elly-fairytale-3822688_1_pn1lrl.png"
-                      alt="Yoga class in session"
-                      fill
-                      className="rounded-lg object-cover"
-                    />
+        <hr />
+
+        <ScrollArea className="h-[500px]">
+          {[...Array(5)].map((_, index) => (
+            <div key={index} className="my-10">
+              <div className="gap-8 space-y-4 md:flex">
+                {/* Larger Screens */}
+                <div className="relative hidden h-[180px] w-[180px] md:block">
+                  <Image
+                    src="https://res.cloudinary.com/dw5wizivl/image/upload/v1739273667/cfaqgurhwippuqjzy3w8.png"
+                    alt="Yoga class in session"
+                    fill
+                    className="rounded-lg object-cover"
+                  />
+                </div>
+
+                {/* Smaller Screens */}
+                <div
+                  className="relative h-[180px] w-full md:hidden"
+                  style={{ aspectRatio: "16/6" }}
+                >
+                  <Image
+                    src="https://res.cloudinary.com/dw5wizivl/image/upload/v1739273667/cfaqgurhwippuqjzy3w8.png"
+                    alt="Yoga class in session"
+                    fill
+                    className="rounded-lg object-cover"
+                  />
+                </div>
+
+                {/* Cart Details */}
+                <div className="flex-1">
+                  <div className="mb-2 flex items-start justify-between">
+                    <div className="space-y-2">
+                      <span className="rounded-xl bg-[#F9FAFB] px-[10px] py-[5px] text-sm text-gray-500">
+                        {index === 1 ? "One-Time Payment" : "Subscription"}
+                      </span>
+                      <h3 className="font-lexend text-base font-normal leading-[20px] text-[#1D3557] md:text-lg md:leading-[22.5px]">
+                        Yoga Class
+                      </h3>
+                    </div>
+                    <span className="font-inter text-xl font-medium leading-[24px] text-[#1D3557] md:text-[22px] md:leading-[26.63px]">
+                      $19.99
+                    </span>
                   </div>
-                  <div className="flex-1">
-                    <div className="mb-2 flex items-start justify-between">
-                      <div>
-                        <span className="text-sm text-muted-foreground">
-                          {item === 1 ? "One-Time Payment" : "Subscription"}
-                        </span>
-                        <h3 className="text-lg font-semibold">Yoga Class</h3>
-                      </div>
-                      <span className="text-lg font-semibold">$19.99</span>
-                    </div>
 
-                    <p className="mb-3 text-muted-foreground">
-                      Join Sarah Green, a certified yoga instructor offering
-                      personalized yoga classes for all levels.
-                    </p>
+                  <p className="mb-3 font-inter text-sm font-normal leading-[24px] text-[#374151] md:text-base">
+                    Join Sarah Green, a certified yoga instructor offering
+                    personalized yoga classes for all levels.
+                  </p>
 
-                    <div className="mb-2 flex items-center gap-4 text-sm text-muted-foreground">
-                      <div className="flex items-center gap-1">
-                        <Calendar className="h-4 w-4" />
-                        29th January, 2025 at 10:00am
-                      </div>
+                  <div className="mb-2 flex items-center gap-4 text-sm text-muted-foreground">
+                    <div className="flex items-center gap-2 text-sm font-normal text-[#1D3557] md:text-base md:leading-[19.36px]">
+                      <Calendar className="h-4 w-4" />
+                      29th January, 2025 at 10:00am
                     </div>
+                  </div>
 
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-1 text-sm text-orange-600">
-                        <Clock className="h-4 w-4" />
-                        Reserved for: 8:42
-                      </div>
-                      <Button
-                        variant="link"
-                        className="h-auto p-0 text-sm font-normal"
-                      >
-                        Remove
-                      </Button>
+                  <div className="mt-6 flex items-center justify-between">
+                    <div
+                      className="flex items-center gap-1"
+                      style={{
+                        color: "#FF8904",
+                      }}
+                    >
+                      <Clock className="h-4 w-4" />
+                      <span className="*:text-sm">Reserved for: 8:42</span>
                     </div>
+                    <Button
+                      variant="link"
+                      className="h-auto p-0 font-inter text-lg font-normal leading-[26px] text-[#1D3557] underline"
+                    >
+                      Remove
+                    </Button>
                   </div>
                 </div>
               </div>
-            ))}
-
-            <div className="mb-6 flex items-center justify-between py-4">
-              <span className="text-lg font-medium">Total Amount</span>
-              <span className="text-lg font-semibold">$40.00</span>
+              <Separator className="block" style={{ marginTop: "10px" }} />
             </div>
+          ))}
+        </ScrollArea>
 
-            <Button
-              className="w-full bg-[#1a365d] hover:bg-[#1a365d]/90"
-              size="lg"
-            >
-              Proceed To Checkout
-            </Button>
-          </Card>
+        <div className="mb-10 flex items-center justify-between pt-6">
+          <span className="font-inter text-lg font-normal leading-[26px] text-[#262C40]">
+            Total Amount
+          </span>
+          <span className="leadin-[24px] font-inter text-xl font-semibold">
+            $40.00
+          </span>
         </div>
-      </AlertDialogContent>
-    </AlertDialog>
+
+        <Button
+          className="h-[50px] w-full text-center font-inter !text-lg !font-medium leading-[21.78px]"
+          size="lg"
+        >
+          Proceed To Checkout
+        </Button>
+      </div>
+    </VeganModal>
   );
 };
 
-export default CartModal;
+export default CartsModal;

@@ -47,7 +47,7 @@ const VeganTabs: FC<AnimatedTabsProps> = ({
             >
               {activeTab === tab.id && (
                 <motion.div
-                  className="absolute bottom-[-4px] left-0 h-[4px] w-full"
+                  className="absolute bottom-[-2px] left-0 h-[3px] w-full"
                   layoutId="underline"
                   style={{ backgroundColor: "#1F2937" }}
                 />

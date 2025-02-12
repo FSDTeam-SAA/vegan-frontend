@@ -14,17 +14,18 @@ const ClientManagementContainer = () => {
                     <TabsTrigger value="policies">Policies</TabsTrigger>
                     <TabsTrigger value="faqs">FAQS</TabsTrigger>
                 </TabsList>
+                <div className='border-b-[2px] border-[#F4F0EB] -mt-[6px]'/>
                 <TabsContent value="bookings">
                     <BookingsContainer />
                 </TabsContent>
                 <TabsContent value="policies">
-                    <div className='px-[40px] pt-[40px] pb-[136px]'>
+                    <div className='pt-[40px] pb-[136px]'>
                         <Policies />
                     </div>
 
                 </TabsContent>
                 <TabsContent value="faqs">
-                    <div className='px-[40px]'>
+                    <div className=''>
                         <Faqs/>
                     </div>
                 </TabsContent>

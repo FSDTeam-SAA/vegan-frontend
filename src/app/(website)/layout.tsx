@@ -6,7 +6,7 @@ import { ReactNode } from "react";
 const WebsiteLayout = async ({ children }: { children: ReactNode }) => {
   const session = await auth();
   return (
-    <div>
+    <div className="">
       <Navbar loggedin={!!session} />
       {children}
       <Footer />
