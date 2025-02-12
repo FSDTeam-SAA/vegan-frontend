@@ -34,7 +34,12 @@ export const loginWithEmailAndPassword = async (
 
     // // Attempt to sign in with credentials
     await signIn("credentials", {
-      data: resData.user,
+      data: JSON.stringify({
+        token: resData["data"]["token"],
+        userId: resData["data"]["user"]["_id"],
+        role: resData["data"]["user"]["role"],
+        accountType: resData["data"]["user"]["accountType"] ?? "",
+      }),
       redirect: false, // Disable automatic redirect to handle it manually
       email: data.email,
       password: data.password,
