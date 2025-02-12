@@ -1,4 +1,3 @@
-
 "use client";
 
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
@@ -10,7 +9,7 @@ const BookingsContainer = () => {
       <div className="w-full  h-auto rounded-t-[12px]">
         <TableContainer data={BookingData} columns={BookingColumn} />
       </div>
-      {/* large device  */}
+      {/ large device  /}
       <div className="hidden md:block">
         <div className="bg-[#F8F5F2] w-full flex items-center justify-between p-4">
           <p className="font-normal text-[16px] leading-[19.2px] text-[#444444]">
@@ -20,7 +19,8 @@ const BookingsContainer = () => {
             <PacificPagination
               currentPage={currentPage}
               totalPages={10}
-              onPageChange={(page) => setCurrentPage(page)}
+              onPageChange={(page)
+ => setCurrentPage(page)}
             />
           </div>
           <div className="flex items-center gap-[16px]">
@@ -29,7 +29,7 @@ const BookingsContainer = () => {
           </div>
         </div>
       </div>
-      {/* small device  */}
+      {/ small device  /}
       <div className="block md:hidden">
         <div className="flex items-center justify-between bg-white p-[24px]">
           <ArrowLeft className="w-[20px] h-[20px] text-[#717680]"/>
