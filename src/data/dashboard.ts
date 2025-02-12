@@ -1,7 +1,9 @@
 "use client";
 import {
+  BadgeCheck,
   Box,
   Briefcase,
+  Calendar,
   CalendarCheck,
   CircleDotDashed,
   CircleHelp,
@@ -9,9 +11,12 @@ import {
   Heart,
   Info,
   LayoutDashboard,
+  ListVideo,
   Package,
   PhoneCallIcon,
+  Target,
   Truck,
+  User,
   Users,
   Video,
   Wallet,
@@ -28,6 +33,44 @@ export type NavigationItem = {
   linkText: string;
   roles: string[];
 };
+
+export const adminDashboardTabsList = [
+  {
+    id: crypto.randomUUID(),
+    path: "/dashboard/admin",
+    icon: LayoutDashboard,
+    linkText: "Overview",
+    roles: ["admin"],
+  },
+  {
+    id: crypto.randomUUID(),
+    path: "/dashboard/admin/vendor-management",
+    icon: User,
+    linkText: "Vendor Management",
+    roles: ["admin"],
+  },
+  {
+    id: crypto.randomUUID(),
+    path: "/dashboard/admin/verification-management",
+    icon: BadgeCheck,
+    linkText: "Verification Management",
+    roles: ["admin"],
+  },
+  {
+    id: crypto.randomUUID(),
+    path: "/dashboard/admin/go-live",
+    icon: Video,
+    linkText: "Go Live",
+    roles: ["admin"],
+  },
+  {
+    id: crypto.randomUUID(),
+    path: "/dashboard/admin/support",
+    icon: CircleHelp,
+    linkText: "Support & Help Center",
+    roles: ["admin"],
+  },
+] as NavigationItem[];
 
 export const merchantTabsList = [
   {
@@ -131,6 +174,44 @@ export const professionalTabsList = [
     icon: CircleHelp,
     linkText: "Help Center & Support",
     roles: ["professional"],
+  },
+] as NavigationItem[];
+
+export const organizationTabsList = [
+  {
+    id: crypto.randomUUID(),
+    path: "/dashboard/organization",
+    icon: LayoutDashboard,
+    linkText: "Overview",
+    roles: ["admin", "user"],
+  },
+  {
+    id: crypto.randomUUID(),
+    path: "/dashboard/organization/event-management",
+    icon: Calendar,
+    linkText: "Event Management",
+    roles: ["admin", "user"],
+  },
+  {
+    id: crypto.randomUUID(),
+    path: "/dashboard/organization/fundraising-management",
+    icon: Target,
+    linkText: "Fundraising Management",
+    roles: ["admin", "user"],
+  },
+  {
+    id: crypto.randomUUID(),
+    path: "/dashboard/organization/go-live",
+    icon: ListVideo,
+    linkText: "Go Live",
+    roles: ["admin", "user", "delivery man"],
+  },
+  {
+    id: crypto.randomUUID(),
+    path: "/dashboard/organization/support-center",
+    icon: Info,
+    linkText: "Support & Help Center",
+    roles: ["admin", "delivery man"],
   },
 ] as NavigationItem[];
 
