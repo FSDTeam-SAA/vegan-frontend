@@ -7,12 +7,15 @@ import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { Accordion, AccordionContent, AccordionItem } from "@/components/ui/accordion"
 import { Button } from "@/components/ui/button"
-import { ChevronUp, PencilLine } from "lucide-react"
+import { ChevronUp, PencilLine, X } from "lucide-react"
 import Image from "next/image"
+import { AddServiceForm } from "./add-service-form"
+import { ScrollArea } from "@/components/ui/scroll-area"
 
 export default function Service() {
     const [veganClassVisible, setVeganClassVisible] = useState(true)
     const [mealPlanningVisible, setMealPlanningVisible] = useState(true)
+    const [isOpenService, setIsOpenService] = useState(false);
 
     return (
         <div className="p-[24px] md:p-[32px] lg:p-[40px] bg-[#F8F5F2] rounded-[16px]">
@@ -31,7 +34,7 @@ export default function Service() {
                         </div>
 
                         <div>
-                            <ChevronUp className="cursor-pointer"/>
+                            <ChevronUp className="cursor-pointer" />
                         </div>
                     </div>
 
@@ -89,7 +92,7 @@ export default function Service() {
                         </AccordionItem>
                     </Accordion>
                     <div className="flex justify-end mt-4">
-                        <Button className="text-base font-normal text-[#1F2937] leading-[23px]" variant="ghost" size="sm">
+                        <Button onClick={() => setIsOpenService(!isOpenService)} className="text-base font-normal text-[#1F2937] leading-[23px]" variant="ghost" size="sm">
                             <PencilLine />
                             Edit Service
                         </Button>
@@ -110,7 +113,7 @@ export default function Service() {
                         </div>
 
                         <div>
-                            <ChevronUp className="cursor-pointer"/>
+                            <ChevronUp className="cursor-pointer" />
                         </div>
                     </div>
 
@@ -125,6 +128,30 @@ export default function Service() {
                     </div>
                 </CardContent>
             </Card>
+
+            {/* edit service modal  */}
+            <div>
+                {
+                    isOpenService && (
+                        <section
+                            className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-30 backdrop-blur-sm z-50"
+                        >
+
+                            {/* Modal content */}
+                            <div className="relative z-10 ">
+                                <div className="flex items-center justify-between px-[32px] py-[30px] bg-white shadow-lg rounded-t-lg">
+                                    <h4 className="text-xl font-medium text-[#1F2937] leading-[24px]">Edit Service Details</h4>
+                                    <X className="cursor-pointer" onClick={() => setIsOpenService(false)} />
+                                </div>
+                                <ScrollArea className='w-[327px] md:w-[500px] lg:w-[769px] h-[700px] rounded-b-[16px]'>
+                                    <AddServiceForm setIsOpenService={setIsOpenService} />
+                                </ScrollArea>
+
+                            </div>
+                        </section>
+                    )
+                }
+            </div>
         </div>
     )
 }
