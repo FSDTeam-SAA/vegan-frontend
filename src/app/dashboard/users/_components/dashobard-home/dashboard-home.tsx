@@ -3,7 +3,7 @@
 import StatsDashboard from "./StatsDashboard";
 import ReferralEarningsChart from "./ReferralEarningsChart";
 
-export default function Dashboard() {
+export default function Overview() {
   return (
     <div className="space-y-8 p-2">
       <div>

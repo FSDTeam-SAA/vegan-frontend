@@ -52,7 +52,7 @@ export default function WishlistManagement() {
         </p>
       </div>
 
-      <div className="mb-6">
+      <div className="mb-6 overflow-x-auto">
         <VeganTabs
           tabs={tabs}
           defaultActiveTab={activeTab}
