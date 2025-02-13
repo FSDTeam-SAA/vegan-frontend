@@ -12,17 +12,17 @@ import React from "react";
 export default function DashboardRevenue() {
   return (
     <div>
-      <div className="grid grid-cols-3 gap-6 rounded-xl bg-[#F8F5F2] p-10">
+      <div className="grid gap-6 rounded-xl bg-[#F8F5F2] p-6 md:grid-cols-3 md:p-10">
         <Card className="bg-transparent shadow-none">
           <CardHeader className="flex flex-row items-center justify-between px-4 pb-2 pt-4">
-            <CardTitle className="pb-4 text-sm font-normal text-[#6B7280]">
+            <CardTitle className="text-sm font-normal text-[#6B7280] md:pb-4">
               Total Earnings
             </CardTitle>
-            <button className="text-gray-400 hover:text-gray-500">
+            <button className="hidden text-gray-400 hover:text-gray-500 md:block">
               <MoreVertical className="h-5 w-5" />
             </button>
           </CardHeader>
-          <CardContent className="p-4 pb-3">
+          <CardContent className="p-4 pb-3 md:pt-0">
             <div className="mb-[26px] font-inter text-[30px] font-medium leading-[36.31px] text-[#1F2937]">
               $9,705.21
             </div>
@@ -37,7 +37,7 @@ export default function DashboardRevenue() {
             <CardTitle className="pb-4 text-sm font-normal text-[#6B7280]">
               Product Sales Earnings
             </CardTitle>
-            <button className="text-gray-400 hover:text-gray-500">
+            <button className="hidden text-gray-400 hover:text-gray-500 md:block">
               <MoreVertical className="h-5 w-5" />
             </button>
           </CardHeader>
@@ -58,7 +58,7 @@ export default function DashboardRevenue() {
             <CardTitle className="pb-4 text-sm font-normal text-[#6B7280]">
               Referral Earnings
             </CardTitle>
-            <button className="text-gray-400 hover:text-gray-500">
+            <button className="hidden text-gray-400 hover:text-gray-500 md:block">
               <MoreVertical className="h-5 w-5" />
             </button>
           </CardHeader>
