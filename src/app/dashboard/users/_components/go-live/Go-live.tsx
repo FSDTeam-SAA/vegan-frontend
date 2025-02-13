@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { useState } from "react";
-import { Calendar, Clock, MapPin } from "lucide-react";
+import { Calendar, Clock } from "lucide-react";
 import { eventsData } from "./goLiveData";
 
 export default function GoLive() {
@@ -12,10 +12,10 @@ export default function GoLive() {
   const events = eventsData[activeTab];
 
   return (
-    <div className="min-h-screen bg-[#f5efea]">
+    <div className="min-h-screen">
       <div className="mx-auto w-full">
-        <div className="mb-8 space-y-1">
-          <h1 className="text-xl font-semibold">Go Live</h1>
+        <div className="mb-[80px] space-y-1">
+          <h1 className="text-[ #1F2937] text-[24px] font-semibold">Go Live</h1>
           <p className="text-sm text-muted-foreground">
             Keep track of your earnings, breakdowns, and payout preferences.
           </p>
@@ -48,24 +48,28 @@ export default function GoLive() {
             </div>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-4 rounded-[16px] bg-[#f5efea] p-[10px] lg:p-[40px]">
             {events.map((event) => (
               <div key={event.id} className="space-y-4 rounded-lg bg-white p-6">
                 <div className="space-y-4">
                   <div className="flex items-start justify-between">
                     <span className="rounded-full bg-gray-100 px-2 py-1 text-xs">
-                      {event.spotsAvailable}{" "}
-                      {event.spotsAvailable === 1 ? "spot" : "spots"} available
+                      {event.eventType} Event
                     </span>
                     <span className="text-base font-semibold">
-                      {event.hoursPerWeek} hrs/week
+                      $ {event.price}
                     </span>
                   </div>
                   <div className="space-y-1">
-                    <h3 className="text-base font-semibold">{event.title}</h3>
-                    <div className="flex items-center gap-2 text-sm text-gray-600">
-                      <MapPin className="h-4 w-4" />
-                      <span>{event.location}</span>
+                    <div className="flex flex-col lg:flex-row">
+                      <h3 className="text-base font-semibold">{event.title}</h3>
+                      <h1 className="mx-2 hidden text-[16px] font-normal text-[#6A7282] lg:block">
+                        {" "}
+                        |
+                      </h1>
+                      <h4 className="text-[16px] font-normal text-[#6A7282]">
+                        {event.hosted} by Sarah Johnson
+                      </h4>
                     </div>
                   </div>
                   <p className="text-sm text-gray-600">{event.description}</p>
@@ -82,9 +86,9 @@ export default function GoLive() {
                 </div>
                 <button
                   className="rounded bg-[#1a2b3b] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#1a2b3b]/90 disabled:cursor-not-allowed disabled:opacity-50"
-                  disabled={event.status === "completed"}
+                  hidden={event.status === "completed"}
                 >
-                  {event.status === "completed" ? "Completed" : "Join Event"}
+                  {event.status === "completed" ? "Completed " : "Join Event"}
                 </button>
               </div>
             ))}
