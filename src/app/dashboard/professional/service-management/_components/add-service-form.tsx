@@ -41,7 +41,7 @@ const formSchema = z.object({
 
 
 
-export function AddServiceForm({data}: { data?: veganCookingDataType }) {
+export function AddServiceForm({ data }: { data?: veganCookingDataType }) {
     const [image, setImage] = useState<File | null>(null)
     const [video, setVideo] = useState<File | null>(null)
     const [isSubmitting, setIsSubmitting] = useState(false)
@@ -186,13 +186,13 @@ export function AddServiceForm({data}: { data?: veganCookingDataType }) {
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="text-lg font-medium leading-[26px] text-[#1F2937]">Payment Type</FormLabel>
-                                    <Select  onValueChange={field.onChange} defaultValue={field.value}>
+                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
                                         <FormControl className="w-full md:w-[344px] h-[48px] bg-[#F9FAFB] border border-[#F3F4F6] outline-none py-[12px] px-[16px]">
                                             <SelectTrigger>
                                                 <SelectValue placeholder="Select type" />
                                             </SelectTrigger>
                                         </FormControl>
-                                        <SelectContent>
+                                        <SelectContent className="w-[344px]">
                                             <SelectItem value="free">Free</SelectItem>
                                             <SelectItem value="one-time">One-time Payment</SelectItem>
                                             <SelectItem value="subscription">Subscription</SelectItem>
@@ -226,6 +226,7 @@ export function AddServiceForm({data}: { data?: veganCookingDataType }) {
                                     }`}
                                 onDragOver={(e) => e.preventDefault()}
                                 onDrop={(e) => handleFileDrop(e, "image")}
+                                style={{ height: "160px" }}
                             >
                                 {image ? (
                                     <div className="relative">
@@ -271,6 +272,7 @@ export function AddServiceForm({data}: { data?: veganCookingDataType }) {
                                     }`}
                                 onDragOver={(e) => e.preventDefault()}
                                 onDrop={(e) => handleFileDrop(e, "video")}
+                                style={{ height: "160px" }}
                             >
                                 {video ? (
                                     <div className="relative">
@@ -293,7 +295,7 @@ export function AddServiceForm({data}: { data?: veganCookingDataType }) {
                                             Click to Upload
                                             <input
                                                 type="file"
-                                                className="hidden"
+                                                className="hidden "
                                                 accept="video/*"
                                                 onChange={(e) => handleFileSelect(e, "video")}
                                             />
@@ -302,6 +304,7 @@ export function AddServiceForm({data}: { data?: veganCookingDataType }) {
                                 )}
                             </div>
                         </div>
+
                     </div>
 
                     <div className="flex justify-end gap-4 pt-[20px]">
