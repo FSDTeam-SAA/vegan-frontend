@@ -1,15 +1,29 @@
-import { DefaultSession } from "next-auth";
+import { type DefaultSession } from "next-auth";
+
+export type ExtendedUser = DefaultSession["user"] & {
+  token: string;
+  userId: string;
+  role: string;
+  accountType: "merchant" | "professional" | "organization" | null;
+};
 
 declare module "next-auth" {
-  /**
-   * Returned by `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
-   */
   interface Session {
+    user: ExtendedUser;
+  }
+}
+
+import "next-auth/jwt";
+
+declare module "next-auth/jwt" {
+  /** Returned by the `jwt` callback and `getToken`, when using JWT sessions */
+  interface JWT {
+    /** OpenID ID Token */
     user: {
-      /** The user's postal address. */
-      token: string;
-      joinAs: string;
-      accountType: string;
-    } & DefaultSession["user"];
+      _id: string;
+      role: string;
+      email: string;
+      accountType: "merchant" | "professional" | "organization" | null;
+    };
   }
 }

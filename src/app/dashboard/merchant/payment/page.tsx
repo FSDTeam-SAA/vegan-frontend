@@ -1,15 +1,15 @@
 import React from "react";
-import EventsManagement from "../_components/go-live/events";
 import DashboardHeading from "../_components/dashboard-heading";
+import MerchantPayment from "../_components/payment/payment";
 
 export default function page() {
   return (
-    <div>
+    <div className="p-6">
       <DashboardHeading
-        title="Events Management"
-        subTitle="Manage your events"
+        title="Payments & Revenue"
+        subTitle="Keep track of your earnings, breakdowns, and payout preferences."
       />
-      <EventsManagement />
+      <MerchantPayment />
     </div>
   );
 }

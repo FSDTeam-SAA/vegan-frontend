@@ -10,7 +10,7 @@ interface StatCardProps {
 
 export function StatCard({ title, value, onMenuClick }: StatCardProps) {
   return (
-    <Card className="h-[101px] min-w-[326px] bg-[#F8F5F2] shadow-none">
+    <Card className="h-[101px] min-w-[290px] bg-[#F8F5F2] shadow-none">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 px-4 pb-2 pt-4">
         <h3 className="text-sm font-medium text-muted-foreground">{title}</h3>
         <Button variant="ghost" size="icon" onClick={onMenuClick}>
