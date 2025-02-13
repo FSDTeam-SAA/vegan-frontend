@@ -136,7 +136,7 @@ export function BulkUploadDialog({ open, onClose }: BulkUploadDialogProps) {
                 ref={fileInputRef}
                 id="file-upload"
                 type="file"
-                accept=".csv"
+                accept=".png"
                 className="sr-only"
                 onChange={handleFileSelect}
               />
