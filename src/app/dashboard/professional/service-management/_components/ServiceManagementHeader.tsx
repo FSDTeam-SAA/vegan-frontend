@@ -47,7 +47,7 @@ const ServiceManagementHeader = () => {
                                 <X className="cursor-pointer" onClick={() => setIsOpenService(false)} />
                             </div>
                             <ScrollArea className='w-[327px] md:w-[500px] lg:w-[769px] h-[700px] rounded-b-[16px]'>
-                                <AddServiceForm setIsOpenService={setIsOpenService} />
+                                <AddServiceForm  />
                             </ScrollArea>
 
                         </div>

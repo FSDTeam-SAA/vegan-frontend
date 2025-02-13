@@ -2,11 +2,12 @@ export interface VolunteerEvent {
   id: string;
   title: string;
   description: string;
-  hoursPerWeek: number;
+  price: number;
   duration: string;
-  location: string;
+
   month: number;
-  spotsAvailable: number;
+  eventType: string;
+  hosted: string;
   status: "upcoming" | "completed";
 }
 
@@ -19,23 +20,28 @@ export const eventsData: EventsData = {
   upcoming: [
     {
       id: "1",
-      title: "Community Garden Helper",
-      description: "Help maintain our community garden and educate visitors.",
-      hoursPerWeek: 4,
-      duration: "1 Month",
-      location: "Sunshine Beach",
-      spotsAvailable: 1,
+      title: "Vegan Cooking Class",
+      description:
+        "Learn to cook delicious plant-based meals with professional guidance.",
+      price: 49.0,
+      duration: "10:00am - 11:00am",
+
+      eventType: "Paid",
+      hosted: " Johnson",
       month: 1,
+
       status: "upcoming",
     },
     {
       id: "2",
-      title: "Community Garden Helper",
-      description: "Help maintain our community garden and educate visitors.",
-      hoursPerWeek: 4,
-      duration: "1 Month",
-      location: "Sunshine Beach",
-      spotsAvailable: 1,
+      title: "Vegan Cooking Class",
+      description:
+        "Learn to cook delicious plant-based meals with professional guidance.",
+      price: 0,
+      duration: "10:00am - 11:00am",
+
+      eventType: "Free",
+      hosted: " Johnson",
       month: 1,
       status: "upcoming",
     },
@@ -43,23 +49,27 @@ export const eventsData: EventsData = {
   completed: [
     {
       id: "3",
-      title: "Community Garden Helper",
-      description: "Help maintain our community garden and educate visitors.",
-      hoursPerWeek: 4,
-      duration: "1 Month",
-      location: "Sunshine Beach",
-      spotsAvailable: 0,
+      title: "Vegan Cooking Class",
+      description:
+        "Learn to cook delicious plant-based meals with professional guidance.",
+      price: 43,
+      duration: "10:00am - 11:00am",
+
+      eventType: "Free",
+      hosted: " Johnson",
       month: 1,
       status: "completed",
     },
     {
       id: "4",
-      title: "Community Garden Helper",
-      description: "Help maintain our community garden and educate visitors.",
-      hoursPerWeek: 4,
-      duration: "1 Month",
-      location: "Sunshine Beach",
-      spotsAvailable: 0,
+      title: "Vegan Cooking Class",
+      description:
+        "Learn to cook delicious plant-based meals with professional guidance.",
+      price: 0,
+      duration: "10:00am - 11:00am",
+
+      eventType: "Paid",
+      hosted: " Johnson",
       month: 1,
       status: "completed",
     },
