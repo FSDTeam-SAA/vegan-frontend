@@ -42,7 +42,7 @@ export default function Policies() {
   return (
     <Card className="w-full mt-[48px] bg-[#F8F5F2]">
       <CardHeader>
-        <CardTitle className="text-xl font-semibold leading-[29px] text-[#1F2937] pb-[20px] md:pb-[40px]">Appointment Settings</CardTitle>
+        <CardTitle className="text-xl font-semibold leading-[29px] text-[#1F2937] pb-[2px] md:pb-[8px]">Appointment Settings</CardTitle>
       </CardHeader>
       <CardContent >
         <Form {...form}>

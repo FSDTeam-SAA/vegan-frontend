@@ -15,5 +15,5 @@ export const veganCookingData: veganCookingDataType[] = [
         metaDescription: "I specialize in vegan nutrition coaching and meal planning. This includes personalized diet plans, cooking tutorials, and ongoing support for your plant-based journey.",
         keywords: ["vegan cooking", "plant-based meals", "healthy cooking", "vegan cooking"],
         media: ["/assets/service-management.png", "/assets/service-management.png"]
-    },
+    }
 ]
