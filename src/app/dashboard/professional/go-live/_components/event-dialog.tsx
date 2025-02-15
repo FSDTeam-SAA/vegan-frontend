@@ -137,7 +137,7 @@ export function EventDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="w-[327px] md:w-[664px]">
         <DialogHeader>
           <DialogTitle className="flex items-center justify-between">
             {mode === "add" ? "Add New Event" : "Edit Event"}
