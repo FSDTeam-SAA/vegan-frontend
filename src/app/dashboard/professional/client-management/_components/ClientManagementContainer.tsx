@@ -29,7 +29,6 @@ const tabs = [
             </button>
           ))}
         </div>
-  
         <div className="">
           {activeTab === "bookings" && <BookingsContainer />}
           {activeTab === "policies" &&  <Policies />}

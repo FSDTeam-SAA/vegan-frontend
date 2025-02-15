@@ -28,6 +28,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
+// import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 interface Order {
   id: number;
@@ -158,7 +159,7 @@ export default function DashboardDataTable() {
 
   if (!isMounted) {
     return (
-      <div className="p-6">
+      <div className="md:p-6">
         <div className="flex h-[600px] items-center justify-center">
           <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-primary" />
         </div>
@@ -198,7 +199,10 @@ export default function DashboardDataTable() {
         </div>
       </div>
 
+      {/* Table content  */}
+
       <div className="rounded-lg border bg-white">
+        {/* <ScrollArea className="w-[1090px] whitespace-nowrap rounded-md border"> */}
         <Table>
           <TableHeader className="">
             <TableRow className="font-inter leading-[17px] *:text-sm *:text-[#6B7280]">
@@ -243,6 +247,8 @@ export default function DashboardDataTable() {
             )}
           </TableBody>
         </Table>
+        {/* <ScrollBar orientation="horizontal" />
+        </ScrollArea> */}
       </div>
 
       <PaginationControls
