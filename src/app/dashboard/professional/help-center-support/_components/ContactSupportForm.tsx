@@ -34,7 +34,7 @@ export default function ContactSupportForm({ setIsOpen }: ContactSupportProps) {
   return (
     <div className="">
       <Form {...form} >
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 px-[32px] py-[40px] bg-white shadow-lg rounded-lg max-w-[700px] max-h-[553px]">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 px-[20px] md:px-[26px] lg:px-[32px] py-[40px] bg-white shadow-lg rounded-lg min-w-[327px] max-w-[700px] max-h-[553px]">
           <div className="flex items-center justify-between">
           <h4 className="text-xl font-medium text-[#1F2937] leading-[24px]">Contact Support</h4>
             <X className="cursor-pointer" onClick={() => setIsOpen(false)} />

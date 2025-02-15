@@ -6,7 +6,7 @@ const Page = () => {
     return (
         <div className='px-10 pt-[32px] md:pt-[40px] pb-[24px] md:pb-[40px] lg:pb-[56px]'>
             <ClientManagementHeader/>
-            <ClientManagementContainer/>
+            <ClientManagementContainer />
         </div>
     );
 };

@@ -8,8 +8,8 @@ import {
   Clock,
   ChevronDown,
   ChevronUp,
-  Pencil,
   Trash2,
+  PenLine,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -51,16 +51,19 @@ export function EventCard({
   return (
     <Card className="bg-tran mb-4 border-[#E5E7EB] shadow-none">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 bg-white pb-0">
-        <Badge
-          variant={type === "Paid" ? "secondary" : "outline"}
-          className="h-6 font-inter text-sm font-normal leading-[16.94px] text-[#1E2939]"
-        >
-          {type} Event
-        </Badge>
-        <div className="flex items-center gap-2">
+        <div>
+          <Badge
+            variant={type === "Paid" ? "secondary" : "outline"}
+            className="h-6 font-inter text-sm font-normal leading-[16.94px] text-[#1E2939]"
+          >
+            {type} Event
+          </Badge>
+        </div>
+        <div className="flex w-auto items-center justify-between gap-2 md:w-[215px]">
           <Button
             variant="ghost"
             size="icon"
+            className="hidden md:block"
             onClick={() =>
               onEdit({
                 type,
@@ -73,18 +76,28 @@ export function EventCard({
               })
             }
           >
-            <Pencil className="h-4 w-4" />
-            <span className="sr-only">Edit</span>
+            <p className="flex items-center gap-2">
+              <PenLine className="h-5 w-5" />
+              <span className="text-base font-normal leading-[23px] text-[#1F2937]">
+                Edit
+              </span>
+            </p>
           </Button>
+
           <Button
             variant="ghost"
             size="icon"
             onClick={onDelete}
-            className="text-red-500"
+            className="hidden text-red-500 md:block"
           >
-            <Trash2 className="h-4 w-4" />
-            <span className="sr-only">Delete</span>
+            <p className="flex items-center gap-2">
+              <Trash2 className="h-5 w-5" />
+              <span className="text-base font-normal leading-[23px] text-[#DC2626]">
+                Delete
+              </span>
+            </p>
           </Button>
+
           <Button
             variant="ghost"
             size="icon"
@@ -113,7 +126,7 @@ export function EventCard({
                 {description}
               </p>
             </div>
-            <div className="flex items-center gap-6 space-x-4 *:text-lg *:leading-[26px] *:text-[#6A7282]">
+            <div className="flex flex-col items-start gap-3 *:text-lg *:leading-[26px] *:text-[#6A7282] md:flex-row md:items-center md:gap-6 md:space-x-4">
               <div className="flex items-center gap-2">
                 <Calendar1Icon className="h-4 w-4" />
                 <span>{date}</span>
@@ -123,19 +136,68 @@ export function EventCard({
                 <span>{timeRange}</span>
               </div>
             </div>
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col items-start justify-start gap-[24px] md:flex-row md:items-center md:justify-between md:gap-0">
               <span className="font-inter text-xl font-medium leading-[29px] text-[#1F2937]">
                 ${price.toFixed(2)}
               </span>
-              <Button size="xl" className="ml-4 bg-[#1D3557] px-[30px] py-[15px] text-center font-inter text-base !font-medium leading-[19.36px] text-white">
+              <Button
+                size="xl"
+                className="w-full bg-[#1D3557] px-[30px] py-[15px] text-center font-inter text-base !font-medium leading-[19.36px] text-white md:w-auto"
+              >
                 Join Event
               </Button>
+            </div>
+
+            {/* button  */}
+            <div className="block md:hidden">
+              <div className="flex items-center justify-center gap-10">
+                <div>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() =>
+                      onEdit({
+                        type,
+                        title,
+                        description,
+                        date,
+                        timeRange,
+                        price,
+                        metrics,
+                      })
+                    }
+                  >
+                    <p className="flex items-center gap-2">
+                      <PenLine className="h-5 w-5" />
+                      <span className="text-base font-normal leading-[23px] text-[#1F2937]">
+                        Edit
+                      </span>
+                    </p>
+                  </Button>
+                </div>
+
+                <div>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={onDelete}
+                    className="text-red-500"
+                  >
+                    <p className="flex items-center gap-2">
+                      <Trash2 className="h-5 w-5" />
+                      <span className="text-base font-normal leading-[23px] text-[#DC2626]">
+                        Delete
+                      </span>
+                    </p>
+                  </Button>
+                </div>
+              </div>
             </div>
           </div>
 
           {/* Event Metrics Section */}
           {isExpanded && metrics && (
-            <div className="m-6 space-y-4">
+            <div className="m-6 space-y-4 pb-6">
               <h3 className="mb-2 bg-transparent text-lg font-semibold">
                 Event Metrics
               </h3>

@@ -45,6 +45,21 @@ export function AddServiceForm({ data }: { data?: veganCookingDataType }) {
     const [image, setImage] = useState<File | null>(null)
     const [video, setVideo] = useState<File | null>(null)
     const [isSubmitting, setIsSubmitting] = useState(false)
+    const [charCount, setCharCount] = useState({
+        serviceName: 0,
+        metaDescription: 0,
+        serviceDescription: 0,
+        keywords: 0,
+    });
+
+
+
+    const handleCharCountChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, field: string) => {
+        setCharCount((prev) => ({
+            ...prev,
+            [field]: e.target.value.length,
+        }));
+    };
 
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -99,21 +114,38 @@ export function AddServiceForm({ data }: { data?: veganCookingDataType }) {
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 px-[32px] pb-[24px] bg-white shadow-lg rounded-b-lg">
 
                     <div className="">
+
                         <FormField
                             control={form.control}
                             name="serviceName"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <div className="flex items-center justify-between pt-6 md:mt-0">
-                                        <FormLabel className="text-lg font-medium leading-[26px] text-[#1F2937]">Service Name</FormLabel>
-                                        <span className="text-lg font-normal text-[#6B7280] leading-[26px]">0/100</span>
-                                    </div>
-                                    <FormControl>
-                                        <Input className="w-full md:w-[705px] h-[48px] bg-[#F9FAFB] border border-[#F3F4F6] outline-none py-[12px] px-[16px]" placeholder="“E.g Vegan Cooking Classes”" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
+                            render={({ field }) => {
+                                return (
+                                    <FormItem>
+                                        <div className="flex items-center justify-between pt-6 md:mt-0">
+                                            <FormLabel className="text-lg font-medium leading-[26px] text-[#1F2937]">
+                                                Service Name
+                                            </FormLabel>
+                                            <span className="text-lg font-normal text-[#6B7280] leading-[26px]">
+                                                {charCount.serviceName}/100
+                                            </span>
+                                        </div>
+                                        <FormControl>
+                                            <Input
+                                                className="w-full md:w-[705px] h-[48px] bg-[#F9FAFB] border border-[#F3F4F6] outline-none py-[12px] px-[16px]"
+                                                placeholder="E.g Vegan Cooking Classes"
+                                                {...field}
+                                                maxLength={100}
+                                                onChange={(e) => {
+                                                    field.onChange(e);
+                                                    handleCharCountChange(e, "serviceName");
+
+                                                }}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                );
+                            }}
                         />
                     </div>
 
@@ -125,13 +157,18 @@ export function AddServiceForm({ data }: { data?: veganCookingDataType }) {
                                 <FormItem>
                                     <div className="flex items-center justify-between">
                                         <FormLabel className="text-lg font-medium leading-[26px] text-[#1F2937]">Meta Description</FormLabel>
-                                        <span className="text-lg font-normal text-[#6B7280] leading-[26px]">0/200</span>
+                                        <span className="text-lg font-normal text-[#6B7280] leading-[26px]">{charCount.metaDescription}/200</span>
                                     </div>
                                     <FormControl>
                                         <Textarea
                                             placeholder="“Write a brief and engaging description that appears in your search results”"
                                             className="w-full md:w-[705px] h-[127px] bg-[#F9FAFB] border border-[#F3F4F6] outline-none py-[12px] px-[16px]"
                                             {...field}
+                                            maxLength={200}
+                                            onChange={(e) => {
+                                                field.onChange(e)
+                                                handleCharCountChange(e, "metaDescription");
+                                            }}
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -148,13 +185,18 @@ export function AddServiceForm({ data }: { data?: veganCookingDataType }) {
                             <FormItem>
                                 <div className="flex items-center justify-between">
                                     <FormLabel className="text-lg font-medium leading-[26px] text-[#1F2937]">Service Description</FormLabel>
-                                    <span className="text-lg font-normal text-[#6B7280] leading-[26px]">0/200</span>
+                                    <span className="text-lg font-normal text-[#6B7280] leading-[26px]">{charCount.serviceDescription}/200</span>
                                 </div>
                                 <FormControl>
                                     <Textarea
                                         placeholder="“Describe your service in detail. What service do you offer?”"
                                         className="w-full md:w-[705px] h-[127px] bg-[#F9FAFB] border border-[#F3F4F6] outline-none py-[12px] px-[16px]"
                                         {...field}
+                                        maxLength={200}
+                                        onChange={(e)=>{
+                                            field.onChange(e)
+                                            handleCharCountChange(e, "serviceDescription")
+                                        }}
                                     />
                                 </FormControl>
                                 <FormMessage />
@@ -169,10 +211,15 @@ export function AddServiceForm({ data }: { data?: veganCookingDataType }) {
                             <FormItem>
                                 <div className="flex items-center justify-between">
                                     <FormLabel className="text-lg font-medium leading-[26px] text-[#1F2937]">Keywords</FormLabel>
-                                    <span className="text-lg font-normal text-[#6B7280] leading-[26px]">0/100</span>
+                                    <span className="text-lg font-normal text-[#6B7280] leading-[26px]">{charCount.keywords}/100</span>
                                 </div>
                                 <FormControl>
-                                    <Input className="w-full md:w-[705px] h-[48px] bg-[#F9FAFB] border border-[#F3F4F6] outline-none py-[12px] px-[16px]" placeholder="E.g vegan, cooking, healthy lifestyle" {...field} />
+                                    <Input className="w-full md:w-[705px] h-[48px] bg-[#F9FAFB] border border-[#F3F4F6] outline-none py-[12px] px-[16px]" placeholder="E.g vegan, cooking, healthy lifestyle" {...field}
+                                    onChange={(e)=>{
+                                        field.onChange(e)
+                                        handleCharCountChange(e, "keywords")
+                                    }}
+                                    />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
