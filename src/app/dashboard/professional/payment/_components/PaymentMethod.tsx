@@ -14,7 +14,7 @@ const PaymentMethod = () => {
         <div className='py-[56px]'>
             <div className='p-[24px] md:p-[32px] lg:p-[40px] bg-[#F8F5F2] rounded-[16px]'>
                 <div className='flex flex-col md:flex-row items-start md:items-center justify-start md:justify-between gap-[24px]'>
-                    <h5 className='text-lg md:text-xl font-medium text-[#1F2937] leading-[21px] md:leading-[24px]'>Profit Sharing</h5>
+                    <h5 className='text-lg md:text-xl font-medium text-[#1F2937] leading-[21px] md:leading-[24px]'>Payment Methods</h5>
                     <Button onClick={handlePaymentMethodForm} className='text-base font-medium text-[#1F2937] leading-[19px]' size="xl" variant="outline">Add A Method</Button>
 
                 </div>
