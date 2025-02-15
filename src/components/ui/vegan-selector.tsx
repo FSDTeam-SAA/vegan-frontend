@@ -14,11 +14,13 @@ const VeganSelector = ({
   selectedValue,
   onValueChange,
   className,
+  placeholder,
 }: {
   list: DropDownItem[]; // List of items
   selectedValue: string; // Currently selected value
   onValueChange: (value: string) => void; // Function to handle value change
   className?: string;
+  placeholder?: string;
 }) => {
   return (
     <Select
@@ -31,7 +33,7 @@ const VeganSelector = ({
           className,
         )}
       >
-        <SelectValue placeholder={selectedValue} className="text-[#4B5563]" />
+        <SelectValue placeholder={placeholder} className="text-[#4B5563]" />
       </SelectTrigger>
       <SelectContent className="w-auto rounded-[8px]">
         <SelectGroup>
