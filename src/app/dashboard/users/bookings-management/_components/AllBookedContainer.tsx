@@ -7,15 +7,15 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useState } from "react";
-import { BookingColumn } from "./BookingColumn";
-import { BookingData, BookingDataType } from "./bookingData";
+import { AllBookedData, AllBookedDataType } from "./AllBookedData";
+import { AllBookedColumn } from "./AllBookedColumn";
 
-const BookingsContainer = () => {
+const AllBookedContainer = () => {
   const [currentPage, setCurrentPage] = useState(1);
   return (
     <section className="w-full">
       <div className="h-auto w-full rounded-t-[12px]">
-        <TableContainer data={BookingData} columns={BookingColumn} />
+        <TableContainer data={AllBookedData} columns={AllBookedColumn} />
       </div>
 
       <PacificPagination
@@ -28,14 +28,14 @@ const BookingsContainer = () => {
   );
 };
 
-export default BookingsContainer;
+export default AllBookedContainer;
 
 const TableContainer = ({
   data,
   columns,
 }: {
-  data: BookingDataType[];
-  columns: ColumnDef<BookingDataType>[];
+  data: AllBookedDataType[];
+  columns: ColumnDef<AllBookedDataType>[];
 }) => {
   const table = useReactTable({
     data,
