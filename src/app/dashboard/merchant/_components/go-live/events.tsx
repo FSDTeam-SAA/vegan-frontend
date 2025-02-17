@@ -5,12 +5,23 @@ import { Header } from "./header";
 import { EventDialog } from "./event-dialog";
 import { EventCard, type EventData } from "./EventCard";
 import { EventsData } from "../data";
-import { cn } from "@/lib/utils";
+import VeganTabs from "@/components/ui/Vegan-Tab";
 
 export default function EventsMangement() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingEvent, setEditingEvent] = useState<EventData | undefined>();
   const [activeTab, setActiveTab] = useState("upcoming-events");
+
+  const tabs = [
+    {
+      id: "upcoming-events",
+      label: "Upcoming Events",
+    },
+    {
+      id: "past-events",
+      label: "Past Events",
+    },
+  ];
   const handleSubmit = (data: unknown) => {
     if (editingEvent) {
       console.log("Editing event:", data);
@@ -39,22 +50,7 @@ export default function EventsMangement() {
         }}
       />
       <div className="overflow-x-auto md:mb-12">
-        <nav className="flex space-x-1 border-b-2 border-white">
-          {EventsData.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={cn(
-                "relative px-4 py-2 text-[18px] font-medium",
-                activeTab === tab.id
-                  ? "border-b-2 border-primary text-primary"
-                  : "text-gray-500 hover:text-gray-700",
-              )}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </nav>
+        <VeganTabs tabs={tabs} defaultActiveTab={activeTab} onTabChange={(tab)=>setActiveTab(tab)}/>
       </div>
       <div className="">
         {EventsData.filter((items) => items.id === activeTab).map((section) => (
