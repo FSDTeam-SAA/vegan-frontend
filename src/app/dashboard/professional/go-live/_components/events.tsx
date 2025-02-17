@@ -3,9 +3,9 @@
 import { useState } from "react";
 import { EventDialog } from "./event-dialog";
 import { EventCard, type EventData } from "./EventCard";
-import { cn } from "@/lib/utils";
 import { Header } from "./header";
 import { EventsData } from "./data";
+import VeganTabs, { VeganTab } from "@/components/ui/Vegan-Tab";
 
 export default function EventsMangement() {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -30,6 +30,17 @@ export default function EventsMangement() {
     console.log("Deleting event:", sectionId, eventIndex);
   };
 
+  const tabs = [
+    {
+      id: "upcoming-events",
+      label: "Upcoming Events",
+    },
+    {
+      id: "past-events",
+      label: "Past Events",
+    },
+  ] as VeganTab[];
+
   return (
     <div className="min-h-screen">
       <Header
@@ -38,28 +49,21 @@ export default function EventsMangement() {
           setDialogOpen(true);
         }}
       />
-      <div className="overflow-x-auto mb-[44px] md:mb-12">
-        <nav className="flex space-x-1 border-b-2 border-white">
-          {EventsData.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={cn(
-                "relative px-4 py-2 text-[18px] font-medium",
-                activeTab === tab.id
-                  ? "border-b-2 border-primary text-primary"
-                  : "text-gray-500 hover:text-gray-700",
-              )}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </nav>
+
+      <div className="mb-[44px] overflow-x-auto md:mb-12">
+        
+
+        <VeganTabs
+          tabs={tabs}
+          defaultActiveTab={activeTab}
+          onTabChange={(tab) => setActiveTab(tab)}
+        />
       </div>
+
       <div className="">
-        {EventsData.filter((items) => items.id === activeTab).map((section) => (
+        {EventsData?.filter((items) => items?.id === activeTab)?.map((section) => (
           <div key={section.id}>
-            <div className="space-y-6 rounded-lg bg-[#F8F5F2] p-4 md:p-7 lg:p-10">
+            <div className="space-y-6 rounded-[12px] bg-[#F8F5F2] p-4 md:p-7 lg:p-10 ">
               {section.items.map((event, index) => (
                 <EventCard
                   key={`${section.id}-${index}`}

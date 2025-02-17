@@ -2,8 +2,9 @@
 import React, { useState } from 'react';
 import UpcomingBooking from './UpcomingBooking';
 import AllBookedService from './AllBookedService';
+import VeganTabs, { VeganTab } from '@/components/ui/Vegan-Tab';
 
-const taps = [
+const tabs = [
     {
         id : "upcoming-bookings",
         label : "Upcoming Bookings"
@@ -12,23 +13,19 @@ const taps = [
         id : "all-booked-services",
         label : "All Booked Services"
     }
-]
+] as VeganTab[];
 
 const BooklingManagementcontainerTab = () => {
-    const [activeTab, setActiveTab] = useState(taps[0].id );
+    const [activeTab, setActiveTab] = useState("upcoming-bookings");
 
     
     return (
         <div className='pt-[56px]'>
-            <div className='border-b-[2px] border-[#F8F5F2] flex items-center gap-10'>
-                {
-                    taps?.map((tab)=>(
-                        <button className={`p-2 ${activeTab == tab.id ? "text-base md:text-lg font-medium leading-[21px] text-[#1F2937] border-b-[2px] border-[#1F2937]" : "text-lg font-normal text-[#717680] leading-[21px]"}`} onClick={()=>setActiveTab(tab.id)}
-                         key={tab?.id}
-                         >{tab.label}</button>
-                    ))
-                }
-            </div>
+            <VeganTabs 
+             tabs={tabs}
+             defaultActiveTab={activeTab}
+             onTabChange={(tab)=> setActiveTab(tab)}
+            />
             <div>
                 {activeTab === "upcoming-bookings" && <UpcomingBooking/>}
                 {activeTab === "all-booked-services" && <AllBookedService/>}
