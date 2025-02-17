@@ -1,7 +1,10 @@
 import { auth } from "@/auth";
 import Footer from "@/components/home/footer/footer";
-import Navbar from "@/components/navbar/navbar";
+import dynamic from "next/dynamic";
 import { ReactNode } from "react";
+const Navbar = dynamic(() => import("@/components/navbar/navbar"), {
+  ssr: false,
+});
 
 const WebsiteLayout = async ({ children }: { children: ReactNode }) => {
   const session = await auth();
@@ -16,5 +19,3 @@ const WebsiteLayout = async ({ children }: { children: ReactNode }) => {
 };
 
 export default WebsiteLayout;
-
-// test commit

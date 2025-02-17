@@ -1,4 +1,4 @@
-export function ExperienceTab() {
+export default function ExperienceTab() {
   return (
     <div className="max-w-[604px]">
       <h1 className="mb-6 font-lexend text-lg font-medium leading-[22px] text-[#1D3557] md:leading-[25px]">

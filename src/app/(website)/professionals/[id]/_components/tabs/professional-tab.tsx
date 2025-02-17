@@ -1,41 +1,49 @@
 "use client";
 import VeganTabs, { VeganTab } from "@/components/ui/Vegan-Tab";
+import { AnimatePresence, motion } from "framer-motion";
+import dynamic from "next/dynamic";
 import { useState } from "react";
-import { AboutTab } from "./about-tab";
-import { ExperienceTab } from "./experience-tab";
-import { FAQsTab } from "./faqs-tab";
-import { LiveStreamTab } from "./live-stream-tab";
-import { ReviewsTab } from "./reviews-tab";
-import { ServicesTab } from "./services-tab";
+
+// Dynamically import components only when needed
+const AboutTab = dynamic(() => import("./about-tab"), { ssr: false });
+const ExperienceTab = dynamic(() => import("./experience-tab"), { ssr: false });
+const ServicesTab = dynamic(() => import("./services-tab"), { ssr: false });
+const LiveStreamTab = dynamic(() => import("./live-stream-tab"), {
+  ssr: false,
+});
+const FAQsTab = dynamic(() => import("./faqs-tab"), { ssr: false });
+const ReviewsTab = dynamic(() => import("./reviews-tab"), { ssr: false });
+
 const lists = [
-  {
-    id: "about",
-    label: "About",
-  },
-  {
-    id: "experience",
-    label: "Experience",
-  },
-  {
-    id: "services",
-    label: "Services",
-  },
-  {
-    id: "live-stream",
-    label: "Live Stream",
-  },
-  {
-    id: "faqs",
-    label: "FAQs",
-  },
-  {
-    id: "reviews",
-    label: "Reviews",
-  },
+  { id: "about", label: "About" },
+  { id: "experience", label: "Experience" },
+  { id: "services", label: "Services" },
+  { id: "live-stream", label: "Live Stream" },
+  { id: "faqs", label: "FAQs" },
+  { id: "reviews", label: "Reviews" },
 ] as VeganTab[];
 
 const ProfessionalTab = () => {
   const [activeTab, setActiveTab] = useState<string>("about");
+
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case "about":
+        return <AboutTab />;
+      case "experience":
+        return <ExperienceTab />;
+      case "services":
+        return <ServicesTab />;
+      case "live-stream":
+        return <LiveStreamTab />;
+      case "faqs":
+        return <FAQsTab />;
+      case "reviews":
+        return <ReviewsTab />;
+      default:
+        return null;
+    }
+  };
 
   return (
     <div className="container mt-[40px] md:mt-[56px]">
@@ -47,12 +55,18 @@ const ProfessionalTab = () => {
         />
       </div>
       <div className="mt-[40px]">
-        {activeTab === "about" && <AboutTab />}
-        {activeTab === "experience" && <ExperienceTab />}
-        {activeTab === "services" && <ServicesTab />}
-        {activeTab === "live-stream" && <LiveStreamTab />}
-        {activeTab === "faqs" && <FAQsTab />}
-        {activeTab === "reviews" && <ReviewsTab />}
+        <AnimatePresence initial={false}>
+          <motion.div
+            key={activeTab} // Ensures a new animation on tab switch
+            initial={{ height: 0, opacity: 0.5 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.7 }}
+            style={{ overflow: "hidden" }} // Prevents overflow during animation
+          >
+            {renderTabContent()}
+          </motion.div>
+        </AnimatePresence>
       </div>
     </div>
   );

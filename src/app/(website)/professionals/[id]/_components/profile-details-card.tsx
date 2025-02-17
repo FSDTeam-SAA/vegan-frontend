@@ -18,7 +18,7 @@ const vendorProfile = {
   heroImage:
     "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Professionial%20detail-vD0HtZP25Z4ygrNjwxW74dhI3OxbpU.png",
 };
-export function ProfileCard() {
+export default function ProfileCard() {
   return (
     <div className="container mx-auto min-h-[248px] rounded-[20px] bg-white px-0 shadow-none">
       <div className="flex w-full flex-col justify-between p-[24px] md:flex-row">
