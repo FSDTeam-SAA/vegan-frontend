@@ -2,7 +2,7 @@ import { Card, CardContent } from "@/components/ui/card";
 
 import { AboutCarousel } from "./AboutCarousel";
 
-export function AboutTab() {
+export default function AboutTab() {
   return (
     <div className="max-w-[892px]">
       <Card className="mb-10 mt-[55px] border-none shadow-none">
