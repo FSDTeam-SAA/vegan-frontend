@@ -30,7 +30,7 @@ const forgotPasswordSchema = z.object({
 type ForgotPasswordSchemaType = z.infer<typeof forgotPasswordSchema>;
 
 interface Response {
-  status: boolean;
+  success: boolean;
   message: string;
 }
 
@@ -63,7 +63,7 @@ export function ForgotPasswordForm() {
       console.log(data);
       setLoading(true);
 
-      if (!data.status) {
+      if (!data.success) {
         toast.error(data.message, {
           position: "top-right",
           richColors: true,
