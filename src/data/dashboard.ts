@@ -243,14 +243,14 @@ export const usersTabsList = [
     path: "/dashboard/users/go-live",
     icon: Video,
     linkText: "Go Live",
-    roles: ["user", "delivery man"],
+    roles: ["user"],
   },
   {
     id: crypto.randomUUID(),
     path: "/dashboard/users/product-order-management",
     icon: Package,
     linkText: "Product Order Management",
-    roles: ["admin", "delivery man"],
+    roles: ["admin"],
   },
   {
     id: crypto.randomUUID(),
@@ -271,6 +271,6 @@ export const usersTabsList = [
     path: "/dashboard/users/support-help-center",
     icon: Info,
     linkText: "Support & Help Center",
-    roles: ["admin", "delivery man"],
+    roles: ["user"],
   },
 ] as NavigationItem[];
