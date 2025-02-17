@@ -18,7 +18,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export default function MerchantSearch() {
+export default function HeroSearch() {
   const [activeTab, setActiveTab] = useState("merchants");
   const [loading, setLoading] = useState(false);
   const [value, setValue] = useState("");
