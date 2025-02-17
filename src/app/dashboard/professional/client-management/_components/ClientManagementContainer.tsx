@@ -1,21 +1,22 @@
-"use client"
+"use client";
 import { useState } from "react";
 import BookingsContainer from "./BookingsContainer";
 import Faqs from "./Faqs";
 import Policies from "./Policies";
+import VeganTabs, { VeganTab } from "@/components/ui/Vegan-Tab";
 
 const tabs = [
-    { id: "bookings", label: "Bookings" },
-    { id: "policies", label: "Policies" },
-    { id: "faqs", label: "FAQS" },
-  ];
-  
-  export default function ClientManagementContainer() {
-    const [activeTab, setActiveTab] = useState(tabs[0].id);
-  
-    return (
-      <div className="">
-        <div className="flex space-x-10 border-b-[2px] border-[#F4F0EB]">
+  { id: "bookings", label: "Bookings" },
+  { id: "policies", label: "Policies" },
+  { id: "faqs", label: "FAQS" }
+] as VeganTab[];
+
+export default function ClientManagementContainer() {
+  const [activeTab, setActiveTab] = useState("bookings");
+
+  return (
+    <div className="">
+      {/* <div className="flex space-x-10 border-b-[2px] border-[#F4F0EB]">
           {tabs.map((tab) => (
             <button
               key={tab.id}
@@ -28,13 +29,17 @@ const tabs = [
               {tab.label}
             </button>
           ))}
-        </div>
-        <div className="">
-          {activeTab === "bookings" && <BookingsContainer />}
-          {activeTab === "policies" &&  <Policies />}
-          {activeTab === "faqs" && <Faqs/>}
-        </div>
+        </div> */}
+      <VeganTabs
+        tabs={tabs}
+        defaultActiveTab={activeTab}
+        onTabChange={(tab) => setActiveTab(tab)}
+      />
+      <div className="">
+        {activeTab === "bookings" && <BookingsContainer />}
+        {activeTab === "policies" && <Policies />}
+        {activeTab === "faqs" && <Faqs />}
       </div>
-    );
-  }
-  
+    </div>
+  );
+}
