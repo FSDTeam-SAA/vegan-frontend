@@ -3,9 +3,9 @@
 // Packages
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import { Loader2 } from "lucide-react";
+import { Loader2, Plus, X } from "lucide-react";
 import { redirect, useSearchParams } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 
 // Local imports
 import { Button } from "@/components/ui/button";
@@ -83,16 +83,44 @@ export default function ProfileSetupForm() {
       ...(type === "professional" && {
         fullName: "",
         businessName: "",
-        about: "",
+        aboutMe: "",
         experience: "",
+        Profession: "",
+        experiences: [{ title: "fsdfdsf" }],
+        certifications: [{ name: "fsdfdsf" }],
       }),
     },
   });
 
+  const {
+    fields: experienceFields,
+    append: appendExperience,
+    remove: removeExperience,
+  } = useFieldArray({
+    control: form.control,
+    name:
+      type === "professional" || type === "organization"
+        ? "experiences"
+        : "experiences",
+  });
+
+  const {
+    fields: certificationFields,
+    append: appendCertification,
+    remove: removeCertification,
+  } = useFieldArray({
+    control: form.control,
+    name:
+      type === "professional" || type === "organization"
+        ? "certifications"
+        : "certifications",
+  });
+
   async function onSubmit(data: ProfileFormData) {
+    console.log(data);
     delete data.type;
     if (type === "professional") {
-      professionalMutate(data as ProfessionalBodyData);
+      // professionalMutate(data as ProfessionalBodyData);
     }
   }
 
@@ -219,6 +247,25 @@ export default function ProfileSetupForm() {
                       </FormItem>
                     )}
                   />
+                  <FormField
+                    control={form.control}
+                    name="Profession"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-[14px] text-[#1F2937]">
+                          Profession
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            className="h-[48px] bg-white px-[26px] py-[13px]"
+                            placeholder="Enter your profession"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                 </>
               )}
 
@@ -248,7 +295,7 @@ export default function ProfileSetupForm() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-[14px] font-medium">
-                      {type === "professional" ? "About" : "About Us"}
+                      {type === "professional" ? "About Me" : "About Us"}
                     </FormLabel>
                     <FormControl>
                       <Textarea
@@ -266,26 +313,81 @@ export default function ProfileSetupForm() {
                 )}
               />
 
+              <FormField
+                control={form.control}
+                name="aboutMe" // This should match the schema exactly
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-[14px] font-medium">
+                      About
+                    </FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Provide a brief insight about yourself"
+                        className="bg-white px-[26px] py-[13px] lg:h-[127px]"
+                        maxLength={300}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormDescription>Maximum 300 characters</FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
               {(type === "organization" || type === "professional") && (
-                <FormField
-                  control={form.control}
-                  name="experience"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Experience & Certifications</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          placeholder="List your relevant experience and certifications"
-                          className="h-[127px] bg-white"
-                          maxLength={300}
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormDescription>Maximum 300 characters</FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                <div>
+                  <div className="mb-5 flex w-full items-center justify-between">
+                    <FormLabel>Experience</FormLabel>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() =>
+                        appendExperience({
+                          title: "",
+                        })
+                      }
+                    >
+                      <Plus className="mr-2 h-4 w-4" />
+                      Add Experience
+                    </Button>
+                  </div>
+                  {experienceFields.map((field, index) => (
+                    <div
+                      className="relative mt-2 flex h-[40px] items-center"
+                      key={field.id}
+                    >
+                      <FormField
+                        control={form.control}
+                        name={`experiences.${index}.title`}
+                        render={({ field }) => (
+                          <FormItem className="flex-1">
+                            <FormControl>
+                              <div className="flex items-center gap-x-3">
+                                <Input
+                                  placeholder="Add Your experience here..."
+                                  className="bg-white shadow-none"
+                                  {...field}
+                                />
+                                <Button
+                                  type="button"
+                                  variant="outline"
+                                  size="icon"
+                                  className="bg-white"
+                                  onClick={() => removeExperience(index)}
+                                >
+                                  <X />
+                                </Button>
+                              </div>
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  ))}
+                </div>
               )}
 
               <FormField

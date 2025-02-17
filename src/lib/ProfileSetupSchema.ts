@@ -1,5 +1,14 @@
 import { z } from "zod";
 
+const certificationSchema = z.object({
+  name: z.string().optional(),
+});
+
+// Experience and certification schemas
+const experienceSchema = z.object({
+  title: z.string().optional(),
+});
+
 // Base schema for common fields
 const baseSchema = {
   address: z.string().min(1, "Address is required"),
@@ -36,8 +45,11 @@ export const profileSchema = z.discriminatedUnion("type", [
     type: z.literal("professional").optional(),
     fullName: z.string().min(1, "Full name is required"),
     businessName: z.string().optional(),
-    aboutMe: z.string().min(10, "About must be at least 10 characters"),
+    aboutMe: z.string().optional(),
     experience: z.string().min(10, "Experience must be at least 10 characters"),
+    Profession: z.string({ message: "Profession is required" }),
+    experiences: z.array(experienceSchema).optional(),
+    certifications: z.array(certificationSchema).optional(),
     ...baseSchema,
   }),
 ]);
