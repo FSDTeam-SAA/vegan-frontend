@@ -66,6 +66,7 @@ export type UserData = {
     role: string;
     email: string;
     accountType: "merchant" | "professional" | "organization" | null;
+    token: string;
   };
 };
 

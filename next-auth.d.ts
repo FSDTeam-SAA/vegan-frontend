@@ -24,6 +24,7 @@ declare module "next-auth/jwt" {
       role: string;
       email: string;
       accountType: "merchant" | "professional" | "organization" | null;
+      token: string;
     };
   }
 }
