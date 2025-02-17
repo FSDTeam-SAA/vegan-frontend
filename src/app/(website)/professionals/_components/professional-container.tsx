@@ -1,7 +1,11 @@
 "use client";
+
+// Packages
+import { useState } from "react";
+
+// Local imports
 import ProfessionalCard from "@/components/shared/cards/professional-card";
 import VeganPagination from "@/components/ui/vegan-pagination";
-import { useState } from "react";
 
 const ProfessionalContainer = () => {
   const [currentPage, setCurrentPage] = useState(1);
