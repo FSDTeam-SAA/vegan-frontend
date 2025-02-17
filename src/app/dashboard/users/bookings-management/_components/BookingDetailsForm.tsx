@@ -224,8 +224,8 @@ const BookingDetailsForm = ({bookingId, setIsOpen}: {
           </div>
 
           <div className="flex items-center justify-end gap-[16px]">
-            <Button size="xl" variant="outline" className="text-base font-medium text-[#EF4444] leading-[19px] py-[14px] px-[16px] rounded-[10px]">Cancel Booking</Button>
-            <Button size="xl" type="submit" className="py-[14px] px-[39px] rounded-[10px]">Reschedule</Button>
+            <Button size="xl" variant="outline" className="text-base font-medium text-[#EF4444] leading-[19px] py-[14px] px-[16px] rounded-[10px] shadow-none" onClick={() => setIsOpen(false)} >Cancel Booking</Button>
+            <Button size="xl" type="submit" className="py-[14px] px-[39px] rounded-[10px] shadow-none">Reschedule</Button>
           </div>
         </form>
       </Form>

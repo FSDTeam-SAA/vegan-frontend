@@ -31,7 +31,7 @@ const VeganTabs: FC<AnimatedTabsProps> = ({
   return (
     <LayoutGroup>
       <div className="w-full">
-        <nav className="inline-flex min-w-full space-x-1 border-b-2 border-[#9CA3AF]">
+        <nav className="inline-flex min-w-full space-x-1 border-b-2 border-[#F8F5F2]">
           {tabs.map((tab) => (
             <motion.button
               key={tab.id}
