@@ -27,7 +27,7 @@ import { getProfileType } from "@/lib/utils";
 interface ProfessionalBodyData {
   fullName: string;
   businessName: string;
-  aboutMe: string;
+  about: string;
   experience: string;
   address: string;
   websiteURL: string;
@@ -72,19 +72,18 @@ export default function ProfileSetupForm() {
       websiteURL: "",
       ...(type === "merchant" && {
         businessName: "",
-        about_us: "",
+        about: "",
       }),
       ...(type === "organization" && {
         organization_name: "",
-        about_us: "",
+        about: "",
         mission: "",
         experience: "",
       }),
       ...(type === "professional" && {
         fullName: "",
         businessName: "",
-        aboutMe: "",
-        experience: "",
+        about: "",
         Profession: "",
         experiences: [{ title: "fsdfdsf" }],
         certifications: [{ name: "fsdfdsf" }],
@@ -291,7 +290,7 @@ export default function ProfileSetupForm() {
 
               <FormField
                 control={form.control}
-                name={type === "professional" ? "aboutMe" : "about_us"}
+                name="about"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-[14px] font-medium">
@@ -302,28 +301,6 @@ export default function ProfileSetupForm() {
                         placeholder={`Provide a brief insight about ${
                           type === "professional" ? "yourself" : "your " + type
                         }`}
-                        className="bg-white px-[26px] py-[13px] lg:h-[127px]"
-                        maxLength={300}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormDescription>Maximum 300 characters</FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="aboutMe" // This should match the schema exactly
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-[14px] font-medium">
-                      About
-                    </FormLabel>
-                    <FormControl>
-                      <Textarea
-                        placeholder="Provide a brief insight about yourself"
                         className="bg-white px-[26px] py-[13px] lg:h-[127px]"
                         maxLength={300}
                         {...field}
@@ -367,14 +344,14 @@ export default function ProfileSetupForm() {
                               <div className="flex items-center gap-x-3">
                                 <Input
                                   placeholder="Add Your experience here..."
-                                  className="bg-white shadow-none"
+                                  className="h-[48px] bg-white px-[26px] py-[13px] shadow-none"
                                   {...field}
                                 />
                                 <Button
                                   type="button"
                                   variant="outline"
                                   size="icon"
-                                  className="bg-white"
+                                  className="h-[48px] w-[48px] bg-white"
                                   onClick={() => removeExperience(index)}
                                 >
                                   <X />
@@ -401,7 +378,6 @@ export default function ProfileSetupForm() {
                     <FormControl>
                       <Input
                         className="h-[48px] bg-white px-[26px] py-[13px]"
-                        type="url"
                         placeholder="Enter your website URL"
                         {...field}
                       />
