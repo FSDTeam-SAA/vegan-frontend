@@ -1,5 +1,9 @@
+import dynamic from "next/dynamic";
 import { Suspense } from "react";
-import ProfileSetupForm from "./_components/profile-setup-form";
+const ProfileSetupForm = dynamic(
+  () => import("./_components/profile-setup-form"),
+  { ssr: false },
+);
 
 const Page = () => {
   return (
