@@ -250,7 +250,7 @@ export const usersTabsList = [
     path: "/dashboard/users/product-order-management",
     icon: Package,
     linkText: "Product Order Management",
-    roles: ["admin"],
+    roles: ["user"],
   },
   {
     id: crypto.randomUUID(),
@@ -261,7 +261,7 @@ export const usersTabsList = [
   },
   {
     id: crypto.randomUUID(),
-    path: "/dashboard/users/",
+    path: "/dashboard/users/profile-settings",
     icon: CircleDotDashed,
     linkText: "Profile & Settings",
     roles: ["user"],
