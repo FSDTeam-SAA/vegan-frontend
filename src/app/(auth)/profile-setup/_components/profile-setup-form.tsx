@@ -2,11 +2,12 @@
 
 // Packages
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import { Loader2 } from "lucide-react";
 import { redirect, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 
 // Local imports
-
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -23,18 +24,52 @@ import { Textarea } from "@/components/ui/textarea";
 import { ProfileFormData, profileSchema } from "@/lib/ProfileSetupSchema";
 import { getProfileType } from "@/lib/utils";
 
+interface ProfessionalBodyData {
+  fullName: string;
+  businessName: string;
+  aboutMe: string;
+  experience: string;
+  address: string;
+  websiteURL: string;
+}
+
 export default function ProfileSetupForm() {
   const searchParams = useSearchParams();
   const type = getProfileType({ type: searchParams.get("type") ?? undefined });
+  const userId = searchParams.get("userId");
 
-  if (!type) redirect("/");
+  if (!type || !userId) redirect("/");
+
+  const { mutate: professionalMutate, isPending: professionalPending } =
+    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+    useMutation<any, unknown, ProfessionalBodyData>({
+      mutationKey: ["professional_update"],
+      mutationFn: (data) =>
+        fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/ProfessionalInfo`,
+          {
+            method: "POST",
+            headers: {
+              "content-type": "application/json",
+            },
+            body: JSON.stringify({
+              ...data,
+              userID: userId,
+            }),
+          },
+        ).then((res) => res.json()),
+      onSuccess: (data) => {
+        console.log("response: ", data);
+      },
+      onError: () => {},
+    });
 
   const form = useForm<ProfileFormData>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
       type,
       address: "",
-      website_url: "",
+      websiteURL: "",
       ...(type === "merchant" && {
         businessName: "",
         about_us: "",
@@ -55,7 +90,10 @@ export default function ProfileSetupForm() {
   });
 
   async function onSubmit(data: ProfileFormData) {
-    console.log(data);
+    delete data.type;
+    if (type === "professional") {
+      professionalMutate(data as ProfessionalBodyData);
+    }
   }
 
   return (
@@ -206,7 +244,7 @@ export default function ProfileSetupForm() {
 
               <FormField
                 control={form.control}
-                name={type === "professional" ? "about" : "about_us"}
+                name={type === "professional" ? "aboutMe" : "about_us"}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-[14px] font-medium">
@@ -252,7 +290,7 @@ export default function ProfileSetupForm() {
 
               <FormField
                 control={form.control}
-                name="website_url"
+                name="websiteURL"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-[14px] font-medium">
@@ -274,9 +312,15 @@ export default function ProfileSetupForm() {
               <div className="flex justify-end">
                 <Button
                   type="submit"
-                  className="duration-300unded-[8px] mt-[40px] h-[51px] w-full bg-[#1D3557] p-[16px] transition-colors hover:bg-[#1D3557]/80 lg:w-[200px]"
+                  className="duration-300unded-[8px] relative mt-[40px] h-[51px] w-full bg-[#1D3557] p-[16px] transition-colors hover:bg-[#1D3557]/80 lg:w-[200px]"
+                  disabled={professionalPending}
                 >
-                  <span className="cursor-pointer">Continue</span>
+                  <span className="cursor-pointer">
+                    Continue{" "}
+                    {professionalPending && (
+                      <Loader2 className="absolute right-4 top-4 animate-spin" />
+                    )}
+                  </span>
                 </Button>
               </div>
             </form>
