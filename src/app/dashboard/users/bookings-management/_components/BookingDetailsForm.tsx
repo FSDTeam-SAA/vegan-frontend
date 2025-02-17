@@ -96,6 +96,7 @@ const BookingDetailsForm = ({bookingId, setIsOpen}: {
                     </FormLabel>
                     <FormControl>
                       <Input
+                      type="text"
                         className="w-full"
                         placeholder="Dr Sarah Smith"
                         {...field}
@@ -118,6 +119,7 @@ const BookingDetailsForm = ({bookingId, setIsOpen}: {
                     </FormLabel>
                     <FormControl>
                       <Input
+                      type="text"
                         className="w-full"
                         placeholder="Nutrition Consultation"
                         {...field}
@@ -142,6 +144,7 @@ const BookingDetailsForm = ({bookingId, setIsOpen}: {
                     </FormLabel>
                     <FormControl>
                       <Input
+                        type="datetime-local"
                         className="w-full"
                         placeholder="Feb 20, 2025, 2:30 PM"
                         {...field}
@@ -224,7 +227,7 @@ const BookingDetailsForm = ({bookingId, setIsOpen}: {
           </div>
 
           <div className="flex items-center justify-end gap-[16px]">
-            <Button size="xl" variant="outline" className="text-base font-medium text-[#EF4444] leading-[19px] py-[14px] px-[16px] rounded-[10px] shadow-none" onClick={() => setIsOpen(false)} >Cancel Booking</Button>
+            <Button size="xl" variant="outline" className="text-base font-medium text-[#EF4444] hover:text-[#d62f2f] leading-[19px] py-[14px] px-[16px] rounded-[10px] shadow-none" onClick={() => setIsOpen(false)} >Cancel Booking</Button>
             <Button size="xl" type="submit" className="py-[14px] px-[39px] rounded-[10px] shadow-none">Reschedule</Button>
           </div>
         </form>
