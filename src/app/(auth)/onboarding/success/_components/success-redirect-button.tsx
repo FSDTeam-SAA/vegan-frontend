@@ -1,9 +1,12 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+// Packages
 import Link from "next/link";
 import { redirect, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+
+// Local imports
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 const SuccessRedirectButton = () => {
   const [loading, setLoading] = useState<true | false>(false);

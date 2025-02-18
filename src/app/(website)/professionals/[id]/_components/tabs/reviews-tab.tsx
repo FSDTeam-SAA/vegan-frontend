@@ -1,6 +1,6 @@
 import { ReviewCard } from "../review-card";
 
-export function ReviewsTab() {
+export default function ReviewsTab() {
   return (
     <>
       <ReviewCard />

@@ -1,5 +1,11 @@
+// Packages
+import dynamic from "next/dynamic";
 import Image from "next/image";
-import MerchantSearch from "./MerchantSearch";
+
+// Local imports
+const HeroSearch = dynamic(() => import("./heroSearch"), {
+  ssr: false,
+});
 
 export default function HeroSection() {
   return (
@@ -28,7 +34,7 @@ export default function HeroSection() {
             Book vegan professionals, shop cruelty-free products, connect with
             charity organizations.
           </p>
-          <MerchantSearch />
+          <HeroSearch />
         </div>
       </div>
     </div>

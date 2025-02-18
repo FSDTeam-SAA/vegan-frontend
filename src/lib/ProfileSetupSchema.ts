@@ -3,7 +3,7 @@ import { z } from "zod";
 // Base schema for common fields
 const baseSchema = {
   address: z.string().min(1, "Address is required"),
-  website_url: z.string().optional(),
+  websiteURL: z.string().optional(),
 };
 
 // Define the type enum
@@ -33,10 +33,10 @@ export const profileSchema = z.discriminatedUnion("type", [
 
   // Professional Schema
   z.object({
-    type: z.literal("professional"),
+    type: z.literal("professional").optional(),
     fullName: z.string().min(1, "Full name is required"),
     businessName: z.string().optional(),
-    about: z.string().min(10, "About must be at least 10 characters"),
+    aboutMe: z.string().min(10, "About must be at least 10 characters"),
     experience: z.string().min(10, "Experience must be at least 10 characters"),
     ...baseSchema,
   }),

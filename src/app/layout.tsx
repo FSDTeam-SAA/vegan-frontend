@@ -33,7 +33,6 @@ export default async function RootLayout({
 }>) {
   const session = await auth();
 
-  console.log(session);
   return (
     // <ClerkProvider>
     <SessionProvider session={session}>

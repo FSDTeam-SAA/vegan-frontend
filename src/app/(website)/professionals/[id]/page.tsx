@@ -1,5 +1,5 @@
 import VeganHeader from "@/components/shared/sections/VeganHeader";
-import { ProfileCard } from "./_components/profile-details-card";
+import ProfileCard from "./_components/profile-details-card";
 import ProfessionalTab from "./_components/tabs/professional-tab";
 
 export default function page() {
