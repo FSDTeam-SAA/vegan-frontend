@@ -1,47 +1,52 @@
 "use client";
 import { DataTable } from "@/components/ui/data-table";
+import PacificPagination from "@/components/ui/PacificPagination";
 import {
   ColumnDef,
   getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { Business, businesses } from "./vendor-data";
-import { VendorManagementColumns } from "./vendor-management-column";
+import { useState } from "react";
+import { VendorManagementData, VendorManagementDataType } from "./vendor-management-data";
+import { VendorManagementColumn } from "./vendor-management-column";
 
 const VendorManagementTable = () => {
+  const [currentPage, setCurrentPage] = useState(1);
   return (
-    <div>
-      <TableContainer data={businesses} columns={VendorManagementColumns} />
-    </div>
+    <section className="w-full">
+      <div className="h-auto w-full rounded-t-[12px]">
+        <TableContainer data={VendorManagementData} columns={VendorManagementColumn} />
+      </div>
+
+      <PacificPagination
+        currentPage={currentPage}
+        totalPages={10}
+        onPageChange={(page) => setCurrentPage(page)}
+      />
+
+    </section>
   );
 };
 
 export default VendorManagementTable;
 
-interface Props {
-  data: Business[];
-  columns: ColumnDef<Business>[];
-}
-const TableContainer = ({ data, columns }: Props) => {
+const TableContainer = ({
+  data,
+  columns,
+}: {
+  data: VendorManagementDataType[];
+  columns: ColumnDef<VendorManagementDataType>[];
+}) => {
   const table = useReactTable({
     data,
-    columns,
+    columns: columns,
     getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
   });
   return (
-    <div>
-      <DataTable columns={columns} table={table} />
-      {/* {data?.length > 10 && (
-          <div className="mt-4">
-            <DataTablePagination table={table} />
-          </div>
-        )} */}
-    </div>
+    <>
+      <div className="mt-[48px]">
+        <DataTable table={table} columns={columns} />
+      </div>
+    </>
   );
 };
