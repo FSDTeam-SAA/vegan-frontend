@@ -3,3 +3,10 @@ export interface DropDownItem {
   name: string;
   value: string;
 }
+
+export type MetaPagination = {
+  currentPage: number;
+  totalPages: number;
+  totalItems: number;
+  itemsPerPage: number;
+};

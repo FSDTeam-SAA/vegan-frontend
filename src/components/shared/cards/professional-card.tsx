@@ -1,8 +1,18 @@
+// Packages
 import { MapPin } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-const ProfessionalCard = () => {
+// Local imports
+
+import { ProfessionalProfile } from "@/types/professional";
+import { memo } from "react";
+
+interface Props {
+  data?: ProfessionalProfile;
+}
+
+const ProfessionalCard = ({ data }: Props) => {
   return (
     <div className="w-full rounded-[16px] bg-white p-[24px] lg:w-[400px]">
       <div className="relative h-[232px] w-full rounded-[12px]">
@@ -17,7 +27,7 @@ const ProfessionalCard = () => {
         <div className="space-y-[8px]">
           <div className="flex w-full justify-between">
             <h4 className="font-lexend text-[18px] font-normal leading-[22.5px] text-[#1D3557]">
-              Dr Sarah Green
+              {data?.fullName}
             </h4>
             <div className="flex items-center gap-x-2">
               <Image
@@ -32,17 +42,18 @@ const ProfessionalCard = () => {
             </div>
           </div>
           <p className="font-inter text-[16px] font-normal leading-[19.36px] text-[#4B5563]">
-            Vegan Nutritionist
+            {data?.designation}
           </p>
         </div>
         <p className="flex items-center gap-x-[6px] font-inter text-[14px] font-normal leading-[16.94px] text-[#4B5563]">
-          <MapPin className="h-[16px] w-[13.5px] text-[#4B5563]" /> Newyork, USA
+          <MapPin className="h-[16px] w-[13.5px] text-[#4B5563]" />{" "}
+          {data?.address}
         </p>
         <h3 className="font-lexend text-[20px] font-normal leading-[25px] text-[#1D3557]">
           $100/<span>hour</span>
         </h3>
         <Link
-          href={`/professionals/123`}
+          href={`/professionals/${data?._id}`}
           className="flex h-[48px] w-full items-center justify-center rounded-[8px] bg-[#1D3557] text-[16px] font-medium leading-[19.36px] text-white transition-colors duration-300 hover:bg-[#1D3557]/90"
         >
           View Details
@@ -52,4 +63,4 @@ const ProfessionalCard = () => {
   );
 };
 
-export default ProfessionalCard;
+export default memo(ProfessionalCard);
