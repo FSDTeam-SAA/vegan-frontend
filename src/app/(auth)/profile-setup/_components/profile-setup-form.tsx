@@ -3,9 +3,9 @@
 // Packages
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import { Loader2 } from "lucide-react";
-import { redirect, useSearchParams } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { Loader2, Plus, X } from "lucide-react";
+import { redirect, useRouter, useSearchParams } from "next/navigation";
+import { useFieldArray, useForm } from "react-hook-form";
 
 // Local imports
 import { Button } from "@/components/ui/button";
@@ -23,22 +23,42 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { ProfileFormData, profileSchema } from "@/lib/ProfileSetupSchema";
 import { getProfileType } from "@/lib/utils";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 interface ProfessionalBodyData {
   fullName: string;
   businessName: string;
-  aboutMe: string;
-  experience: string;
+  about: string;
+  experience: string[];
+  certifications: string[];
   address: string;
   websiteURL: string;
+  highlightedStatement: [
+    {
+      title: string;
+      description: string;
+    },
+  ];
+  photoWithID: string;
+  governmentIssuedID: string;
+  professionalCertification: string;
 }
 
 export default function ProfileSetupForm() {
+  const [loading, setLoading] = useState(false);
   const searchParams = useSearchParams();
   const type = getProfileType({ type: searchParams.get("type") ?? undefined });
   const userId = searchParams.get("userId");
+  const router = useRouter();
 
   if (!type || !userId) redirect("/");
+
+  useEffect(() => {
+    return () => {
+      setLoading(false);
+    };
+  }, []);
 
   const { mutate: professionalMutate, isPending: professionalPending } =
     // eslint-disable-next-line  @typescript-eslint/no-explicit-any
@@ -59,9 +79,25 @@ export default function ProfileSetupForm() {
           },
         ).then((res) => res.json()),
       onSuccess: (data) => {
-        console.log("response: ", data);
+        if (!data.success) {
+          toast.error(data.message, {
+            position: "top-right",
+            richColors: true,
+          });
+
+          return;
+        }
+        setLoading(true);
+        router.push(
+          `/profile-setup/verify_documents?type=${type}&userId=${userId}`,
+        );
       },
-      onError: () => {},
+      onError: () => {
+        toast.error("Something went wrong to setup your profile...", {
+          position: "top-right",
+          richColors: true,
+        });
+      },
     });
 
   const form = useForm<ProfileFormData>({
@@ -72,11 +108,11 @@ export default function ProfileSetupForm() {
       websiteURL: "",
       ...(type === "merchant" && {
         businessName: "",
-        about_us: "",
+        about: "",
       }),
       ...(type === "organization" && {
         organization_name: "",
-        about_us: "",
+        about: "",
         mission: "",
         experience: "",
       }),
@@ -84,17 +120,72 @@ export default function ProfileSetupForm() {
         fullName: "",
         businessName: "",
         about: "",
-        experience: "",
+        Profession: "",
+        experiences: [{ title: "fsdfdsf" }],
+        certifications: [{ name: "fsdfdsf" }],
       }),
     },
   });
 
+  const {
+    fields: experienceFields,
+    append: appendExperience,
+    remove: removeExperience,
+  } = useFieldArray({
+    control: form.control,
+    name:
+      type === "professional" || type === "organization"
+        ? "experiences"
+        : "experiences",
+  });
+
+  const {
+    fields: certificationFields,
+    append: appendCertification,
+    remove: removeCertification,
+  } = useFieldArray({
+    control: form.control,
+    name:
+      type === "professional" || type === "organization"
+        ? "certifications"
+        : "certifications",
+  });
+
   async function onSubmit(data: ProfileFormData) {
-    delete data.type;
-    if (type === "professional") {
-      professionalMutate(data as ProfessionalBodyData);
+    if (data.type === "professional") {
+      const formattedData: ProfessionalBodyData = {
+        fullName: data.fullName ?? "", // Ensure fullName exists
+        businessName: data.businessName ?? "",
+        about: data.about ?? "",
+        experience: data.experiences
+          ? data.experiences
+              .map((exp) => exp.title)
+              .filter((title): title is string => !!title)
+          : [], // Handle undefined experiences
+        certifications: data.certifications
+          ? data.certifications
+              .map((item) => item.name)
+              .filter((n): n is string => !!n)
+          : [],
+
+        address: data.address,
+        websiteURL: data.websiteURL ?? "",
+        highlightedStatement: [
+          {
+            title: data.highlightedTitle!,
+            description: data.highlightedDescription!,
+          },
+        ],
+        photoWithID: "base64-encoded-image",
+        governmentIssuedID: "ABC123456",
+        professionalCertification: "Certified Developer",
+      };
+
+      professionalMutate(formattedData as ProfessionalBodyData);
     }
   }
+
+  const isLoading = professionalPending || loading;
 
   return (
     <div className="flex min-h-screen">
@@ -219,6 +310,25 @@ export default function ProfileSetupForm() {
                       </FormItem>
                     )}
                   />
+                  <FormField
+                    control={form.control}
+                    name="Profession"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-[14px] text-[#1F2937]">
+                          Profession
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            className="h-[48px] bg-white px-[26px] py-[13px]"
+                            placeholder="Enter your profession"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                 </>
               )}
 
@@ -244,11 +354,11 @@ export default function ProfileSetupForm() {
 
               <FormField
                 control={form.control}
-                name={type === "professional" ? "aboutMe" : "about_us"}
+                name="about"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-[14px] font-medium">
-                      {type === "professional" ? "About" : "About Us"}
+                      {type === "professional" ? "About Me" : "About Us"}
                     </FormLabel>
                     <FormControl>
                       <Textarea
@@ -266,26 +376,164 @@ export default function ProfileSetupForm() {
                 )}
               />
 
+              {type === "professional" && (
+                <div>
+                  <div className="mb-5 flex w-full items-center justify-between">
+                    <FormLabel>Highlighted Statement</FormLabel>
+                  </div>
+
+                  <FormField
+                    control={form.control}
+                    name="highlightedTitle"
+                    render={({ field }) => (
+                      <FormItem>
+                        {/* <FormLabel className="text-[14px] font-medium">
+                          Title (optional)
+                        </FormLabel> */}
+                        <FormControl>
+                          <Input
+                            className="h-[48px] bg-white px-[26px] py-[13px]"
+                            placeholder="Enter your Highlighted Title"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="highlightedDescription"
+                    render={({ field }) => (
+                      <FormItem className="mt-4">
+                        {/* <FormLabel className="text-[14px] font-medium">
+                          Description (optional)
+                        </FormLabel> */}
+                        <FormControl>
+                          <Input
+                            className="h-[48px] bg-white px-[26px] py-[13px]"
+                            placeholder="Enter your Highlighted Description"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              )}
+
               {(type === "organization" || type === "professional") && (
-                <FormField
-                  control={form.control}
-                  name="experience"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Experience & Certifications</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          placeholder="List your relevant experience and certifications"
-                          className="h-[127px] bg-white"
-                          maxLength={300}
-                          {...field}
+                <div>
+                  <div className="mb-5 flex w-full items-center justify-between">
+                    <FormLabel>Experience</FormLabel>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() =>
+                        appendExperience({
+                          title: "",
+                        })
+                      }
+                    >
+                      <Plus className="mr-2 h-4 w-4" />
+                      Add Experience
+                    </Button>
+                  </div>
+                  <div className="space-y-5">
+                    {experienceFields.map((field, index) => (
+                      <div
+                        className="relative mt-2 flex h-[40px] items-center"
+                        key={field.id}
+                      >
+                        <FormField
+                          control={form.control}
+                          name={`experiences.${index}.title`}
+                          render={({ field }) => (
+                            <FormItem className="flex-1">
+                              <FormControl>
+                                <div className="flex items-center gap-x-3">
+                                  <Input
+                                    placeholder="Add Your experience here..."
+                                    className="h-[48px] bg-white px-[26px] py-[13px] shadow-none"
+                                    {...field}
+                                  />
+                                  <Button
+                                    type="button"
+                                    variant="outline"
+                                    size="icon"
+                                    className="h-[48px] w-[48px] bg-white"
+                                    onClick={() => removeExperience(index)}
+                                  >
+                                    <X />
+                                  </Button>
+                                </div>
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
                         />
-                      </FormControl>
-                      <FormDescription>Maximum 300 characters</FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {(type === "organization" || type === "professional") && (
+                <div className="mt-2">
+                  <div className="mb-5 flex w-full items-center justify-between">
+                    <FormLabel>Certificates</FormLabel>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() =>
+                        appendCertification({
+                          name: "",
+                        })
+                      }
+                    >
+                      <Plus className="mr-2 h-4 w-4" />
+                      Add Certificate
+                    </Button>
+                  </div>
+                  <div className="space-y-5">
+                    {certificationFields.map((field, index) => (
+                      <div
+                        className="relative mt-2 flex h-[40px] items-center"
+                        key={field.id}
+                      >
+                        <FormField
+                          control={form.control}
+                          name={`certifications.${index}.name`}
+                          render={({ field }) => (
+                            <FormItem className="flex-1">
+                              <FormControl>
+                                <div className="flex items-center gap-x-3">
+                                  <Input
+                                    placeholder="Add Your certificate here..."
+                                    className="h-[48px] bg-white px-[26px] py-[13px] shadow-none"
+                                    {...field}
+                                  />
+                                  <Button
+                                    type="button"
+                                    variant="outline"
+                                    size="icon"
+                                    className="h-[48px] w-[48px] bg-white"
+                                    onClick={() => removeCertification(index)}
+                                  >
+                                    <X />
+                                  </Button>
+                                </div>
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
               )}
 
               <FormField
@@ -299,7 +547,6 @@ export default function ProfileSetupForm() {
                     <FormControl>
                       <Input
                         className="h-[48px] bg-white px-[26px] py-[13px]"
-                        type="url"
                         placeholder="Enter your website URL"
                         {...field}
                       />
@@ -313,11 +560,11 @@ export default function ProfileSetupForm() {
                 <Button
                   type="submit"
                   className="duration-300unded-[8px] relative mt-[40px] h-[51px] w-full bg-[#1D3557] p-[16px] transition-colors hover:bg-[#1D3557]/80 lg:w-[200px]"
-                  disabled={professionalPending}
+                  disabled={isLoading}
                 >
                   <span className="cursor-pointer">
                     Continue{" "}
-                    {professionalPending && (
+                    {isLoading && (
                       <Loader2 className="absolute right-4 top-4 animate-spin" />
                     )}
                   </span>
