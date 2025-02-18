@@ -5,7 +5,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { Loader2, Plus, X } from "lucide-react";
 import { redirect, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 // Local imports
 import { Button } from "@/components/ui/button";
@@ -23,8 +25,6 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { ProfileFormData, profileSchema } from "@/lib/ProfileSetupSchema";
 import { getProfileType } from "@/lib/utils";
-import { useEffect, useState } from "react";
-import { toast } from "sonner";
 
 interface ProfessionalBodyData {
   fullName: string;

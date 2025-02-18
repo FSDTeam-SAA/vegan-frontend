@@ -1,7 +1,8 @@
 "use client";
+import { useEffect, useState } from "react";
 
-//Packages
-import { useState } from "react";
+// Packages
+import { ListFilter } from "lucide-react";
 
 // Local imports
 import { PriceRangeSelector } from "@/components/ui/price-range-selector";
@@ -14,20 +15,49 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import VeganSelector from "@/components/ui/vegan-selector";
-import { ListFilter } from "lucide-react";
+import { useProfessionalState } from "@/zustand/professional";
 import { categoryList, LocationList, SortByList } from "./data";
 
 const ProfessionalFilterContainer = () => {
-  const [value, setValue] = useState("");
-  const [category, setCategory] = useState("expertise");
-  const [location, setLocation] = useState("washington");
-  const [sortBy, setSortBy] = useState("newest");
-  const [price, setPrice] = useState<number[]>([0, 50]);
+  const {
+    setValue, // Using Zustand setter directly
+    category,
+    setCategory,
+    location,
+    setLocation,
+    price,
+    setPrice,
+    sortBy,
+    setSortBy,
+  } = useProfessionalState();
+
+  // Local state for value input and debounced value
+  const [inputValue, setInputValue] = useState("");
+  const [debouncedValue, setDebouncedValue] = useState("");
+
+  // Debounce effect
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setDebouncedValue(inputValue);
+    }, 500); // 500ms debounce time
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [inputValue]);
+
+  // Update Zustand store once debounce completes
+  useEffect(() => {
+    if (debouncedValue !== inputValue) {
+      setValue(debouncedValue);
+    }
+  }, [debouncedValue, setValue, inputValue]);
+
   return (
     <div className="flex items-center gap-x-[32px]">
       <Search
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
         className="w-full min-w-[353px]"
         inputClassName="h-[40px] "
       />
@@ -60,11 +90,18 @@ const ProfessionalFilterContainer = () => {
 export default ProfessionalFilterContainer;
 
 export const ProfessionalFilterContainerMobile = () => {
-  const [value, setValue] = useState("");
-  const [category, setCategory] = useState("expertise");
-  const [location, setLocation] = useState("washington");
-  const [sortBy, setSortBy] = useState("newest");
-  const [price, setPrice] = useState<number[]>([0, 50]);
+  const {
+    value,
+    setValue,
+    category,
+    setCategory,
+    location,
+    setLocation,
+    price,
+    setPrice,
+    sortBy,
+    setSortBy,
+  } = useProfessionalState();
   return (
     <div className="container flex w-full items-center gap-[5px]">
       <Search
