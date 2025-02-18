@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { Badge } from "@/components/ui/badge";
 import React, { useState } from "react";
 import ReviewVendorApplication from "./ReviewVendorApplication";
@@ -66,15 +66,14 @@ const PendingVerifications = () => {
 
       {/* Review vendor Application modal  */}
       <div>
-        {
-            isOpen && (
-                <section className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-30 backdrop-blur-sm">
-                    <div>
-                        <ReviewVendorApplication setIsOpen ={setIsOpen}/>
-                    </div>
-                </section>
-            )
-        }
+        {isOpen && (
+          <section className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30 backdrop-blur-sm">
+            <div className="">
+              
+              <ReviewVendorApplication setIsOpen={setIsOpen} />
+            </div>
+          </section>
+        )}
       </div>
     </>
   );
