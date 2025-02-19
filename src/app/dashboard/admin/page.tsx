@@ -12,12 +12,14 @@ const Page = () => {
   return (
     <div>
       <DashboardPageHeader
-        title="Dashboard"
+        title="Overview"
         desc="Get an overview of your performance, earnings, and progress"
       />
       <AdminOverviewStats />
 
+      <div className="pb-2 md:pb-[30px]">
       <PendingVerificationContainer />
+      </div>
     </div>
   );
 };

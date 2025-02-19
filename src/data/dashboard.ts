@@ -56,13 +56,13 @@ export const adminDashboardTabsList = [
     linkText: "Verification Management",
     roles: ["admin"],
   },
-  {
-    id: crypto.randomUUID(),
-    path: "/dashboard/admin/go-live",
-    icon: Video,
-    linkText: "Go Live",
-    roles: ["admin"],
-  },
+  // {
+  //   id: crypto.randomUUID(),
+  //   path: "/dashboard/admin/go-live",
+  //   icon: Video,
+  //   linkText: "Go Live",
+  //   roles: ["admin"],
+  // },
   {
     id: crypto.randomUUID(),
     path: "/dashboard/admin/support",
