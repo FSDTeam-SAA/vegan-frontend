@@ -1,69 +1,29 @@
 "use client";
-import React, { useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@radix-ui/react-dropdown-menu";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { ColumnDef } from "@tanstack/react-table";
 import { VendorManagementDataType } from "./vendor-management-data";
 import ViewVendorDetails from "./ViewVendorDetails";
 
-// ActionsDropdown component  start
-
-const ActionsDropdown = ({ id }: { id: number }) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const handleFormData = () => {
-    setIsOpen(!isOpen);
-  };
+const ViewDetails = ({ id }: { id: number }) => {
   return (
     <div>
       <div>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <div className="flex items-center justify-start">
-              <span className="cursor-pointer text-left text-base font-medium leading-[19px] text-[#1D3557] underline">
-                View Details
-              </span>
-            </div>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            align="end"
-            className="h-auto w-[136px] rounded-lg bg-white shadow-[4px_4px_8px_0px_#0000000D,-4px_-4px_8px_0px_#0000000D]"
-          >
-            <DropdownMenuItem
-              onClick={handleFormData}
-              className="cursor-pointer p-[8px] text-xs font-normal leading-[14px] text-[#1F2937] hover:bg-[#E6EEF6] focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0"
-            >
-              Reschedule Booking
-            </DropdownMenuItem>
-            <DropdownMenuItem className="cursor-pointer rounded-b-[8px] p-[8px] text-xs font-normal leading-[14px] text-[#EF4444] hover:bg-[#E6EEF6] focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0">
-              Cancel Booking
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
-
-      {/* Reschedule Booking modal  */}
-
-      <div>
-        {isOpen && (
-          <section className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30 backdrop-blur-sm">
-            {/* Modal content */}
-            <div className="relative z-10">
-              <ViewVendorDetails setIsOpen={setIsOpen} bookingId={id} />
-            </div>
-          </section>
-        )}
+        <Sheet>
+          <div className="flex items-center justify-start">
+            <SheetTrigger className="text-smtext-base font-medium text-[#1D3557] leading-[19px] underline">View Details</SheetTrigger>
+          </div>
+          
+          <SheetContent>
+            <ViewVendorDetails id={id}/>
+          </SheetContent>
+        </Sheet>
       </div>
     </div>
   );
 };
 
-export default ActionsDropdown;
+export default ViewDetails;
 
 // ActionsDropdown component  end
 
@@ -126,7 +86,7 @@ export const VendorManagementColumn: ColumnDef<VendorManagementDataType>[] = [
       return (
         <div className="flex justify-start gap-[2px]">
           <span
-            className={`rounded-[20px] px-2 py-1 text-xs font-normal leading-[14px] ${row.original.status === "Approved" ? "bg-[#F0FDF4] text-[#16A34A]" : row.original.status === "Pending" ? "bg-[#FEFCE8] text-[#CA8A04] " : "text-[#DC2626] bg-[#FEF2F2]"}`}
+            className={`rounded-[20px] px-2 py-1 text-xs font-normal leading-[14px] ${row.original.status === "Approved" ? "bg-[#F0FDF4] text-[#16A34A]" : row.original.status === "Pending" ? "bg-[#FEFCE8] text-[#CA8A04]" : "bg-[#FEF2F2] text-[#DC2626]"}`}
           >
             {row.original.status}
           </span>
@@ -136,6 +96,6 @@ export const VendorManagementColumn: ColumnDef<VendorManagementDataType>[] = [
   },
   {
     header: "Actions",
-    cell: ({ row }) => <ActionsDropdown id={row?.original?.id} />,
+    cell: ({ row }) => <ViewDetails id={row?.original?.id} />,
   },
 ];

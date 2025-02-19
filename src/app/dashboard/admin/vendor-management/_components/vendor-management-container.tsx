@@ -13,7 +13,7 @@ const VendorManagementContainer = () => {
         <VendorManagementFilterMobile />
       </div>
 
-      <div className="mt-[24px]">
+      <div className="mt-[24px] pb-[152px] md:pb-0">
         <VendorManagementTable />
       </div>
     </div>

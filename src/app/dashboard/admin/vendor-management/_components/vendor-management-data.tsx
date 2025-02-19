@@ -12,7 +12,7 @@ export const VendorManagementData: VendorManagementDataType[] = [
     email: "hello@vegandelights.com",
     phone: "+1 (555) 987-6543",
     photo:
-      "https://images.pexels.com/photos/207247/pexels-photo-207247.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "/assets/img/veganDelights.png",
   },
   {
     id : 2,
@@ -27,7 +27,7 @@ export const VendorManagementData: VendorManagementDataType[] = [
     email: "hello@vegandelights.com",
     phone: "+1 (555) 987-6543",
     photo:
-      "https://images.pexels.com/photos/207247/pexels-photo-207247.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "/assets/img/veganDelights.png",
   },
   {
     id : 3,
@@ -42,7 +42,7 @@ export const VendorManagementData: VendorManagementDataType[] = [
     email: "hello@vegandelights.com",
     phone: "+1 (555) 987-6543",
     photo:
-      "https://images.pexels.com/photos/207247/pexels-photo-207247.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "/assets/img/veganDelights.png",
   },
   {
     id : 4,
@@ -57,7 +57,7 @@ export const VendorManagementData: VendorManagementDataType[] = [
     email: "hello@vegandelights.com",
     phone: "+1 (555) 987-6543",
     photo:
-      "https://images.pexels.com/photos/207247/pexels-photo-207247.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "/assets/img/veganDelights.png",
   },
   {
     id : 5,
@@ -72,7 +72,7 @@ export const VendorManagementData: VendorManagementDataType[] = [
     email: "hello@vegandelights.com",
     phone: "+1 (555) 987-6543",
     photo:
-      "https://images.pexels.com/photos/207247/pexels-photo-207247.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "/assets/img/veganDelights.png",
   },
   {
     id : 6,
@@ -87,7 +87,7 @@ export const VendorManagementData: VendorManagementDataType[] = [
     email: "hello@vegandelights.com",
     phone: "+1 (555) 987-6543",
     photo:
-      "https://images.pexels.com/photos/207247/pexels-photo-207247.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "/assets/img/veganDelights.png",
   },
   {
     id : 7,
@@ -102,7 +102,7 @@ export const VendorManagementData: VendorManagementDataType[] = [
     email: "hello@vegandelights.com",
     phone: "+1 (555) 987-6543",
     photo:
-      "https://images.pexels.com/photos/207247/pexels-photo-207247.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "/assets/img/veganDelights.png",
   },
   {
     id : 8,
@@ -117,7 +117,7 @@ export const VendorManagementData: VendorManagementDataType[] = [
     email: "hello@vegandelights.com",
     phone: "+1 (555) 987-6543",
     photo:
-      "https://images.pexels.com/photos/207247/pexels-photo-207247.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "/assets/img/veganDelights.png",
   },
   {
     id : 9,
@@ -132,7 +132,7 @@ export const VendorManagementData: VendorManagementDataType[] = [
     email: "hello@vegandelights.com",
     phone: "+1 (555) 987-6543",
     photo:
-      "https://images.pexels.com/photos/207247/pexels-photo-207247.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "/assets/img/veganDelights.png",
   },
   {
     id : 10,
@@ -147,7 +147,7 @@ export const VendorManagementData: VendorManagementDataType[] = [
     email: "hello@vegandelights.com",
     phone: "+1 (555) 987-6543",
     photo:
-      "https://images.pexels.com/photos/207247/pexels-photo-207247.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "/assets/img/veganDelights.png",
   },
 ];
 
