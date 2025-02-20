@@ -1,32 +1,33 @@
 "use client";
 
-import FileUploader from "@/components/shared/Uploader/FileUploader";
-import { Button } from "@/components/ui/button";
+// Packages
 import { useMutation } from "@tanstack/react-query";
 import { InfoIcon, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { redirect, useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import { toast } from "sonner";
+
+// Local imports
+import FileUploader from "@/components/shared/Uploader/FileUploader";
+import { Button } from "@/components/ui/button";
 
 export default function VerifyProfile() {
   const [loading, setLoading] = useState(false);
-  const [governmentIssuedID, setGovernmentIssuedId] = useState<File>();
-  const [professionalCertification, setProfessionalCertificate] =
-    useState<File>();
-  const [photoWithID, setPhotoWithNid] = useState<File>();
+  const [files, setFiles] = useState({
+    governmentIssuedID: undefined as File | undefined,
+    professionalCertification: undefined as File | undefined,
+    photoWithID: undefined as File | undefined,
+  });
+
   const router = useRouter();
-
-  useEffect(() => {
-    return () => {
-      setLoading(false);
-    };
-  }, []);
-
   const userID = useSearchParams().get("userId");
   const type = useSearchParams().get("type");
 
+  // Redirect if userID is missing
   if (!userID) redirect("/");
+
+  // Mutation for professional verification
   const { mutate, isPending } = useMutation({
     mutationKey: ["documents"],
     mutationFn: (data: FormData) =>
@@ -47,32 +48,125 @@ export default function VerifyProfile() {
         });
         router.push(`/profile-setup/success?type=${type}`);
       }
-      return;
     },
     onError: (err) => {
-      toast.error(err.message, {
+      toast.error(err.message || "An error occurred. Please try again.", {
         position: "top-right",
         richColors: true,
       });
     },
   });
 
+  // Mutation for merchant verification
+  const { mutate: merchantVerificationMutate, isPending: merchantPending } =
+    useMutation({
+      mutationKey: ["documents"],
+      mutationFn: (data: FormData) =>
+        fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/merchant/uploadImages`,
+          {
+            method: "PUT",
+            body: data,
+          },
+        ).then((res) => res.json()),
+
+      onSuccess: (data) => {
+        if (data.success) {
+          setLoading(true);
+          toast.success(data.message, {
+            position: "top-right",
+            richColors: true,
+          });
+          router.push(`/profile-setup/success?type=${type}`);
+        }
+      },
+      onError: (err) => {
+        toast.error(err.message || "An error occurred. Please try again.", {
+          position: "top-right",
+          richColors: true,
+        });
+      },
+    });
+  const {
+    mutate: organizationVerificationMutate,
+    isPending: organizationPending,
+  } = useMutation({
+    mutationKey: ["documents"],
+    mutationFn: (data: FormData) =>
+      fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/organization/uploadImages`,
+        {
+          method: "PUT",
+          body: data,
+        },
+      ).then((res) => res.json()),
+
+    onSuccess: (data) => {
+      if (data.success) {
+        setLoading(true);
+        toast.success(data.message, {
+          position: "top-right",
+          richColors: true,
+        });
+        router.push(`/profile-setup/success?type=${type}`);
+      }
+    },
+    onError: (err) => {
+      toast.error(err.message || "An error occurred. Please try again.", {
+        position: "top-right",
+        richColors: true,
+      });
+    },
+  });
+
+  // Handle continue button click
   const handleContinue = () => {
+    if (
+      !files.governmentIssuedID ||
+      !files.professionalCertification ||
+      !files.photoWithID
+    ) {
+      toast.error("Please upload all required documents.", {
+        position: "top-right",
+        richColors: true,
+      });
+      return;
+    }
+
     const formData = new FormData();
+    formData.append("userID", userID);
+    formData.append("governmentIssuedID", files.governmentIssuedID);
+    formData.append(
+      "professionalCertification",
+      files.professionalCertification,
+    );
+    formData.append("photoWithID", files.photoWithID);
 
+    // Handle file upload mutations based on user type
     if (type === "professional") {
-      formData.append("userID", userID);
-
-      formData.append("governmentIssuedID", governmentIssuedID!);
-      formData.append("professionalCertification", professionalCertification!);
-      formData.append("photoWithID", photoWithID!);
-
       mutate(formData);
+    } else if (type === "merchant") {
+      merchantVerificationMutate(formData);
+    } else if (type === "organization") {
+      organizationVerificationMutate(formData);
     }
   };
 
+  // Memoized loading state
+  const isLoading = useMemo(
+    () =>
+      isPending ||
+      merchantPending ||
+      loading ||
+      !files.governmentIssuedID ||
+      !files.photoWithID ||
+      !files.professionalCertification ||
+      organizationPending,
+    [isPending, merchantPending, loading, files, organizationPending],
+  );
+
   return (
-    <div className="mt-[48px ] container pb-[48px] lg:mt-[110px]">
+    <div className="container mt-[48px] pb-[48px] lg:mt-[110px]">
       <div className="space-y-6">
         {/* Header */}
         <div className="space-y-2 text-center">
@@ -106,7 +200,9 @@ export default function VerifyProfile() {
               business owner)
             </p>
             <FileUploader
-              onFileSelect={(file) => setGovernmentIssuedId(file!)}
+              onFileSelect={(file) =>
+                setFiles((prev) => ({ ...prev, governmentIssuedID: file! }))
+              }
               accept=".pdf,.jpg,.jpeg,.png"
             />
           </div>
@@ -117,7 +213,12 @@ export default function VerifyProfile() {
               license)
             </p>
             <FileUploader
-              onFileSelect={(file) => setProfessionalCertificate(file!)}
+              onFileSelect={(file) =>
+                setFiles((prev) => ({
+                  ...prev,
+                  professionalCertification: file!,
+                }))
+              }
               accept=".pdf,.jpg,.jpeg,.png"
             />
           </div>
@@ -127,7 +228,9 @@ export default function VerifyProfile() {
               Photo with ID (Upload a photo of the owner holding their ID)
             </p>
             <FileUploader
-              onFileSelect={(file) => setPhotoWithNid(file!)}
+              onFileSelect={(file) =>
+                setFiles((prev) => ({ ...prev, photoWithID: file! }))
+              }
               accept=".pdf,.jpg,.jpeg,.png"
             />
           </div>
@@ -138,18 +241,13 @@ export default function VerifyProfile() {
           <Button
             className="h-[48px] w-[180px] bg-[#1D3557] transition-colors duration-300 hover:bg-[#1D3557]/90"
             onClick={handleContinue}
-            disabled={
-              !governmentIssuedID ||
-              !photoWithID ||
-              !professionalCertification ||
-              isPending ||
-              loading
-            }
+            disabled={isLoading}
           >
             Continue{" "}
-            {(isPending || loading) && (
-              <Loader2 className="ml-2 animate-spin" />
-            )}
+            {(isPending ||
+              loading ||
+              merchantPending ||
+              organizationPending) && <Loader2 className="ml-2 animate-spin" />}
           </Button>
         </div>
 
