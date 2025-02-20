@@ -2,28 +2,73 @@
 
 import FileUploader from "@/components/shared/Uploader/FileUploader";
 import { Button } from "@/components/ui/button";
-import { InfoIcon } from "lucide-react";
+import { useMutation } from "@tanstack/react-query";
+import { InfoIcon, Loader2 } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { redirect, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export default function VerifyProfile() {
-  const [files, setFiles] = useState<{ type: string; file: File }[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [governmentIssuedID, setGovernmentIssuedId] = useState<File>();
+  const [professionalCertification, setProfessionalCertificate] =
+    useState<File>();
+  const [photoWithID, setPhotoWithNid] = useState<File>();
+  const router = useRouter();
 
-  const handleFileSelect = (type: string) => (file: File | null) => {
-    setFiles((prevFiles) => {
-      if (file) {
-        // Replace file if the type already exists, otherwise add new
-        const filteredFiles = prevFiles.filter((f) => f.type !== type);
-        return [...filteredFiles, { type, file }];
-      } else {
-        // Remove file if null
-        return prevFiles.filter((f) => f.type !== type);
+  useEffect(() => {
+    return () => {
+      setLoading(false);
+    };
+  }, []);
+
+  const userID = useSearchParams().get("userId");
+  const type = useSearchParams().get("type");
+
+  if (!userID) redirect("/");
+  const { mutate, isPending } = useMutation({
+    mutationKey: ["documents"],
+    mutationFn: (data: FormData) =>
+      fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/ProfessionalInfo/uploadImages`,
+        {
+          method: "PUT",
+          body: data,
+        },
+      ).then((res) => res.json()),
+
+    onSuccess: (data) => {
+      if (data.success) {
+        setLoading(true);
+        toast.success(data.message, {
+          position: "top-right",
+          richColors: true,
+        });
+        router.push(`/profile-setup/success?type=${type}`);
       }
-    });
-  };
+      return;
+    },
+    onError: (err) => {
+      toast.error(err.message, {
+        position: "top-right",
+        richColors: true,
+      });
+    },
+  });
 
   const handleContinue = () => {
-    console.log("Uploaded files:", files);
+    const formData = new FormData();
+
+    if (type === "professional") {
+      formData.append("userID", userID);
+
+      formData.append("governmentIssuedID", governmentIssuedID!);
+      formData.append("professionalCertification", professionalCertification!);
+      formData.append("photoWithID", photoWithID!);
+
+      mutate(formData);
+    }
   };
 
   return (
@@ -55,34 +100,34 @@ export default function VerifyProfile() {
 
         {/* Upload Section */}
         <div className="grid gap-[50px] md:grid-cols-2 lg:grid-cols-3 lg:pt-10">
-          <div className="max-w-[334px] space-y-2">
+          <div className="mx-auto max-w-[334px] space-y-2">
             <p className="text-sm font-medium text-[#1D3557]">
               Government-Issued ID (Upload a government-issued ID of the
               business owner)
             </p>
             <FileUploader
-              onFileSelect={handleFileSelect("government-id")}
+              onFileSelect={(file) => setGovernmentIssuedId(file!)}
               accept=".pdf,.jpg,.jpeg,.png"
             />
           </div>
 
-          <div className="max-w-[334px] space-y-2">
+          <div className="mx-auto max-w-[334px] space-y-2">
             <p className="text-sm font-medium text-[#1D3557]">
               Business License (Upload proof of business registration or
               license)
             </p>
             <FileUploader
-              onFileSelect={handleFileSelect("business-license")}
+              onFileSelect={(file) => setProfessionalCertificate(file!)}
               accept=".pdf,.jpg,.jpeg,.png"
             />
           </div>
 
-          <div className="max-w-[334px] space-y-2">
+          <div className="mx-auto max-w-[334px] space-y-2">
             <p className="text-sm font-medium text-[#1D3557]">
               Photo with ID (Upload a photo of the owner holding their ID)
             </p>
             <FileUploader
-              onFileSelect={handleFileSelect("photo-with-id")}
+              onFileSelect={(file) => setPhotoWithNid(file!)}
               accept=".pdf,.jpg,.jpeg,.png"
             />
           </div>
@@ -93,9 +138,18 @@ export default function VerifyProfile() {
           <Button
             className="h-[48px] w-[180px] bg-[#1D3557] transition-colors duration-300 hover:bg-[#1D3557]/90"
             onClick={handleContinue}
-            disabled={files.length < 3}
+            disabled={
+              !governmentIssuedID ||
+              !photoWithID ||
+              !professionalCertification ||
+              isPending ||
+              loading
+            }
           >
-            Continue
+            Continue{" "}
+            {(isPending || loading) && (
+              <Loader2 className="ml-2 animate-spin" />
+            )}
           </Button>
         </div>
 

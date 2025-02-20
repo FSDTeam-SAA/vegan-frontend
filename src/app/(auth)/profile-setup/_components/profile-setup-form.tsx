@@ -43,6 +43,7 @@ export default function ProfileSetupForm() {
   }, []);
 
   const { mutate: professionalMutate, isPending: professionalPending } =
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     useMutation<any, unknown, FormData>({
       mutationKey: ["professional_update"],
       mutationFn: (formData) =>
@@ -126,12 +127,11 @@ export default function ProfileSetupForm() {
   });
 
   async function onSubmit(data: ProfileFormData) {
+    const formData = new FormData();
     if (data.type === "professional") {
       try {
-        const formData = new FormData();
-
         // Append basic fields
-        formData.append("userId", userId!);
+        formData.append("userID", userId!);
         formData.append("fullName", data.fullName ?? "");
         formData.append("businessName", data.businessName ?? "");
         formData.append("about", data.about ?? "");
