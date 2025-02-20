@@ -1,19 +1,19 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Download, Edit, Search, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
-import { AddProductDialog } from "./add-product-dialog";
-import { BulkUploadDialog } from "./bulk-upload-dialog";
+import { Download, Edit, Search, Trash2 } from "lucide-react";
+import Image from "next/image";
+import { useEffect, useState } from "react";
 import {
+  deleteProduct,
   getProducts,
   toggleVisibility,
-  deleteProduct,
   type Product,
 } from "./actions";
-import Image from "next/image";
+import { AddProductDialog } from "./add-product-dialog";
+import { BulkUploadDialog } from "./bulk-upload-dialog";
 
 export default function ProductsManagement() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -32,10 +32,6 @@ export default function ProductsManagement() {
   useEffect(() => {
     fetchProducts();
   }, []); //This is the line that needed to be updated.  The empty array [] was causing the issue.  It should have included the products state.
-
-  const handleProductAdded = () => {
-    fetchProducts();
-  };
 
   const handleProductsUploaded = () => {
     fetchProducts();
@@ -182,11 +178,7 @@ export default function ProductsManagement() {
         )}
       </div>
 
-      <AddProductDialog
-        open={addDialogOpen}
-        onOpenChange={setAddDialogOpen}
-        onProductAdded={handleProductAdded}
-      />
+      <AddProductDialog open={addDialogOpen} onOpenChange={setAddDialogOpen} />
       <BulkUploadDialog
         open={bulkUploadOpen}
         onOpenChange={setBulkUploadOpen}
