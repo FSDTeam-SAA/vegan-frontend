@@ -10,6 +10,7 @@ import { useFieldArray, useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 // Local imports
+import FileUploader from "@/components/shared/Uploader/FileUploader";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -25,25 +26,6 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { ProfileFormData, profileSchema } from "@/lib/ProfileSetupSchema";
 import { getProfileType } from "@/lib/utils";
-
-interface ProfessionalBodyData {
-  fullName: string;
-  businessName: string;
-  about: string;
-  experience: string[];
-  certifications: string[];
-  address: string;
-  websiteURL: string;
-  highlightedStatement: [
-    {
-      title: string;
-      description: string;
-    },
-  ];
-  photoWithID: string;
-  governmentIssuedID: string;
-  professionalCertification: string;
-}
 
 export default function ProfileSetupForm() {
   const [loading, setLoading] = useState(false);
@@ -61,21 +43,14 @@ export default function ProfileSetupForm() {
   }, []);
 
   const { mutate: professionalMutate, isPending: professionalPending } =
-    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-    useMutation<any, unknown, ProfessionalBodyData>({
+    useMutation<any, unknown, FormData>({
       mutationKey: ["professional_update"],
-      mutationFn: (data) =>
+      mutationFn: (formData) =>
         fetch(
           `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/ProfessionalInfo`,
           {
             method: "POST",
-            headers: {
-              "content-type": "application/json",
-            },
-            body: JSON.stringify({
-              ...data,
-              userID: userId,
-            }),
+            body: formData, // ✅ Send FormData directly
           },
         ).then((res) => res.json()),
       onSuccess: (data) => {
@@ -84,7 +59,6 @@ export default function ProfileSetupForm() {
             position: "top-right",
             richColors: true,
           });
-
           return;
         }
         setLoading(true);
@@ -153,35 +127,64 @@ export default function ProfileSetupForm() {
 
   async function onSubmit(data: ProfileFormData) {
     if (data.type === "professional") {
-      const formattedData: ProfessionalBodyData = {
-        fullName: data.fullName ?? "", // Ensure fullName exists
-        businessName: data.businessName ?? "",
-        about: data.about ?? "",
-        experience: data.experiences
-          ? data.experiences
-              .map((exp) => exp.title)
-              .filter((title): title is string => !!title)
-          : [], // Handle undefined experiences
-        certifications: data.certifications
-          ? data.certifications
-              .map((item) => item.name)
-              .filter((n): n is string => !!n)
-          : [],
+      try {
+        const formData = new FormData();
 
-        address: data.address,
-        websiteURL: data.websiteURL ?? "",
-        highlightedStatement: [
-          {
-            title: data.highlightedTitle!,
-            description: data.highlightedDescription!,
-          },
-        ],
-        photoWithID: "base64-encoded-image",
-        governmentIssuedID: "ABC123456",
-        professionalCertification: "Certified Developer",
-      };
+        // Append basic fields
+        formData.append("userId", userId!);
+        formData.append("fullName", data.fullName ?? "");
+        formData.append("businessName", data.businessName ?? "");
+        formData.append("about", data.about ?? "");
+        formData.append("address", data.address ?? "");
+        formData.append("websiteURL", data.websiteURL ?? "");
 
-      professionalMutate(formattedData as ProfessionalBodyData);
+        // Append experiences as a JSON string
+        formData.append(
+          "experience",
+          JSON.stringify(
+            data.experiences
+              ?.map((exp) => exp.title)
+              .filter((title): title is string => !!title) || [],
+          ),
+        );
+
+        // Append certifications as JSON string
+        formData.append(
+          "certifications",
+          JSON.stringify(
+            data.certifications
+              ?.map((item) => item.name)
+              .filter((n): n is string => !!n) || [],
+          ),
+        );
+
+        // Append highlighted statement as JSON string
+        formData.append(
+          "highlightedStatement",
+          JSON.stringify([
+            {
+              title: data.highlightedTitle ?? "",
+              description: data.highlightedDescription ?? "",
+            },
+          ]),
+        );
+
+        // Append profile photo if exists
+        if (data.profilePhoto) {
+          console.log("Uploading Profile Photo:", data.profilePhoto.name);
+          formData.append("profilePhoto", data.profilePhoto);
+        }
+
+        // Debugging: Log FormData Entries
+        // for (const [key, value] of formData.entries()) {
+        //   console.log(`${key}:`, value);
+        // }
+
+        // Submit the form data
+        await professionalMutate(formData);
+      } catch (error) {
+        console.error("Form submission error:", error);
+      }
     }
   }
 
@@ -555,6 +558,20 @@ export default function ProfileSetupForm() {
                   </FormItem>
                 )}
               />
+
+              {type === "professional" && (
+                <div className="space-y-2">
+                  <p className="text-sm font-medium text-[#1D3557]">
+                    Profile Photo (Upload a Profile photo)
+                  </p>
+                  <FileUploader
+                    onFileSelect={(file) =>
+                      form.setValue("profilePhoto", file!)
+                    }
+                    accept=".pdf,.jpg,.jpeg,.png"
+                  />
+                </div>
+              )}
 
               <div className="flex justify-end">
                 <Button

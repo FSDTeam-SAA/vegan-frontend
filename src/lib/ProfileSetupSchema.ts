@@ -51,6 +51,7 @@ export const profileSchema = z.discriminatedUnion("type", [
     certifications: z.array(certificationSchema).optional(),
     highlightedTitle: z.string().optional(),
     highlightedDescription: z.string().optional(),
+    profilePhoto: z.instanceof(File).optional(),
     ...baseSchema,
   }),
 ]);
