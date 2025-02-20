@@ -10,6 +10,7 @@ import { useFieldArray, useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 // Local imports
+import FileUploader from "@/components/shared/Uploader/FileUploader";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -22,28 +23,26 @@ import {
 } from "@/components/ui/form";
 import { HeroVideoDialog } from "@/components/ui/hero-video-dialog";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { ProfileFormData, profileSchema } from "@/lib/ProfileSetupSchema";
 import { getProfileType } from "@/lib/utils";
 
-interface ProfessionalBodyData {
-  fullName: string;
-  businessName: string;
-  about: string;
-  experience: string[];
-  certifications: string[];
-  address: string;
-  websiteURL: string;
-  highlightedStatement: [
-    {
-      title: string;
-      description: string;
-    },
-  ];
-  photoWithID: string;
-  governmentIssuedID: string;
-  professionalCertification: string;
-}
+const dayOptions = [
+  { value: "monday", label: "Monday" },
+  { value: "tuesday", label: "Tuesday" },
+  { value: "wednesday", label: "Wednesday" },
+  { value: "thursday", label: "Thursday" },
+  { value: "friday", label: "Friday" },
+  { value: "saturday", label: "Saturday" },
+  { value: "sunday", label: "Sunday" },
+];
 
 export default function ProfileSetupForm() {
   const [loading, setLoading] = useState(false);
@@ -61,21 +60,15 @@ export default function ProfileSetupForm() {
   }, []);
 
   const { mutate: professionalMutate, isPending: professionalPending } =
-    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-    useMutation<any, unknown, ProfessionalBodyData>({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    useMutation<any, unknown, FormData>({
       mutationKey: ["professional_update"],
-      mutationFn: (data) =>
+      mutationFn: (formData) =>
         fetch(
           `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/ProfessionalInfo`,
           {
             method: "POST",
-            headers: {
-              "content-type": "application/json",
-            },
-            body: JSON.stringify({
-              ...data,
-              userID: userId,
-            }),
+            body: formData, // ✅ Send FormData directly
           },
         ).then((res) => res.json()),
       onSuccess: (data) => {
@@ -84,7 +77,65 @@ export default function ProfileSetupForm() {
             position: "top-right",
             richColors: true,
           });
+          return;
+        }
+        setLoading(true);
+        router.push(
+          `/profile-setup/verify_documents?type=${type}&userId=${userId}`,
+        );
+      },
+      onError: () => {
+        toast.error("Something went wrong to setup your profile...", {
+          position: "top-right",
+          richColors: true,
+        });
+      },
+    });
 
+  const { mutate: merchantMutate, isPending: merchantPending } =
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    useMutation<any, unknown, FormData>({
+      mutationKey: ["merchant_update"],
+      mutationFn: (formData) =>
+        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/merchant`, {
+          method: "POST",
+          body: formData, // ✅ Send FormData directly
+        }).then((res) => res.json()),
+      onSuccess: (data) => {
+        if (!data.success) {
+          toast.error(data.message, {
+            position: "top-right",
+            richColors: true,
+          });
+          return;
+        }
+        setLoading(true);
+        router.push(
+          `/profile-setup/verify_documents?type=${type}&userId=${userId}`,
+        );
+      },
+      onError: () => {
+        toast.error("Something went wrong to setup your profile...", {
+          position: "top-right",
+          richColors: true,
+        });
+      },
+    });
+  const { mutate: organizationMutate, isPending: organizationPending } =
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    useMutation<any, unknown, FormData>({
+      mutationKey: ["organization_update"],
+      mutationFn: (formData) =>
+        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/organization`, {
+          method: "POST",
+          body: formData, // ✅ Send FormData directly
+        }).then((res) => res.json()),
+      onSuccess: (data) => {
+        if (!data.success) {
+          toast.error(data.message, {
+            position: "top-right",
+            richColors: true,
+          });
           return;
         }
         setLoading(true);
@@ -109,9 +160,14 @@ export default function ProfileSetupForm() {
       ...(type === "merchant" && {
         businessName: "",
         about: "",
+        businessHours: [
+          {
+            Day: "",
+            Time: "",
+          },
+        ],
       }),
       ...(type === "organization" && {
-        organization_name: "",
         about: "",
         mission: "",
         experience: "",
@@ -121,8 +177,8 @@ export default function ProfileSetupForm() {
         businessName: "",
         about: "",
         Profession: "",
-        experiences: [{ title: "fsdfdsf" }],
-        certifications: [{ name: "fsdfdsf" }],
+        experiences: [{ title: "" }],
+        certifications: [{ name: "" }],
       }),
     },
   });
@@ -151,41 +207,140 @@ export default function ProfileSetupForm() {
         : "certifications",
   });
 
+  const { fields, append, remove } = useFieldArray({
+    name: "businessHours",
+    control: form.control,
+  });
+
   async function onSubmit(data: ProfileFormData) {
+    const formData = new FormData();
     if (data.type === "professional") {
-      const formattedData: ProfessionalBodyData = {
-        fullName: data.fullName ?? "", // Ensure fullName exists
-        businessName: data.businessName ?? "",
-        about: data.about ?? "",
-        experience: data.experiences
-          ? data.experiences
-              .map((exp) => exp.title)
-              .filter((title): title is string => !!title)
-          : [], // Handle undefined experiences
-        certifications: data.certifications
-          ? data.certifications
-              .map((item) => item.name)
-              .filter((n): n is string => !!n)
-          : [],
+      try {
+        // Append basic fields
+        formData.append("userID", userId!);
+        formData.append("fullName", data.fullName ?? "");
+        formData.append("businessName", data.businessName ?? "");
+        formData.append("about", data.about ?? "");
+        formData.append("address", data.address ?? "");
+        formData.append("websiteURL", data.websiteURL ?? "");
 
-        address: data.address,
-        websiteURL: data.websiteURL ?? "",
-        highlightedStatement: [
+        // Append experiences as a JSON string
+        formData.append(
+          "experience",
+          JSON.stringify(
+            data.experiences
+              ?.map((exp) => exp.title)
+              .filter((title): title is string => !!title) || [],
+          ),
+        );
+
+        // Append certifications as JSON string
+        formData.append(
+          "certifications",
+          JSON.stringify(
+            data.certifications
+              ?.map((item) => item.name)
+              .filter((n): n is string => !!n) || [],
+          ),
+        );
+
+        // Append highlighted statement as JSON string
+        formData.append(
+          "highlightedStatement",
+          JSON.stringify([
+            {
+              title: data.highlightedTitle ?? "",
+              description: data.highlightedDescription ?? "",
+            },
+          ]),
+        );
+
+        // Append profile photo if exists
+        if (data.profilePhoto) {
+          console.log("Uploading Profile Photo:", data.profilePhoto.name);
+          formData.append("profilePhoto", data.profilePhoto);
+        }
+
+        // Debugging: Log FormData Entries
+        // for (const [key, value] of formData.entries()) {
+        //   console.log(`${key}:`, value);
+        // }
+
+        // Submit the form data
+        await professionalMutate(formData);
+      } catch (error) {
+        console.error("Form submission error:", error);
+      }
+    } else if (data.type === "merchant") {
+      // Append basic fields
+      formData.append("userID", userId!);
+      formData.append("fullName", data.fullName ?? "");
+      formData.append("businessName", data.businessName ?? "");
+      formData.append("about", data.about ?? "");
+      formData.append("address", data.address ?? "");
+      formData.append("websiteURL", data.websiteURL ?? "");
+      formData.append("shortDescriptionOfStore", data.shortDescriptionOfStore);
+
+      if (data.businessHours) {
+        formData.append("businessHours", JSON.stringify(data.businessHours));
+      }
+
+      // Append highlighted statement as JSON string
+      formData.append(
+        "highlightedStatement",
+        JSON.stringify([
           {
-            title: data.highlightedTitle!,
-            description: data.highlightedDescription!,
+            title: data.highlightedTitle ?? "",
+            description: data.highlightedDescription ?? "",
           },
-        ],
-        photoWithID: "base64-encoded-image",
-        governmentIssuedID: "ABC123456",
-        professionalCertification: "Certified Developer",
-      };
+        ]),
+      );
 
-      professionalMutate(formattedData as ProfessionalBodyData);
+      if (data.profilePhoto) {
+        formData.append("profilePhoto", data.profilePhoto);
+      }
+
+      merchantMutate(formData);
+    } else if (data.type === "organization") {
+      formData.append("userID", userId!);
+      formData.append("businessName", data.businessName ?? "");
+      formData.append("organizationName", data.organizationName ?? "");
+      formData.append("missionStatement", data.missionStatement);
+      formData.append("address", data.address ?? "");
+      formData.append("about", data.about ?? "");
+      formData.append(
+        "shortDescriptionOfOrganization",
+        data.shortDescriptionOfOrganization,
+      );
+      formData.append("websiteURL", data.websiteURL ?? "");
+
+      // Append experiences as a JSON string
+      formData.append(
+        "experience",
+        JSON.stringify(
+          data.experiences
+            ?.map((exp) => exp.title)
+            .filter((title): title is string => !!title) || [],
+        ),
+      );
+
+      // Append certifications as JSON string
+      formData.append(
+        "certifications",
+        JSON.stringify(
+          data.certifications
+            ?.map((item) => item.name)
+            .filter((n): n is string => !!n) || [],
+        ),
+      );
+
+      // call api here
+      organizationMutate(formData);
     }
   }
 
-  const isLoading = professionalPending || loading;
+  const isLoading =
+    professionalPending || loading || merchantPending || organizationPending;
 
   return (
     <div className="flex min-h-screen">
@@ -203,35 +358,12 @@ export default function ProfileSetupForm() {
               onSubmit={form.handleSubmit(onSubmit)}
               className="space-y-4 lg:w-[584px]"
             >
-              {/* merchant */}
-              {type === "merchant" && (
-                <FormField
-                  control={form.control}
-                  name="businessName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-[14px] font-medium">
-                        Business Name
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          className="h-[48px] bg-white px-[26px] py-[13px]"
-                          placeholder="Enter your registered business name"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              )}
-
               {/* organization */}
               {type === "organization" && (
                 <>
                   <FormField
                     control={form.control}
-                    name="organization_name"
+                    name="organizationName"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Organization Name</FormLabel>
@@ -246,10 +378,27 @@ export default function ProfileSetupForm() {
                       </FormItem>
                     )}
                   />
+                  <FormField
+                    control={form.control}
+                    name="shortDescriptionOfOrganization"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Short Description (Organization)</FormLabel>
+                        <FormControl>
+                          <Input
+                            className="h-[48px] bg-white px-[26px] py-[13px]"
+                            placeholder="Enter your short description of your organization..."
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
                   <FormField
                     control={form.control}
-                    name="mission"
+                    name="missionStatement"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Mission Statement </FormLabel>
@@ -271,8 +420,28 @@ export default function ProfileSetupForm() {
                 </>
               )}
 
+              <FormField
+                control={form.control}
+                name="businessName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-[14px] text-[#1F2937]">
+                      Business Name
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        className="h-[48px] bg-white px-[26px] py-[13px]"
+                        placeholder="Enter your business name"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
               {/* professional */}
-              {type === "professional" && (
+              {(type === "professional" || type === "merchant") && (
                 <>
                   <FormField
                     control={form.control}
@@ -291,45 +460,49 @@ export default function ProfileSetupForm() {
                       </FormItem>
                     )}
                   />
-                  <FormField
-                    control={form.control}
-                    name="businessName"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-[14px] text-[#1F2937]">
-                          Business Name (Optional){" "}
-                        </FormLabel>
-                        <FormControl>
-                          <Input
-                            className="h-[48px] bg-white px-[26px] py-[13px]"
-                            placeholder="Enter your business name"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="Profession"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-[14px] text-[#1F2937]">
-                          Profession
-                        </FormLabel>
-                        <FormControl>
-                          <Input
-                            className="h-[48px] bg-white px-[26px] py-[13px]"
-                            placeholder="Enter your profession"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
                 </>
+              )}
+
+              {type === "merchant" && (
+                <FormField
+                  control={form.control}
+                  name="shortDescriptionOfStore"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Short Description</FormLabel>
+                      <FormControl>
+                        <Input
+                          className="h-[48px] bg-white px-[26px] py-[13px]"
+                          placeholder="Enter a short description"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
+
+              {type === "professional" && (
+                <FormField
+                  control={form.control}
+                  name="Profession"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-[14px] text-[#1F2937]">
+                        Profession
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          className="h-[48px] bg-white px-[26px] py-[13px]"
+                          placeholder="Enter your profession"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               )}
 
               <FormField
@@ -376,7 +549,7 @@ export default function ProfileSetupForm() {
                 )}
               />
 
-              {type === "professional" && (
+              {(type === "professional" || type === "merchant") && (
                 <div>
                   <div className="mb-5 flex w-full items-center justify-between">
                     <FormLabel>Highlighted Statement</FormLabel>
@@ -535,6 +708,92 @@ export default function ProfileSetupForm() {
                   </div>
                 </div>
               )}
+              {type === "merchant" && (
+                <div className="mt-2">
+                  <div className="mb-5 flex w-full items-center justify-between">
+                    <FormLabel>Business Hours</FormLabel>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => append({ Day: "", Time: "" })} // Append correct schema
+                    >
+                      <Plus className="mr-2 h-4 w-4" />
+                      Add Hours
+                    </Button>
+                  </div>
+                  <div className="space-y-5">
+                    {fields.map((field, index) => (
+                      <div
+                        className="relative mt-2 flex items-center gap-x-3"
+                        key={field.id}
+                      >
+                        {/* Day Selection */}
+                        <FormField
+                          control={form.control}
+                          name={`businessHours.${index}.Day`} // ✅ Correct name
+                          render={({ field }) => (
+                            <FormItem className="flex-1">
+                              <FormControl>
+                                <Select
+                                  onValueChange={(value) =>
+                                    field.onChange(value)
+                                  }
+                                  value={field.value}
+                                >
+                                  <SelectTrigger className="bg-white">
+                                    <SelectValue placeholder="Select day" />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    {dayOptions.map((option) => (
+                                      <SelectItem
+                                        key={option.value}
+                                        value={option.value}
+                                      >
+                                        {option.label}
+                                      </SelectItem>
+                                    ))}
+                                  </SelectContent>
+                                </Select>
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                        {/* Time Input */}
+                        <FormField
+                          control={form.control}
+                          name={`businessHours.${index}.Time`} // ✅ Correct name
+                          render={({ field }) => (
+                            <FormItem className="flex-1">
+                              <FormControl>
+                                <Input
+                                  placeholder="e.g. 9:00 AM - 5:00 PM"
+                                  className="bg-white px-[26px] py-[13px] shadow-none"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                        {/* Remove Button */}
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="icon"
+                          className="h-[40px] w-[40px] bg-white"
+                          onClick={() => remove(index)}
+                        >
+                          <X />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               <FormField
                 control={form.control}
@@ -555,6 +814,16 @@ export default function ProfileSetupForm() {
                   </FormItem>
                 )}
               />
+
+              <div className="space-y-2">
+                <p className="text-sm font-medium text-[#1D3557]">
+                  Profile Photo (Upload a Profile photo)
+                </p>
+                <FileUploader
+                  onFileSelect={(file) => form.setValue("profilePhoto", file!)}
+                  accept=".pdf,.jpg,.jpeg,.png"
+                />
+              </div>
 
               <div className="flex justify-end">
                 <Button

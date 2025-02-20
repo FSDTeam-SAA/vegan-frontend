@@ -9,6 +9,11 @@ const experienceSchema = z.object({
   title: z.string().optional(),
 });
 
+const businessHoursSchema = z.object({
+  Day: z.string(),
+  Time: z.string(),
+});
+
 // Base schema for common fields
 const baseSchema = {
   address: z.string().min(1, "Address is required"),
@@ -24,6 +29,12 @@ export const profileSchema = z.discriminatedUnion("type", [
   z.object({
     type: z.literal("merchant"),
     businessName: z.string().min(1, "Business name is required"),
+    fullName: z.string().min(1, "Full name is required"),
+    highlightedTitle: z.string().optional(),
+    highlightedDescription: z.string().optional(),
+    businessHours: z.array(businessHoursSchema),
+    shortDescriptionOfStore: z.string(),
+    profilePhoto: z.instanceof(File).optional(),
     about: z.string().min(10, "About us must be at least 10 characters"),
     ...baseSchema,
   }),
@@ -31,12 +42,16 @@ export const profileSchema = z.discriminatedUnion("type", [
   // Organization Schema
   z.object({
     type: z.literal("organization"),
-    organization_name: z.string().min(1, "Organization name is required"),
-    mission: z
+    organizationName: z.string().optional(),
+    businessName: z.string().optional(),
+    shortDescriptionOfOrganization: z.string(),
+    profilePhoto: z.instanceof(File).optional(),
+    experiences: z.array(experienceSchema).optional(),
+    certifications: z.array(certificationSchema).optional(),
+    missionStatement: z
       .string()
       .min(10, "Mission statement must be at least 10 characters"),
     about: z.string().min(10, "About us must be at least 10 characters"),
-    experience: z.string().min(10, "Experience must be at least 10 characters"),
     ...baseSchema,
   }),
 
@@ -51,6 +66,7 @@ export const profileSchema = z.discriminatedUnion("type", [
     certifications: z.array(certificationSchema).optional(),
     highlightedTitle: z.string().optional(),
     highlightedDescription: z.string().optional(),
+    profilePhoto: z.instanceof(File).optional(),
     ...baseSchema,
   }),
 ]);

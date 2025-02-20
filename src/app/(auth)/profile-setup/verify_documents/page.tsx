@@ -1,5 +1,7 @@
-import React from "react";
-import VerifyProfile from "./_components/VerifyProfile";
+import dynamic from "next/dynamic";
+const VerifyProfile = dynamic(() => import("./_components/VerifyProfile"), {
+  ssr: false,
+});
 
 const page = () => {
   return (

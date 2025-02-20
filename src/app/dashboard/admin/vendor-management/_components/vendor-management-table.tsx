@@ -7,7 +7,10 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useState } from "react";
-import { VendorManagementData, VendorManagementDataType } from "./vendor-management-data";
+import {
+  VendorManagementData,
+  VendorManagementDataType,
+} from "./vendor-management-data";
 import { VendorManagementColumn } from "./vendor-management-column";
 
 const VendorManagementTable = () => {
@@ -15,15 +18,18 @@ const VendorManagementTable = () => {
   return (
     <section className="w-full">
       <div className="h-auto w-full rounded-t-[12px]">
-        <TableContainer data={VendorManagementData} columns={VendorManagementColumn} />
+        <TableContainer
+          data={VendorManagementData}
+          columns={VendorManagementColumn}
+        />
       </div>
 
       <PacificPagination
         currentPage={currentPage}
         totalPages={10}
         onPageChange={(page) => setCurrentPage(page)}
+        
       />
-
     </section>
   );
 };
@@ -45,7 +51,7 @@ const TableContainer = ({
   return (
     <>
       <div className="mt-[48px]">
-        <DataTable table={table} columns={columns} />
+      <DataTable table={table} columns={columns} />
       </div>
     </>
   );
