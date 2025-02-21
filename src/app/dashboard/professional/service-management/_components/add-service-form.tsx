@@ -106,8 +106,8 @@ export function AddServiceForm({ data }: { data?: veganCookingDataType }) {
       metaDescription: data?.metaDescription || "",
       serviceDescription: data?.serviceDescription || "",
       keyWords: [], // Assuming keywords are passed as a string
-      price: "0.00",
-      paymentType: "", // Set default payment type if needed
+      price: "",
+      paymentType: "one-time", // Set default payment type if needed
       sessionType: "group session",
     },
   });
@@ -343,29 +343,30 @@ export function AddServiceForm({ data }: { data?: veganCookingDataType }) {
                 </FormItem>
               )}
             />
-
-            <FormField
-              control={form.control}
-              name="price"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-lg font-medium leading-[26px] text-[#1F2937]">
-                    Price ($)
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      className="h-[48px] w-full border border-[#F3F4F6] bg-[#F9FAFB] px-[16px] py-[12px] outline-none md:w-[344px]"
-                      type="number"
-                      step="0.01"
-                      min="0"
-                      placeholder="0.00"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {form.watch("paymentType") !== "free" && (
+              <FormField
+                control={form.control}
+                name="price"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-lg font-medium leading-[26px] text-[#1F2937]">
+                      Price ($)
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        className="h-[48px] w-full border border-[#F3F4F6] bg-[#F9FAFB] px-[16px] py-[12px] outline-none md:w-[344px]"
+                        type="number"
+                        // step="0.01"
+                        min="0"
+                        placeholder="0"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
           </div>
 
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
