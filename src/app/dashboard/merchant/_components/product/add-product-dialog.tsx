@@ -1,12 +1,5 @@
 "use client";
 
-// Packages
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-
-// Local imports
-
 import FileUploader from "@/components/shared/Uploader/FileUploader";
 import { Button } from "@/components/ui/button";
 import {
@@ -37,8 +30,14 @@ import {
 } from "@/components/ui/select";
 import { TagsInput } from "@/components/ui/tags-input";
 import { Textarea } from "@/components/ui/textarea";
-import { useMutation } from "@tanstack/react-query";
+import { MerchantProduct } from "@/types/merchant";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { z } from "zod";
 
 const productSchema = z.object({
   productName: z.string().min(1, "Product name is required").max(100),
@@ -58,18 +57,46 @@ type ProductFormData = z.infer<typeof productSchema>;
 type AddProductDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  initialData?: MerchantProduct;
 };
 
-export function AddProductDialog({
+export default function AddProductDialog({
   open,
   onOpenChange,
+  initialData,
 }: AddProductDialogProps) {
+  const session = useSession();
+  const merchantID = session?.data?.user?.userId;
+
+  const queryClient = useQueryClient();
+
   const form = useForm<ProductFormData>({
     resolver: zodResolver(productSchema),
     defaultValues: {
-      tags: ["food"],
+      productName: initialData?.productName || "",
+      description: initialData?.description ?? "",
+      metaDescription: initialData?.metaDescription ?? "",
+      price: initialData?.price ?? 0,
+      stockQuantity: initialData?.stockQuantity ?? 0,
+      category: initialData?.category || "",
+      tags: initialData?.tags || ["food"], // Ensure tags is always an array
     },
   });
+
+  // Use useEffect to update form when initialData changes
+  useEffect(() => {
+    if (initialData) {
+      form.reset({
+        productName: initialData.productName || "",
+        description: initialData.description || "",
+        metaDescription: initialData.metaDescription || "",
+        price: initialData.price || 0,
+        stockQuantity: initialData.stockQuantity || 0,
+        category: initialData.category || "",
+        tags: initialData.tags || ["food"],
+      });
+    }
+  }, [initialData, form]);
 
   const { mutate, isPending } = useMutation<any, unknown, FormData>({
     mutationKey: ["merchantProductAdd"],
@@ -88,8 +115,18 @@ export function AddProductDialog({
       }
 
       // handle success
-      form.reset();
+      form.reset({
+        productName: "",
+        description: "",
+        metaDescription: "",
+        price: 0,
+        stockQuantity: 0,
+        category: "",
+        tags: ["food"], // Reset tags to default value
+        productImage: undefined,
+      });
       onOpenChange(false);
+      queryClient.invalidateQueries({ queryKey: ["merchantsProduct"] });
     },
     onError: () => {
       toast.error("Failed to add product. Please try again later", {
@@ -99,19 +136,69 @@ export function AddProductDialog({
     },
   });
 
+  const { mutate: editMutate, isPending: editPending } = useMutation({
+    mutationKey: ["edit merchant product"],
+    mutationFn: (data: FormData) =>
+      fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/merchantproduct/${initialData?._id}`,
+        {
+          method: "PUT",
+          body: data,
+        },
+      ).then((res) => res.json()),
+    onSuccess: (data) => {
+      if (!data.success) {
+        toast.error(data.message, {
+          position: "top-right",
+          richColors: true,
+        });
+        return;
+      }
+
+      // handle success
+      form.reset({
+        productName: "",
+        description: "",
+        metaDescription: "",
+        price: 0,
+        stockQuantity: 0,
+        category: "",
+        tags: ["food"], // Reset tags to default value
+        productImage: undefined,
+      });
+      onOpenChange(false);
+      queryClient.invalidateQueries({ queryKey: ["merchantsProduct"] });
+    },
+  });
+
   const onSubmit = async (data: ProductFormData) => {
     const formData = new FormData();
-    formData.append("merchantID", "67b6b619e5ab192b88084586");
+    formData.append("merchantID", merchantID!);
     formData.append("productName", data.productName);
     formData.append("description", data.description);
     formData.append("metaDescription", data.metaDescription);
     formData.append("price", JSON.stringify(data.price));
     formData.append("stockQuantity", JSON.stringify(data.stockQuantity));
     formData.append("category", data.category);
-    formData.append("tags", JSON.stringify(data.tags));
-    formData.append("productImage", data.productImage!);
+    formData.append("tags", JSON.stringify(data.tags)); // Ensure tags is properly stringified
+    if (data.productImage) {
+      formData.append("productImage", data.productImage);
+    }
 
     // api call
+    if (!merchantID) {
+      toast.warning("Your merchantID missing! Please login again.", {
+        position: "top-right",
+        richColors: true,
+      });
+      return;
+    }
+
+    if (initialData) {
+      editMutate(formData);
+      return;
+    }
+    // add new product
     mutate(formData);
   };
 
@@ -120,12 +207,18 @@ export function AddProductDialog({
       <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent className="h-[700px] w-[800px] border-0 p-0">
           <OpacityLoader
-            messsage="Publishing a new Product..."
-            open={isPending}
+            messsage={
+              isPending
+                ? "Publishing a new Product..."
+                : editPending
+                  ? "Editing your product..."
+                  : "Checking your access..."
+            }
+            open={isPending || session.status === "loading"}
           />
-          <DialogHeader className="p-6">
+          <DialogHeader className="p-6 pb-0">
             <DialogTitle className="flex items-center justify-between">
-              Add New Product
+              {initialData ? "Edit Product" : "Add New Product"}
               <Button
                 variant="ghost"
                 size="icon"
@@ -310,6 +403,11 @@ export function AddProductDialog({
                     onFileSelect={(file) =>
                       form.setValue("productImage", file!)
                     }
+                    imageUrl={
+                      !form.getValues("productImage")
+                        ? initialData?.productImage
+                        : undefined
+                    }
                   />
                 </div>
 
@@ -322,7 +420,7 @@ export function AddProductDialog({
                     Cancel
                   </Button>
                   <Button type="submit" disabled={isPending}>
-                    Add Product
+                    {initialData ? "Edit" : "Add"} Product
                   </Button>
                 </div>
               </form>
