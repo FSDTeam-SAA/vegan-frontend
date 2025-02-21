@@ -3,7 +3,6 @@ import { redirect } from "next/navigation";
 import { ReactNode } from "react";
 
 // Local imports
-
 import { auth } from "@/auth";
 import { usersTabsList } from "@/data/dashboard";
 import { Sidebar } from "../_components/sidebar";
@@ -20,7 +19,9 @@ const DashboardLayout = async ({ children }: { children: ReactNode }) => {
   const user = currentUser.user;
 
   // If the user's role is not "user", redirect them to the homepage
-  if (user["role"] !== "user") redirect("/");
+  if (user["role"] !== "user") {
+    redirect("/");
+  }
   return (
     <div className="flex min-h-screen">
       <Sidebar lists={usersTabsList} />
