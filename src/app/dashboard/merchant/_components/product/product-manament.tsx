@@ -1,78 +1,65 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Download, Edit, Search, Trash2 } from "lucide-react";
+// Packages
+import { Download, Search } from "lucide-react";
+import { useState } from "react";
+
+// Local imports
+import ErrorContainer from "@/components/shared/sections/error-container";
 import { Button } from "@/components/ui/button";
+import { DataTable } from "@/components/ui/data-table";
 import { Input } from "@/components/ui/input";
-import { Switch } from "@/components/ui/switch";
-import { AddProductDialog } from "./add-product-dialog";
-import { BulkUploadDialog } from "./bulk-upload-dialog";
+import SkeletonWrapper from "@/components/ui/skeleton-wrapper";
+import { MerchantProduct, MerchantProductResponse } from "@/types/merchant";
+import { useQuery } from "@tanstack/react-query";
 import {
-  getProducts,
-  toggleVisibility,
-  deleteProduct,
-  type Product,
-} from "./actions";
-import Image from "next/image";
+  ColumnDef,
+  getCoreRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
+import dynamic from "next/dynamic";
+import { BulkUploadDialog } from "./bulk-upload-dialog";
+import { MerchantProductColumn } from "./merchant-product-column";
+const AddProductDialog = dynamic(() => import("./add-product-dialog"), {
+  ssr: false,
+});
 
 export default function ProductsManagement() {
   const [searchQuery, setSearchQuery] = useState("");
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [bulkUploadOpen, setBulkUploadOpen] = useState(false);
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
 
-  const fetchProducts = async () => {
-    setLoading(true);
-    const fetchedProducts = await getProducts();
-    setProducts(fetchedProducts);
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    fetchProducts();
-  }, []); //This is the line that needed to be updated.  The empty array [] was causing the issue.  It should have included the products state.
-
-  const handleProductAdded = () => {
-    fetchProducts();
-  };
-
-  const handleProductsUploaded = () => {
-    fetchProducts();
-  };
-
-  const filteredProducts = products.filter((product) =>
-    product.name.toLowerCase().includes(searchQuery.toLowerCase()),
+  const { isLoading, isError, data, error } = useQuery<MerchantProductResponse>(
+    {
+      queryKey: ["merchantsProduct"],
+      queryFn: () =>
+        fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/merchantproduct`,
+        ).then((res) => res.json()),
+    },
   );
 
-  const handleToggleVisibility = async (id: string) => {
-    const result = await toggleVisibility(id);
-    if (result.success) {
-      setProducts((prevProducts) =>
-        prevProducts.map((p) =>
-          p.id === id ? { ...p, visibility: !p.visibility } : p,
-        ),
-      );
-    }
-  };
+  let content;
 
-  const handleDeleteProduct = async (id: string) => {
-    const result = await deleteProduct(id);
-    if (result.success) {
-      setProducts((prevProducts) => prevProducts.filter((p) => p.id !== id));
-    }
-  };
+  if (isLoading || data?.success) {
+    content = (
+      <SkeletonWrapper isLoading={isLoading}>
+        <TableContainer
+          columns={MerchantProductColumn}
+          data={data?.data ?? []}
+        />
+      </SkeletonWrapper>
+    );
+  } else if (isError) {
+    content = (
+      <ErrorContainer
+        message={data?.message || error?.message || "Something went wrong"}
+      />
+    );
+  }
 
   return (
-    <div className="p-8">
-      <div className="mb-8">
-        <h1 className="mb-2 text-2xl font-semibold">Product Management</h1>
-        <p className="text-gray-600">
-          Manage your product listings efficiently, from adding new products to
-          tracking stock status
-        </p>
-      </div>
-
+    <div>
       <div className="mb-6 flex items-center justify-between">
         <div className="relative w-[300px] rounded-lg border border-[#9CA3AF]">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-gray-500" />
@@ -101,97 +88,28 @@ export default function ProductsManagement() {
         </div>
       </div>
 
-      <div className="rounded-lg border bg-white">
-        {loading ? (
-          <div className="flex h-32 items-center justify-center">
-            <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-primary"></div>
-          </div>
-        ) : filteredProducts.length === 0 ? (
-          <div className="py-8 text-center text-gray-500">
-            No products found
-          </div>
-        ) : (
-          <>
-            <div className="grid grid-cols-[2fr,1fr,1fr,1fr,1fr] border-b px-6 py-3">
-              <div>Product</div>
-              <div>Price</div>
-              <div>Stock</div>
-              <div>Visibility</div>
-              <div>Actions</div>
-            </div>
+      {content}
 
-            {filteredProducts.map((product) => (
-              <div
-                key={product.id}
-                className="grid grid-cols-[2fr,1fr,1fr,1fr,1fr] items-center border-b bg-[#F8F5F2] px-6 py-4"
-              >
-                <div className="flex items-center gap-4">
-                  <Image
-                    src={product.image || "/placeholder.svg"}
-                    alt={product.name}
-                    className="h-12 w-12 rounded-lg object-cover"
-                    width={48}
-                    height={48}
-                  />
-                  <div>
-                    <h3 className="font-medium">{product.name}</h3>
-                    <p className="text-sm text-gray-500">
-                      {product.description}
-                    </p>
-                  </div>
-                </div>
-                <div>${product.price.toFixed(2)}</div>
-                <div>
-                  <span
-                    className={`inline-block rounded-full px-2 py-1 text-xs ${
-                      product.stock > 50
-                        ? "bg-green-100 text-green-800"
-                        : product.stock > 0
-                          ? "bg-yellow-100 text-yellow-800"
-                          : "bg-red-100 text-red-800"
-                    }`}
-                  >
-                    {product.stock > 50
-                      ? "In stock"
-                      : product.stock > 0
-                        ? "Low stock"
-                        : "Out of Stock"}
-                  </span>
-                </div>
-                <div>
-                  <Switch
-                    checked={product.visibility}
-                    onCheckedChange={() => handleToggleVisibility(product.id)}
-                  />
-                </div>
-                <div className="flex items-center gap-2">
-                  <Button variant="ghost" size="icon">
-                    <Edit className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => handleDeleteProduct(product.id)}
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
-            ))}
-          </>
-        )}
-      </div>
-
-      <AddProductDialog
-        open={addDialogOpen}
-        onOpenChange={setAddDialogOpen}
-        onProductAdded={handleProductAdded}
-      />
+      <AddProductDialog open={addDialogOpen} onOpenChange={setAddDialogOpen} />
       <BulkUploadDialog
         open={bulkUploadOpen}
         onOpenChange={setBulkUploadOpen}
-        onProductsUploaded={handleProductsUploaded}
+        onProductsUploaded={() => {}}
       />
     </div>
   );
 }
+
+interface TableContainerProps {
+  data: MerchantProduct[];
+  columns: ColumnDef<MerchantProduct>[];
+}
+
+const TableContainer = ({ data, columns }: TableContainerProps) => {
+  const table = useReactTable({
+    data: data,
+    columns: columns,
+    getCoreRowModel: getCoreRowModel(),
+  });
+  return <DataTable table={table} columns={columns} />;
+};
