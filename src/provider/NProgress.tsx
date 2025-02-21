@@ -6,7 +6,7 @@ const NProgress = () => {
   return (
     <ProgressBar
       height="2px"
-      color="#1D3557"
+      color="#FFFFFF"
       options={{ showSpinner: false }}
     />
   );
