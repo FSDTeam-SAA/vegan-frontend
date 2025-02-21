@@ -1,14 +1,28 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { FileUp, Plus, X } from "lucide-react";
-import React, { useState } from "react";
-import { BulkUploadDialog } from "./bulk-upload-dialog";
-import { AddServiceForm } from "./add-service-form";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { FileUp, Plus, X } from "lucide-react";
+import { useEffect, useState } from "react";
+import { AddServiceForm } from "./add-service-form";
+import { BulkUploadDialog } from "./bulk-upload-dialog";
 
 const ServiceManagementHeader = () => {
   const [open, setOpen] = useState(false);
   const [isOenService, setIsOpenService] = useState(false);
+
+  useEffect(() => {
+    if (isOenService) {
+      setTimeout(() => {
+        document.documentElement.style.overflow = "hidden";
+      }, 100);
+    } else {
+      document.documentElement.style.overflow = "auto";
+    }
+
+    return () => {
+      document.documentElement.style.overflow = "auto";
+    };
+  }, [isOenService]);
 
   return (
     <div className="pb-[24px] pt-[32px] md:pb-[40px] md:pt-[40px] lg:pb-[56px]">
