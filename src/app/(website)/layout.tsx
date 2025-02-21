@@ -9,9 +9,22 @@ const Navbar = dynamic(() => import("@/components/navbar/navbar"), {
 const WebsiteLayout = async ({ children }: { children: ReactNode }) => {
   const session = await auth();
 
+  let accounRole;
+
+  if (session?.user?.role === "user") {
+    accounRole = "user";
+  } else if (session?.user?.role === "vendor") {
+    accounRole = session.user.accountType!;
+  }
+
   return (
     <div className="">
-      <Navbar loggedin={!!session} />
+      <Navbar
+        loggedin={!!session}
+        role={
+          accounRole as "professional" | "merchant" | "organization" | "user"
+        }
+      />
       {children}
       <Footer />
     </div>
