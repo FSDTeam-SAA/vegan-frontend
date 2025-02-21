@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { FileUp, Plus, X } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BulkUploadDialog } from "./bulk-upload-dialog";
 import { AddServiceForm } from "./add-service-form";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -9,6 +9,20 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 const ServiceManagementHeader = () => {
   const [open, setOpen] = useState(false);
   const [isOenService, setIsOpenService] = useState(false);
+
+  useEffect(() => {
+    if (isOenService) {
+      setTimeout(() => {
+        document.documentElement.style.overflow = "hidden";
+      }, 100);
+    } else {
+      document.documentElement.style.overflow = "auto";
+    }
+
+    return () => {
+      document.documentElement.style.overflow = "auto";
+    };
+  }, [isOenService]);
 
   return (
     <div className="pb-[24px] pt-[32px] md:pb-[40px] md:pt-[40px] lg:pb-[56px]">
@@ -52,7 +66,7 @@ const ServiceManagementHeader = () => {
 
       {/* add new service modal  */}
       {isOenService && (
-        <section className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30 backdrop-blur-sm">
+        <section className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-lg">
           {/* Modal content */}
           <div className="relative z-10">
             <div className="flex items-center justify-between rounded-t-lg bg-white px-[32px] py-[30px] shadow-lg">
