@@ -5,7 +5,7 @@
 // Local imports
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Upload, X } from "lucide-react";
+import { Loader2, Upload, X } from "lucide-react";
 import type React from "react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -31,7 +31,10 @@ import {
 } from "@/components/ui/select";
 import { TagsInput } from "@/components/ui/tags-input";
 import { Textarea } from "@/components/ui/textarea";
+import { useMutation } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { toast } from "sonner";
 import { veganCookingDataType } from "./VeganCookingData";
 
 const formSchema = z.object({
@@ -63,12 +66,27 @@ const formSchema = z.object({
 export function AddServiceForm({ data }: { data?: veganCookingDataType }) {
   const [image, setImage] = useState<File | null>(null);
   const [video, setVideo] = useState<File | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [charCount, setCharCount] = useState({
     serviceName: 0,
     metaDescription: 0,
     serviceDescription: 0,
     keywords: 0,
+  });
+
+  const session = useSession();
+
+  const userID = session?.data?.user?.userId;
+
+  const { mutate, isPending } = useMutation({
+    mutationKey: ["professional-service-create"],
+    mutationFn: (data: FormData) =>
+      fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/createservice`, {
+        method: "POST",
+        body: JSON.stringify(data),
+      }).then((res) => res.json()),
+    onSuccess: (data) => {
+      console.log(data);
+    },
   });
 
   const handleCharCountChange = (
@@ -90,11 +108,32 @@ export function AddServiceForm({ data }: { data?: veganCookingDataType }) {
       keyWords: [], // Assuming keywords are passed as a string
       price: "0.00",
       paymentType: "", // Set default payment type if needed
+      sessionType: "group session",
     },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    if (!userID) {
+      toast.warning("userID is missing. Please login again.");
+      return;
+    }
+
     console.log(values);
+    const formData = new FormData();
+
+    formData.append("userID", userID);
+    formData.append("serviceName", values?.serviceName);
+    formData.append("metaDescription", values.metaDescription);
+    formData.append("serviceDescription", values.serviceDescription);
+    formData.append("keyWords", JSON.stringify(values.keyWords));
+    formData.append("paymentType", values.paymentType);
+    formData.append("price", values.price!);
+    formData.append("serviceImage", image!);
+    formData.append("serviceVideo", video!);
+    formData.append("sessionType", values.sessionType);
+
+    // api call
+    mutate(formData);
   }
 
   const handleFileDrop = (e: React.DragEvent, type: "image" | "video") => {
@@ -436,9 +475,10 @@ export function AddServiceForm({ data }: { data?: veganCookingDataType }) {
               className="w-full md:w-auto"
               size="lg"
               type="submit"
-              disabled={isSubmitting}
+              disabled={isPending}
             >
-              {isSubmitting ? "Creating..." : "Create Service"}
+              {isPending ? "Creating" : "Create Service"}{" "}
+              {isPending && <Loader2 className="animate-spin" />}
             </Button>
           </div>
         </form>
