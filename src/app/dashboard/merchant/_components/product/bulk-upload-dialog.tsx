@@ -1,7 +1,5 @@
 "use client";
 
-import { useState } from "react";
-import { Upload, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -9,8 +7,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { bulkUpload } from "./actions";
+import { Upload } from "lucide-react";
+import { useState } from "react";
 import type { Product } from "./actions";
+import { bulkUpload } from "./actions";
 
 export function BulkUploadDialog({
   open,
@@ -72,14 +72,6 @@ export function BulkUploadDialog({
         <DialogHeader>
           <DialogTitle className="flex items-center justify-between">
             Bulk Upload Products
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-6 w-6 p-0"
-              onClick={() => onOpenChange(false)}
-            >
-              <X className="h-4 w-4" />
-            </Button>
           </DialogTitle>
         </DialogHeader>
         <div

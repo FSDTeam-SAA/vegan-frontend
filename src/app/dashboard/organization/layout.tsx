@@ -1,13 +1,19 @@
-import { auth } from "@/auth";
-import { organizationTabsList } from "@/data/dashboard";
+// Packages
 import { redirect } from "next/navigation";
 import { ReactNode } from "react";
+
+// Local imports
+
+import { auth } from "@/auth";
+import { organizationTabsList } from "@/data/dashboard";
 import { Sidebar } from "../_components/sidebar";
 
 const DashboardLayout = async ({ children }: { children: ReactNode }) => {
-  const user = await auth();
+  const session = await auth();
+  if (!session || session.user.accountType !== "organization") {
+    redirect("/");
+  }
 
-  if (!user) redirect("/onboarding");
   return (
     <div className="flex min-h-screen">
       <Sidebar lists={organizationTabsList} />

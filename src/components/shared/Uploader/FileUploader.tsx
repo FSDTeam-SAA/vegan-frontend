@@ -10,6 +10,7 @@ interface FileUploadProps {
   accept?: string;
   title?: string;
   className?: string;
+  imageUrl?: string;
 }
 
 export default function FileUploader({
@@ -17,6 +18,7 @@ export default function FileUploader({
   accept = ".pdf,.jpg,.jpeg,.png",
   title = "Click to upload or drag and drop",
   className,
+  imageUrl,
 }: FileUploadProps) {
   const [file, setFile] = useState<File | null>(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -93,18 +95,18 @@ export default function FileUploader({
       />
 
       <div className="flex flex-col items-center justify-center pb-6 pt-5">
-        {file ? (
+        {file || imageUrl ? (
           <div className="flex flex-col items-center">
             <Image
-              src="/assets/docIcon.png"
+              src={imageUrl || "/assets/docIcon.png"}
               alt="file-upload"
               width={50}
               height={50}
-              className="mb-3 h-[50px] w-[50px]"
+              className="mb-3 h-[100px] w-[100px]"
             />
             <p className="mx-auto mb-3 w-[95%] text-center text-sm text-gray-500">
               <span className="text-center text-[16px] font-semibold">
-                {file.name}
+                {file?.name || "Change Photo"}
               </span>
             </p>
             <button
