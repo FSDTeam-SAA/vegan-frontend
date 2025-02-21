@@ -79,9 +79,11 @@ export function AddServiceForm({ data }: { data?: veganCookingDataType }) {
         try {
             // Simulate API call
             await new Promise((resolve) => setTimeout(resolve, 1000));
-            console.log(values);
-            console.log("Image:", image);
-            console.log("Video:", video);
+            console.log("Form Data:", {
+                ...values,
+                image: image,
+                video: video, 
+            });
         } finally {
             setIsSubmitting(false);
         }
