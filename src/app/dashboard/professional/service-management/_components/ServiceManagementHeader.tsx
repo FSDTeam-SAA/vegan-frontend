@@ -1,10 +1,10 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { FileUp, Plus, X } from "lucide-react";
-import React, { useEffect, useState } from "react";
-import { BulkUploadDialog } from "./bulk-upload-dialog";
-import { AddServiceForm } from "./add-service-form";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { FileUp, Plus, X } from "lucide-react";
+import { useEffect, useState } from "react";
+import { AddServiceForm } from "./add-service-form";
+import { BulkUploadDialog } from "./bulk-upload-dialog";
 
 const ServiceManagementHeader = () => {
   const [open, setOpen] = useState(false);
@@ -66,7 +66,7 @@ const ServiceManagementHeader = () => {
 
       {/* add new service modal  */}
       {isOenService && (
-        <section className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-lg">
+        <section className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30 backdrop-blur-sm">
           {/* Modal content */}
           <div className="relative z-10">
             <div className="flex items-center justify-between rounded-t-lg bg-white px-[32px] py-[30px] shadow-lg">
