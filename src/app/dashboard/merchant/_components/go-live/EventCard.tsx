@@ -1,9 +1,11 @@
 "use client";
 
+import AlertModal from "@/components/ui/alert-modal";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { MerchantEvent } from "@/types/merchant";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   Calendar1Icon,
   ChevronDown,
@@ -14,6 +16,7 @@ import {
 } from "lucide-react";
 import moment from "moment";
 import { useState } from "react";
+import { toast } from "sonner";
 import EventDialog from "./merchant-event-dialog";
 
 interface Props {
@@ -23,6 +26,37 @@ interface Props {
 export function EventCard({ data }: Props) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+
+  const queryClient = useQueryClient();
+
+  const { mutate: deleteMutate, isPending: deletePending } = useMutation({
+    mutationKey: ["merchant-event-delete"],
+    mutationFn: () =>
+      fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/merchantGoLive/${data?._id}`,
+        {
+          method: "DELETE",
+        },
+      ).then((res) => res.json()),
+    onSuccess: (data) => {
+      if (!data.success) {
+        toast.error(data.message, {
+          position: "top-right",
+          richColors: true,
+        });
+        return;
+      }
+
+      // Handle success
+      setDeleteModalOpen(false);
+      toast.success(data.message, {
+        position: "top-right",
+        richColors: true,
+      });
+      queryClient.invalidateQueries({ queryKey: ["eventsbyMerchant"] });
+    },
+  });
 
   return (
     <>
@@ -43,7 +77,12 @@ export function EventCard({ data }: Props) {
               <Pencil className="h-4 w-4" />
               <span className="sr-only">Edit</span>
             </Button>
-            <Button variant="ghost" size="icon" className="text-red-500">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-red-500 hover:bg-rose-100 hover:text-red-500"
+              onClick={() => setDeleteModalOpen(true)}
+            >
               <Trash2 className="h-4 w-4" />
               <span className="sr-only">Delete</span>
             </Button>
@@ -130,6 +169,13 @@ export function EventCard({ data }: Props) {
           initialData={data}
         />
       )}
+
+      <AlertModal
+        isOpen={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        onConfirm={deleteMutate}
+        loading={deletePending}
+      />
     </>
   );
 }
