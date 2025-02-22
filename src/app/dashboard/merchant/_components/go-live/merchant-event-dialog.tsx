@@ -1,5 +1,10 @@
 "use client";
 
+// Packages
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+
+// Local imports
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -16,7 +21,6 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -24,8 +28,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useForm } from "react-hook-form";
-import { useState, useEffect } from "react";
+import { Textarea } from "@/components/ui/textarea";
 
 interface EventMetrics {
   registeredParticipants: number;
@@ -54,46 +57,9 @@ interface EventFormData {
 interface EventDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  initialData?: EventData;
-  mode?: "add" | "edit";
-  onSubmit: (data: EventFormData) => void;
 }
 
-function convertDateFormat(dateStr: string): string {
-  if (!dateStr) {
-    console.error("Invalid date string:", dateStr);
-    return "Invalid Date";
-  }
-
-  const date = new Date(dateStr);
-
-  if (isNaN(date.getTime())) {
-    console.error("Could not parse date:", dateStr);
-    return "Invalid Date";
-  }
-
-  return date.toISOString().split("T")[0];
-}
-
-function extractTimeFromRange(timeRange: string) {
-  const startTime = timeRange.split(" - ")[0];
-  const [time, period] = startTime.split(" ");
-  const [hours, minutes] = time.split(":");
-  let hour = Number.parseInt(hours);
-
-  if (period === "PM" && hour !== 12) hour += 12;
-  if (period === "AM" && hour === 12) hour = 0;
-
-  return `${hour.toString().padStart(2, "0")}:${minutes}`;
-}
-
-export function EventDialog({
-  open,
-  onOpenChange,
-  initialData,
-  mode = "add",
-  onSubmit,
-}: EventDialogProps) {
+export default function EventDialog({ open, onOpenChange }: EventDialogProps) {
   const [description, setDescription] = useState("");
 
   const form = useForm<EventFormData>({
@@ -107,40 +73,16 @@ export function EventDialog({
     },
   });
 
-  // Reset form when initialData changes
-  useEffect(() => {
-    if (initialData) {
-      const formattedDate = convertDateFormat(initialData.date);
-      const formattedTime = extractTimeFromRange(initialData.timeRange);
-
-      form.reset({
-        title: initialData.title,
-        description: initialData.description,
-        date: formattedDate,
-        time: formattedTime,
-        type: initialData.type.toLowerCase(),
-        price: initialData.price.toString(),
-      });
-      setDescription(initialData.description);
-    } else {
-      form.reset({
-        title: "",
-        description: "",
-        date: "",
-        time: "",
-        type: "free",
-        price: "0.00",
-      });
-      setDescription("");
-    }
-  }, [initialData, form]);
+  const onSubmit = (data: EventFormData) => {
+    console.log(data);
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="relative border-0 sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle className="flex items-center justify-between">
-            {mode === "add" ? "Add New Event" : "Edit Event"}
+            Add New Event
           </DialogTitle>
         </DialogHeader>
         <Form {...form}>
@@ -224,17 +166,19 @@ export function EventDialog({
                 </FormItem>
               )}
             />
-            <FormField
-              name="price"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Price (if paid)</FormLabel>
-                  <FormControl>
-                    <Input type="number" step="0.01" min="0" {...field} />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
+            {form.watch("type") === "paid" && (
+              <FormField
+                name="price"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Price (if paid)</FormLabel>
+                    <FormControl>
+                      <Input type="number" step="0.01" min="0" {...field} />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            )}
             <DialogFooter className="gap-2 sm:gap-0">
               <Button
                 type="button"
@@ -244,7 +188,7 @@ export function EventDialog({
                 Cancel
               </Button>
               <Button type="submit" className="bg-[#1f3a5f] hover:bg-[#162942]">
-                {mode === "add" ? "Add Event" : "Save Changes"}
+                Add Event
               </Button>
             </DialogFooter>
           </form>
