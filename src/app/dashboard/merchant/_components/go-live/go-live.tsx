@@ -4,7 +4,7 @@ const EventsMangement = dynamic(() => import("./events"), { ssr: false });
 
 export default function GoLive() {
   return (
-    <div>
+    <div className="space-y-10">
       <EventsMangement />
       <MerchantTutiorials />
     </div>

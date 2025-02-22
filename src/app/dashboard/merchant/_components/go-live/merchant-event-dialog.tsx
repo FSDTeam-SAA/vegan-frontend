@@ -2,7 +2,7 @@
 
 // Packages
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
@@ -34,21 +34,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-
-interface EventMetrics {
-  registeredParticipants: number;
-  totalAmountPaid: number;
-}
-export interface EventData {
-  type: "Paid" | "Free";
-  title: string;
-  description: string;
-  date: string;
-  timeRange: string;
-  price: number;
-  metrics?: EventMetrics;
-  defaultExpanded?: boolean;
-}
+import { MerchantEvent } from "@/types/merchant";
 
 const eventFormSchema = z.object({
   eventTitle: z
@@ -75,22 +61,31 @@ type EventFormData = z.infer<typeof eventFormSchema>;
 interface EventDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  initialData?: MerchantEvent;
 }
 
-export default function EventDialog({ open, onOpenChange }: EventDialogProps) {
+export default function EventDialog({
+  open,
+  onOpenChange,
+  initialData,
+}: EventDialogProps) {
   const form = useForm<EventFormData>({
     resolver: zodResolver(eventFormSchema),
     defaultValues: {
-      eventTitle: "",
-      description: "",
-      date: "",
-      time: "",
-      eventType: "paid event",
+      eventTitle: initialData?.eventTitle || "",
+      description: initialData?.description || "",
+      date: initialData?.date || "",
+      time: initialData?.time || "",
+      eventType:
+        (initialData?.eventType as "paid event" | "free event") || "paid event",
+      price: initialData?.price?.toString() || "0",
     },
   });
 
   const session = useSession();
   const merchantID = session.data?.user.userId;
+
+  const queryClient = useQueryClient();
 
   const { mutate, isPending } = useMutation({
     mutationKey: ["merchant-event-create"],
@@ -106,7 +101,6 @@ export default function EventDialog({ open, onOpenChange }: EventDialogProps) {
         }),
       }).then((res) => res.json()),
     onSuccess: (data) => {
-      console.log(data);
       if (!data.success) {
         toast.error(data.message, {
           position: "top-right",
@@ -118,19 +112,58 @@ export default function EventDialog({ open, onOpenChange }: EventDialogProps) {
       // Handle success
       form.reset();
       onOpenChange(false);
+      queryClient.invalidateQueries({ queryKey: ["eventsbyMerchant"] });
+    },
+  });
+  const { mutate: editMutate, isPending: editPending } = useMutation({
+    mutationKey: ["merchant-event-edit"],
+    mutationFn: (body: EventFormData) =>
+      fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/merchantGoLive/${initialData?._id}`,
+        {
+          method: "PUT",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(body),
+        },
+      ).then((res) => res.json()),
+    onSuccess: (data) => {
+      if (!data.success) {
+        toast.error(data.message, {
+          position: "top-right",
+          richColors: true,
+        });
+        return;
+      }
+
+      // Handle success
+      form.reset();
+      onOpenChange(false);
+      toast.success(data.message, {
+        position: "top-right",
+        richColors: true,
+      });
+      queryClient.invalidateQueries({ queryKey: ["eventsbyMerchant"] });
     },
   });
 
   const onSubmit = (data: EventFormData) => {
-    mutate(data);
+    if (initialData) {
+      editMutate(data);
+    } else {
+      mutate(data);
+    }
   };
+
+  const isLoading = isPending || editPending;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="border-0 sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle className="flex items-center justify-between">
-            Add New Event
+            {initialData ? "Edit" : "Add"} New Event
           </DialogTitle>
         </DialogHeader>
         <Form {...form}>
@@ -237,9 +270,10 @@ export default function EventDialog({ open, onOpenChange }: EventDialogProps) {
               <Button
                 type="submit"
                 className="bg-[#1f3a5f] hover:bg-[#162942]"
-                disabled={isPending}
+                disabled={isLoading}
               >
-                Add Event {isPending && <Loader2 className="animate-spin" />}
+                {initialData ? "Save " : "Add Event"}{" "}
+                {isLoading && <Loader2 className="animate-spin" />}
               </Button>
             </DialogFooter>
           </form>
