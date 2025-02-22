@@ -2,7 +2,7 @@
 
 // Packages
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
@@ -34,21 +34,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-
-interface EventMetrics {
-  registeredParticipants: number;
-  totalAmountPaid: number;
-}
-export interface EventData {
-  type: "Paid" | "Free";
-  title: string;
-  description: string;
-  date: string;
-  timeRange: string;
-  price: number;
-  metrics?: EventMetrics;
-  defaultExpanded?: boolean;
-}
+import { MerchantEvent } from "@/types/merchant";
 
 const eventFormSchema = z.object({
   eventTitle: z
@@ -75,22 +61,31 @@ type EventFormData = z.infer<typeof eventFormSchema>;
 interface EventDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  initialData?: MerchantEvent;
 }
 
-export default function EventDialog({ open, onOpenChange }: EventDialogProps) {
+export default function EventDialog({
+  open,
+  onOpenChange,
+  initialData,
+}: EventDialogProps) {
   const form = useForm<EventFormData>({
     resolver: zodResolver(eventFormSchema),
     defaultValues: {
-      eventTitle: "",
-      description: "",
-      date: "",
-      time: "",
-      eventType: "paid event",
+      eventTitle: initialData?.eventTitle || "",
+      description: initialData?.description || "",
+      date: initialData?.date || "",
+      time: initialData?.time || "",
+      eventType:
+        (initialData?.eventType as "paid event" | "free event") || "paid event",
+      price: initialData?.price?.toString() || "0",
     },
   });
 
   const session = useSession();
   const merchantID = session.data?.user.userId;
+
+  const queryClient = useQueryClient();
 
   const { mutate, isPending } = useMutation({
     mutationKey: ["merchant-event-create"],
@@ -106,7 +101,6 @@ export default function EventDialog({ open, onOpenChange }: EventDialogProps) {
         }),
       }).then((res) => res.json()),
     onSuccess: (data) => {
-      console.log(data);
       if (!data.success) {
         toast.error(data.message, {
           position: "top-right",
@@ -118,133 +112,180 @@ export default function EventDialog({ open, onOpenChange }: EventDialogProps) {
       // Handle success
       form.reset();
       onOpenChange(false);
+      queryClient.invalidateQueries({ queryKey: ["eventsbyMerchant"] });
+    },
+  });
+  const { mutate: editMutate, isPending: editPending } = useMutation({
+    mutationKey: ["merchant-event-edit"],
+    mutationFn: (body: EventFormData) =>
+      fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/merchantGoLive/${initialData?._id}`,
+        {
+          method: "PUT",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(body),
+        },
+      ).then((res) => res.json()),
+    onSuccess: (data) => {
+      if (!data.success) {
+        toast.error(data.message, {
+          position: "top-right",
+          richColors: true,
+        });
+        return;
+      }
+
+      // Handle success
+      form.reset();
+      onOpenChange(false);
+      toast.success(data.message, {
+        position: "top-right",
+        richColors: true,
+      });
+      queryClient.invalidateQueries({ queryKey: ["eventsbyMerchant"] });
     },
   });
 
   const onSubmit = (data: EventFormData) => {
-    mutate(data);
+    if (initialData) {
+      editMutate(data);
+    } else {
+      mutate(data);
+    }
   };
 
+  const isLoading = isPending || editPending;
+
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="border-0 sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle className="flex items-center justify-between">
-            Add New Event
-          </DialogTitle>
-        </DialogHeader>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <FormField
-              name="eventTitle"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Event Title</FormLabel>
-                  <FormControl>
-                    <Input placeholder="E.g Beach Cleanup Drive" {...field} />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="flex items-center justify-between">
-                    Description
-                    <span className="text-sm text-muted-foreground">
-                      {field.value.length}/200
-                    </span>
-                  </FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder="Describe your the event in detail"
-                      className="resize-none"
-                      maxLength={200}
-                      {...field}
-                      onChange={(e) => {
-                        field.onChange(e);
-                      }}
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <div className="grid grid-cols-2 gap-4">
+    <>
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogContent className="border-0 sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle className="flex items-center justify-between">
+              {initialData ? "Edit" : "Add"} New Event
+            </DialogTitle>
+          </DialogHeader>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
               <FormField
-                name="date"
+                name="eventTitle"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Date</FormLabel>
+                    <FormLabel>Event Title</FormLabel>
                     <FormControl>
-                      <Input type="date" {...field} />
+                      <Input placeholder="E.g Beach Cleanup Drive" {...field} />
                     </FormControl>
                   </FormItem>
                 )}
               />
               <FormField
-                name="time"
+                name="description"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Time</FormLabel>
+                    <FormLabel className="flex items-center justify-between">
+                      Description
+                      <span className="text-sm text-muted-foreground">
+                        {field.value.length}/200
+                      </span>
+                    </FormLabel>
                     <FormControl>
-                      <Input type="time" {...field} />
+                      <Textarea
+                        placeholder="Describe your the event in detail"
+                        className="resize-none"
+                        maxLength={200}
+                        {...field}
+                        onChange={(e) => {
+                          field.onChange(e);
+                        }}
+                      />
                     </FormControl>
                   </FormItem>
                 )}
               />
-            </div>
-            <FormField
-              name="eventType"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Event Type</FormLabel>
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select category" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="free event">Free Event</SelectItem>
-                      <SelectItem value="paid event">Paid Event</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </FormItem>
-              )}
-            />
-            {form.watch("eventType") === "paid event" && (
+              <div className="grid grid-cols-2 gap-4">
+                <FormField
+                  name="date"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Date</FormLabel>
+                      <FormControl>
+                        <Input type="date" {...field} />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  name="time"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Time</FormLabel>
+                      <FormControl>
+                        <Input type="time" {...field} />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              </div>
               <FormField
-                name="price"
+                name="eventType"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Price (if paid)</FormLabel>
-                    <FormControl>
-                      <Input type="number" min="0" placeholder="0" {...field} />
-                    </FormControl>
+                    <FormLabel>Event Type</FormLabel>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select category" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="free event">Free Event</SelectItem>
+                        <SelectItem value="paid event">Paid Event</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </FormItem>
                 )}
               />
-            )}
-            <DialogFooter className="gap-2 sm:gap-0">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => onOpenChange(false)}
-              >
-                Cancel
-              </Button>
-              <Button
-                type="submit"
-                className="bg-[#1f3a5f] hover:bg-[#162942]"
-                disabled={isPending}
-              >
-                Add Event {isPending && <Loader2 className="animate-spin" />}
-              </Button>
-            </DialogFooter>
-          </form>
-        </Form>
-      </DialogContent>
-    </Dialog>
+              {form.watch("eventType") === "paid event" && (
+                <FormField
+                  name="price"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Price (if paid)</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          min="0"
+                          placeholder="0"
+                          {...field}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              )}
+              <DialogFooter className="gap-2 sm:gap-0">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => onOpenChange(false)}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="submit"
+                  className="bg-[#1f3a5f] hover:bg-[#162942]"
+                  disabled={isLoading}
+                >
+                  {initialData ? "Save " : "Add Event"}{" "}
+                  {isLoading && <Loader2 className="animate-spin" />}
+                </Button>
+              </DialogFooter>
+            </form>
+          </Form>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }
