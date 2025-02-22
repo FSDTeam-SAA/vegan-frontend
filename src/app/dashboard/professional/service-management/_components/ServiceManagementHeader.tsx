@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { FileUp, Plus, X } from "lucide-react";
+import { FileUp, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { AddServiceForm } from "./add-service-form";
 import { BulkUploadDialog } from "./bulk-upload-dialog";
@@ -69,17 +69,8 @@ const ServiceManagementHeader = () => {
         <section className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30 backdrop-blur-sm">
           {/* Modal content */}
           <div className="relative z-10">
-            <div className="flex items-center justify-between rounded-t-lg bg-white px-[32px] py-[30px] shadow-lg">
-              <h4 className="text-xl font-medium leading-[24px] text-[#1F2937]">
-                Add A New Service
-              </h4>
-              <X
-                className="cursor-pointer"
-                onClick={() => setIsOpenService(false)}
-              />
-            </div>
             <ScrollArea className="h-[700px] w-[327px] rounded-b-[16px] md:w-[500px] lg:w-[769px]">
-              <AddServiceForm />
+              <AddServiceForm onOpenChange={setIsOpenService} />
             </ScrollArea>
           </div>
         </section>

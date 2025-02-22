@@ -1,3 +1,5 @@
+import { MetaPagination } from "@/types/index";
+
 export interface MerchantProduct {
   _id: string;
   merchantID: string;
@@ -20,4 +22,5 @@ export interface MerchantProductResponse {
   success: boolean;
   message: string;
   data: MerchantProduct[];
+  pagination: MetaPagination;
 }

@@ -21,12 +21,7 @@ import { categoryList, LocationList, SortByList } from "./data";
 const ProfessionalFilterContainer = () => {
   const {
     setValue, // Using Zustand setter directly
-    category,
-    setCategory,
-    location,
-    setLocation,
-    price,
-    setPrice,
+
     sortBy,
     setSortBy,
   } = useProfessionalState();
@@ -54,14 +49,14 @@ const ProfessionalFilterContainer = () => {
   }, [debouncedValue, setValue, inputValue]);
 
   return (
-    <div className="flex items-center gap-x-[32px]">
+    <div className="flex items-center justify-between gap-x-[32px]">
       <Search
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
-        className="w-full min-w-[353px]"
+        className="w-full min-w-[353px] max-w-[500px]"
         inputClassName="h-[40px] "
       />
-      <VeganSelector
+      {/* <VeganSelector
         list={categoryList}
         selectedValue={category}
         onValueChange={(value) => setCategory(value)}
@@ -77,7 +72,7 @@ const ProfessionalFilterContainer = () => {
         step={10}
         defaultValue={[price[0], price[1]]}
         onRangeChange={(range) => setPrice(range)}
-      />
+      /> */}
       <VeganSelector
         list={SortByList}
         selectedValue={sortBy}

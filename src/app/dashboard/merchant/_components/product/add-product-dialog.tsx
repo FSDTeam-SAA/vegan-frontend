@@ -66,7 +66,8 @@ export default function AddProductDialog({
   initialData,
 }: AddProductDialogProps) {
   const session = useSession();
-  const merchantID = session?.data?.user?.userId;
+
+  const merchantID = session.data?.user.userId;
 
   const queryClient = useQueryClient();
 
@@ -214,7 +215,7 @@ export default function AddProductDialog({
                   ? "Editing your product..."
                   : "Checking your access..."
             }
-            open={isPending || session.status === "loading"}
+            open={isPending}
           />
           <DialogHeader className="p-6 pb-0">
             <DialogTitle className="flex items-center justify-between">

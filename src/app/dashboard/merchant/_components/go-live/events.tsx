@@ -1,15 +1,12 @@
 "use client";
 
-import { useState } from "react";
-import { Header } from "./header";
-import { EventDialog } from "./event-dialog";
-import { EventCard, type EventData } from "./EventCard";
-import { EventsData } from "../data";
 import VeganTabs from "@/components/ui/Vegan-Tab";
+import { useState } from "react";
+import { EventsData } from "../data";
+import { EventCard } from "./EventCard";
+import { Header } from "./header";
 
 export default function EventsMangement() {
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [editingEvent, setEditingEvent] = useState<EventData | undefined>();
   const [activeTab, setActiveTab] = useState("upcoming-events");
 
   const tabs = [
@@ -22,35 +19,16 @@ export default function EventsMangement() {
       label: "Past Events",
     },
   ];
-  const handleSubmit = (data: unknown) => {
-    if (editingEvent) {
-      console.log("Editing event:", data);
-    } else {
-      console.log("Creating new event:", data);
-    }
-    setDialogOpen(false);
-    setEditingEvent(undefined);
-  };
-
-  const handleEdit = (eventData: EventData) => {
-    setEditingEvent(eventData);
-    setDialogOpen(true);
-  };
-
-  const handleDelete = (sectionId: string, eventIndex: number) => {
-    console.log("Deleting event:", sectionId, eventIndex);
-  };
 
   return (
     <div className="min-h-screen">
-      <Header
-        onCreateClick={() => {
-          setEditingEvent(undefined);
-          setDialogOpen(true);
-        }}
-      />
+      <Header />
       <div className="overflow-x-auto md:mb-12">
-        <VeganTabs tabs={tabs} defaultActiveTab={activeTab} onTabChange={(tab)=>setActiveTab(tab)}/>
+        <VeganTabs
+          tabs={tabs}
+          defaultActiveTab={activeTab}
+          onTabChange={(tab) => setActiveTab(tab)}
+        />
       </div>
       <div className="">
         {EventsData.filter((items) => items.id === activeTab).map((section) => (
@@ -60,22 +38,14 @@ export default function EventsMangement() {
                 <EventCard
                   key={`${section.id}-${index}`}
                   {...event}
-                  onEdit={() => handleEdit(event)}
-                  onDelete={() => handleDelete(section.id, index)}
+                  onEdit={() => {}}
+                  onDelete={() => {}}
                 />
               ))}
             </div>
           </div>
         ))}
       </div>
-
-      <EventDialog
-        open={dialogOpen}
-        onOpenChange={setDialogOpen}
-        onSubmit={handleSubmit}
-        mode={editingEvent ? "edit" : "add"}
-        initialData={editingEvent}
-      />
     </div>
   );
 }
