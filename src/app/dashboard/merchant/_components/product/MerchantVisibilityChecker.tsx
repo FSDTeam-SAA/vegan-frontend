@@ -35,7 +35,6 @@ const MerchantVisibilityChecker = ({ data }: Props) => {
       }
 
       // Handle success
-      // nothing to do
     },
   });
 
