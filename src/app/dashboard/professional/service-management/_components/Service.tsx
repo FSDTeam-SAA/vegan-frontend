@@ -174,6 +174,21 @@ const ServiceCard = ({ data }: Props) => {
                               className="h-[120px] w-full rounded-[12px] md:h-[180px] md:w-[180px]"
                             />
                           )}
+
+                          {data?.serviceVideo && (
+                            <video
+                              controls
+                              width="320"
+                              height="180"
+                              className="aspect-video rounded-[12px]"
+                            >
+                              <source
+                                src={data?.serviceVideo}
+                                type="video/mp4"
+                              />
+                              Your browser does not support the video tag.
+                            </video>
+                          )}
                         </div>
                       </div>
                     </div>
