@@ -1,10 +1,16 @@
+import { auth } from "@/auth";
 import dynamic from "next/dynamic";
+import { redirect } from "next/navigation";
 const ProductsManagement = dynamic(
   () => import("../_components/product/product-manament"),
   { ssr: false },
 );
 
-export default function page() {
+export default async function page() {
+  const session = await auth();
+  if (!session || session?.user?.accountType !== "merchant") redirect("/");
+
+  const merchantID = session.user.userId;
   return (
     <div className="p-8">
       <div className="mb-8">
@@ -14,7 +20,7 @@ export default function page() {
           tracking stock status
         </p>
       </div>
-      <ProductsManagement />
+      <ProductsManagement merchantID={merchantID} />
     </div>
   );
 }

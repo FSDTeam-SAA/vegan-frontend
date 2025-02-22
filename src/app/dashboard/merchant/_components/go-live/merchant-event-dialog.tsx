@@ -3,6 +3,7 @@
 // Packages
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 // Local imports
 import { Button } from "@/components/ui/button";
@@ -29,6 +30,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 interface EventMetrics {
   registeredParticipants: number;
@@ -45,14 +47,27 @@ export interface EventData {
   defaultExpanded?: boolean;
 }
 
-interface EventFormData {
-  title: string;
-  description: string;
-  date: string;
-  time: string;
-  type: string;
-  price: string;
-}
+const eventFormSchema = z.object({
+  eventTitle: z
+    .string()
+    .min(1, "Event title is required")
+    .max(100, "Event title must be less than 100 characters"),
+  description: z
+    .string()
+    .min(1, "Description is required")
+    .max(200, "Description must be less than 200 characters"),
+  date: z.string().min(1, "Date is required"),
+  time: z.string().min(1, "Time is required"),
+  eventType: z.enum(["paid event", "free event"]),
+  price: z.string().refine((val) => {
+    if (val === "0.00") return true; // Allow "0.00" for free events
+    const num = parseFloat(val);
+    return !isNaN(num) && num >= 0;
+  }, "Price must be a valid number and greater than or equal to 0"),
+});
+
+// Infer the type from the schema
+type EventFormData = z.infer<typeof eventFormSchema>;
 
 interface EventDialogProps {
   open: boolean;
@@ -63,13 +78,14 @@ export default function EventDialog({ open, onOpenChange }: EventDialogProps) {
   const [description, setDescription] = useState("");
 
   const form = useForm<EventFormData>({
+    resolver: zodResolver(eventFormSchema),
     defaultValues: {
-      title: "",
+      eventTitle: "",
       description: "",
       date: "",
       time: "",
-      type: "free",
-      price: "0.00",
+      eventType: "paid event",
+      price: "0",
     },
   });
 
@@ -88,7 +104,7 @@ export default function EventDialog({ open, onOpenChange }: EventDialogProps) {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField
-              name="title"
+              name="eventTitle"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Event Title</FormLabel>
@@ -148,7 +164,7 @@ export default function EventDialog({ open, onOpenChange }: EventDialogProps) {
               />
             </div>
             <FormField
-              name="type"
+              name="eventType"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Event Type</FormLabel>
@@ -159,21 +175,21 @@ export default function EventDialog({ open, onOpenChange }: EventDialogProps) {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="free">Free Event</SelectItem>
-                      <SelectItem value="paid">Paid Event</SelectItem>
+                      <SelectItem value="free event">Free Event</SelectItem>
+                      <SelectItem value="paid event">Paid Event</SelectItem>
                     </SelectContent>
                   </Select>
                 </FormItem>
               )}
             />
-            {form.watch("type") === "paid" && (
+            {form.watch("eventType") === "paid event" && (
               <FormField
                 name="price"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Price (if paid)</FormLabel>
                     <FormControl>
-                      <Input type="number" step="0.01" min="0" {...field} />
+                      <Input type="number" min="0" placeholder="0" {...field} />
                     </FormControl>
                   </FormItem>
                 )}
