@@ -60,20 +60,19 @@ export default function ProductsManagement({ merchantID }: Props) {
     };
   }, [searchQuery]);
 
-  const { isLoading, isError, data, error } = useQuery<MerchantProductResponse>(
-    {
-      queryKey: ["merchantsProduct", debouncedSearchQuery],
+  const { isLoading, isRefetching, isError, data, error } =
+    useQuery<MerchantProductResponse>({
+      queryKey: ["merchantsProduct", debouncedSearchQuery, currentPage],
       queryFn: () =>
         fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/merchantproduct?merchantID=${merchantID}&search=${debouncedSearchQuery}`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/merchantproduct?merchantID=${merchantID}&search=${debouncedSearchQuery}&page=${currentPage}&limit=5`,
         ).then((res) => res.json()),
-    },
-  );
+    });
   const pagination = data?.pagination;
 
   let content;
 
-  if (isLoading || data?.success) {
+  if (isLoading || isRefetching || data?.success) {
     content = (
       <SkeletonWrapper isLoading={isLoading}>
         <TableContainer
