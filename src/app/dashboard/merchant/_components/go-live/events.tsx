@@ -13,7 +13,6 @@ import SkeletonWrapper from "@/components/ui/skeleton-wrapper";
 import VeganTabs from "@/components/ui/Vegan-Tab";
 import { MerchantEvent, MerchantEventResponse } from "@/types/merchant";
 import { EventCard } from "./EventCard";
-import { Header } from "./header";
 
 const tabs = [
   {
@@ -62,8 +61,7 @@ export default function EventsMangement() {
   }
 
   return (
-    <div className="min-h-screen">
-      <Header />
+    <div>
       <div className="overflow-x-auto md:mb-12">
         <VeganTabs
           tabs={tabs}
