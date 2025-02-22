@@ -1,8 +1,15 @@
 "use client";
 
 // Packages
+import { useQuery } from "@tanstack/react-query";
+import {
+  ColumnDef,
+  getCoreRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
 import { Download, Search } from "lucide-react";
-import { useState } from "react";
+import dynamic from "next/dynamic";
+import { useEffect, useState } from "react";
 
 // Local imports
 import ErrorContainer from "@/components/shared/sections/error-container";
@@ -10,44 +17,78 @@ import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
 import { Input } from "@/components/ui/input";
 import SkeletonWrapper from "@/components/ui/skeleton-wrapper";
+import VeganPagination from "@/components/ui/vegan-pagination";
 import { MerchantProduct, MerchantProductResponse } from "@/types/merchant";
-import { useQuery } from "@tanstack/react-query";
-import {
-  ColumnDef,
-  getCoreRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
-import dynamic from "next/dynamic";
 import { BulkUploadDialog } from "./bulk-upload-dialog";
 import { MerchantProductColumn } from "./merchant-product-column";
 const AddProductDialog = dynamic(() => import("./add-product-dialog"), {
   ssr: false,
 });
 
-export default function ProductsManagement() {
+interface Props {
+  merchantID: string;
+}
+
+// Debounce function
+// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+const debounce = (func: Function, delay: number) => {
+  let timeoutId: NodeJS.Timeout;
+  return (...args: any[]) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => func.apply(this, args), delay);
+  };
+};
+
+export default function ProductsManagement({ merchantID }: Props) {
   const [searchQuery, setSearchQuery] = useState("");
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [bulkUploadOpen, setBulkUploadOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const { isLoading, isError, data, error } = useQuery<MerchantProductResponse>(
-    {
-      queryKey: ["merchantsProduct"],
+  // Debounce the search query
+  useEffect(() => {
+    const debouncedUpdate = debounce(() => {
+      setDebouncedSearchQuery(searchQuery);
+    }, 300); // 300ms delay
+
+    debouncedUpdate();
+
+    // Cleanup function to clear the timeout if the component unmounts
+    return () => {
+      debouncedUpdate();
+    };
+  }, [searchQuery]);
+
+  const { isLoading, isRefetching, isError, data, error } =
+    useQuery<MerchantProductResponse>({
+      queryKey: ["merchantsProduct", debouncedSearchQuery, currentPage],
       queryFn: () =>
         fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/merchantproduct`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/merchantproduct?merchantID=${merchantID}&search=${debouncedSearchQuery}&page=${currentPage}&limit=5`,
         ).then((res) => res.json()),
-    },
-  );
+    });
+  const pagination = data?.pagination;
 
   let content;
 
-  if (isLoading || data?.success) {
+  if (isLoading || isRefetching || data?.success) {
     content = (
       <SkeletonWrapper isLoading={isLoading}>
         <TableContainer
           columns={MerchantProductColumn}
           data={data?.data ?? []}
         />
+
+        {pagination && pagination.totalPages > 1 && (
+          <div className="my-[40px]">
+            <VeganPagination
+              currentPage={currentPage}
+              onPageChange={(page) => setCurrentPage(page)}
+              totalPages={pagination.totalPages}
+            />
+          </div>
+        )}
       </SkeletonWrapper>
     );
   } else if (isError) {

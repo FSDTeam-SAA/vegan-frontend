@@ -1,47 +1,67 @@
-"use client"
-import { useState, useEffect } from "react"
-import { Badge } from "@/components/ui/badge"
-import { Card, CardContent, CardTitle, CardDescription } from "@/components/ui/card"
-import { Label } from "@/components/ui/label"
-import { Switch } from "@/components/ui/switch"
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import { Button } from "@/components/ui/button"
-import { PencilLine, X } from "lucide-react"
-import Image from "next/image"
-import { AddServiceForm } from "./add-service-form"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { veganCookingData, type veganCookingDataType } from "./VeganCookingData"
-import { AnimatePresence, motion } from "framer-motion"
+"use client";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardTitle,
+} from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Switch } from "@/components/ui/switch";
+import { AnimatePresence, motion } from "framer-motion";
+import { PencilLine, X } from "lucide-react";
+import Image from "next/image";
+import { useEffect, useState } from "react";
+import { AddServiceForm } from "./add-service-form";
+import {
+  veganCookingData,
+  type veganCookingDataType,
+} from "./VeganCookingData";
 
 export default function Service() {
-  const [veganClassVisible, setVeganClassVisible] = useState(true)
-  const [isOpenService, setIsOpenService] = useState(false)
-  const [selectedService, setSelectedService] = useState<veganCookingDataType | null>(null)
-  const [mounted, setMounted] = useState(false)
-  const [openAccordions, setOpenAccordions] = useState<string[]>([])
+  const [veganClassVisible, setVeganClassVisible] = useState(true);
+  const [isOpenService, setIsOpenService] = useState(false);
+  const [selectedService, setSelectedService] =
+    useState<veganCookingDataType | null>(null);
+  const [mounted, setMounted] = useState(false);
+  const [openAccordions, setOpenAccordions] = useState<string[]>([]);
 
-  console.log(selectedService)
+  console.log(selectedService);
 
   useEffect(() => {
-    setMounted(true)
+    setMounted(true);
     // Set all accordions to be open by default
-    setOpenAccordions(veganCookingData.map((data) => data.id.toString()))
-  }, [])
+    setOpenAccordions(veganCookingData.map((data) => data.id.toString()));
+  }, []);
 
-  if (!mounted) return null
+  if (!mounted) return null;
 
   const toggleAccordion = (accordionId: string) => {
     setOpenAccordions((prev) =>
-      prev.includes(accordionId) ? prev.filter((id) => id !== accordionId) : [...prev, accordionId],
-    )
-  }
+      prev.includes(accordionId)
+        ? prev.filter((id) => id !== accordionId)
+        : [...prev, accordionId],
+    );
+  };
 
   return (
     <div className="rounded-[16px] bg-[#F8F5F2] p-[24px] md:p-[32px] lg:p-[40px]">
       <div>
         {veganCookingData?.map((data: veganCookingDataType) => (
           <Card key={data?.id} className="mb-[51px] bg-[#F9FAFB]">
-            <Accordion type="multiple" value={openAccordions} onValueChange={setOpenAccordions}>
+            <Accordion
+              type="multiple"
+              value={openAccordions}
+              onValueChange={setOpenAccordions}
+            >
               <AccordionItem value={data.id.toString()}>
                 <div className="flex w-full justify-between rounded-t-[12px] bg-white p-6">
                   <div className="w-full">
@@ -55,7 +75,10 @@ export default function Service() {
                         className="text-sm font-medium leading-[20px] text-[#1F2937]"
                         htmlFor={`vegan-visibility-${data.id}`}
                       >
-                        Visibility <span className="font-normal">(Service is visible)</span>
+                        Visibility{" "}
+                        <span className="font-normal">
+                          (Service is visible)
+                        </span>
                       </Label>
                     </div>
                     <div>
@@ -67,7 +90,9 @@ export default function Service() {
                       </CardDescription>
                     </div>
                   </div>
-                  <AccordionTrigger onClick={() => toggleAccordion(data.id.toString())}></AccordionTrigger>
+                  <AccordionTrigger
+                    onClick={() => toggleAccordion(data.id.toString())}
+                  ></AccordionTrigger>
                 </div>
 
                 <AnimatePresence initial={false}>
@@ -87,7 +112,9 @@ export default function Service() {
                           <div className="space-y-4">
                             <div className="space-y-4 bg-white p-4">
                               <div>
-                                <h4 className="text-lg font-medium leading-[26px] text-[#1F2937]">Meta Description</h4>
+                                <h4 className="text-lg font-medium leading-[26px] text-[#1F2937]">
+                                  Meta Description
+                                </h4>
                                 <p className="pt-[8px] text-base font-medium leading-[24px] text-[#6B7280]">
                                   {data?.metaDescription}
                                 </p>
@@ -128,7 +155,6 @@ export default function Service() {
                             </div>
                           </div>
                         </CardContent>
-                        
                       </motion.div>
                     </AccordionContent>
                   )}
@@ -140,8 +166,8 @@ export default function Service() {
               <div className="mt-4 flex justify-end">
                 <Button
                   onClick={() => {
-                    setSelectedService(data)
-                    setIsOpenService(true)
+                    setSelectedService(data);
+                    setIsOpenService(true);
                   }}
                   className="text-base font-normal leading-[23px] text-[#1F2937]"
                   variant="ghost"
@@ -158,11 +184,16 @@ export default function Service() {
               <section className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30 backdrop-blur-sm">
                 <div className="relative z-10">
                   <div className="flex items-center justify-between rounded-t-lg bg-white px-[32px] py-[30px] shadow-lg">
-                    <h4 className="text-xl font-medium leading-[24px] text-[#1F2937]">Edit Service Details</h4>
-                    <X className="cursor-pointer" onClick={() => setIsOpenService(false)} />
+                    <h4 className="text-xl font-medium leading-[24px] text-[#1F2937]">
+                      Edit Service Details
+                    </h4>
+                    <X
+                      className="cursor-pointer"
+                      onClick={() => setIsOpenService(false)}
+                    />
                   </div>
                   <ScrollArea className="h-[700px] w-[327px] rounded-b-[16px] md:w-[500px] lg:w-[769px]">
-                    <AddServiceForm data={data} />
+                    <AddServiceForm onOpenChange={setIsOpenService} />
                   </ScrollArea>
                 </div>
               </section>
@@ -171,6 +202,5 @@ export default function Service() {
         ))}
       </div>
     </div>
-  )
+  );
 }
-

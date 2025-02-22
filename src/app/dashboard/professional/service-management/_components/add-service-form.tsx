@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import OpacityLoader from "@/components/ui/opacity-loader";
 import {
   Select,
   SelectContent,
@@ -35,7 +36,6 @@ import { useMutation } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { toast } from "sonner";
-import { veganCookingDataType } from "./VeganCookingData";
 
 const formSchema = z.object({
   serviceName: z
@@ -57,21 +57,19 @@ const formSchema = z.object({
   sessionType: z.string({
     message: "Please select your session type",
   }),
+  isLiveStream: z.boolean(),
   price: z
     .string()
     .optional()
     .transform((val) => (val === "" ? "0.00" : val)),
 });
 
-export function AddServiceForm({ data }: { data?: veganCookingDataType }) {
+interface Props {
+  onOpenChange: (v: boolean) => void;
+}
+export function AddServiceForm({ onOpenChange }: Props) {
   const [image, setImage] = useState<File | null>(null);
   const [video, setVideo] = useState<File | null>(null);
-  const [charCount, setCharCount] = useState({
-    serviceName: 0,
-    metaDescription: 0,
-    serviceDescription: 0,
-    keywords: 0,
-  });
 
   const session = useSession();
 
@@ -82,33 +80,31 @@ export function AddServiceForm({ data }: { data?: veganCookingDataType }) {
     mutationFn: (data: FormData) =>
       fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/createservice`, {
         method: "POST",
-        body: JSON.stringify(data),
+        body: data,
       }).then((res) => res.json()),
     onSuccess: (data) => {
-      console.log(data);
+      if (!data.success) {
+        toast.error(data.message, {
+          position: "top-right",
+          richColors: true,
+        });
+        return;
+      }
+
+      // handle success
+      form.reset();
+      onOpenChange(false);
+      toast.success(data.message, {
+        position: "top-right",
+        richColors: true,
+      });
     },
   });
-
-  const handleCharCountChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    field: string,
-  ) => {
-    setCharCount((prev) => ({
-      ...prev,
-      [field]: e.target.value.length,
-    }));
-  };
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      serviceName: data?.serviceName || "",
-      metaDescription: data?.metaDescription || "",
-      serviceDescription: data?.serviceDescription || "",
-      keyWords: [], // Assuming keywords are passed as a string
-      price: "0.00",
-      paymentType: "", // Set default payment type if needed
-      sessionType: "group session",
+      keyWords: [],
     },
   });
 
@@ -118,7 +114,6 @@ export function AddServiceForm({ data }: { data?: veganCookingDataType }) {
       return;
     }
 
-    console.log(values);
     const formData = new FormData();
 
     formData.append("userID", userID);
@@ -128,9 +123,16 @@ export function AddServiceForm({ data }: { data?: veganCookingDataType }) {
     formData.append("keyWords", JSON.stringify(values.keyWords));
     formData.append("paymentType", values.paymentType);
     formData.append("price", values.price!);
-    formData.append("serviceImage", image!);
-    formData.append("serviceVideo", video!);
+    if (image) {
+      formData.append("serviceImage", image);
+    }
+    if (video) {
+      formData.append("serviceVideo", video);
+    }
     formData.append("sessionType", values.sessionType);
+    formData.append("isLiveStream", JSON.stringify(values.isLiveStream));
+
+    console.log("SESSION TYPE GOING", formData.get("sessionType"));
 
     // api call
     mutate(formData);
@@ -154,14 +156,21 @@ export function AddServiceForm({ data }: { data?: veganCookingDataType }) {
     if (file) {
       if (type === "image" && file.type.startsWith("image/")) {
         setImage(file);
-      } else if (type === "video" && file.type.startsWith("video/")) {
+      } else if (type === "video" && file.type.startsWith("video/mp4")) {
         setVideo(file);
       }
     }
   };
 
   return (
-    <div>
+    <div className="relative">
+      <OpacityLoader open={isPending} messsage="Please wait some moment..." />
+      <div className="flex items-center justify-between rounded-t-lg bg-white px-[32px] py-[30px] shadow-lg">
+        <h4 className="text-xl font-medium leading-[24px] text-[#1F2937]">
+          Add A New Service
+        </h4>
+        <X className="cursor-pointer" onClick={() => onOpenChange(false)} />
+      </div>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -179,19 +188,15 @@ export function AddServiceForm({ data }: { data?: veganCookingDataType }) {
                         Service Name
                       </FormLabel>
                       <span className="text-lg font-normal leading-[26px] text-[#6B7280]">
-                        {charCount.serviceName}/100
+                        {field.value?.length || 0}/100
                       </span>
                     </div>
                     <FormControl>
                       <Input
-                        className="h-[48px] w-full border border-[#F3F4F6] bg-[#F9FAFB] px-[16px] py-[12px] outline-none md:w-[705px]"
+                        className="h-[40px] w-full border border-[#F3F4F6] bg-[#F9FAFB] px-[16px] py-[12px] outline-none md:w-[705px]"
                         placeholder="E.g Vegan Cooking Classes"
                         {...field}
                         maxLength={100}
-                        onChange={(e) => {
-                          field.onChange(e);
-                          handleCharCountChange(e, "serviceName");
-                        }}
                       />
                     </FormControl>
                     <FormMessage />
@@ -212,7 +217,7 @@ export function AddServiceForm({ data }: { data?: veganCookingDataType }) {
                       Meta Description
                     </FormLabel>
                     <span className="text-lg font-normal leading-[26px] text-[#6B7280]">
-                      {charCount.metaDescription}/200
+                      {field.value?.length | 0}/200
                     </span>
                   </div>
                   <FormControl>
@@ -221,10 +226,6 @@ export function AddServiceForm({ data }: { data?: veganCookingDataType }) {
                       className="h-[127px] w-full border border-[#F3F4F6] bg-[#F9FAFB] px-[16px] py-[12px] outline-none md:w-[705px]"
                       {...field}
                       maxLength={200}
-                      onChange={(e) => {
-                        field.onChange(e);
-                        handleCharCountChange(e, "metaDescription");
-                      }}
                     />
                   </FormControl>
                   <FormMessage />
@@ -243,7 +244,7 @@ export function AddServiceForm({ data }: { data?: veganCookingDataType }) {
                     Service Description
                   </FormLabel>
                   <span className="text-lg font-normal leading-[26px] text-[#6B7280]">
-                    {charCount.serviceDescription}/200
+                    {field.value?.length | 0}/200
                   </span>
                 </div>
                 <FormControl>
@@ -252,10 +253,6 @@ export function AddServiceForm({ data }: { data?: veganCookingDataType }) {
                     className="h-[127px] w-full border border-[#F3F4F6] bg-[#F9FAFB] px-[16px] py-[12px] outline-none md:w-[705px]"
                     {...field}
                     maxLength={200}
-                    onChange={(e) => {
-                      field.onChange(e);
-                      handleCharCountChange(e, "serviceDescription");
-                    }}
                   />
                 </FormControl>
                 <FormMessage />
@@ -263,7 +260,7 @@ export function AddServiceForm({ data }: { data?: veganCookingDataType }) {
             )}
           />
 
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div className="grid grid-cols-1">
             <FormField
               control={form.control}
               name="keyWords"
@@ -282,6 +279,34 @@ export function AddServiceForm({ data }: { data?: veganCookingDataType }) {
                 </FormItem>
               )}
             />
+          </div>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <FormField
+              control={form.control}
+              name="isLiveStream"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-lg font-medium leading-[26px] text-[#1F2937]">
+                    Service Type
+                  </FormLabel>
+                  <Select
+                    onValueChange={(value) => field.onChange(value === "true")}
+                    defaultValue={field.value?.toString()}
+                  >
+                    <FormControl className="h-[40px] w-full border border-[#F3F4F6] bg-[#F9FAFB] px-[16px] py-[12px] outline-none md:w-[344px]">
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select session" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent className="w-[344px]">
+                      <SelectItem value="false">Onsite</SelectItem>
+                      <SelectItem value="true">Live</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="sessionType"
@@ -294,19 +319,25 @@ export function AddServiceForm({ data }: { data?: veganCookingDataType }) {
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
-                    <FormControl className="h-[48px] w-full border border-[#F3F4F6] bg-[#F9FAFB] px-[16px] py-[12px] outline-none md:w-[344px]">
+                    <FormControl className="h-[40px] w-full border border-[#F3F4F6] bg-[#F9FAFB] px-[16px] py-[12px] outline-none md:w-[344px]">
                       <SelectTrigger>
                         <SelectValue placeholder="Select session" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent className="w-[344px]">
-                      <SelectItem value="Group session">
-                        Group Session
-                      </SelectItem>
-                      <SelectItem value="1-on-1 session">
-                        One to One Session
-                      </SelectItem>
-                      <SelectItem value="Webinar">Webinar</SelectItem>
+                      {form.watch("isLiveStream") === false && (
+                        <>
+                          <SelectItem value="Group session">
+                            Group Session
+                          </SelectItem>
+                          <SelectItem value="1-on-1 session">
+                            One to One Session
+                          </SelectItem>
+                        </>
+                      )}
+                      {form.watch("isLiveStream") === true && (
+                        <SelectItem value="Webinar">Webinar</SelectItem>
+                      )}
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -328,7 +359,7 @@ export function AddServiceForm({ data }: { data?: veganCookingDataType }) {
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
-                    <FormControl className="h-[48px] w-full border border-[#F3F4F6] bg-[#F9FAFB] px-[16px] py-[12px] outline-none md:w-[344px]">
+                    <FormControl className="h-[40px] w-full border border-[#F3F4F6] bg-[#F9FAFB] px-[16px] py-[12px] outline-none md:w-[344px]">
                       <SelectTrigger>
                         <SelectValue placeholder="Select type" />
                       </SelectTrigger>
@@ -343,29 +374,30 @@ export function AddServiceForm({ data }: { data?: veganCookingDataType }) {
                 </FormItem>
               )}
             />
-
-            <FormField
-              control={form.control}
-              name="price"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-lg font-medium leading-[26px] text-[#1F2937]">
-                    Price ($)
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      className="h-[48px] w-full border border-[#F3F4F6] bg-[#F9FAFB] px-[16px] py-[12px] outline-none md:w-[344px]"
-                      type="number"
-                      step="0.01"
-                      min="0"
-                      placeholder="0.00"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {form.watch("paymentType") !== "free" && (
+              <FormField
+                control={form.control}
+                name="price"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-lg font-medium leading-[26px] text-[#1F2937]">
+                      Price ($)
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        className="h-[40px] w-full border border-[#F3F4F6] bg-[#F9FAFB] px-[16px] py-[12px] outline-none md:w-[344px]"
+                        type="number"
+                        // step="0.01"
+                        min="0"
+                        placeholder="0"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
           </div>
 
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -460,7 +492,7 @@ export function AddServiceForm({ data }: { data?: veganCookingDataType }) {
                       <input
                         type="file"
                         className="hidden"
-                        accept="video/*"
+                        accept=".mp4"
                         onChange={(e) => handleFileSelect(e, "video")}
                       />
                     </label>

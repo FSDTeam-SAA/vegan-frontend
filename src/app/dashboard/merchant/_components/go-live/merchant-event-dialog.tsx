@@ -1,5 +1,15 @@
 "use client";
 
+// Packages
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import { Loader2 } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
+
+// Local imports
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -16,7 +26,6 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -24,8 +33,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useForm } from "react-hook-form";
-import { useState, useEffect } from "react";
+import { Textarea } from "@/components/ui/textarea";
 
 interface EventMetrics {
   registeredParticipants: number;
@@ -42,111 +50,93 @@ export interface EventData {
   defaultExpanded?: boolean;
 }
 
-interface EventFormData {
-  title: string;
-  description: string;
-  date: string;
-  time: string;
-  type: string;
-  price: string;
-}
+const eventFormSchema = z.object({
+  eventTitle: z
+    .string()
+    .min(1, "Event title is required")
+    .max(100, "Event title must be less than 100 characters"),
+  description: z
+    .string()
+    .min(1, "Description is required")
+    .max(200, "Description must be less than 200 characters"),
+  date: z.string().min(1, "Date is required"),
+  time: z.string().min(1, "Time is required"),
+  eventType: z.enum(["paid event", "free event"]),
+  price: z.string().refine((val) => {
+    if (val === "0.00") return true; // Allow "0.00" for free events
+    const num = parseFloat(val);
+    return !isNaN(num) && num >= 0;
+  }, "Price must be a valid number and greater than or equal to 0"),
+});
+
+// Infer the type from the schema
+type EventFormData = z.infer<typeof eventFormSchema>;
 
 interface EventDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  initialData?: EventData;
-  mode?: "add" | "edit";
-  onSubmit: (data: EventFormData) => void;
 }
 
-function convertDateFormat(dateStr: string): string {
-  if (!dateStr) {
-    console.error("Invalid date string:", dateStr);
-    return "Invalid Date";
-  }
-
-  const date = new Date(dateStr);
-
-  if (isNaN(date.getTime())) {
-    console.error("Could not parse date:", dateStr);
-    return "Invalid Date";
-  }
-
-  return date.toISOString().split("T")[0];
-}
-
-function extractTimeFromRange(timeRange: string) {
-  const startTime = timeRange.split(" - ")[0];
-  const [time, period] = startTime.split(" ");
-  const [hours, minutes] = time.split(":");
-  let hour = Number.parseInt(hours);
-
-  if (period === "PM" && hour !== 12) hour += 12;
-  if (period === "AM" && hour === 12) hour = 0;
-
-  return `${hour.toString().padStart(2, "0")}:${minutes}`;
-}
-
-export function EventDialog({
-  open,
-  onOpenChange,
-  initialData,
-  mode = "add",
-  onSubmit,
-}: EventDialogProps) {
-  const [description, setDescription] = useState("");
-
+export default function EventDialog({ open, onOpenChange }: EventDialogProps) {
   const form = useForm<EventFormData>({
+    resolver: zodResolver(eventFormSchema),
     defaultValues: {
-      title: "",
+      eventTitle: "",
       description: "",
       date: "",
       time: "",
-      type: "free",
-      price: "0.00",
+      eventType: "paid event",
     },
   });
 
-  // Reset form when initialData changes
-  useEffect(() => {
-    if (initialData) {
-      const formattedDate = convertDateFormat(initialData.date);
-      const formattedTime = extractTimeFromRange(initialData.timeRange);
+  const session = useSession();
+  const merchantID = session.data?.user.userId;
 
-      form.reset({
-        title: initialData.title,
-        description: initialData.description,
-        date: formattedDate,
-        time: formattedTime,
-        type: initialData.type.toLowerCase(),
-        price: initialData.price.toString(),
-      });
-      setDescription(initialData.description);
-    } else {
-      form.reset({
-        title: "",
-        description: "",
-        date: "",
-        time: "",
-        type: "free",
-        price: "0.00",
-      });
-      setDescription("");
-    }
-  }, [initialData, form]);
+  const { mutate, isPending } = useMutation({
+    mutationKey: ["merchant-event-create"],
+    mutationFn: (body: EventFormData) =>
+      fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/merchantGoLive`, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          ...body,
+          merchantID,
+        }),
+      }).then((res) => res.json()),
+    onSuccess: (data) => {
+      console.log(data);
+      if (!data.success) {
+        toast.error(data.message, {
+          position: "top-right",
+          richColors: true,
+        });
+        return;
+      }
+
+      // Handle success
+      form.reset();
+      onOpenChange(false);
+    },
+  });
+
+  const onSubmit = (data: EventFormData) => {
+    mutate(data);
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="border-0 sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle className="flex items-center justify-between">
-            {mode === "add" ? "Add New Event" : "Edit Event"}
+            Add New Event
           </DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField
-              name="title"
+              name="eventTitle"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Event Title</FormLabel>
@@ -163,7 +153,7 @@ export function EventDialog({
                   <FormLabel className="flex items-center justify-between">
                     Description
                     <span className="text-sm text-muted-foreground">
-                      {description.length}/200
+                      {field.value.length}/200
                     </span>
                   </FormLabel>
                   <FormControl>
@@ -173,7 +163,6 @@ export function EventDialog({
                       maxLength={200}
                       {...field}
                       onChange={(e) => {
-                        setDescription(e.target.value);
                         field.onChange(e);
                       }}
                     />
@@ -206,7 +195,7 @@ export function EventDialog({
               />
             </div>
             <FormField
-              name="type"
+              name="eventType"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Event Type</FormLabel>
@@ -217,24 +206,26 @@ export function EventDialog({
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="free">Free Event</SelectItem>
-                      <SelectItem value="paid">Paid Event</SelectItem>
+                      <SelectItem value="free event">Free Event</SelectItem>
+                      <SelectItem value="paid event">Paid Event</SelectItem>
                     </SelectContent>
                   </Select>
                 </FormItem>
               )}
             />
-            <FormField
-              name="price"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Price (if paid)</FormLabel>
-                  <FormControl>
-                    <Input type="number" step="0.01" min="0" {...field} />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
+            {form.watch("eventType") === "paid event" && (
+              <FormField
+                name="price"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Price (if paid)</FormLabel>
+                    <FormControl>
+                      <Input type="number" min="0" placeholder="0" {...field} />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            )}
             <DialogFooter className="gap-2 sm:gap-0">
               <Button
                 type="button"
@@ -243,8 +234,12 @@ export function EventDialog({
               >
                 Cancel
               </Button>
-              <Button type="submit" className="bg-[#1f3a5f] hover:bg-[#162942]">
-                {mode === "add" ? "Add Event" : "Save Changes"}
+              <Button
+                type="submit"
+                className="bg-[#1f3a5f] hover:bg-[#162942]"
+                disabled={isPending}
+              >
+                Add Event {isPending && <Loader2 className="animate-spin" />}
               </Button>
             </DialogFooter>
           </form>

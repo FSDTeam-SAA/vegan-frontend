@@ -39,6 +39,7 @@ const MerchantProductActions = ({ data }: Props) => {
       }
       // handle success
       setDeleteModalOpen(false);
+      // Remove the deleted product from the cache
       queryClient.invalidateQueries({ queryKey: ["merchantsProduct"] });
     },
   });
