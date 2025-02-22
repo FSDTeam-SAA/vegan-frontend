@@ -1,8 +1,12 @@
 "use client";
 
 // Packages
-import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import { Loader2 } from "lucide-react";
+import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 // Local imports
@@ -30,7 +34,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { zodResolver } from "@hookform/resolvers/zod";
 
 interface EventMetrics {
   registeredParticipants: number;
@@ -75,8 +78,6 @@ interface EventDialogProps {
 }
 
 export default function EventDialog({ open, onOpenChange }: EventDialogProps) {
-  const [description, setDescription] = useState("");
-
   const form = useForm<EventFormData>({
     resolver: zodResolver(eventFormSchema),
     defaultValues: {
@@ -85,17 +86,48 @@ export default function EventDialog({ open, onOpenChange }: EventDialogProps) {
       date: "",
       time: "",
       eventType: "paid event",
-      price: "0",
+    },
+  });
+
+  const session = useSession();
+  const merchantID = session.data?.user.userId;
+
+  const { mutate, isPending } = useMutation({
+    mutationKey: ["merchant-event-create"],
+    mutationFn: (body: EventFormData) =>
+      fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/merchantGoLive`, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          ...body,
+          merchantID,
+        }),
+      }).then((res) => res.json()),
+    onSuccess: (data) => {
+      console.log(data);
+      if (!data.success) {
+        toast.error(data.message, {
+          position: "top-right",
+          richColors: true,
+        });
+        return;
+      }
+
+      // Handle success
+      form.reset();
+      onOpenChange(false);
     },
   });
 
   const onSubmit = (data: EventFormData) => {
-    console.log(data);
+    mutate(data);
   };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="relative border-0 sm:max-w-[425px]">
+      <DialogContent className="border-0 sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle className="flex items-center justify-between">
             Add New Event
@@ -121,7 +153,7 @@ export default function EventDialog({ open, onOpenChange }: EventDialogProps) {
                   <FormLabel className="flex items-center justify-between">
                     Description
                     <span className="text-sm text-muted-foreground">
-                      {description.length}/200
+                      {field.value.length}/200
                     </span>
                   </FormLabel>
                   <FormControl>
@@ -131,7 +163,6 @@ export default function EventDialog({ open, onOpenChange }: EventDialogProps) {
                       maxLength={200}
                       {...field}
                       onChange={(e) => {
-                        setDescription(e.target.value);
                         field.onChange(e);
                       }}
                     />
@@ -203,8 +234,12 @@ export default function EventDialog({ open, onOpenChange }: EventDialogProps) {
               >
                 Cancel
               </Button>
-              <Button type="submit" className="bg-[#1f3a5f] hover:bg-[#162942]">
-                Add Event
+              <Button
+                type="submit"
+                className="bg-[#1f3a5f] hover:bg-[#162942]"
+                disabled={isPending}
+              >
+                Add Event {isPending && <Loader2 className="animate-spin" />}
               </Button>
             </DialogFooter>
           </form>
