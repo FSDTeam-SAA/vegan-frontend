@@ -1,59 +1,75 @@
 "use client";
 
-import VeganTabs, { VeganTab } from "@/components/ui/Vegan-Tab";
+// Packages
+import { useQuery } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
-import { EventsData } from "./data";
+
+// Local imports
+
+import EmptyContainer from "@/components/shared/sections/empty-container";
+import ErrorContainer from "@/components/shared/sections/error-container";
+import SkeletonWrapper from "@/components/ui/skeleton-wrapper";
+import VeganTabs from "@/components/ui/Vegan-Tab";
+import { MerchantEvent, MerchantEventResponse } from "@/types/merchant";
 import { EventCard } from "./EventCard";
-import { Header } from "./header";
+
+const tabs = [
+  {
+    id: "upcoming",
+    label: "Upcoming Events",
+  },
+  {
+    id: "past",
+    label: "Past Events",
+  },
+];
 
 export default function EventsMangement() {
-  const [activeTab, setActiveTab] = useState("upcoming-events");
+  const [activeTab, setActiveTab] = useState("upcoming");
+  const session = useSession();
+  const merchantID = session?.data?.user?.userId;
 
-  const handleDelete = (sectionId: string, eventIndex: number) => {
-    console.log("Deleting event:", sectionId, eventIndex);
-  };
+  const { isLoading, data, isError, error } = useQuery<MerchantEventResponse>({
+    queryKey: ["eventsbyMerchant", activeTab],
+    queryFn: () =>
+      fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/merchantGoLive?type=${activeTab}&merchantID=${merchantID}`,
+      ).then((res) => res.json()),
+  });
 
-  const tabs = [
-    {
-      id: "upcoming-events",
-      label: "Upcoming Events",
-    },
-    {
-      id: "past-events",
-      label: "Past Events",
-    },
-  ] as VeganTab[];
+  let content;
+
+  if (isLoading || data?.success) {
+    if (data?.events?.length === 0) {
+      content = <EmptyContainer message="No Event found" />;
+    } else if ((data?.events?.length ?? 0) > 0) {
+      content = (
+        <SkeletonWrapper isLoading={isLoading}>
+          <div className="space-y-6 rounded-lg bg-[#F8F5F2] p-10">
+            {data?.events.map((item: MerchantEvent) => (
+              <EventCard key={item._id} data={item} />
+            ))}
+          </div>
+        </SkeletonWrapper>
+      );
+    }
+  } else if (isError) {
+    content = (
+      <ErrorContainer message={error?.message || "something went wrong!"} />
+    );
+  }
 
   return (
-    <div className="min-h-screen">
-      <Header />
-
-      <div className="mb-[44px] overflow-x-auto md:mb-12">
+    <div>
+      <div className="overflow-x-auto md:mb-12">
         <VeganTabs
           tabs={tabs}
           defaultActiveTab={activeTab}
           onTabChange={(tab) => setActiveTab(tab)}
         />
       </div>
-
-      <div className="">
-        {EventsData?.filter((items) => items?.id === activeTab)?.map(
-          (section) => (
-            <div key={section.id}>
-              <div className="space-y-6 rounded-[12px] bg-[#F8F5F2] p-4 md:p-7 lg:p-10">
-                {section.items.map((event, index) => (
-                  <EventCard
-                    key={`${section.id}-${index}`}
-                    {...event}
-                    onEdit={() => {}}
-                    onDelete={() => handleDelete(section.id, index)}
-                  />
-                ))}
-              </div>
-            </div>
-          ),
-        )}
-      </div>
+      <div>{content}</div>
     </div>
   );
 }
