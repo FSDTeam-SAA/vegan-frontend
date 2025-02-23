@@ -1,9 +1,12 @@
 "use client";
 
 // Packages
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
+import Image from "next/image";
+import { toast } from "sonner";
 
 // Local imports
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2, Upload, X } from "lucide-react";
 import type React from "react";
@@ -32,10 +35,7 @@ import {
 } from "@/components/ui/select";
 import { TagsInput } from "@/components/ui/tags-input";
 import { Textarea } from "@/components/ui/textarea";
-import { useMutation } from "@tanstack/react-query";
-import { useSession } from "next-auth/react";
-import Image from "next/image";
-import { toast } from "sonner";
+import { ProfessionalService } from "@/types/professional";
 
 const formSchema = z.object({
   serviceName: z
@@ -66,12 +66,18 @@ const formSchema = z.object({
 
 interface Props {
   onOpenChange: (v: boolean) => void;
+  initialdata?: ProfessionalService;
 }
-export function AddServiceForm({ onOpenChange }: Props) {
-  const [image, setImage] = useState<File | null>(null);
-  const [video, setVideo] = useState<File | null>(null);
+export default function AddServiceForm({ onOpenChange, initialdata }: Props) {
+  const [image, setImage] = useState<File | null | string>(
+    initialdata?.serviceImage ?? null,
+  );
+  const [video, setVideo] = useState<File | null | string>(
+    initialdata?.serviceVideo ?? null,
+  );
 
   const session = useSession();
+  const queryClient = useQueryClient();
 
   const userID = session?.data?.user?.userId;
 
@@ -98,13 +104,50 @@ export function AddServiceForm({ onOpenChange }: Props) {
         position: "top-right",
         richColors: true,
       });
+      queryClient.invalidateQueries({ queryKey: ["professional-services"] });
+    },
+  });
+  const { mutate: editMutate, isPending: editPending } = useMutation({
+    mutationKey: ["professional-service-edit"],
+    mutationFn: (data: FormData) =>
+      fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/updateservice/${initialdata?._id}`,
+        {
+          method: "PUT",
+          body: data,
+        },
+      ).then((res) => res.json()),
+    onSuccess: (data) => {
+      if (!data.success) {
+        toast.error(data.message, {
+          position: "top-right",
+          richColors: true,
+        });
+        return;
+      }
+
+      // handle success
+      form.reset();
+      onOpenChange(false);
+      toast.success(data.message, {
+        position: "top-right",
+        richColors: true,
+      });
+      queryClient.invalidateQueries({ queryKey: ["professional-services"] });
     },
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      keyWords: [],
+      keyWords: initialdata?.keyWords || [],
+      serviceName: initialdata?.serviceName ?? "",
+      metaDescription: initialdata?.metaDescription ?? "",
+      serviceDescription: initialdata?.serviceDescription ?? "",
+      sessionType: initialdata?.sessionType ?? "",
+      isLiveStream: initialdata?.isLiveStream ?? undefined,
+      paymentType: initialdata?.paymentType ?? undefined,
+      price: initialdata?.price.toString() ?? undefined,
     },
   });
 
@@ -132,10 +175,13 @@ export function AddServiceForm({ onOpenChange }: Props) {
     formData.append("sessionType", values.sessionType);
     formData.append("isLiveStream", JSON.stringify(values.isLiveStream));
 
-    console.log("SESSION TYPE GOING", formData.get("sessionType"));
-
     // api call
-    mutate(formData);
+
+    if (initialdata) {
+      editMutate(formData);
+    } else {
+      mutate(formData);
+    }
   }
 
   const handleFileDrop = (e: React.DragEvent, type: "image" | "video") => {
@@ -162,12 +208,14 @@ export function AddServiceForm({ onOpenChange }: Props) {
     }
   };
 
+  const isLoading = isPending || editPending;
+
   return (
     <div className="relative">
-      <OpacityLoader open={isPending} messsage="Please wait some moment..." />
+      <OpacityLoader open={isLoading} messsage="Please wait some moment..." />
       <div className="flex items-center justify-between rounded-t-lg bg-white px-[32px] py-[30px] shadow-lg">
         <h4 className="text-xl font-medium leading-[24px] text-[#1F2937]">
-          Add A New Service
+          {initialdata ? "Edit Service" : "Add A New Service"}
         </h4>
         <X className="cursor-pointer" onClick={() => onOpenChange(false)} />
       </div>
@@ -416,7 +464,11 @@ export function AddServiceForm({ onOpenChange }: Props) {
                 {image ? (
                   <div className="relative">
                     <Image
-                      src={URL.createObjectURL(image) || "/placeholder.svg"}
+                      src={
+                        typeof image === "string"
+                          ? image
+                          : URL.createObjectURL(image!) || "/placeholder.svg"
+                      }
                       width={200}
                       height={200}
                       alt="Preview"
@@ -467,7 +519,11 @@ export function AddServiceForm({ onOpenChange }: Props) {
                 {video ? (
                   <div className="relative">
                     <video
-                      src={URL.createObjectURL(video)}
+                      src={
+                        video && typeof video !== "string"
+                          ? URL.createObjectURL(video)
+                          : ""
+                      }
                       className="mx-auto max-h-32 rounded"
                       controls
                     />
@@ -509,8 +565,8 @@ export function AddServiceForm({ onOpenChange }: Props) {
               type="submit"
               disabled={isPending}
             >
-              {isPending ? "Creating" : "Create Service"}{" "}
-              {isPending && <Loader2 className="animate-spin" />}
+              {initialdata ? "Save Now" : "Create Service"}
+              {isLoading && <Loader2 className="animate-spin" />}
             </Button>
           </div>
         </form>
