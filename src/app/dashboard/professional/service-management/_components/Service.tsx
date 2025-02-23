@@ -25,9 +25,13 @@ import {
 } from "@/types/professional";
 import { useQuery } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "framer-motion";
-import { PencilLine, X } from "lucide-react";
+import { PencilLine } from "lucide-react";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useState } from "react";
+const AddServiceForm = dynamic(() => import("./add-service-form"), {
+  ssr: false,
+});
 
 interface Props {
   id: string;
@@ -80,6 +84,7 @@ interface Props {
 
 const ServiceCard = ({ data }: Props) => {
   const [openAccordions, setOpenAccordions] = useState<string[]>([]);
+  const [openEditModal, setOpenEditModal] = useState(false);
   const [checked, setChecked] = useState(data?.visibility || false);
   return (
     <Card className="mb-[51px] bg-[#F9FAFB]">
@@ -206,6 +211,7 @@ const ServiceCard = ({ data }: Props) => {
             className="text-base font-normal leading-[23px] text-[#1F2937]"
             variant="ghost"
             size="sm"
+            onClick={() => setOpenEditModal(true)}
           >
             <PencilLine />
             Edit Service
@@ -214,17 +220,14 @@ const ServiceCard = ({ data }: Props) => {
       </CardContent>
 
       {/* Edit Service Modal */}
-      {false && (
+      {openEditModal && (
         <section className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30 backdrop-blur-sm">
           <div className="relative z-10">
-            <div className="flex items-center justify-between rounded-t-lg bg-white px-[32px] py-[30px] shadow-lg">
-              <h4 className="text-xl font-medium leading-[24px] text-[#1F2937]">
-                Edit Service Details
-              </h4>
-              <X className="cursor-pointer" />
-            </div>
             <ScrollArea className="h-[700px] w-[327px] rounded-b-[16px] md:w-[500px] lg:w-[769px]">
-              {/* <AddServiceForm onOpenChange={setIsOpenService} /> */}
+              <AddServiceForm
+                onOpenChange={setOpenEditModal}
+                initialdata={data}
+              />
             </ScrollArea>
           </div>
         </section>
