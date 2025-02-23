@@ -15,7 +15,7 @@ import {
   Trash2,
 } from "lucide-react";
 import moment from "moment";
-import { useState } from "react";
+import { memo, useState } from "react";
 import { toast } from "sonner";
 import ProfessionalEventDialog from "./professional-event-dialog";
 
@@ -23,7 +23,7 @@ interface Props {
   data?: MerchantEvent;
 }
 
-export function EventCard({ data }: Props) {
+function EventCard({ data }: Props) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -31,10 +31,10 @@ export function EventCard({ data }: Props) {
   const queryClient = useQueryClient();
 
   const { mutate: deleteMutate, isPending: deletePending } = useMutation({
-    mutationKey: ["merchant-event-delete"],
+    mutationKey: ["professional-event-delete"],
     mutationFn: () =>
       fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/merchantGoLive/${data?._id}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/GoLive/${data?._id}`,
         {
           method: "DELETE",
         },
@@ -54,7 +54,7 @@ export function EventCard({ data }: Props) {
         position: "top-right",
         richColors: true,
       });
-      queryClient.invalidateQueries({ queryKey: ["eventsbyMerchant"] });
+      queryClient.invalidateQueries({ queryKey: ["eventsByProfessional"] });
     },
   });
 
@@ -179,3 +179,5 @@ export function EventCard({ data }: Props) {
     </>
   );
 }
+
+export default memo(EventCard);

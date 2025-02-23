@@ -34,7 +34,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { MerchantEvent } from "@/types/merchant";
+import { OrganizationEvent } from "@/types/organization";
 
 const eventFormSchema = z.object({
   eventTitle: z
@@ -61,10 +61,10 @@ type EventFormData = z.infer<typeof eventFormSchema>;
 interface EventDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  initialData?: MerchantEvent;
+  initialData?: OrganizationEvent;
 }
 
-export default function ProfessionalEventDiolog({
+export default function OrganizationEventDiolog({
   open,
   onOpenChange,
   initialData,
@@ -83,23 +83,26 @@ export default function ProfessionalEventDiolog({
   });
 
   const session = useSession();
-  const userID = session.data?.user.userId;
+  const organizationID = session.data?.user.userId;
 
   const queryClient = useQueryClient();
 
   const { mutate, isPending } = useMutation({
-    mutationKey: ["professional-event-create"],
+    mutationKey: ["organization-event-create"],
     mutationFn: (body: EventFormData) =>
-      fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/golive`, {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
+      fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/organizationGoLive`,
+        {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify({
+            ...body,
+            organizationID,
+          }),
         },
-        body: JSON.stringify({
-          ...body,
-          userID,
-        }),
-      }).then((res) => res.json()),
+      ).then((res) => res.json()),
     onSuccess: (data) => {
       if (!data.success) {
         toast.error(data.message, {
@@ -112,18 +115,14 @@ export default function ProfessionalEventDiolog({
       // Handle success
       form.reset();
       onOpenChange(false);
-      toast.success(data.message, {
-        position: "top-right",
-        richColors: true,
-      });
-      queryClient.invalidateQueries({ queryKey: ["eventsByProfessional"] });
+      queryClient.invalidateQueries({ queryKey: ["eventsByOrganization"] });
     },
   });
   const { mutate: editMutate, isPending: editPending } = useMutation({
-    mutationKey: ["professional-event-edit"],
+    mutationKey: ["organization-event-edit"],
     mutationFn: (body: EventFormData) =>
       fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/GoLive/${initialData?._id}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/organizationGoLive/${initialData?._id}`,
         {
           method: "PUT",
           headers: {
@@ -148,7 +147,7 @@ export default function ProfessionalEventDiolog({
         position: "top-right",
         richColors: true,
       });
-      queryClient.invalidateQueries({ queryKey: ["eventsByProfessional"] });
+      queryClient.invalidateQueries({ queryKey: ["eventsByOrganization"] });
     },
   });
 
