@@ -55,6 +55,7 @@ export default function EventManaging() {
   const [selectedTab, setSelectedTab] = useState<
     "paid event" | "free events" | "volunteer events"
   >("paid event");
+  const [category, setCategory] = useState("all");
 
   const { isLoading, data, isError, error } =
     useQuery<OrganizationEventResponse>({
@@ -63,10 +64,11 @@ export default function EventManaging() {
         selectedTab,
         currentPage,
         debouncedQuery,
+        category,
       ],
       queryFn: () =>
         fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/organizationevents?eventType=${selectedTab}&page=${currentPage}&limit=5&search=${debouncedQuery}`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/organizationevents?eventType=${selectedTab}&page=${currentPage}&limit=5&search=${debouncedQuery}&eventCategory=${category}`,
         ).then((res) => res.json()),
     });
 
@@ -127,7 +129,10 @@ export default function EventManaging() {
             className="max-w-md border-black/10 shadow-none"
             onChange={(e) => setQuery(e.target.value)}
           />
-          <Select defaultValue="all">
+          <Select
+            defaultValue={category}
+            onValueChange={(val) => setCategory(val)}
+          >
             <SelectTrigger className="w-[180px] border-black/10">
               <SelectValue placeholder="Event type" />
             </SelectTrigger>

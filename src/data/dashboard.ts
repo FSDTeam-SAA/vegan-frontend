@@ -12,6 +12,7 @@ import {
   Info,
   LayoutDashboard,
   ListVideo,
+  Newspaper,
   Package,
   PhoneCallIcon,
   Target,
@@ -183,7 +184,14 @@ export const organizationTabsList = [
     path: "/dashboard/organization",
     icon: LayoutDashboard,
     linkText: "Overview",
-    roles: ["admin", "user"],
+    roles: ["admin"],
+  },
+  {
+    id: crypto.randomUUID(),
+    path: "/dashboard/organization/update-and-news",
+    icon: Newspaper,
+    linkText: "Update & News",
+    roles: ["admin"],
   },
   {
     id: crypto.randomUUID(),
