@@ -1,9 +1,8 @@
-import React from "react";
 import GoLive from "../_components/go-live/go-live";
 
 export default function page() {
   return (
-    <div>
+    <div className="px-9 py-11">
       <GoLive />
     </div>
   );
