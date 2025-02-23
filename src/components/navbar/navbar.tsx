@@ -59,7 +59,7 @@ const Navbar = ({ loggedin, role }: Props) => {
   const menus = [
     { id: 1, href: "/professionals", linkText: "Professional" },
     { id: 2, href: "/merchants", linkText: "Merchant" },
-    { id: 3, href: "/organizations", linkText: "Organiation" },
+    { id: 3, href: "/organizations", linkText: "Organization" },
     { id: 4, href: "/profit-calculator", linkText: "Profit-sharing" },
     { id: 5, href: "/store", linkText: "Store" },
   ];
