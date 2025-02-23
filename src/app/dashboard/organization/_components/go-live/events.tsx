@@ -1,63 +1,79 @@
 "use client";
 
+// Packages
+import { useQuery } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
-import { cn } from "@/lib/utils";
-import { PastEvents } from "./past-events";
-import { UpComingEvents } from "./upcoming-events";
-import { EventsData } from "../data";
 
-export default function EventsManagement() {
-  const [activeTab, setActiveTab] = useState("upcoming-events");
-  // interface EventItem {
-  //   type: "Paid" | "Free";
-  //   title: string;
-  //   description: string;
-  //   date: string;
-  //   timeRange: string;
-  //   price: number;
-  //   metrics?: {
-  //     registeredParticipants: number;
-  //     totalAmountPaid: number;
-  //   };
-  //   defaultExpanded?: boolean;
-  // }
+// Local imports
+
+import EmptyContainer from "@/components/shared/sections/empty-container";
+import ErrorContainer from "@/components/shared/sections/error-container";
+import SkeletonWrapper from "@/components/ui/skeleton-wrapper";
+import VeganTabs from "@/components/ui/Vegan-Tab";
+import {
+  OrganizationEvent,
+  OrganizationEventResponse,
+} from "@/types/organization";
+import { EventCard } from "./EventCard";
+
+const tabs = [
+  {
+    id: "upcoming",
+    label: "Upcoming Events",
+  },
+  {
+    id: "past",
+    label: "Past Events",
+  },
+];
+
+export default function EventsMangement() {
+  const [activeTab, setActiveTab] = useState("upcoming");
+  const session = useSession();
+  const organizationID = session?.data?.user?.userId;
+
+  const { isLoading, data, isError, error } =
+    useQuery<OrganizationEventResponse>({
+      queryKey: ["eventsByOrganization", activeTab],
+      queryFn: () =>
+        fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/organizationGoLive?type=${activeTab}&organizationID=${organizationID}`,
+        ).then((res) => res.json()),
+    });
+
+  let content;
+
+  if (isLoading || data?.success) {
+    if (data?.data?.length === 0) {
+      content = <EmptyContainer message="No Event found" />;
+    } else if ((data?.data?.length ?? 0) > 0) {
+      content = (
+        <SkeletonWrapper isLoading={isLoading}>
+          <div className="space-y-6 rounded-lg bg-[#F8F5F2] p-10">
+            {data?.data?.map((item: OrganizationEvent) => (
+              <EventCard key={item._id} data={item} />
+            ))}
+          </div>
+        </SkeletonWrapper>
+      );
+    }
+  } else if (isError) {
+    content = (
+      <ErrorContainer message={error?.message || "something went wrong!"} />
+    );
+  }
 
   return (
-    <div className="mx-auto w-full">
-      <div className="mb-6 overflow-x-auto">
-        <nav className="flex space-x-1 border-b-2 border-white">
-          {EventsData.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={cn(
-                "relative px-4 py-2 text-[18px] font-medium",
-                activeTab === tab.id
-                  ? "border-b-2 border-primary text-primary"
-                  : "text-gray-500 hover:text-gray-700",
-              )}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </nav>
+    <div>
+      <div className="overflow-x-auto md:mb-12">
+        <VeganTabs
+          tabs={tabs}
+          defaultActiveTab={activeTab}
+          onTabChange={(tab) => setActiveTab(tab)}
+        />
       </div>
-
-      <div className="space-y-4 bg-[#F8F5F2] p-[20px] lg:p-[40px]">
-        {EventsData.find((tab) => tab.id === activeTab)?.items.map(
-          (event, index) =>
-            activeTab === "upcoming-events" ? (
-              <UpComingEvents
-                key={index}
-                {...event}
-                onEdit={() => {}}
-                onDelete={() => {}}
-              />
-            ) : (
-              <PastEvents key={index} {...event} />
-            ),
-        )}
-      </div>
+      <div>{content}</div>
     </div>
   );
 }
