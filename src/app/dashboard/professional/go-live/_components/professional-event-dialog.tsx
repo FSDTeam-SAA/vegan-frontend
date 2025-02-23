@@ -64,7 +64,7 @@ interface EventDialogProps {
   initialData?: MerchantEvent;
 }
 
-export default function EventDialog({
+export default function ProfessionalEventDiolog({
   open,
   onOpenChange,
   initialData,
@@ -83,21 +83,21 @@ export default function EventDialog({
   });
 
   const session = useSession();
-  const merchantID = session.data?.user.userId;
+  const userID = session.data?.user.userId;
 
   const queryClient = useQueryClient();
 
   const { mutate, isPending } = useMutation({
-    mutationKey: ["merchant-event-create"],
+    mutationKey: ["professional-event-create"],
     mutationFn: (body: EventFormData) =>
-      fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/merchantGoLive`, {
+      fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/golive`, {
         method: "POST",
         headers: {
           "content-type": "application/json",
         },
         body: JSON.stringify({
           ...body,
-          merchantID,
+          userID,
         }),
       }).then((res) => res.json()),
     onSuccess: (data) => {
@@ -112,14 +112,18 @@ export default function EventDialog({
       // Handle success
       form.reset();
       onOpenChange(false);
-      queryClient.invalidateQueries({ queryKey: ["eventsbyMerchant"] });
+      toast.success(data.message, {
+        position: "top-right",
+        richColors: true,
+      });
+      queryClient.invalidateQueries({ queryKey: ["eventsByProfessional"] });
     },
   });
   const { mutate: editMutate, isPending: editPending } = useMutation({
-    mutationKey: ["merchant-event-edit"],
+    mutationKey: ["professional-event-edit"],
     mutationFn: (body: EventFormData) =>
       fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/merchantGoLive/${initialData?._id}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/GoLive/${initialData?._id}`,
         {
           method: "PUT",
           headers: {
@@ -144,7 +148,7 @@ export default function EventDialog({
         position: "top-right",
         richColors: true,
       });
-      queryClient.invalidateQueries({ queryKey: ["eventsbyMerchant"] });
+      queryClient.invalidateQueries({ queryKey: ["eventsByProfessional"] });
     },
   });
 
