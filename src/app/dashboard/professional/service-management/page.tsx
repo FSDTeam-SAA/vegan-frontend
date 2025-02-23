@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
-import Service from "./_components/Service";
+import dynamic from "next/dynamic";
 import ServiceManagementHeader from "./_components/ServiceManagementHeader";
+const Service = dynamic(() => import("./_components/Service"), { ssr: false });
 
 const Page = async () => {
   const session = await auth();

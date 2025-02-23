@@ -2,9 +2,13 @@
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { FileUp, Plus } from "lucide-react";
+import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
-import { AddServiceForm } from "./add-service-form";
 import { BulkUploadDialog } from "./bulk-upload-dialog";
+
+const AddServiceForm = dynamic(() => import("./add-service-form"), {
+  ssr: false,
+});
 
 const ServiceManagementHeader = () => {
   const [open, setOpen] = useState(false);
