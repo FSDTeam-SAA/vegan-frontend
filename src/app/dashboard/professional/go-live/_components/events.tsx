@@ -6,13 +6,12 @@ import { useSession } from "next-auth/react";
 import { useState } from "react";
 
 // Local imports
-
 import EmptyContainer from "@/components/shared/sections/empty-container";
 import ErrorContainer from "@/components/shared/sections/error-container";
 import SkeletonWrapper from "@/components/ui/skeleton-wrapper";
 import VeganTabs from "@/components/ui/Vegan-Tab";
 import { MerchantEvent, MerchantEventResponse } from "@/types/merchant";
-import { EventCard } from "./EventCard";
+import EventCard from "./EventCard";
 
 const tabs = [
   {
@@ -28,13 +27,13 @@ const tabs = [
 export default function EventsMangement() {
   const [activeTab, setActiveTab] = useState("upcoming");
   const session = useSession();
-  const merchantID = session?.data?.user?.userId;
+  const professionalID = session?.data?.user?.userId;
 
   const { isLoading, data, isError, error } = useQuery<MerchantEventResponse>({
-    queryKey: ["eventsbyMerchant", activeTab],
+    queryKey: ["eventsByProfessional", activeTab],
     queryFn: () =>
       fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/merchantGoLive?type=${activeTab}&merchantID=${merchantID}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/goLive?type=${activeTab}&userID=${professionalID}`,
       ).then((res) => res.json()),
   });
 
