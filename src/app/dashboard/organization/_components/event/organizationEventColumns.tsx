@@ -1,9 +1,9 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { OrganizationEvent } from "@/types/organization";
 import type { ColumnDef } from "@tanstack/react-table";
 import moment from "moment";
+import ViewAttendees from "./view-attendees";
 
 export const organizationEventColumns: ColumnDef<OrganizationEvent>[] = [
   // {
@@ -59,15 +59,6 @@ export const organizationEventColumns: ColumnDef<OrganizationEvent>[] = [
   {
     id: "actions",
     header: "Actions",
-    cell: () => {
-      return (
-        <Button
-          variant="link"
-          className="p-0 text-[#1a2b4b] underline hover:text-[#243a64]"
-        >
-          View Attendees
-        </Button>
-      );
-    },
+    cell: ({ row }) => <ViewAttendees data={row.original} />,
   },
 ];
