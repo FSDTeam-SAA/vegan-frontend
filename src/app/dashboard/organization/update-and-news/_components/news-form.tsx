@@ -10,7 +10,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import TiptapEditor from "@/components/ui/tip-tap-editor";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
@@ -22,22 +24,24 @@ const formSchema = z.object({
 });
 
 export default function NewsForm() {
+  const [content, setContent] = useState("");
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    try {
-      console.log(values);
-      toast(
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(values, null, 2)}</code>
-        </pre>,
-      );
-    } catch (error) {
-      console.error("Form submission error", error);
-      toast.error("Failed to submit the form. Please try again.");
+    if (!content) {
+      toast.warning("Please add some content", {
+        position: "top-right",
+        richColors: true,
+      });
+      return;
     }
+    const formData = new FormData();
+    formData.append("title", values.title);
+    formData.append("image", values.image);
+    formData.append("shortDescription", values.shortDescription);
+    formData.append("statement", content);
   }
 
   return (
@@ -67,11 +71,13 @@ export default function NewsForm() {
             <FormField
               control={form.control}
               name="image"
-              render={({}) => (
+              render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Short Description</FormLabel>
+                  <FormLabel>Image</FormLabel>
                   <FormControl>
-                    <FileUploader />
+                    <FileUploader
+                      onFileSelect={(file) => field.onChange(file)}
+                    />
                   </FormControl>
 
                   <FormMessage />
@@ -98,6 +104,7 @@ export default function NewsForm() {
               </FormItem>
             )}
           />
+          <TiptapEditor content={content} onChange={(c) => setContent(c)} />
           <div className="flex justify-end">
             <Button
               type="submit"
