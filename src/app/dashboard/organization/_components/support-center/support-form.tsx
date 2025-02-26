@@ -11,7 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -34,6 +34,8 @@ export default function SupportForm({ userId }: Props) {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
   });
+
+  const queryClient = useQueryClient();
 
   const { isPending, mutate: createSupportTicket } = useMutation({
     mutationKey: ["create-organization-support"],
@@ -65,6 +67,10 @@ export default function SupportForm({ userId }: Props) {
       toast.success(data.message, {
         position: "top-right",
         richColors: true,
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ["support-tickets-organization"],
       });
     },
     onError: (err) => {

@@ -3,21 +3,23 @@ import TicketCard from "@/components/shared/cards/ticket-card";
 import EmptyContainer from "@/components/shared/sections/empty-container";
 import ErrorContainer from "@/components/shared/sections/error-container";
 import SkeletonWrapper from "@/components/ui/skeleton-wrapper";
-import { SupportTicketResponse } from "@/types/professional";
+import { OrganizationTicketResponse } from "@/types/organization";
 import { useQuery } from "@tanstack/react-query";
+import OrganizationTicketCard from "./organization-ticket-card";
 
 interface Props {
   userId: string;
 }
 
 const OrganizationTicketContainer = ({ userId }: Props) => {
-  const { isLoading, data, isError, error } = useQuery<SupportTicketResponse>({
-    queryKey: ["support-tickets-professional"],
-    queryFn: () =>
-      fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/support-tickets/professional/${userId}`,
-      ).then((res) => res.json()),
-  });
+  const { isLoading, data, isError, error } =
+    useQuery<OrganizationTicketResponse>({
+      queryKey: ["support-tickets-organization"],
+      queryFn: () =>
+        fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/organizationsupport/organization/${userId}`,
+        ).then((res) => res.json()),
+    });
 
   let content;
   if (isLoading) {
@@ -34,13 +36,13 @@ const OrganizationTicketContainer = ({ userId }: Props) => {
     content = (
       <ErrorContainer message={error.message || "Something went wrong."} />
     );
-  } else if (data && data.tickets?.length === 0) {
+  } else if (data && data.data?.length === 0) {
     content = <EmptyContainer message="You didn't open support ticket yet" />;
-  } else if (data && data.tickets?.length > 0) {
+  } else if (data && data.data?.length > 0) {
     content = (
       <div className="space-y-5">
-        {data.tickets.map((item) => (
-          <TicketCard data={item} key={item._id} />
+        {data.data.map((item) => (
+          <OrganizationTicketCard data={item} key={item.ticketSlug} />
         ))}
       </div>
     );

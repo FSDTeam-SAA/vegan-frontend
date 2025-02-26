@@ -44,3 +44,20 @@ export interface AttendeeResponse {
   data: Attendee[];
   pagination: MetaPagination;
 }
+
+export interface OrganizationTicket {
+  ticketSlug: string;
+  name: string;
+  emailAddress: string;
+  subject: string;
+  message: string;
+  status: "pending" | "open" | "closed" | "resolved"; // Adjust as needed
+  createdAt: string; // ISO date string
+  updatedAt: string; // ISO date string
+}
+
+export interface OrganizationTicketResponse {
+  success: boolean;
+  message: string;
+  data: OrganizationTicket[];
+}
