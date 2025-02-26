@@ -1,77 +1,97 @@
-"use client"
-import { Button } from '@/components/ui/button';
-import React, { useState } from 'react';
-import { SubmittedTicketData } from './SubmittedTicketData';
-import ContactSupportForm from './ContactSupportForm';
+"use client";
+import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import ContactSupportForm from "./ContactSupportForm";
+import { SubmittedTicketData } from "./SubmittedTicketData";
 
-const SubmittedTicket = () => {
-    const [isOpen, setIsOpen] = useState(false);
-    const handleContactSupport = () => {
-        setIsOpen(!isOpen)
-    }
-    return (
-        <div className='pb-[56px]'>
-            <div className='p-[24px] md:p-[32px] lg:p-[40px] bg-[#F8F5F2] rounded-[16px]'>
-                <h4 className='text-lg md:text-xl font-medium leading-[21px] md:leading-[24px] text-[#1F2937] pb-[40px] md:pb-[48px] lg:pb-[56px]'>Support</h4>
+interface Props {
+  userId: string;
+}
 
-                <h6 className='text-base md:text-lg font-medium leading-[19px] md:leading-[21px] text-[#4B5563]'>Need Help?</h6>
-                <p className='text-sm md:text-base font-normal text-[#4B5563] leading-[24px] pt-[8px] pb-[32px] md:pb-[40px]'>Our professional support team is here to assist you with any issues you may have.</p>
-                <Button onClick={handleContactSupport} size="xl" className='text-base font-medium leading-[19px] text-white'>Contact Support</Button>
-                <div className='border-b border-[#E8DFD6] pt-[40px] md:pt-[48px] lg:pt-[56px]' />
+const SubmittedTicket = ({ userId }: Props) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const handleContactSupport = () => {
+    setIsOpen(!isOpen);
+  };
+  return (
+    <div className="pb-[56px]">
+      <div className="rounded-[16px] bg-[#F8F5F2] p-[24px] md:p-[32px] lg:p-[40px]">
+        <h4 className="pb-[40px] text-lg font-medium leading-[21px] text-[#1F2937] md:pb-[48px] md:text-xl md:leading-[24px] lg:pb-[56px]">
+          Support
+        </h4>
 
-                {/* cart part  */}
-                <div>
-                    <h4 className='text-lg md:text-xl font-medium leading-[21px] md:leading-[24px] text-[#1F2937] pt-[56px] pb-[24px]'>Submitted Ticket</h4>
-                    <div>
-                        {
-                            SubmittedTicketData?.map((data) => {
-                                return <div key={data?.id} className='flex flex-col md:flex-row items-start md:items-center justify-start md:justify-between gap-[16px] p-[16px] rounded-[10px] bg-white mb-[27px]'>
-                                    <div>
-                                        <p>
-                                            <span className='text-base md:text-lg font-medium text-[#1F2937] leading-[23px] md:leading-[26px]'>{data?.name}</span>
-                                            <span className='text-sm md:text-base fotn-medium text-[#6B7280] leading-[16px] md:leading-[19px]'>{data?.date}</span>
-                                        </p>
-                                        <p className='text-sm md:text-base font-normal text-[#4B5563] leading-[20px] md:leading-[23px] pt-[8px]'>{data?.message}</p>
+        <h6 className="text-base font-medium leading-[19px] text-[#4B5563] md:text-lg md:leading-[21px]">
+          Need Help?
+        </h6>
+        <p className="pb-[32px] pt-[8px] text-sm font-normal leading-[24px] text-[#4B5563] md:pb-[40px] md:text-base">
+          Our professional support team is here to assist you with any issues
+          you may have.
+        </p>
+        <Button
+          onClick={handleContactSupport}
+          size="xl"
+          className="text-base font-medium leading-[19px] text-white"
+        >
+          Contact Support
+        </Button>
+        <div className="border-b border-[#E8DFD6] pt-[40px] md:pt-[48px] lg:pt-[56px]" />
 
-
-                                    </div>
-                                    <div>
-                                        <button
-                                            className={`text-sm font-medium leading-[16px] py-[12px] px-[20px] rounded-[20px] ${data?.status === "Resolved"
-                                                ? "text-[#16A34A] bg-[#F0FDF4]"
-                                                : data?.status === "In Progress"
-                                                    ? "text-[#EAB308] bg-[#FEFCE8]"
-                                                    : "text-[#1F2937] bg-[#F9FAFB]"
-                                                }`}
-                                        >
-                                            {data?.status}
-                                        </button>
-
-                                    </div>
-                                </div>
-                            })
-                        }
-                    </div>
-                </div>
-
-                {/* modal part  */}
-                {isOpen && (
-
-                    <section
-                        className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-30 backdrop-blur-sm z-50"
+        {/* cart part  */}
+        <div>
+          <h4 className="pb-[24px] pt-[56px] text-lg font-medium leading-[21px] text-[#1F2937] md:text-xl md:leading-[24px]">
+            Submitted Ticket
+          </h4>
+          <div>
+            {SubmittedTicketData?.map((data) => {
+              return (
+                <div
+                  key={data?.id}
+                  className="mb-[27px] flex flex-col items-start justify-start gap-[16px] rounded-[10px] bg-white p-[16px] md:flex-row md:items-center md:justify-between"
+                >
+                  <div>
+                    <p>
+                      <span className="text-base font-medium leading-[23px] text-[#1F2937] md:text-lg md:leading-[26px]">
+                        {data?.name}
+                      </span>
+                      <span className="fotn-medium text-sm leading-[16px] text-[#6B7280] md:text-base md:leading-[19px]">
+                        {data?.date}
+                      </span>
+                    </p>
+                    <p className="pt-[8px] text-sm font-normal leading-[20px] text-[#4B5563] md:text-base md:leading-[23px]">
+                      {data?.message}
+                    </p>
+                  </div>
+                  <div>
+                    <button
+                      className={`rounded-[20px] px-[20px] py-[12px] text-sm font-medium leading-[16px] ${
+                        data?.status === "Resolved"
+                          ? "bg-[#F0FDF4] text-[#16A34A]"
+                          : data?.status === "In Progress"
+                            ? "bg-[#FEFCE8] text-[#EAB308]"
+                            : "bg-[#F9FAFB] text-[#1F2937]"
+                      }`}
                     >
-
-                        {/* Modal content */}
-                        <div className="relative z-10 ">
-                            <ContactSupportForm setIsOpen={setIsOpen} />
-                        </div>
-                    </section>
-
-                )
-                }
-            </div>
+                      {data?.status}
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
-    );
+
+        {/* modal part  */}
+        {isOpen && (
+          <section className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30 backdrop-blur-sm">
+            {/* Modal content */}
+            <div className="relative z-10">
+              <ContactSupportForm setIsOpen={setIsOpen} userId={userId} />
+            </div>
+          </section>
+        )}
+      </div>
+    </div>
+  );
 };
 
 export default SubmittedTicket;
