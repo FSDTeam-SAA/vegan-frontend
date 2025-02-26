@@ -28,3 +28,19 @@ export interface OrganizationEventResponse {
   data: OrganizationEvent[];
   pagination: MetaPagination;
 }
+
+export interface Attendee {
+  fullName: string;
+  email: string;
+  phoneNumber: string;
+  specialRequirement?: string; // Optional field
+  _id: string;
+  createdAt: Date;
+}
+
+export interface AttendeeResponse {
+  success: boolean;
+  message: string;
+  data: Attendee[];
+  pagination: MetaPagination;
+}

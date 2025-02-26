@@ -68,7 +68,7 @@ export default function EventManaging() {
       ],
       queryFn: () =>
         fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/organizationevents?eventType=${selectedTab}&page=${currentPage}&limit=5&search=${debouncedQuery}&eventCategory=${category}`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/organizationevents?eventType=${selectedTab}&page=${currentPage}&limit=10&search=${debouncedQuery}&eventCategory=${category}`,
         ).then((res) => res.json()),
     });
 
@@ -172,13 +172,15 @@ const TableContainer = ({
   return (
     <div>
       <DataTable columns={columns} table={table} />
-      <div className="my-5 flex justify-end">
-        <VeganPagination
-          currentPage={currentPage || 1}
-          totalPages={totalPages || 1}
-          onPageChange={(page) => setCurrentPage(page)}
-        />
-      </div>
+      {totalPages > 1 && (
+        <div className="my-5 flex justify-end">
+          <VeganPagination
+            currentPage={currentPage || 1}
+            totalPages={totalPages || 1}
+            onPageChange={(page) => setCurrentPage(page)}
+          />
+        </div>
+      )}
     </div>
   );
 };
