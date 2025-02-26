@@ -80,7 +80,7 @@ export default function SupportForm({ userId }: Props) {
   }
 
   return (
-    <div className="mb-10 rounded-lg bg-[#F8F5F2] p-6">
+    <div className="rounded-lg bg-[#F8F5F2] p-6">
       <div className="mb-6 space-y-2">
         <h1 className="text-2xl font-semibold">Support</h1>
         <h2 className="text-lg">Need Help?</h2>
