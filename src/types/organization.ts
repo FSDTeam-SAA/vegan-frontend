@@ -46,6 +46,7 @@ export interface AttendeeResponse {
 }
 
 export interface OrganizationTicket {
+  _id: string; // MongoDB ObjectId as a string
   ticketSlug: string;
   name: string;
   emailAddress: string;
@@ -54,6 +55,7 @@ export interface OrganizationTicket {
   status: "pending" | "open" | "closed" | "resolved"; // Adjust as needed
   createdAt: string; // ISO date string
   updatedAt: string; // ISO date string
+  __v: number; // Version key used by Mongoose
 }
 
 export interface OrganizationTicketResponse {
