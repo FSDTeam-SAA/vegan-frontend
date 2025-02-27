@@ -44,7 +44,7 @@ const OrganizationCard = ({ data }: Props) => {
           </p>
         </div>
         <Link
-          href={`/organizations/${data?._id}`}
+          href={`/organizations/${data?.userID}`}
           className="flex h-[48px] w-full items-center justify-center rounded-[8px] bg-[#1D3557] text-[16px] font-medium leading-[19.36px] text-white transition-colors duration-300 hover:bg-[#1D3557]/90"
         >
           View Details
