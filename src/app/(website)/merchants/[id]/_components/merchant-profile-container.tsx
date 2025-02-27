@@ -35,7 +35,7 @@ const MerchantProfileContainer = ({ merchatId }: Props) => {
             <MerchantHeader data={data?.data} />
           </SkeletonWrapper>
         </div>
-        <MerchantsTabs />
+        <MerchantsTabs merchantId={merchatId} />
       </div>
     );
   } else if (isError) {
