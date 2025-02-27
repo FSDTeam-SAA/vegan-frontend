@@ -10,6 +10,7 @@ import EmptyContainer from "@/components/shared/sections/empty-container";
 import ErrorContainer from "@/components/shared/sections/error-container";
 import SkeletonWrapper from "@/components/ui/skeleton-wrapper";
 import VeganPagination from "@/components/ui/vegan-pagination";
+import { useDebounce } from "@/hooks/useDebounce";
 import { ProfessionalProfileResponse } from "@/types/professional";
 import { useProfessionalState } from "@/zustand/professional";
 
@@ -17,12 +18,14 @@ const ProfessionalContainer = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const { value } = useProfessionalState();
 
+  const debounceValue = useDebounce(value);
+
   const { data, isLoading, isError, error } =
     useQuery<ProfessionalProfileResponse>({
-      queryKey: ["professionals", currentPage, value],
+      queryKey: ["professionals", currentPage, debounceValue],
       queryFn: () =>
         fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/professionalInfo?page=${currentPage}&limit=6&fullName=${value}`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/professionalInfo?page=${currentPage}&limit=6&fullName=${debounceValue}`,
         ).then((res) => res.json()),
     });
 

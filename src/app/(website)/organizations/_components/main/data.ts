@@ -54,27 +54,12 @@ export const LocationList = [
 export const SortByList = [
   {
     id: 1,
-    name: "Newest First",
-    value: "newest",
+    name: "Ascending Order",
+    value: "asc",
   },
   {
     id: 2,
-    name: "Oldest First",
-    value: "oldest",
-  },
-  {
-    id: 3,
-    name: "Highest Rated",
-    value: "highest_rated",
-  },
-  {
-    id: 4,
-    name: "Most Popular",
-    value: "most_popular",
-  },
-  {
-    id: 5,
-    name: "Alphabetical",
-    value: "alphabetical",
+    name: "Descending Order",
+    value: "desc",
   },
 ] as DropDownItem[];
