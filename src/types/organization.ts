@@ -83,6 +83,7 @@ export type OrganizationProfile = {
   governmentIssuedID: string;
   photoWithID: string;
   professionalCertification: string;
+  totalEvents: number;
 };
 
 export type OrganizationProfileResponse = {

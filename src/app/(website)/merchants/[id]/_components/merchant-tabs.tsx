@@ -48,10 +48,10 @@ const MerchantsTabs = ({ merchantId }: Props) => {
           </>
         )}
         {activeTab === "about" && (
-          <>
-            <MerchantAbout />
-            <AboutCarousel />
-          </>
+          <div className="space-y-5">
+            <MerchantAbout merchatId={merchantId} />
+            <AboutCarousel merchatId={merchantId} />
+          </div>
         )}
         {activeTab === "reviews" && (
           <>

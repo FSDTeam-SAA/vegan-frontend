@@ -27,7 +27,7 @@ export const useProfessionalState = create<StoreState>((set) => ({
   location: "washington",
   setLocation: (location: string) => set({ location }),
 
-  sortBy: "newest",
+  sortBy: "asc",
   setSortBy: (sortBy: string) => set({ sortBy }),
 
   price: [0, 50],

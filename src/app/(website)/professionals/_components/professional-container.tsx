@@ -16,16 +16,16 @@ import { useProfessionalState } from "@/zustand/professional";
 
 const ProfessionalContainer = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const { value } = useProfessionalState();
+  const { value, sortBy } = useProfessionalState();
 
   const debounceValue = useDebounce(value);
 
   const { data, isLoading, isError, error } =
     useQuery<ProfessionalProfileResponse>({
-      queryKey: ["professionals", currentPage, debounceValue],
+      queryKey: ["professionals", currentPage, debounceValue, sortBy],
       queryFn: () =>
         fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/professionalInfo?page=${currentPage}&limit=6&fullName=${debounceValue}`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/professionalInfo?page=${currentPage}&limit=6&fullName=${debounceValue}&order=${sortBy}`,
         ).then((res) => res.json()),
     });
 
