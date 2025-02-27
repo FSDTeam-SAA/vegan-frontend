@@ -1,5 +1,4 @@
 "use client";
-import { useEffect, useState } from "react";
 
 // Packages
 import { ListFilter } from "lucide-react";
@@ -21,38 +20,16 @@ import { categoryList, LocationList, SortByList } from "./data";
 const ProfessionalFilterContainer = () => {
   const {
     setValue, // Using Zustand setter directly
-
+    value,
     sortBy,
     setSortBy,
   } = useProfessionalState();
 
-  // Local state for value input and debounced value
-  const [inputValue, setInputValue] = useState("");
-  const [debouncedValue, setDebouncedValue] = useState("");
-
-  // Debounce effect
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      setDebouncedValue(inputValue);
-    }, 500); // 500ms debounce time
-
-    return () => {
-      clearTimeout(timeoutId);
-    };
-  }, [inputValue]);
-
-  // Update Zustand store once debounce completes
-  useEffect(() => {
-    if (debouncedValue !== inputValue) {
-      setValue(debouncedValue);
-    }
-  }, [debouncedValue, setValue, inputValue]);
-
   return (
     <div className="flex items-center justify-between gap-x-[32px]">
       <Search
-        value={inputValue}
-        onChange={(e) => setInputValue(e.target.value)}
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
         className="w-full min-w-[353px] max-w-[500px]"
         inputClassName="h-[40px] "
       />

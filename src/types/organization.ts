@@ -63,3 +63,31 @@ export interface OrganizationTicketResponse {
   message: string;
   data: OrganizationTicket[];
 }
+
+export type OrganizationProfile = {
+  _id: string;
+  userID: string;
+  organizationName: string;
+  profilePhoto: string;
+  address: string;
+  missionStatement: string;
+  about: string;
+  shortDescriptionOfOrganization: string;
+  experience: string[]; // List of experiences
+  certifications: string[]; // List of certifications
+  websiteURL: string;
+  isVerified: "pending" | "verified" | "declined"; // Assuming possible statuses
+  createdAt: string; // ISO Date string
+  updatedAt: string; // ISO Date string
+  __v: number;
+  governmentIssuedID: string;
+  photoWithID: string;
+  professionalCertification: string;
+};
+
+export type OrganizationProfileResponse = {
+  success: boolean;
+  message: string;
+  data: OrganizationProfile[];
+  pagination: MetaPagination;
+};

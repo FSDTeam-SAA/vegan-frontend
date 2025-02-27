@@ -14,12 +14,12 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import VeganSelector from "@/components/ui/vegan-selector";
+import { useMerchantState } from "@/zustand/merchant";
 import { ListFilter } from "lucide-react";
 import { categoryList, LocationList, SortByList } from "./data";
 
 const MerchantFilterContainer = () => {
-  const [value, setValue] = useState("");
-  const [sortBy, setSortBy] = useState("newest");
+  const { value, setValue, sortBy, setSortBy } = useMerchantState();
   return (
     <div className="flex items-center justify-between gap-x-[32px]">
       <Search
@@ -57,7 +57,7 @@ const MerchantFilterContainer = () => {
 export default MerchantFilterContainer;
 
 export const MerchantFilterContainerMobile = () => {
-  const [value, setValue] = useState("");
+  const { value, setValue } = useMerchantState();
   const [category, setCategory] = useState("expertise");
   const [location, setLocation] = useState("washington");
   const [sortBy, setSortBy] = useState("newest");
