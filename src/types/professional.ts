@@ -54,3 +54,21 @@ export type ProfessionalServiceResponse = {
   messasge?: string;
   services: ProfessionalService[];
 };
+
+export interface SupportTicket {
+  _id: string;
+  professionalID: string;
+  ticketSlug: string;
+  subject: string;
+  message: string;
+  status: "resolved" | "pending" | "in progress";
+  createdAt: string; // or Date
+  updatedAt: string; // or Date
+  __v: number;
+}
+
+export interface SupportTicketResponse {
+  success: boolean;
+  message: string;
+  tickets: SupportTicket[];
+}

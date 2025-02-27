@@ -4,7 +4,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
-import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -62,12 +61,14 @@ interface EventDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   initialData?: MerchantEvent;
+  userId: string;
 }
 
 export default function EventDialog({
   open,
   onOpenChange,
   initialData,
+  userId,
 }: EventDialogProps) {
   const form = useForm<EventFormData>({
     resolver: zodResolver(eventFormSchema),
@@ -82,9 +83,6 @@ export default function EventDialog({
     },
   });
 
-  const session = useSession();
-  const merchantID = session.data?.user.userId;
-
   const queryClient = useQueryClient();
 
   const { mutate, isPending } = useMutation({
@@ -97,7 +95,7 @@ export default function EventDialog({
         },
         body: JSON.stringify({
           ...body,
-          merchantID,
+          merchantID: userId,
         }),
       }).then((res) => res.json()),
     onSuccess: (data) => {
@@ -129,6 +127,7 @@ export default function EventDialog({
         },
       ).then((res) => res.json()),
     onSuccess: (data) => {
+      console.log(data);
       if (!data.success) {
         toast.error(data.message, {
           position: "top-right",
