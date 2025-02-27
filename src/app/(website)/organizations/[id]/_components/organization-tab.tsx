@@ -1,6 +1,7 @@
 "use client";
 import AnimatedTabs, { VeganTab } from "@/components/ui/Vegan-Tab";
 import { useState } from "react";
+import OrganizationAbout from "./tab/about/organization-about";
 import OrganizationEventContainer from "./tab/events/organization-event-container";
 import OrganizationNewsContainer from "./tab/news/organization-news-container";
 import VolunteerContainer from "./tab/volunteer/volunteer-container";
@@ -24,7 +25,11 @@ const lists = [
   },
 ] as VeganTab[];
 
-const OrganizationTab = () => {
+interface Props {
+  organizationId: string;
+}
+
+const OrganizationTab = ({ organizationId }: Props) => {
   const [activeTab, setActiveTab] = useState<
     "about" | "news" | "events" | "volunteer"
   >("about");
@@ -38,7 +43,11 @@ const OrganizationTab = () => {
       />
 
       <div className="mt-[40px]">
-        {activeTab === "about" && <></>}
+        {activeTab === "about" && (
+          <>
+            <OrganizationAbout organizationId={organizationId} />
+          </>
+        )}
         {activeTab === "news" && <OrganizationNewsContainer />}
         {activeTab === "events" && <OrganizationEventContainer />}
         {activeTab === "volunteer" && <VolunteerContainer />}
