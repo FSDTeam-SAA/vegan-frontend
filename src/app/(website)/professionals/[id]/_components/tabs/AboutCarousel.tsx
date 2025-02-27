@@ -26,13 +26,13 @@ export function AboutCarousel({ merchatId }: Props) {
           <CardContent className="p-6">
             <div className="">
               <h2 className="mb-6 font-lexend text-lg leading-[18px] text-[#1D3557] md:text-xl md:font-medium md:leading-[25px]">
-                Title
+                {data?.data?.highlightedStatement[0].title}
               </h2>
-              <h3 className="mb-2 font-inter text-lg font-medium text-[#374151] md:text-xl md:leading-[30px]">
-                subtitle
-              </h3>
+              {/* <h3 className="mb-2 font-inter text-lg font-medium text-[#374151] md:text-xl md:leading-[30px]">
+                
+              </h3> */}
               <p className="font-inter text-[16px] italic leading-[30px] text-[#374151] md:text-lg">
-                some content will be here
+                {data?.data.highlightedStatement[0].description}
               </p>
             </div>
           </CardContent>
