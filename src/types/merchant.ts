@@ -44,3 +44,49 @@ export interface MerchantEventResponse {
   message: string;
   events: MerchantEvent[];
 }
+
+export type BusinessHour = {
+  Day: string;
+  Time: string;
+  _id: string;
+};
+
+export type HighlightedStatement = {
+  title: string;
+  description: string;
+  _id: string;
+};
+
+export type MerchantProfile = {
+  _id: string;
+  userID: string;
+  profilePhoto: string;
+  fullName: string;
+  businessName: string;
+  address: string;
+  about: string;
+  shortDescriptionOfStore: string;
+  businessHours: BusinessHour[];
+  highlightedStatement: HighlightedStatement[];
+  websiteURL: string;
+  isVerified: "pending" | "verified" | "rejected"; // Assuming possible statuses
+  createdAt: string; // ISO Date string
+  updatedAt: string; // ISO Date string
+  __v: number;
+  governmentIssuedID: string;
+  photoWithID: string;
+  professionalCertification: string;
+};
+
+export type MerchantProfileResponse = {
+  success: boolean;
+  message: string;
+  data: MerchantProfile[];
+  pagination: MetaPagination;
+};
+
+export type SingleMerchantProfileResponse = {
+  success: boolean;
+  message: string;
+  data: MerchantProfile;
+};

@@ -14,21 +14,21 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import VeganSelector from "@/components/ui/vegan-selector";
+import { useOrganizationState } from "@/zustand/organization";
 import { ListFilter } from "lucide-react";
 import { eventTypeList, LocationList, SortByList } from "./data";
 
 const OrganizationFilterContainer = () => {
-  const [value, setValue] = useState("");
+  const { value, setValue, sortBy, setSortBy } = useOrganizationState();
   const [event, setEvent] = useState("conference");
   const [location, setLocation] = useState("washington");
-  const [sortBy, setSortBy] = useState("newest");
   const [price, setPrice] = useState<number[]>([0, 50]);
   return (
     <div className="flex items-center gap-x-[32px]">
       <Search
         value={value}
         onChange={(e) => setValue(e.target.value)}
-        className="w-full min-w-[353px]"
+        className="] w-full min-w-[353px]"
         inputClassName="h-[40px] "
       />
       <VeganSelector
@@ -41,13 +41,15 @@ const OrganizationFilterContainer = () => {
         selectedValue={location}
         onValueChange={(value) => setLocation(value)}
       />
-      <PriceRangeSelector
-        minPrice={20}
-        maxPrice={800}
-        step={10}
-        defaultValue={[price[0], price[1]]}
-        onRangeChange={(range) => setPrice(range)}
-      />
+      <div>
+        <PriceRangeSelector
+          minPrice={20}
+          maxPrice={800}
+          step={10}
+          defaultValue={[price[0], price[1]]}
+          onRangeChange={(range) => setPrice(range)}
+        />
+      </div>
       <VeganSelector
         list={SortByList}
         selectedValue={sortBy}
