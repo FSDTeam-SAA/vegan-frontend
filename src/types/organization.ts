@@ -76,7 +76,7 @@ export type OrganizationProfile = {
   experience: string[]; // List of experiences
   certifications: string[]; // List of certifications
   websiteURL: string;
-  isVerified: "pending" | "verified" | "declined"; // Assuming possible statuses
+  isVerified: "pending" | "approved" | "rejected"; // Assuming possible statuses
   createdAt: string; // ISO Date string
   updatedAt: string; // ISO Date string
   __v: number;
@@ -91,4 +91,10 @@ export type OrganizationProfileResponse = {
   message: string;
   data: OrganizationProfile[];
   pagination: MetaPagination;
+};
+
+export type SingleOrganizationProfileResponse = {
+  success: boolean;
+  message: string;
+  data: OrganizationProfile;
 };
