@@ -3,18 +3,23 @@ import { DropDownItem } from "@/types";
 export const categoryList = [
   {
     id: 1,
-    name: "Expertise",
-    value: "expertise",
+    name: "Food",
+    value: "food",
   },
   {
     id: 2,
-    name: "Innovation",
-    value: "innovation",
+    name: "Wearable",
+    value: "wearable",
   },
   {
     id: 3,
-    name: "Efficiency",
-    value: "efficiency",
+    name: "Medicine",
+    value: "medicine",
+  },
+  {
+    id: 4,
+    name: "Accessories",
+    value: "accessories",
   },
 ] as DropDownItem[];
 

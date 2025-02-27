@@ -21,7 +21,7 @@ const OrganizationCard = ({ data }: Props) => {
           }
           alt={data?.organizationName ?? ""}
           fill
-          className="rounded-[12px]"
+          className="rounded-[12px] object-cover"
         />
       </div>
       <div className="mt-[24px] flex h-[226px] w-full flex-col justify-between md:h-[249px]">
@@ -40,7 +40,7 @@ const OrganizationCard = ({ data }: Props) => {
           </p>
           <p className="flex items-center gap-x-[6px] font-inter text-[14px] font-normal leading-[16.94px] text-[#4B5563] md:text-[16px]">
             <CalendarDays className="h-[16.3px] w-[13.5px] text-[#4B5563] md:h-[20px] md:w-[20px]" />{" "}
-            12 Active Events
+            {data?.totalEvents} Total Events
           </p>
         </div>
         <Link

@@ -1,7 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
 
-import { AboutCarousel } from "./AboutCarousel";
-
 export default function AboutTab() {
   return (
     <div className="max-w-[892px]">
@@ -20,8 +18,6 @@ export default function AboutTab() {
           </p>
         </CardContent>
       </Card>
-
-      <AboutCarousel />
     </div>
   );
 }
