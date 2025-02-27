@@ -17,11 +17,11 @@ type StoreState = {
   setPrice: (price: number[]) => void;
 };
 
-export const useProfessionalState = create<StoreState>((set) => ({
+export const useMerchantProductFilter = create<StoreState>((set) => ({
   value: "",
   setValue: (value: string) => set({ value }),
 
-  category: "expertise",
+  category: "food",
   setCategory: (category: string) => set({ category }),
 
   location: "washington",

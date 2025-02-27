@@ -17,12 +17,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useMerchantState } from "@/zustand/merchant";
+import { useOrganizationState } from "@/zustand/organization";
+import { useProfessionalState } from "@/zustand/professional";
+
+type activeTab = "professionals" | "merchants" | "organizations";
 
 export default function HeroSearch() {
-  const [activeTab, setActiveTab] = useState("merchants");
+  const [activeTab, setActiveTab] = useState<activeTab>("merchants");
   const [loading, setLoading] = useState(false);
-  const [value, setValue] = useState("");
+  const [inputValue, setInputValue] = useState("");
   const router = useRouter();
+  const { setValue: setMerchantValue } = useMerchantState();
+  const { setValue: setProfessionalValue } = useProfessionalState();
+  const { setValue: setOrganizationValue } = useOrganizationState();
 
   useEffect(() => {
     return () => {
@@ -31,13 +39,22 @@ export default function HeroSearch() {
   }, []);
 
   const handleSelect = (tab: string) => {
-    setActiveTab(tab);
+    setActiveTab(tab as activeTab);
   };
 
   const onSearch = () => {
-    if (!value || !activeTab) return;
+    if (!inputValue || !activeTab) return;
     setLoading(true);
-    router.push(`/${activeTab}?search=${value}`);
+    if (activeTab === "merchants") {
+      setMerchantValue(inputValue);
+    } else if (activeTab === "professionals") {
+      setProfessionalValue(inputValue);
+    } else if (activeTab === "organizations") {
+      setOrganizationValue(inputValue);
+    }
+
+    // redirect
+    router.push(`/${activeTab}`);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -68,8 +85,8 @@ export default function HeroSearch() {
       <Input
         type="text"
         placeholder={`Search ${activeTab}...`}
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
         className="flex-1 border-0 bg-transparent text-sm font-light leading-[16.94px] tracking-[-3%] shadow-none placeholder:text-[#9CA3AF] focus-visible:ring-0 focus-visible:ring-offset-0 md:text-sm"
       />
 

@@ -27,7 +27,11 @@ const tabs = [
   },
 ] as VeganTab[];
 
-const MerchantsTabs = () => {
+interface Props {
+  merchantId: string;
+}
+
+const MerchantsTabs = ({ merchantId }: Props) => {
   const [activeTab, setActiveTab] = useState("products");
   return (
     <div className="container">
@@ -40,14 +44,14 @@ const MerchantsTabs = () => {
       <div className="mt-[40px]">
         {activeTab === "products" && (
           <>
-            <MerchantProducts />
+            <MerchantProducts merchantId={merchantId} />
           </>
         )}
         {activeTab === "about" && (
-          <>
-            <MerchantAbout />
-            <AboutCarousel />
-          </>
+          <div className="space-y-5">
+            <MerchantAbout merchatId={merchantId} />
+            <AboutCarousel merchatId={merchantId} />
+          </div>
         )}
         {activeTab === "reviews" && (
           <>

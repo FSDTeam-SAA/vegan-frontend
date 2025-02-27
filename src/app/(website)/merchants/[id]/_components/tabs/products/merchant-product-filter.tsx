@@ -8,14 +8,15 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import VeganSelector from "@/components/ui/vegan-selector";
+import { useMerchantProductFilter } from "@/zustand/merchant/merchant-product-filter";
 import { ListFilter } from "lucide-react";
 import { useState } from "react";
 import { categoryList, reviewsList } from "./data";
 
 const MerchantProductFilter = () => {
-  const [value, setValue] = useState("");
-  const [category, setCategory] = useState("expertise");
-  const [reviews, setReviews] = useState("5_star");
+  // state handle
+  const { value, setValue, category, setCategory } = useMerchantProductFilter();
+
   return (
     <div className="container flex justify-start gap-x-[24px]">
       <div>
@@ -23,7 +24,7 @@ const MerchantProductFilter = () => {
           value={value}
           onChange={(e) => setValue(e.target.value)}
           className="w-full"
-          inputClassName="h-[40px] max-w-[222px]"
+          inputClassName="h-[40px] min-w-[222px] md:min-w-[335px]"
           iconClassName="top-3"
         />
       </div>
@@ -33,12 +34,12 @@ const MerchantProductFilter = () => {
         onValueChange={(value) => setCategory(value)}
         className="max-w-[150px]"
       />
-      <VeganSelector
+      {/* <VeganSelector
         list={reviewsList}
         selectedValue={reviews}
         onValueChange={(value) => setReviews(value)}
         className="max-w-fit"
-      />
+      /> */}
     </div>
   );
 };
@@ -46,9 +47,8 @@ const MerchantProductFilter = () => {
 export default MerchantProductFilter;
 
 export const MerchantProductFilterMobile = () => {
-  const [value, setValue] = useState("");
-  const [category, setCategory] = useState("expertise");
   const [reviews, setReviews] = useState("5_star");
+  const { value, setValue, category, setCategory } = useMerchantProductFilter();
   return (
     <div className="container flex justify-start gap-x-[24px]">
       <div>

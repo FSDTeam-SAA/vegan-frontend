@@ -1,94 +1,44 @@
-import * as React from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-
+import ErrorContainer from "@/components/shared/sections/error-container";
 import { Card, CardContent } from "@/components/ui/card";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  type CarouselApi,
-} from "@/components/ui/carousel";
-import { cn } from "@/lib/utils";
+import { SingleMerchantProfileResponse } from "@/types/merchant";
+import { useQuery } from "@tanstack/react-query";
 
-const testimonials = [
-  {
-    title: "Some Highlight Statements",
-    subtitle: "Describe Your Vegan Journey",
-    content:
-      "My vegan journey began as a commitment to a healthier lifestyle and a more sustainable planet. Over time, it evolved into a deeper understanding of animal welfare and the importance of mindful consumption. Today, I'm proud to support ethical, plant-based practices that align with my values, inspiring others to make compassionate choices",
-  },
-  {
-    title: "Personal Growth",
-    subtitle: "Share Your Experience",
-    content:
-      "Through veganism, I discovered not just a diet but a pathway to personal growth. Each meal became an opportunity to make a positive impact, and every choice reflected my commitment to compassion.",
-  },
-  {
-    title: "Community Impact",
-    subtitle: "Making a Difference",
-    content:
-      "Being part of the vegan community has shown me how individual choices can create collective change. Together, we're building a more sustainable and ethical future for all.",
-  },
-  {
-    title: "Personal Growth",
-    subtitle: "Share Your Experience",
-    content:
-      "Through veganism, I discovered not just a diet but a pathway to personal growth. Each meal became an opportunity to make a positive impact, and every choice reflected my commitment to compassion.",
-  },
-];
+interface Props {
+  merchatId: string;
+}
 
-export function AboutCarousel() {
-  const [api, setApi] = React.useState<CarouselApi>();
-  const [current, setCurrent] = React.useState(0);
-  const [count, setCount] = React.useState(0);
-
-  React.useEffect(() => {
-    if (!api) {
-      return;
-    }
-
-    setCount(api.scrollSnapList().length);
-    setCurrent(api.selectedScrollSnap());
-
-    api.on("select", () => {
-      setCurrent(api.selectedScrollSnap());
+export function AboutCarousel({ merchatId }: Props) {
+  const { isLoading, data, isError, error } =
+    useQuery<SingleMerchantProfileResponse>({
+      queryKey: ["single-merchant-profile", merchatId],
+      queryFn: () =>
+        fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/merchant/${merchatId}`,
+        ).then((res) => res.json()),
     });
-  }, [api]);
 
-  const handlePrevious = React.useCallback(() => {
-    api?.scrollPrev();
-  }, [api]);
+  let content;
 
-  const handleNext = React.useCallback(() => {
-    api?.scrollNext();
-  }, [api]);
+  if (isLoading || data?.data) {
+    content = (
+      <div className="rounded-[8px] bg-white">
+        <Card className="border-none shadow-none">
+          <CardContent className="p-6">
+            <div className="">
+              <h2 className="mb-6 font-lexend text-lg leading-[18px] text-[#1D3557] md:text-xl md:font-medium md:leading-[25px]">
+                {data?.data?.highlightedStatement[0].title}
+              </h2>
+              {/* <h3 className="mb-2 font-inter text-lg font-medium text-[#374151] md:text-xl md:leading-[30px]">
+                
+              </h3> */}
+              <p className="font-inter text-[16px] italic leading-[30px] text-[#374151] md:text-lg">
+                {data?.data.highlightedStatement[0].description}
+              </p>
+            </div>
+          </CardContent>
+        </Card>
 
-  return (
-    <div className="rounded-[8px] bg-white">
-      <Carousel setApi={setApi} className="w-full">
-        <CarouselContent>
-          {testimonials.map((testimonial, index) => (
-            <CarouselItem key={index}>
-              <Card className="border-none shadow-none">
-                <CardContent className="p-6">
-                  <div className="">
-                    <h2 className="mb-6 font-lexend text-lg leading-[18px] text-[#1D3557] md:text-xl md:font-medium md:leading-[25px]">
-                      {testimonial.title}
-                    </h2>
-                    <h3 className="mb-2 font-inter text-lg font-medium text-[#374151] md:text-xl md:leading-[30px]">
-                      {testimonial.subtitle}
-                    </h3>
-                    <p className="font-inter md:text-lg text-[16px] italic leading-[30px] text-[#374151]">
-                      {testimonial.content}
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-
-        <div className="mt-2 flex items-center gap-4 pb-6 pl-6">
+        {/* <div className="mt-2 flex items-center gap-4 pb-6 pl-6">
           <div className="flex items-center gap-2">
             <button
               onClick={handlePrevious}
@@ -118,8 +68,15 @@ export function AboutCarousel() {
               <ChevronRight className="h-6 w-6 text-gray-700" />
             </button>
           </div>
-        </div>
-      </Carousel>
-    </div>
-  );
+        </div> */}
+      </div>
+    );
+  } else if (isError) {
+    content = (
+      <div>
+        <ErrorContainer message={error?.message ?? "Something went wrong"} />
+      </div>
+    );
+  }
+  return content;
 }
