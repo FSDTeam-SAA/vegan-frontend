@@ -8,7 +8,11 @@ const EventDialog = dynamic(() => import("./merchant-event-dialog"), {
   ssr: false,
 });
 
-export function Header() {
+interface Props {
+  userId: string;
+}
+
+export function Header({ userId }: Props) {
   const [open, setOpen] = useState(false);
   return (
     <header className="">
@@ -31,7 +35,7 @@ export function Header() {
           </Button>
         </div>
       </div>
-      <EventDialog open={open} onOpenChange={setOpen} />
+      <EventDialog open={open} onOpenChange={setOpen} userId={userId} />
     </header>
   );
 }

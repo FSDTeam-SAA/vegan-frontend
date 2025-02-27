@@ -1,8 +1,5 @@
 "use client";
 
-import * as z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -13,33 +10,83 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Loader2 } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import * as z from "zod";
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
-  email: z.string().email("Please enter a valid email address"),
+  emailAddress: z.string().email("Please enter a valid email address"),
   subject: z.string().min(5, "Subject must be at least 5 characters"),
-  description: z.string().min(10, "Description must be at least 10 characters"),
+  message: z.string().min(10, "Description must be at least 10 characters"),
 });
 
 type FormValues = z.infer<typeof formSchema>;
 
-export default function SupportForm() {
+interface Props {
+  userId: string;
+}
+
+export default function SupportForm({ userId }: Props) {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-      email: "",
-      subject: "",
-      description: "",
+  });
+
+  const queryClient = useQueryClient();
+
+  const { isPending, mutate: createSupportTicket } = useMutation({
+    mutationKey: ["create-organization-support"],
+    mutationFn: (body: FormValues) =>
+      fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/organizationsupport`,
+        {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify({
+            ...body,
+            organizationID: userId,
+          }),
+        },
+      ).then((res) => res.json()),
+    onSuccess: (data) => {
+      if (!data.success) {
+        toast.error(data.message, {
+          position: "top-right",
+          richColors: true,
+        });
+        return;
+      }
+
+      // handle success
+      form.reset();
+      toast.success(data.message, {
+        position: "top-right",
+        richColors: true,
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ["support-tickets-organization"],
+      });
+    },
+    onError: (err) => {
+      toast.error(err.message, {
+        position: "top-right",
+        richColors: true,
+      });
     },
   });
 
   function onSubmit(data: FormValues) {
-    console.log("Form submitted:", data);
+    createSupportTicket(data);
   }
 
   return (
-    <div className="mb-10 rounded-lg bg-[#F8F5F2] p-6">
+    <div className="rounded-lg bg-[#F8F5F2] p-6">
       <div className="mb-6 space-y-2">
         <h1 className="text-2xl font-semibold">Support</h1>
         <h2 className="text-lg">Need Help?</h2>
@@ -61,7 +108,7 @@ export default function SupportForm() {
                   <Input
                     placeholder="Enter your full name"
                     {...field}
-                    className="bg-[#FFFFFF]"
+                    className="h-[40px] bg-[#FFFFFF]"
                   />
                 </FormControl>
               </FormItem>
@@ -70,7 +117,7 @@ export default function SupportForm() {
 
           <FormField
             control={form.control}
-            name="email"
+            name="emailAddress"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Email Address</FormLabel>
@@ -79,7 +126,7 @@ export default function SupportForm() {
                     type="email"
                     placeholder="Enter your email address"
                     {...field}
-                    className="bg-[#FFFFFF]"
+                    className="h-[40px] bg-[#FFFFFF]"
                   />
                 </FormControl>
               </FormItem>
@@ -96,7 +143,7 @@ export default function SupportForm() {
                   <Input
                     placeholder="Briefly describe your issue"
                     {...field}
-                    className="bg-[#FFFFFF]"
+                    className="h-[40px] bg-[#FFFFFF]"
                   />
                 </FormControl>
               </FormItem>
@@ -105,10 +152,10 @@ export default function SupportForm() {
 
           <FormField
             control={form.control}
-            name="description"
+            name="message"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Description</FormLabel>
+                <FormLabel>Message</FormLabel>
                 <FormControl>
                   <Textarea
                     placeholder="Explain the issue or request in detail"
@@ -121,8 +168,12 @@ export default function SupportForm() {
           />
 
           <div className="flex justify-end">
-            <Button type="submit" className="bg-[#1f2937]">
-              Submit
+            <Button
+              type="submit"
+              className="h-[40px] bg-[#1f2937]"
+              disabled={isPending}
+            >
+              Submit {isPending && <Loader2 className="ml-2 animate-spin" />}
             </Button>
           </div>
         </form>

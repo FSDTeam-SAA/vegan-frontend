@@ -15,6 +15,8 @@ import {
   Trash2,
 } from "lucide-react";
 import moment from "moment";
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 import EventDialog from "./merchant-event-dialog";
@@ -27,8 +29,13 @@ export function EventCard({ data }: Props) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const session = useSession();
 
   const queryClient = useQueryClient();
+
+  const isAuthenticationLoading = session.status === "loading";
+
+  if (session.status === "unauthenticated") redirect("/");
 
   const { mutate: deleteMutate, isPending: deletePending } = useMutation({
     mutationKey: ["merchant-event-delete"],
@@ -72,6 +79,7 @@ export function EventCard({ data }: Props) {
             <Button
               variant="ghost"
               size="icon"
+              disabled={isAuthenticationLoading}
               onClick={() => setIsEditOpen(true)}
             >
               <Pencil className="h-4 w-4" />
@@ -167,6 +175,7 @@ export function EventCard({ data }: Props) {
           open={isEditOpen}
           onOpenChange={setIsEditOpen}
           initialData={data}
+          userId={session.data?.user?.userId ?? ""}
         />
       )}
 

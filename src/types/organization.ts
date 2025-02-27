@@ -44,3 +44,22 @@ export interface AttendeeResponse {
   data: Attendee[];
   pagination: MetaPagination;
 }
+
+export interface OrganizationTicket {
+  _id: string; // MongoDB ObjectId as a string
+  ticketSlug: string;
+  name: string;
+  emailAddress: string;
+  subject: string;
+  message: string;
+  status: "pending" | "open" | "closed" | "resolved"; // Adjust as needed
+  createdAt: string; // ISO date string
+  updatedAt: string; // ISO date string
+  __v: number; // Version key used by Mongoose
+}
+
+export interface OrganizationTicketResponse {
+  success: boolean;
+  message: string;
+  data: OrganizationTicket[];
+}
