@@ -10,7 +10,7 @@ import { useCartDataState } from "@/zustand/features/useCartState";
 import { Info } from "lucide-react";
 
 const CartsModal = () => {
-  const { isOpen, toggleCart } = useCartState();
+  const { isOpen, toggleCart, onCheckout } = useCartState();
   const { data } = useCartDataState();
 
   const totalAmount = data?.reduce((prev, curr) => {
@@ -73,6 +73,7 @@ const CartsModal = () => {
         <Button
           className="h-[50px] w-full text-center font-inter !text-lg !font-medium leading-[21.78px]"
           size="lg"
+          onClick={onCheckout}
         >
           Proceed To Checkout
         </Button>
