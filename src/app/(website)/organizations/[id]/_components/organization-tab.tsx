@@ -1,10 +1,17 @@
 "use client";
 import AnimatedTabs, { VeganTab } from "@/components/ui/Vegan-Tab";
+import dynamic from "next/dynamic";
 import { useState } from "react";
 import OrganizationAbout from "./tab/about/organization-about";
 import OrganizationEventContainer from "./tab/events/organization-event-container";
 import OrganizationNewsContainer from "./tab/news/organization-news-container";
-import VolunteerContainer from "./tab/volunteer/volunteer-container";
+
+const OrganizationVolunteerEventContainer = dynamic(
+  () => import("./tab/volunteer/volunteer-container"),
+  {
+    ssr: false,
+  },
+);
 
 const lists = [
   {
@@ -52,7 +59,11 @@ const OrganizationTab = ({ organizationId }: Props) => {
         {activeTab === "events" && (
           <OrganizationEventContainer organizationId={organizationId} />
         )}
-        {activeTab === "volunteer" && <VolunteerContainer />}
+        {activeTab === "volunteer" && (
+          <OrganizationVolunteerEventContainer
+            organizationId={organizationId}
+          />
+        )}
       </div>
     </div>
   );

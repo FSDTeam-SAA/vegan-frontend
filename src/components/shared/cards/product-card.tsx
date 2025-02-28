@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { truncateText } from "@/lib/helper";
 import { MerchantProduct } from "@/types/merchant";
 import { Heart, ShoppingCart } from "lucide-react";
 import Image from "next/image";
@@ -8,6 +9,8 @@ interface Props {
 }
 
 const ProductCard = ({ data }: Props) => {
+  const description = truncateText(data?.description ?? "", 124);
+
   return (
     <div className="h-[539px] w-full space-y-[24px] rounded-[16px] bg-white p-[24px] md:h-[484px] lg:w-[400px]">
       <div className="relative h-[232px] w-full rounded-[12px]">
@@ -37,7 +40,7 @@ const ProductCard = ({ data }: Props) => {
             </Button>
           </div>
           <p className="mt-[8px] font-inter text-[16px] font-normal leading-[24px] text-[#4B5563]">
-            {data?.description}
+            {description}
           </p>
           {/* <div className="mt-[12px] flex items-center gap-x-[4px] text-[16px] font-normal leading-[19.36px] text-[#4B5563]">
             <Heart
