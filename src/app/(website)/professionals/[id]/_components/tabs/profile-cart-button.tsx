@@ -5,6 +5,7 @@ import { BiShoppingBag } from "react-icons/bi";
 
 const ProfileCartButton = () => {
   const { toggleCart } = useCartState();
+
   return (
     <>
       <div className="md:pr-8">
