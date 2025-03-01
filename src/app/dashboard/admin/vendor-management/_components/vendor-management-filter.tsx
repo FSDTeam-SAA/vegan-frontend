@@ -1,6 +1,5 @@
 "use client";
 // Packages
-import { useState } from "react";
 
 // Local imports
 import Search from "@/components/ui/search";
@@ -13,20 +12,31 @@ import {
 } from "@/components/ui/sheet";
 import VeganSelector from "@/components/ui/vegan-selector";
 import { DropDownItem } from "@/types";
+import {
+  useVendorManagementState,
+  VendorProfileType,
+  VendorStatus,
+} from "@/zustand/admin/vendor-management";
 import { ListFilter } from "lucide-react";
 
 const sortByLists = [
   {
     id: 1,
-    name: "Latest",
-    value: "latest",
+    name: "Ascending",
+    value: "asc",
   },
   {
     id: 2,
-    name: "A-Z",
-    value: "a-z",
+    name: "Descending",
+    value: "desc",
   },
 ] as DropDownItem[];
+
+interface StatusLists {
+  id: number;
+  name: string;
+  value: VendorStatus;
+}
 
 const statusLists = [
   {
@@ -42,11 +52,22 @@ const statusLists = [
   {
     id: 3,
     name: "Declined",
-    value: "declined",
+    value: "rejected",
   },
-] as DropDownItem[];
+  {
+    id: 4,
+    name: "All",
+    value: "all",
+  },
+] as StatusLists[];
 
-const typeLists = [
+interface ProfileTypeList {
+  id: number;
+  name: string;
+  value: VendorProfileType;
+}
+
+const profileTypeList = [
   {
     id: 1,
     name: "Merchant",
@@ -62,13 +83,23 @@ const typeLists = [
     name: "Organization",
     value: "organization",
   },
-] as DropDownItem[];
-
+  {
+    id: 4,
+    name: "All",
+    value: "all",
+  },
+] as ProfileTypeList[];
 const VendorManagementFilter = () => {
-  const [value, setValue] = useState("");
-  const [sortBy, setSortBy] = useState("");
-  const [status, setStatus] = useState("");
-  const [type, setType] = useState("");
+  const {
+    value,
+    setValue,
+    profile,
+    setProfile,
+    status,
+    setStatus,
+    sortBy,
+    setSortBy,
+  } = useVendorManagementState();
   return (
     <div className="flex items-center gap-x-[8px]">
       <div className="relative w-[300px] rounded-lg border border-[#9CA3AF]">
@@ -80,22 +111,22 @@ const VendorManagementFilter = () => {
       </div>
       <div className="hidden items-center gap-x-[8px] md:flex">
         <VeganSelector
-          list={sortByLists}
-          selectedValue={sortBy}
-          onValueChange={(val) => setSortBy(val)}
-          placeholder="Sort By: Latest"
+          list={profileTypeList}
+          selectedValue={profile}
+          onValueChange={(val: string) => setProfile(val as VendorProfileType)}
+          placeholder="Type"
         />
         <VeganSelector
           list={statusLists}
           selectedValue={status}
-          onValueChange={(val) => setStatus(val)}
+          onValueChange={(val) => setStatus(val as VendorStatus)}
           placeholder="Status"
         />
         <VeganSelector
-          list={typeLists}
-          selectedValue={type}
-          onValueChange={(val) => setType(val)}
-          placeholder="Type"
+          list={sortByLists}
+          selectedValue={sortBy}
+          onValueChange={(val) => setSortBy(val)}
+          placeholder="Sort By: Latest"
         />
       </div>
     </div>
@@ -105,10 +136,16 @@ const VendorManagementFilter = () => {
 export default VendorManagementFilter;
 
 export const VendorManagementFilterMobile = () => {
-  const [value, setValue] = useState("");
-  const [sortBy, setSortBy] = useState("");
-  const [status, setStatus] = useState("");
-  const [type, setType] = useState("");
+  const {
+    profile,
+    setProfile,
+    status,
+    setStatus,
+    value,
+    setValue,
+    sortBy,
+    setSortBy,
+  } = useVendorManagementState();
   return (
     <div className="container flex w-full justify-between gap-[15px] p-0">
       <Search
@@ -138,13 +175,13 @@ export const VendorManagementFilterMobile = () => {
             <VeganSelector
               list={statusLists}
               selectedValue={status}
-              onValueChange={(val) => setStatus(val)}
+              onValueChange={(val) => setStatus(val as VendorStatus)}
               placeholder="Status"
             />
             <VeganSelector
-              list={typeLists}
-              selectedValue={type}
-              onValueChange={(val) => setType(val)}
+              list={profileTypeList}
+              selectedValue={profile}
+              onValueChange={(val) => setProfile(val as VendorProfileType)}
               placeholder="Type"
             />
           </div>
