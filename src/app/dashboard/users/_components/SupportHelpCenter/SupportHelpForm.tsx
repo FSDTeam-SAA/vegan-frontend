@@ -22,6 +22,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { useMutation } from "@tanstack/react-query";
+import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -32,7 +35,48 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
-export default function SupportHelpForm() {
+interface Props {
+  userId: string;
+}
+
+export default function SupportHelpForm({ userId }: Props) {
+  const { isPending, mutate: createSupport } = useMutation({
+    mutationKey: ["support-tickets-users"],
+    mutationFn: (data: FormValues) =>
+      fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/usertickets`, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          ...data,
+          userID: userId,
+        }),
+      }).then((res) => res.json()),
+
+    onSuccess: (data) => {
+      if (!data.success) {
+        toast.error(data.message, {
+          position: "top-right",
+          richColors: true,
+        });
+        return;
+      }
+
+      // handle success
+      form.reset();
+      toast.success(data.message, {
+        position: "top-right",
+        richColors: true,
+      });
+    },
+    onError: (err) => {
+      toast.error(err.message, {
+        position: "top-right",
+        richColors: true,
+      });
+    },
+  });
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -44,7 +88,7 @@ export default function SupportHelpForm() {
   });
 
   function onSubmit(data: FormValues) {
-    console.log("Form submitted with data:", data);
+    createSupport(data);
   }
 
   return (
@@ -140,9 +184,11 @@ export default function SupportHelpForm() {
               <div className="flex justify-end">
                 <Button
                   type="submit"
-                  className="min-h-[48px] min-w-[150px] p-[16px]"
+                  className="h-[40px] bg-[#1f2937]"
+                  disabled={isPending}
                 >
-                  Submit
+                  Submit{" "}
+                  {isPending && <Loader2 className="ml-2 animate-spin" />}
                 </Button>
               </div>
             </form>
