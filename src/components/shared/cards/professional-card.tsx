@@ -1,11 +1,13 @@
 // Packages
-import { MapPin } from "lucide-react";
+import { Heart, MapPin } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
 // Local imports
 
+import { cn } from "@/lib/utils";
 import { ProfessionalProfile } from "@/types/professional";
+import { useWishlistState } from "@/zustand/features/wishlist/useWishlistState";
 import { memo } from "react";
 
 interface Props {
@@ -13,6 +15,11 @@ interface Props {
 }
 
 const ProfessionalCard = ({ data }: Props) => {
+  const { addProfessional, professionals } = useWishlistState();
+
+  const isAlreadySelected = professionals?.find(
+    (item) => item._id === data?._id,
+  );
   return (
     <div className="w-full rounded-[16px] bg-white p-[24px] lg:w-[400px]">
       <div className="relative h-[232px] w-full rounded-[12px]">
@@ -39,6 +46,20 @@ const ProfessionalCard = ({ data }: Props) => {
               <p className="font-inter text-[16px] font-normal leading-[19.36px] text-[#4B5563]">
                 4.8 (127)
               </p>
+
+              {data && (
+                <button
+                  className="flex items-center justify-center rounded-full p-2 shadow-none hover:bg-gray-100"
+                  onClick={() => addProfessional(data)}
+                >
+                  <Heart
+                    className={cn(
+                      "h-5 w-5 stroke-red-500",
+                      isAlreadySelected && "fill-red-500",
+                    )}
+                  />
+                </button>
+              )}
             </div>
           </div>
           <p className="font-inter text-[16px] font-normal leading-[19.36px] text-[#4B5563]">

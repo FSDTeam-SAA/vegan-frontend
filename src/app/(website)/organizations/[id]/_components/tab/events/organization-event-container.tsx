@@ -17,7 +17,7 @@ const OrganizationEventContainer = ({ organizationId }: Props) => {
       queryKey: ["eventsByOrganizations", currentPage],
       queryFn: () =>
         fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/organizationeventsbyorganization/${organizationId}?&page=${currentPage}&limit=6`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/organizationeventsbyorganization/${organizationId}?&page=${currentPage}&limit=6&eventType=volunteer event`,
         ).then((res) => res.json()),
     });
 

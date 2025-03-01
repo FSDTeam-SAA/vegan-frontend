@@ -1,6 +1,8 @@
 import { truncateText } from "@/lib/helper";
+import { cn } from "@/lib/utils";
 import { OrganizationProfile } from "@/types/organization";
-import { CalendarDays, MapPin } from "lucide-react";
+import { useWishlistState } from "@/zustand/features/wishlist/useWishlistState";
+import { CalendarDays, Heart, MapPin } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -9,6 +11,10 @@ interface Props {
 }
 
 const OrganizationCard = ({ data }: Props) => {
+  const { addOrganization, organizations } = useWishlistState();
+  const isAlreadySelected = organizations?.find(
+    (item) => item._id === data?._id,
+  );
   let text = data?.shortDescriptionOfOrganization ?? "";
 
   text = truncateText(text, 90);
@@ -25,13 +31,29 @@ const OrganizationCard = ({ data }: Props) => {
         />
       </div>
       <div className="mt-[24px] flex h-[226px] w-full flex-col justify-between md:h-[249px]">
-        <div className="space-y-[8px]">
-          <h3 className="font-lexend text-[18px] font-normal leading-[22.5px] text-[#1D3557]">
-            {data?.organizationName}
-          </h3>
-          <p className="text-[16px] font-normal leading-[19.36px] text-[#4B5563]">
-            {text}
-          </p>
+        <div className="flex items-start justify-between">
+          <div className="space-y-[8px]">
+            <h3 className="font-lexend text-[18px] font-normal leading-[22.5px] text-[#1D3557]">
+              {data?.organizationName}
+            </h3>
+            <p className="text-[16px] font-normal leading-[19.36px] text-[#4B5563]">
+              {text}
+            </p>
+          </div>
+
+          {data && (
+            <button
+              className="flex items-center justify-center rounded-full p-2 shadow-none hover:bg-gray-100"
+              onClick={() => addOrganization(data)}
+            >
+              <Heart
+                className={cn(
+                  "h-5 w-5 stroke-red-500",
+                  isAlreadySelected && "fill-red-500",
+                )}
+              />
+            </button>
+          )}
         </div>
         <div className="space-y-[8px] md:space-y-[12px]">
           <p className="flex items-center gap-x-[6px] font-inter text-[14px] font-normal leading-[16.94px] text-[#4B5563] md:text-[16px]">

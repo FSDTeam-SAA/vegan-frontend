@@ -1,17 +1,22 @@
 import { Button } from "@/components/ui/button";
 import VeganBadge from "@/components/ui/vegan-badge";
+import { OrganizationEvent } from "@/types/organization";
 import { CalendarDays, Clock, Users } from "lucide-react";
 
-const VolunteerCard = () => {
+interface Props {
+  data?: OrganizationEvent;
+}
+
+const VolunteerCard = ({ data }: Props) => {
   return (
     <div className="flex h-auto w-full max-w-[600px] flex-col justify-between rounded-[16px] bg-white p-[24px]">
       <div className="space-y-[24px]">
         <div>
           <h3 className="font-lexend text-[18px] font-normal leading-[22.5px] text-[#1D3557]">
-            Community Garden Helper
+            {data?.eventTitle}
           </h3>
           <p className="mt-[8px] text-[16px] font-normal leading-[24px] text-[#374151]">
-            Help maintain our community garden and educate visitors.
+            {data?.description}
           </p>
           <div className="mt-[16px] flex flex-wrap gap-[8px]">
             <VeganBadge title="Basic garden knowledge" />
@@ -28,7 +33,7 @@ const VolunteerCard = () => {
         </div>
         <div>
           <p className="flex items-center gap-x-1 text-[14px] font-normal text-[#4B5563]">
-            <Users className="h-4 w-4" /> 3 spots available
+            <Users className="h-4 w-4" /> {data?.capacity} Slots
           </p>
         </div>
       </div>
