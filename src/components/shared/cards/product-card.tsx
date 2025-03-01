@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { truncateText } from "@/lib/helper";
 import { MerchantProduct } from "@/types/merchant";
-import { useCartDataState } from "@/zustand/features/useCartState";
+import { useCartDataState } from "@/zustand/features/cart/useCartState";
 import { Heart, ShoppingCart } from "lucide-react";
 import Image from "next/image";
 

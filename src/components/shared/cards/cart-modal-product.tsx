@@ -1,7 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { truncateText } from "@/lib/helper";
-import { CartProduct, useCartDataState } from "@/zustand/features/useCartState";
+import {
+  CartProduct,
+  useCartDataState,
+} from "@/zustand/features/cart/useCartState";
 import { Barcode, Clock } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";

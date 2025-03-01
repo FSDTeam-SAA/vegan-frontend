@@ -2,7 +2,7 @@
 import ProductPaymentCheckout from "@/components/shared/features/product-payment-checkout";
 import useCartState from "@/hooks/useCartState";
 import CartModal from "@/provider/CartModal";
-import { useCartDataState } from "@/zustand/features/useCartState";
+import { useCartDataState } from "@/zustand/features/cart/useCartState";
 import { BiShoppingBag } from "react-icons/bi";
 
 const ProfileCartButton = () => {

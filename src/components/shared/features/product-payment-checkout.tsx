@@ -6,7 +6,9 @@ import PaymentForm, { PaymentFormValues } from "./payment/payment-form";
 const ProductPaymentCheckout = () => {
   const { checkoutModal, onCheckoutClose } = useCartState();
 
-  async function onSubmit(values: PaymentFormValues) {}
+  async function onSubmit(values: PaymentFormValues) {
+    console.log(values);
+  }
 
   return (
     <VeganModal

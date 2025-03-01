@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import VeganModal from "@/components/ui/vegan-modal";
 import useCartState from "@/hooks/useCartState";
-import { useCartDataState } from "@/zustand/features/useCartState";
+import { useCartDataState } from "@/zustand/features/cart/useCartState";
 import { Info } from "lucide-react";
 
 const CartsModal = () => {
