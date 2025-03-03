@@ -3,6 +3,8 @@ import { MetaPagination } from "./organization";
 export type VendorSingleProfile = {
   profilePhoto?: string; // Optional to accommodate different formats
   businessName?: string;
+  shortDescriptionOfStore?: string;
+
   organizationName?: string;
   experience?: string[];
   certifications?: string[];
@@ -11,6 +13,7 @@ export type VendorSingleProfile = {
   submittedDocuments: {
     governmentIssuedID?: string;
     professionalCertification?: string;
+    photoWithID?: string;
   };
   contactInfo: {
     email?: string;

@@ -4,10 +4,6 @@ import { VendorProfile, VendorSingleProfileResponse } from "@/types/admin";
 import { useQuery } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 import Image from "next/image";
-import {
-  VendorManagementData,
-  VendorManagementDataType,
-} from "./vendor-management-data";
 
 interface Props {
   initialData: VendorProfile;
@@ -23,9 +19,6 @@ const ViewVendorDetails = ({ initialData }: Props) => {
         ).then((res) => res.json()),
     });
 
-  const filterData = VendorManagementData.find(
-    (data: VendorManagementDataType) => data.id === 1,
-  );
   let content;
   if (isLoading) {
     content = (
@@ -47,7 +40,7 @@ const ViewVendorDetails = ({ initialData }: Props) => {
         <ScrollArea className="h-[90vh] w-full pr-2">
           <div className="flex items-center gap-[16px] py-[56px]">
             <Image
-              src={filterData?.photo ?? ""}
+              src={data.data.profilePhoto ?? ""}
               alt="image"
               width={100}
               height={100}
@@ -57,9 +50,11 @@ const ViewVendorDetails = ({ initialData }: Props) => {
               <h5 className="text-lg font-medium leading-[26px] text-[#1F2937]">
                 {data.data.businessName || data.data.organizationName}
               </h5>
-              <p className="pt-2 text-base font-normal leading-[24px] text-[#4B5563]">
-                Short description
-              </p>
+              {data.data.shortDescriptionOfStore && (
+                <p className="pt-2 text-base font-normal leading-[24px] text-[#4B5563]">
+                  {data?.data?.shortDescriptionOfStore}
+                </p>
+              )}
             </div>
           </div>
           <h5 className="text-base font-medium leading-[23px] text-[#1F2937] md:text-lg md:leading-[26px]">
@@ -128,7 +123,7 @@ const ViewVendorDetails = ({ initialData }: Props) => {
               </div>
             )}
             {data?.data?.submittedDocuments?.professionalCertification && (
-              <div className="flex items-center justify-between rounded-[8px] border border-[#F3F4F6] bg-[#F9FAFB] p-2">
+              <div className="mb-4 flex items-center justify-between rounded-[8px] border border-[#F3F4F6] bg-[#F9FAFB] p-2">
                 <span className="text-sm font-normal leading-[20px] text-[#1F2937]">
                   Professional CertifIcate
                 </span>
@@ -136,6 +131,20 @@ const ViewVendorDetails = ({ initialData }: Props) => {
                   href={
                     data?.data?.submittedDocuments?.professionalCertification
                   }
+                  target="_blank"
+                  className="cursor-pointer text-sm font-medium leading-[20px] text-[#1D3557] hover:underline"
+                >
+                  View Document
+                </a>
+              </div>
+            )}
+            {data?.data?.submittedDocuments?.photoWithID && (
+              <div className="flex items-center justify-between rounded-[8px] border border-[#F3F4F6] bg-[#F9FAFB] p-2">
+                <span className="text-sm font-normal leading-[20px] text-[#1F2937]">
+                  Photo With NID CertifIcate
+                </span>
+                <a
+                  href={data?.data?.submittedDocuments?.photoWithID}
                   target="_blank"
                   className="cursor-pointer text-sm font-medium leading-[20px] text-[#1D3557] hover:underline"
                 >
