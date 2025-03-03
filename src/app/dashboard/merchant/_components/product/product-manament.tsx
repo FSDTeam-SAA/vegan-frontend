@@ -131,7 +131,11 @@ export default function ProductsManagement({ merchantID }: Props) {
 
       {content}
 
-      <AddProductDialog open={addDialogOpen} onOpenChange={setAddDialogOpen} />
+      <AddProductDialog
+        open={addDialogOpen}
+        onOpenChange={setAddDialogOpen}
+        merchantID={merchantID}
+      />
       <BulkUploadDialog
         open={bulkUploadOpen}
         onOpenChange={setBulkUploadOpen}
