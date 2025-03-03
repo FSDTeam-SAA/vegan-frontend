@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
-import { VendorProfile, VendorSingleProfileResponse } from "@/types/admin";
+import { PendingVerificationResponse, VendorProfile } from "@/types/admin";
 import { useQuery } from "@tanstack/react-query";
 import { FileText, Loader2, X } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -26,15 +26,21 @@ const ReviewVendorApplication = ({ setIsOpen, initialData }: Props) => {
   const [declineModalOpen, setDeclineModalOpen] = useState(false);
 
   const { isLoading, data, isError, error } =
-    useQuery<VendorSingleProfileResponse>({
+    useQuery<PendingVerificationResponse>({
       queryKey: ["vendorSingleProfile"],
       queryFn: () =>
         fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/user-details?id=${initialData?._id}&userID=${initialData?.userID}`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/fetchPendingVerificationDataById/${initialData?._id}`,
         ).then((res) => res.json()),
     });
-  const { businessName, organizationName, contactInfo, address } =
-    data?.data || {};
+  const {
+    businessName,
+    organizationName,
+    email,
+    address,
+    isVerified,
+    governmentIssuedID,
+  } = data?.data || {};
 
   useEffect(() => {
     if (isError) {
@@ -42,8 +48,9 @@ const ReviewVendorApplication = ({ setIsOpen, initialData }: Props) => {
         position: "top-right",
         richColors: true,
       });
+      setIsOpen(false);
     }
-  }, [error, isError]);
+  }, [error, isError, setIsOpen]);
 
   let content;
   if (isLoading) {
@@ -78,9 +85,9 @@ const ReviewVendorApplication = ({ setIsOpen, initialData }: Props) => {
                 <p className="pt-4 text-sm font-normal leading-[24px] text-[#4B5563] md:text-base">
                   Contact: John Smith
                 </p>
-                {contactInfo?.email && (
+                {email && (
                   <p className="py-4 text-sm font-normal leading-[24px] text-[#4B5563] md:text-base">
-                    Email: {contactInfo?.email}
+                    Email: {email}
                   </p>
                 )}
                 {address && (
@@ -96,7 +103,12 @@ const ReviewVendorApplication = ({ setIsOpen, initialData }: Props) => {
                   </h4>
                   <button
                     className={cn(
-                      "rounded-[8px] bg-[#FEFCE8] p-2 text-base font-normal leading-[19px]",
+                      "rounded-[8px] p-2 text-base font-normal leading-[19px]",
+                      isVerified === "pending"
+                        ? "bg-[#FEFCE8] text-[#EAB308]"
+                        : isVerified === "approved"
+                          ? "bg-[#F0FDF4] text-[#22C55E]"
+                          : "bg-[#FEF1F1] text-[#EF4444]",
                     )}
                   >
                     Pending Review
@@ -131,8 +143,11 @@ const ReviewVendorApplication = ({ setIsOpen, initialData }: Props) => {
                   className="w-full rounded-[8px] border border-[#F3F4F6] bg-white px-[19px] py-3 text-sm font-medium leading-[16px] text-[#1F2937] shadow-none md:w-auto"
                   variant="outline"
                   size="xl"
+                  asChild
                 >
-                  View
+                  <a href={governmentIssuedID} target="_blank">
+                    View
+                  </a>
                 </Button>
               </div>
             </div>
