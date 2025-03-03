@@ -1,13 +1,20 @@
 import { VendorProfile } from "@/types/admin";
 import moment from "moment";
+import dynamic from "next/dynamic";
 import { useState } from "react";
-import ReviewVendorApplication from "./ReviewVendorApplication";
+const ReviewVendorApplication = dynamic(
+  () => import("./ReviewVendorApplication"),
+  {
+    ssr: false,
+  },
+);
 
 interface Props {
   data?: VendorProfile;
 }
 const PendingVerificationsCard = ({ data }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
+
   return (
     <>
       <div
@@ -34,7 +41,10 @@ const PendingVerificationsCard = ({ data }: Props) => {
         {isOpen && (
           <section className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30 backdrop-blur-sm">
             <div>
-              <ReviewVendorApplication setIsOpen={setIsOpen} />
+              <ReviewVendorApplication
+                setIsOpen={setIsOpen}
+                initialData={data}
+              />
             </div>
           </section>
         )}
