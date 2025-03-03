@@ -1,7 +1,11 @@
+import dynamic from "next/dynamic";
 import VendorManagementFilter, {
   VendorManagementFilterMobile,
 } from "./vendor-management-filter";
-import VendorManagementTable from "./vendor-management-table";
+const VendorManagementTable = dynamic(
+  () => import("./vendor-management-table"),
+  { ssr: false },
+);
 
 const VendorManagementContainer = () => {
   return (

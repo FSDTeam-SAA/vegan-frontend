@@ -40,6 +40,11 @@ interface StatusLists {
 
 const statusLists = [
   {
+    id: 4,
+    name: "All",
+    value: "all",
+  },
+  {
     id: 1,
     name: "Approved",
     value: "approved",
@@ -54,11 +59,6 @@ const statusLists = [
     name: "Declined",
     value: "rejected",
   },
-  {
-    id: 4,
-    name: "All",
-    value: "all",
-  },
 ] as StatusLists[];
 
 interface ProfileTypeList {
@@ -68,6 +68,11 @@ interface ProfileTypeList {
 }
 
 const profileTypeList = [
+  {
+    id: 4,
+    name: "All",
+    value: "all",
+  },
   {
     id: 1,
     name: "Merchant",
@@ -82,11 +87,6 @@ const profileTypeList = [
     id: 3,
     name: "Organization",
     value: "organization",
-  },
-  {
-    id: 4,
-    name: "All",
-    value: "all",
   },
 ] as ProfileTypeList[];
 const VendorManagementFilter = () => {

@@ -33,7 +33,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { MerchantProduct } from "@/types/merchant";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -58,17 +57,15 @@ type AddProductDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   initialData?: MerchantProduct;
+  merchantID: string;
 };
 
 export default function AddProductDialog({
   open,
   onOpenChange,
   initialData,
+  merchantID,
 }: AddProductDialogProps) {
-  const session = useSession();
-
-  const merchantID = session.data?.user.userId;
-
   const queryClient = useQueryClient();
 
   const form = useForm<ProductFormData>({
