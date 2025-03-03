@@ -4,10 +4,6 @@ import { VendorProfile, VendorSingleProfileResponse } from "@/types/admin";
 import { useQuery } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 import Image from "next/image";
-import {
-  VendorManagementData,
-  VendorManagementDataType,
-} from "./vendor-management-data";
 
 interface Props {
   initialData: VendorProfile;
@@ -23,9 +19,6 @@ const ViewVendorDetails = ({ initialData }: Props) => {
         ).then((res) => res.json()),
     });
 
-  const filterData = VendorManagementData.find(
-    (data: VendorManagementDataType) => data.id === 1,
-  );
   let content;
   if (isLoading) {
     content = (
@@ -47,7 +40,7 @@ const ViewVendorDetails = ({ initialData }: Props) => {
         <ScrollArea className="h-[90vh] w-full pr-2">
           <div className="flex items-center gap-[16px] py-[56px]">
             <Image
-              src={filterData?.photo ?? ""}
+              src={data.data.profilePhoto ?? ""}
               alt="image"
               width={100}
               height={100}
