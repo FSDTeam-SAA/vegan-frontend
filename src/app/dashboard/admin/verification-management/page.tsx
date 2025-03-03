@@ -1,6 +1,9 @@
-import React from "react";
+import dynamic from "next/dynamic";
 import DashboardPageHeader from "../../_components/dash-page-header";
-import PendingVerifications from "./_components/PendingVerifications";
+const PendingVerifications = dynamic(
+  () => import("./_components/PendingVerifications"),
+  { ssr: false },
+);
 
 const Page = () => {
   return (
@@ -9,7 +12,7 @@ const Page = () => {
         title="Verification Management"
         desc="Streamline approvals and secure authentication with ease."
       />
-      <PendingVerifications/>
+      <PendingVerifications />
     </div>
   );
 };

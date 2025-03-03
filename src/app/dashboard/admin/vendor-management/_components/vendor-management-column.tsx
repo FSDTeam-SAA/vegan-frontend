@@ -5,7 +5,11 @@ import { ColumnDef } from "@tanstack/react-table";
 import moment from "moment";
 import ViewVendorDetails from "./ViewVendorDetails";
 
-const ViewDetails = ({ id }: { id: number }) => {
+interface ViewDetailsProps {
+  data: VendorProfile;
+}
+
+const ViewDetails = ({}: ViewDetailsProps) => {
   return (
     <div>
       <div className="flex justify-center">
@@ -17,7 +21,7 @@ const ViewDetails = ({ id }: { id: number }) => {
           </div>
 
           <SheetContent>
-            <ViewVendorDetails id={id} />
+            <ViewVendorDetails id={1} />
           </SheetContent>
         </Sheet>
       </div>
@@ -97,6 +101,6 @@ export const VendorManagementColumn: ColumnDef<VendorProfile>[] = [
   },
   {
     header: "Actions",
-    cell: ({ row }) => <ViewDetails id={Number(row?.original?._id)} />,
+    cell: ({ row }) => <ViewDetails data={row.original} />,
   },
 ];
