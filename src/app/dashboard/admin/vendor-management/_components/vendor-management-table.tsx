@@ -22,7 +22,7 @@ const VendorManagementTable = () => {
     queryKey: ["vendorManagement", currentPage, value, status, sortBy, profile],
     queryFn: () =>
       fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/fetch-data?search=${value}&order=${sortBy}&isVerified=${status}&role=${profile}&page=${currentPage}&limit=1`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/fetch-data?search=${value}&order=${sortBy}&isVerified=${status}&role=${profile}&page=${currentPage}&limit=10`,
       ).then((res) => res.json()),
   });
 
