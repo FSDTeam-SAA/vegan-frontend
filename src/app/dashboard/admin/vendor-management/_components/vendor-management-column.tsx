@@ -9,19 +9,22 @@ interface ViewDetailsProps {
   data: VendorProfile;
 }
 
-const ViewDetails = ({}: ViewDetailsProps) => {
+const ViewDetails = ({ data: initialData }: ViewDetailsProps) => {
   return (
     <div>
       <div className="flex justify-center">
         <Sheet>
           <div className="flex items-center justify-start">
-            <SheetTrigger className="text-smtext-base font-medium leading-[19px] text-[#1D3557] underline">
+            <SheetTrigger
+              className="text-smtext-base font-medium leading-[19px] text-[#1D3557] underline disabled:opacity-50"
+              disabled={!initialData}
+            >
               View Details
             </SheetTrigger>
           </div>
 
-          <SheetContent>
-            <ViewVendorDetails id={1} />
+          <SheetContent className="w-[400px]">
+            <ViewVendorDetails initialData={initialData} />
           </SheetContent>
         </Sheet>
       </div>

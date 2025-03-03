@@ -401,11 +401,7 @@ export default function AddProductDialog({
                     onFileSelect={(file) =>
                       form.setValue("productImage", file!)
                     }
-                    imageUrl={
-                      !form.getValues("productImage")
-                        ? initialData?.productImage
-                        : undefined
-                    }
+                    imageUrl={initialData?.productImage}
                   />
                 </div>
 
