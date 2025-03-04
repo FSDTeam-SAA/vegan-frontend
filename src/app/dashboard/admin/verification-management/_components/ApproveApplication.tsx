@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { X } from "lucide-react";
+import { Loader2, X } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 interface Props {
@@ -21,6 +22,7 @@ const ApproveApplication = ({
   onComplete,
 }: Props) => {
   const queryClient = useQueryClient();
+  const router = useRouter();
   const { mutate: approveApplication, isPending } = useMutation({
     mutationKey: ["approveApplication"],
     mutationFn: (body: Body) =>
@@ -45,13 +47,16 @@ const ApproveApplication = ({
       }
 
       // handle success
-      queryClient.invalidateQueries({ queryKey: ["vendorSingleProfile"] });
+      queryClient.invalidateQueries({
+        queryKey: ["vendorSingleProfile", "vendorManagement"],
+      });
       setApproveModalOpen(false);
       toast.success("Application approved successfully", {
         position: "top-right",
         richColors: true,
       });
       onComplete();
+      router.refresh();
     },
     onError: (error) => {
       toast.error(error?.message || "Something went wrong", {
@@ -99,7 +104,7 @@ const ApproveApplication = ({
           disabled={isPending || !userId}
           onClick={handleApprove}
         >
-          Confirm
+          Confirm {isPending && <Loader2 className="animate-spin" />}
         </Button>
       </div>
     </div>
