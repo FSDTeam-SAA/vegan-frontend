@@ -40,6 +40,11 @@ const ReviewVendorApplication = ({ setIsOpen, initialData }: Props) => {
     address,
     isVerified,
     governmentIssuedID,
+    professionalCertification,
+    fullName,
+    photoWithID,
+    userID,
+    userId,
   } = data?.data || {};
 
   useEffect(() => {
@@ -83,7 +88,7 @@ const ReviewVendorApplication = ({ setIsOpen, initialData }: Props) => {
                   {businessName || organizationName}
                 </h4>
                 <p className="pt-4 text-sm font-normal leading-[24px] text-[#4B5563] md:text-base">
-                  Contact: John Smith
+                  Contact: {fullName}
                 </p>
                 {email && (
                   <p className="py-4 text-sm font-normal leading-[24px] text-[#4B5563] md:text-base">
@@ -130,7 +135,7 @@ const ReviewVendorApplication = ({ setIsOpen, initialData }: Props) => {
                       Government ID
                     </p>
                     <p className="pt-[5px] text-sm font-normal leading-[20px] text-[#6B7280]">
-                      id.pdf
+                      govermentid.pdf
                     </p>
                   </div>
                 </div>
@@ -159,24 +164,57 @@ const ReviewVendorApplication = ({ setIsOpen, initialData }: Props) => {
                   <FileText className="h-6 w-6 text-[#4B5563]" />
                   <div>
                     <p className="text-sm font-medium leading-[20px] text-[#1F2937]">
-                      Food Safety Certificate
+                      Professional Certificate
                     </p>
                     <p className="pt-[5px] text-sm font-normal leading-[20px] text-[#6B7280]">
-                      cert.pdf
+                      professionalCertificate.pdf
                     </p>
                   </div>
                 </div>
               </div>
               <div className="flex w-full flex-col items-start gap-6 md:w-auto md:flex-row md:items-center md:gap-[32px]">
-                <button className="rounded-full border border-[#DCFCE7] bg-[#F0FDF4] px-[27px] py-2 text-base font-normal leading-[19px] text-[#22C55E] md:p-3">
+                {/* <button className="rounded-full border border-[#DCFCE7] bg-[#F0FDF4] px-[27px] py-2 text-base font-normal leading-[19px] text-[#22C55E] md:p-3">
                   Verified
-                </button>
+                </button> */}
                 <Button
                   className="w-full rounded-[8px] border border-[#F3F4F6] bg-white px-[19px] py-3 text-sm font-medium leading-[16px] text-[#1F2937] shadow-none md:w-auto"
                   variant="outline"
                   size="xl"
                 >
-                  View
+                  <a href={professionalCertification} target="_blank">
+                    {" "}
+                    View
+                  </a>
+                </Button>
+              </div>
+            </div>
+            <div className="mt-4 flex flex-col items-start justify-start gap-4 rounded-[8px] bg-white p-[14px] md:flex-row md:items-center md:justify-between md:gap-0 md:bg-[#F9FAFB] md:p-4">
+              <div>
+                <div className="flex items-center justify-start gap-[12px]">
+                  <FileText className="h-6 w-6 text-[#4B5563]" />
+                  <div>
+                    <p className="text-sm font-medium leading-[20px] text-[#1F2937]">
+                      Photo with NID
+                    </p>
+                    <p className="pt-[5px] text-sm font-normal leading-[20px] text-[#6B7280]">
+                      photoWithNid.pdf
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="flex w-full flex-col items-start gap-6 md:w-auto md:flex-row md:items-center md:gap-[32px]">
+                {/* <button className="rounded-full border border-[#DCFCE7] bg-[#F0FDF4] px-[27px] py-2 text-base font-normal leading-[19px] text-[#22C55E] md:p-3">
+                  Verified
+                </button> */}
+                <Button
+                  className="w-full rounded-[8px] border border-[#F3F4F6] bg-white px-[19px] py-3 text-sm font-medium leading-[16px] text-[#1F2937] shadow-none md:w-auto"
+                  variant="outline"
+                  size="xl"
+                >
+                  <a href={photoWithID} target="_blank">
+                    {" "}
+                    View
+                  </a>
                 </Button>
               </div>
             </div>
@@ -212,9 +250,16 @@ const ReviewVendorApplication = ({ setIsOpen, initialData }: Props) => {
 
         {/* Approve modal part  */}
         <div>
-          {approveModalOpen && (
+          {approveModalOpen && (userID || userId) && (
             <section className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-md">
-              <ApproveApplication setApproveModalOpen={setApproveModalOpen} />
+              <ApproveApplication
+                setApproveModalOpen={setApproveModalOpen}
+                userId={(userID ?? userId) as string}
+                onComplete={() => {
+                  setIsOpen(false);
+                  setApproveModalOpen(false);
+                }}
+              />
             </section>
           )}
         </div>

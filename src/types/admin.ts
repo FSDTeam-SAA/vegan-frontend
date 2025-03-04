@@ -2,8 +2,11 @@ import { MetaPagination } from "./organization";
 
 export type PendingVerificationData = {
   _id: string;
+  userID?: string;
+  userId?: string;
   businessName: string;
   organizationName?: string;
+  fullName?: string;
   email?: string;
   address: string;
   isVerified: "pending" | "approved" | "declined";
@@ -51,6 +54,7 @@ export type VendorProfile = {
   userID: string; // Keeping it as "userID" to match the data structure
   businessName?: string; // Optional for organizations
   organizationName?: string; // Optional for businesses
+
   address: string;
   isVerified: "pending" | "approved" | "declined";
   createdAt: string;
