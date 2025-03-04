@@ -2,10 +2,15 @@
 import ProductPaymentCheckout from "@/components/shared/features/product-payment-checkout";
 import useCartState from "@/hooks/useCartState";
 import CartModal from "@/provider/CartModal";
+import { MerchantProfile } from "@/types/merchant";
 import { useCartDataState } from "@/zustand/features/cart/useCartState";
 import { BiShoppingBag } from "react-icons/bi";
 
-const ProfileCartButton = () => {
+interface Props {
+  data?: MerchantProfile;
+}
+
+const ProfileCartButton = ({ data: initialData }: Props) => {
   const { toggleCart } = useCartState();
   const { data } = useCartDataState();
 
@@ -26,7 +31,7 @@ const ProfileCartButton = () => {
         </button>
         <CartModal />
       </div>
-      <ProductPaymentCheckout />
+      <ProductPaymentCheckout initialData={initialData} />
     </>
   );
 };
