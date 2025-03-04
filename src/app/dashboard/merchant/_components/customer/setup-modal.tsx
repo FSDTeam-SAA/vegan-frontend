@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -9,21 +9,23 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
+import { useMutation } from "@tanstack/react-query";
+import { useState } from "react";
+import { toast } from "sonner";
 import type { CommunicationFormData } from "./communication";
 
 interface SetupModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (data: CommunicationFormData) => void;
   initialData?: Partial<CommunicationFormData>;
+  userId: string;
 }
 
 export function SetupModal({
   isOpen,
   onClose,
-  onSave,
   initialData,
+  userId,
 }: SetupModalProps) {
   const [formData, setFormData] = useState<CommunicationFormData>({
     email: initialData?.email || "",
@@ -31,9 +33,49 @@ export function SetupModal({
     messenger: initialData?.messenger || "",
   });
 
+  const { mutate, isPending } = useMutation<any, unknown, any>({
+    mutationKey: ["customerSupport"],
+    mutationFn: (body) =>
+      fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/merchantCustomer`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      }).then((res) => res.json()),
+    onSuccess: (data) => {
+      if (!data.success) {
+        toast.error(data.message, {
+          position: "top-right",
+          richColors: true,
+        });
+        return;
+      }
+
+      // handle success
+      onClose();
+      toast.success("Communication options saved successfully", {
+        position: "top-right",
+        richColors: true,
+      });
+      // queryClient.invalidateQueries({ queryKey: ["merchantsProduct"] });
+    },
+    onError: () => {
+      toast.error("Failed to add product. Please try again later", {
+        position: "top-right",
+        richColors: true,
+      });
+    },
+  });
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSave(formData);
+    mutate({
+      email: formData.email ?? "",
+      whatsApp: formData.whatsapp ?? "",
+      messenger: formData.messenger ?? "",
+      merchantID: userId,
+    });
   };
 
   return (
@@ -92,10 +134,12 @@ export function SetupModal({
             />
           </div>
           <div className="flex justify-end gap-3">
-            <Button type="button" variant="outline" onClick={onClose}>
+            <Button type="submit" variant="outline">
               Cancel
             </Button>
-            <Button type="submit">Save Communication Options</Button>
+            <Button type="submit" disabled={isPending}>
+              Save Communication Options
+            </Button>
           </div>
         </form>
       </DialogContent>
