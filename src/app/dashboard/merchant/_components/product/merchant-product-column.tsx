@@ -4,6 +4,7 @@ import Image from "next/image";
 
 // Local imports
 
+import { truncateText } from "@/lib/helper";
 import { cn } from "@/lib/utils";
 import { MerchantProduct } from "@/types/merchant";
 import MerchantVisibilityChecker from "./MerchantVisibilityChecker";
@@ -32,8 +33,8 @@ export const MerchantProductColumn: ColumnDef<MerchantProduct>[] = [
             <h3 className="text-start text-[16px] font-medium leading-[23.2px] text-[#1F2937]">
               {productName}
             </h3>
-            <p className="font-inter text-[14px] text-sm font-normal text-[#4B5563]">
-              {description}
+            <p className="max-w-[500px] text-start font-inter text-[14px] text-sm font-normal text-[#4B5563]">
+              {truncateText(description, 400)}
             </p>
           </div>
         </div>

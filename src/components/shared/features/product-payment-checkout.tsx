@@ -1,13 +1,15 @@
 "use client";
 import VeganModal from "@/components/ui/vegan-modal";
 import useCartState from "@/hooks/useCartState";
-import PaymentForm, { PaymentFormValues } from "./payment/payment-form";
+import PaymentForm from "./payment/payment-form";
 
 const ProductPaymentCheckout = () => {
-  const { checkoutModal, onCheckoutClose } = useCartState();
+  const { checkoutModal, onCheckoutClose, setLoading } = useCartState();
 
-  async function onSubmit(values: PaymentFormValues) {
-    console.log(values);
+  async function onSubmit() {
+    setLoading(true);
+    // do purchase
+    console.log("productId array, purchase hobe");
   }
 
   return (
