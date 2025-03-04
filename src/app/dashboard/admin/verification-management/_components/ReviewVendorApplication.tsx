@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
-import { VendorProfile, VendorSingleProfileResponse } from "@/types/admin";
+import { PendingVerificationResponse, VendorProfile } from "@/types/admin";
 import { useQuery } from "@tanstack/react-query";
 import { FileText, Loader2, X } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -26,15 +26,26 @@ const ReviewVendorApplication = ({ setIsOpen, initialData }: Props) => {
   const [declineModalOpen, setDeclineModalOpen] = useState(false);
 
   const { isLoading, data, isError, error } =
-    useQuery<VendorSingleProfileResponse>({
+    useQuery<PendingVerificationResponse>({
       queryKey: ["vendorSingleProfile"],
       queryFn: () =>
         fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/user-details?id=${initialData?._id}&userID=${initialData?.userID}`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/fetchPendingVerificationDataById/${initialData?._id}`,
         ).then((res) => res.json()),
     });
-  const { businessName, organizationName, contactInfo, address } =
-    data?.data || {};
+  const {
+    businessName,
+    organizationName,
+    email,
+    address,
+    isVerified,
+    governmentIssuedID,
+    professionalCertification,
+    fullName,
+    photoWithID,
+    userID,
+    userId,
+  } = data?.data || {};
 
   useEffect(() => {
     if (isError) {
@@ -42,8 +53,9 @@ const ReviewVendorApplication = ({ setIsOpen, initialData }: Props) => {
         position: "top-right",
         richColors: true,
       });
+      setIsOpen(false);
     }
-  }, [error, isError]);
+  }, [error, isError, setIsOpen]);
 
   let content;
   if (isLoading) {
@@ -76,11 +88,11 @@ const ReviewVendorApplication = ({ setIsOpen, initialData }: Props) => {
                   {businessName || organizationName}
                 </h4>
                 <p className="pt-4 text-sm font-normal leading-[24px] text-[#4B5563] md:text-base">
-                  Contact: John Smith
+                  Contact: {fullName}
                 </p>
-                {contactInfo?.email && (
+                {email && (
                   <p className="py-4 text-sm font-normal leading-[24px] text-[#4B5563] md:text-base">
-                    Email: {contactInfo?.email}
+                    Email: {email}
                   </p>
                 )}
                 {address && (
@@ -96,7 +108,12 @@ const ReviewVendorApplication = ({ setIsOpen, initialData }: Props) => {
                   </h4>
                   <button
                     className={cn(
-                      "rounded-[8px] bg-[#FEFCE8] p-2 text-base font-normal leading-[19px]",
+                      "rounded-[8px] p-2 text-base font-normal leading-[19px]",
+                      isVerified === "pending"
+                        ? "bg-[#FEFCE8] text-[#EAB308]"
+                        : isVerified === "approved"
+                          ? "bg-[#F0FDF4] text-[#22C55E]"
+                          : "bg-[#FEF1F1] text-[#EF4444]",
                     )}
                   >
                     Pending Review
@@ -118,21 +135,24 @@ const ReviewVendorApplication = ({ setIsOpen, initialData }: Props) => {
                       Government ID
                     </p>
                     <p className="pt-[5px] text-sm font-normal leading-[20px] text-[#6B7280]">
-                      id.pdf
+                      govermentid.pdf
                     </p>
                   </div>
                 </div>
               </div>
               <div className="flex w-full flex-col items-start gap-6 md:w-auto md:flex-row md:items-center md:gap-[32px]">
-                <button className="rounded-full border border-[#FEF9C3] bg-[#FEFCE8] p-3 text-base font-normal leading-[19px] text-[#EAB308]">
+                {/* <button className="rounded-full border border-[#FEF9C3] bg-[#FEFCE8] p-3 text-base font-normal leading-[19px] text-[#EAB308]">
                   Pending Review
-                </button>
+                </button> */}
                 <Button
                   className="w-full rounded-[8px] border border-[#F3F4F6] bg-white px-[19px] py-3 text-sm font-medium leading-[16px] text-[#1F2937] shadow-none md:w-auto"
                   variant="outline"
                   size="xl"
+                  asChild
                 >
-                  View
+                  <a href={governmentIssuedID} target="_blank">
+                    View
+                  </a>
                 </Button>
               </div>
             </div>
@@ -144,24 +164,57 @@ const ReviewVendorApplication = ({ setIsOpen, initialData }: Props) => {
                   <FileText className="h-6 w-6 text-[#4B5563]" />
                   <div>
                     <p className="text-sm font-medium leading-[20px] text-[#1F2937]">
-                      Food Safety Certificate
+                      Professional Certificate
                     </p>
                     <p className="pt-[5px] text-sm font-normal leading-[20px] text-[#6B7280]">
-                      cert.pdf
+                      professionalCertificate.pdf
                     </p>
                   </div>
                 </div>
               </div>
               <div className="flex w-full flex-col items-start gap-6 md:w-auto md:flex-row md:items-center md:gap-[32px]">
-                <button className="rounded-full border border-[#DCFCE7] bg-[#F0FDF4] px-[27px] py-2 text-base font-normal leading-[19px] text-[#22C55E] md:p-3">
+                {/* <button className="rounded-full border border-[#DCFCE7] bg-[#F0FDF4] px-[27px] py-2 text-base font-normal leading-[19px] text-[#22C55E] md:p-3">
                   Verified
-                </button>
+                </button> */}
                 <Button
                   className="w-full rounded-[8px] border border-[#F3F4F6] bg-white px-[19px] py-3 text-sm font-medium leading-[16px] text-[#1F2937] shadow-none md:w-auto"
                   variant="outline"
                   size="xl"
                 >
-                  View
+                  <a href={professionalCertification} target="_blank">
+                    {" "}
+                    View
+                  </a>
+                </Button>
+              </div>
+            </div>
+            <div className="mt-4 flex flex-col items-start justify-start gap-4 rounded-[8px] bg-white p-[14px] md:flex-row md:items-center md:justify-between md:gap-0 md:bg-[#F9FAFB] md:p-4">
+              <div>
+                <div className="flex items-center justify-start gap-[12px]">
+                  <FileText className="h-6 w-6 text-[#4B5563]" />
+                  <div>
+                    <p className="text-sm font-medium leading-[20px] text-[#1F2937]">
+                      Photo with NID
+                    </p>
+                    <p className="pt-[5px] text-sm font-normal leading-[20px] text-[#6B7280]">
+                      photoWithNid.pdf
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="flex w-full flex-col items-start gap-6 md:w-auto md:flex-row md:items-center md:gap-[32px]">
+                {/* <button className="rounded-full border border-[#DCFCE7] bg-[#F0FDF4] px-[27px] py-2 text-base font-normal leading-[19px] text-[#22C55E] md:p-3">
+                  Verified
+                </button> */}
+                <Button
+                  className="w-full rounded-[8px] border border-[#F3F4F6] bg-white px-[19px] py-3 text-sm font-medium leading-[16px] text-[#1F2937] shadow-none md:w-auto"
+                  variant="outline"
+                  size="xl"
+                >
+                  <a href={photoWithID} target="_blank">
+                    {" "}
+                    View
+                  </a>
                 </Button>
               </div>
             </div>
@@ -170,14 +223,14 @@ const ReviewVendorApplication = ({ setIsOpen, initialData }: Props) => {
           </div>
         </ScrollArea>
         <div className="mt-10 grid grid-cols-1 gap-4 px-6 pb-[42px] md:mt-[48px] md:grid-cols-3 md:px-8 md:pb-0 lg:mt-[56px]">
-          <Button
+          {/* <Button
             onClick={() => setRequestModalOpen(!requestModalOpen)}
             className="order-2 rounded-[10px] border border-[#D1D5DB] px-[52px] py-[14px] text-base font-medium leading-[19px] text-[#6B7280] shadow-none md:order-1 md:col-span-1"
             size="xl"
             variant="outline"
           >
             Request Info
-          </Button>
+          </Button> */}
           <Button
             onClick={() => setDeclineModalOpen(!declineModalOpen)}
             className="order-3 rounded-[10px] px-[71px] py-[14px] text-base font-semibold leading-[19px] text-[#EF4444] shadow-none md:order-2 md:col-span-1 md:font-medium md:text-white"
@@ -197,9 +250,16 @@ const ReviewVendorApplication = ({ setIsOpen, initialData }: Props) => {
 
         {/* Approve modal part  */}
         <div>
-          {approveModalOpen && (
+          {approveModalOpen && (userID || userId) && (
             <section className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-md">
-              <ApproveApplication setApproveModalOpen={setApproveModalOpen} />
+              <ApproveApplication
+                setApproveModalOpen={setApproveModalOpen}
+                userId={(userID ?? userId) as string}
+                onComplete={() => {
+                  setIsOpen(false);
+                  setApproveModalOpen(false);
+                }}
+              />
             </section>
           )}
         </div>
@@ -219,7 +279,14 @@ const ReviewVendorApplication = ({ setIsOpen, initialData }: Props) => {
         <div>
           {declineModalOpen && (
             <section className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-md">
-              <DeclineApplication setDeclineModalOpen={setDeclineModalOpen} />
+              <DeclineApplication
+                setDeclineModalOpen={setDeclineModalOpen}
+                userId={(userID ?? userId) as string}
+                onComplete={() => {
+                  setIsOpen(false);
+                  setApproveModalOpen(false);
+                }}
+              />
             </section>
           )}
         </div>
