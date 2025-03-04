@@ -141,9 +141,9 @@ const ReviewVendorApplication = ({ setIsOpen, initialData }: Props) => {
                 </div>
               </div>
               <div className="flex w-full flex-col items-start gap-6 md:w-auto md:flex-row md:items-center md:gap-[32px]">
-                <button className="rounded-full border border-[#FEF9C3] bg-[#FEFCE8] p-3 text-base font-normal leading-[19px] text-[#EAB308]">
+                {/* <button className="rounded-full border border-[#FEF9C3] bg-[#FEFCE8] p-3 text-base font-normal leading-[19px] text-[#EAB308]">
                   Pending Review
-                </button>
+                </button> */}
                 <Button
                   className="w-full rounded-[8px] border border-[#F3F4F6] bg-white px-[19px] py-3 text-sm font-medium leading-[16px] text-[#1F2937] shadow-none md:w-auto"
                   variant="outline"
@@ -223,14 +223,14 @@ const ReviewVendorApplication = ({ setIsOpen, initialData }: Props) => {
           </div>
         </ScrollArea>
         <div className="mt-10 grid grid-cols-1 gap-4 px-6 pb-[42px] md:mt-[48px] md:grid-cols-3 md:px-8 md:pb-0 lg:mt-[56px]">
-          <Button
+          {/* <Button
             onClick={() => setRequestModalOpen(!requestModalOpen)}
             className="order-2 rounded-[10px] border border-[#D1D5DB] px-[52px] py-[14px] text-base font-medium leading-[19px] text-[#6B7280] shadow-none md:order-1 md:col-span-1"
             size="xl"
             variant="outline"
           >
             Request Info
-          </Button>
+          </Button> */}
           <Button
             onClick={() => setDeclineModalOpen(!declineModalOpen)}
             className="order-3 rounded-[10px] px-[71px] py-[14px] text-base font-semibold leading-[19px] text-[#EF4444] shadow-none md:order-2 md:col-span-1 md:font-medium md:text-white"
@@ -279,7 +279,14 @@ const ReviewVendorApplication = ({ setIsOpen, initialData }: Props) => {
         <div>
           {declineModalOpen && (
             <section className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-md">
-              <DeclineApplication setDeclineModalOpen={setDeclineModalOpen} />
+              <DeclineApplication
+                setDeclineModalOpen={setDeclineModalOpen}
+                userId={(userID ?? userId) as string}
+                onComplete={() => {
+                  setIsOpen(false);
+                  setApproveModalOpen(false);
+                }}
+              />
             </section>
           )}
         </div>
