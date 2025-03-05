@@ -28,7 +28,7 @@ const MerchantHeader = ({ data }: Props) => {
       </div>
 
       <div>
-        <ProfileCartButton />
+        <ProfileCartButton data={data} />
       </div>
     </div>
   );

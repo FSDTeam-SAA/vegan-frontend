@@ -1,58 +1,33 @@
 "use client";
 
-import { useState } from "react";
-import { MessageCircleQuestion, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { MessageCircleQuestion, Plus } from "lucide-react";
+import { useState } from "react";
 import { CommunicationCard } from "./communication-card";
 import { SetupModal } from "./setup-modal";
-import type {
-  CommunicationOption,
-  CommunicationFormData,
-} from "./communication";
 
-export default function CustomerCommunication() {
+interface Props {
+  userId: string;
+}
+
+export default function CustomerCommunication({ userId }: Props) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [communications, setCommunications] = useState<CommunicationOption[]>(
-    [],
-  );
-  const [editingType, setEditingType] = useState<
-    CommunicationOption["type"] | null
-  >(null);
 
-  const handleSave = (data: CommunicationFormData) => {
-    const newOptions: CommunicationOption[] = [];
-    if (data.email) newOptions.push({ type: "email", value: data.email });
-    if (data.whatsapp)
-      newOptions.push({ type: "whatsapp", value: data.whatsapp });
-    if (data.messenger)
-      newOptions.push({ type: "messenger", value: data.messenger });
-    setCommunications(newOptions);
-    setIsModalOpen(false);
-    setEditingType(null);
-  };
-
-  const handleEdit = (type: CommunicationOption["type"]) => {
-    setEditingType(type);
-    setIsModalOpen(true);
-  };
-
-  const handleDelete = (type: CommunicationOption["type"]) => {
-    setCommunications(communications.filter((comm) => comm.type !== type));
-  };
-
-  const getInitialData = () => {
-    if (!editingType) return undefined;
-    const option = communications.find((comm) => comm.type === editingType);
-    if (!option) return undefined;
-    return {
-      [option.type]: option.value,
-    };
-  };
+  // const { isLoading, data, isError, error } =
+  //   useQuery({
+  //     queryKey: [
+  //       "merchantCustomerSupport",
+  //     ],
+  //     queryFn: () =>
+  //       fetch(
+  //         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/organizationevents?`,
+  //       ).then((res) => res.json()),
+  //   });
 
   return (
     <div className="flex-col items-center justify-center md:mt-20">
       <div className="mx-auto max-w-2xl">
-        {communications.length === 0 ? (
+        {"sggdf".length === 1 ? (
           <div className="rounded-lg p-8 text-center">
             <div className="mb-4 flex justify-center">
               <div className="flex h-16 w-16 items-center justify-center rounded-full bg-blue-950">
@@ -82,14 +57,7 @@ export default function CustomerCommunication() {
               </h2>
             </div>
             <div className="space-y-4">
-              {communications.map((option) => (
-                <CommunicationCard
-                  key={option.type}
-                  option={option}
-                  onEdit={handleEdit}
-                  onDelete={handleDelete}
-                />
-              ))}
+              <CommunicationCard />
             </div>
           </div>
         )}
@@ -98,10 +66,8 @@ export default function CustomerCommunication() {
           isOpen={isModalOpen}
           onClose={() => {
             setIsModalOpen(false);
-            setEditingType(null);
           }}
-          onSave={handleSave}
-          initialData={getInitialData()}
+          userId={userId}
         />
       </div>
     </div>

@@ -1,17 +1,75 @@
 "use client";
 
 import CartModalProduct from "@/components/shared/cards/cart-modal-product";
+import { BodyProps } from "@/components/shared/features/product-payment-checkout";
 import EmptyContainer from "@/components/shared/sections/empty-container";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import VeganModal from "@/components/ui/vegan-modal";
 import useCartState from "@/hooks/useCartState";
+import { MerchantProfile } from "@/types/merchant";
 import { useCartDataState } from "@/zustand/features/cart/useCartState";
-import { Info } from "lucide-react";
+import { useMutation } from "@tanstack/react-query";
+import { Info, Loader2 } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { toast } from "sonner";
 
-const CartsModal = () => {
-  const { isOpen, toggleCart, onCheckout } = useCartState();
-  const { data } = useCartDataState();
+interface Props {
+  initialData?: MerchantProfile;
+}
+
+const CartsModal = ({ initialData }: Props) => {
+  const { isOpen, toggleCart, onCheckout, setLoading, loading } =
+    useCartState();
+  const session = useSession();
+  const { data, resetCartState } = useCartDataState();
+
+  const amount = data.reduce((prev, curr) => {
+    return prev + curr.price;
+  }, 0);
+
+  const { mutate: createPurchase } = useMutation({
+    mutationKey: ["purchase"],
+    mutationFn: (body: BodyProps) =>
+      fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/payment/purchase`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      }).then((res) => res.json()),
+    onSuccess: (data) => {
+      setLoading(false);
+      if (!data.success) {
+        toast.error(data.message || "Failed to purchase", {
+          position: "top-right",
+          richColors: true,
+        });
+
+        return;
+      }
+
+      // handle success
+      toast.success(data.message, {
+        position: "top-right",
+        richColors: true,
+      });
+      resetCartState();
+      toggleCart();
+    },
+    onError: (err) => {
+      setLoading(false);
+      toast.error(err.message || "Failed to purchase", {
+        position: "top-right",
+        richColors: true,
+      });
+    },
+  });
+
+  if (session.status == "loading") return;
+  if (!initialData) return null;
+
+  const isPaymentAdded = session.data?.user.paymentAdded;
 
   const totalAmount = data?.reduce((prev, curr) => {
     return prev + curr.price;
@@ -26,6 +84,21 @@ const CartsModal = () => {
       <CartModalProduct key={product._id} product={product} />
     ));
   }
+
+  const handleCheckout = () => {
+    setLoading(true);
+    if (!isPaymentAdded || !session.data) {
+      onCheckout();
+      return;
+    } else {
+      createPurchase({
+        userID: session.data.user.userId,
+        amount: amount,
+        merchantID: initialData._id,
+        productId: data.map((product) => product._id),
+      });
+    }
+  };
 
   return (
     <VeganModal
@@ -71,11 +144,13 @@ const CartsModal = () => {
         </div>
 
         <Button
-          className="h-[50px] w-full text-center font-inter !text-lg !font-medium leading-[21.78px]"
+          className="relative h-[50px] w-full text-center font-inter !text-lg !font-medium leading-[21.78px]"
           size="lg"
-          onClick={onCheckout}
+          onClick={handleCheckout}
+          disabled={loading}
         >
-          Proceed To Checkout
+          Proceed To Checkout{" "}
+          {loading && <Loader2 className="absolute right-5 animate-spin" />}
         </Button>
       </div>
     </VeganModal>
