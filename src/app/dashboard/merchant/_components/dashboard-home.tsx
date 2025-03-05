@@ -1,13 +1,14 @@
-"use client";
-
-import DashboardRevenue from "./revenue";
+import { auth } from "@/auth";
+import { MerchantLeaderBoardData } from "@/data/top-merchant";
+import TopMerchantBoard from "../../_components/TopMerchantBoard";
+import DashboardHeading from "./dashboard-heading";
 import EarningsDynamicChart from "./earning";
 import ReferralTracking from "./ReferralTracking";
-import TopMerchantBoard from "../../_components/TopMerchantBoard";
-import { MerchantLeaderBoardData } from "@/data/top-merchant";
-import DashboardHeading from "./dashboard-heading";
+import DashboardRevenue from "./revenue";
 
-export default function Dashboard() {
+export default async function Dashboard() {
+  const user = await auth();
+  if (!user) return;
   return (
     <div className="space-y-10 md:space-y-14">
       <DashboardHeading
@@ -17,7 +18,7 @@ export default function Dashboard() {
       <DashboardRevenue />
 
       <EarningsDynamicChart />
-      <ReferralTracking />
+      <ReferralTracking userId={user.user.userId} />
       <TopMerchantBoard LeaderBoardData={MerchantLeaderBoardData} />
     </div>
   );
