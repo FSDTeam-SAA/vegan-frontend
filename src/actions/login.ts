@@ -67,6 +67,7 @@ export type UserData = {
     email: string;
     accountType: "merchant" | "professional" | "organization" | null;
     token: string;
+    paymentAdded: boolean;
   };
 };
 

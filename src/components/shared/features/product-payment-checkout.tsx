@@ -8,7 +8,7 @@ import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import PaymentForm from "./payment/payment-form";
 
-interface BodyProps {
+export interface BodyProps {
   userID: string;
   amount: number;
   merchantID: string;
@@ -57,6 +57,8 @@ const ProductPaymentCheckout = ({ initialData }: Props) => {
   const session = useSession();
 
   if (session.status === "loading") return null;
+
+  if (!session.data?.user.userId) return null;
 
   if (!initialData) return null;
 

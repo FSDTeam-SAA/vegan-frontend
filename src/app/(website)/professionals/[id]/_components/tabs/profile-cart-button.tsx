@@ -29,7 +29,7 @@ const ProfileCartButton = ({ data: initialData }: Props) => {
             </span>
           )}
         </button>
-        <CartModal />
+        <CartModal initialData={initialData} />
       </div>
       <ProductPaymentCheckout initialData={initialData} />
     </>
