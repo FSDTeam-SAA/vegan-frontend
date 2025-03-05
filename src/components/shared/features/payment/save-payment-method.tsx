@@ -9,7 +9,6 @@ import {
   useStripe,
 } from "@stripe/react-stripe-js";
 import { useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
 import React from "react";
 import { toast } from "sonner";
 
@@ -21,8 +20,6 @@ const SavePaymentMethod = ({ onPurchase }: Props) => {
   const session = useSession();
 
   if (session.status === "loading") return;
-
-  if (session.status === "unauthenticated") redirect("/onboarding");
 
   const userId = session.data?.user.userId;
 
