@@ -38,6 +38,8 @@ const MerchantProducts = ({ merchantId }: Props) => {
     });
   const pagination = data?.pagination;
 
+  console.log(data);
+
   let content;
 
   if (isLoading || isRefetching) {
@@ -59,7 +61,7 @@ const MerchantProducts = ({ merchantId }: Props) => {
   } else if (data && data?.data.length === 0) {
     content = (
       <div className="mt-[81px]">
-        <EmptyContainer message={data?.message ?? "No Product found!"} />
+        <EmptyContainer message="Sorry, no products were found for this merchant." />
       </div>
     );
   } else if (data && data.data?.length > 0) {
