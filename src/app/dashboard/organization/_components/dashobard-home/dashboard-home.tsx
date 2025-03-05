@@ -1,9 +1,14 @@
 "use client";
 
-import StatsDashboard from "./StatsDashboard";
+import ReferralTracking from "@/app/dashboard/merchant/_components/ReferralTracking";
 import ReferralEarningsChart from "./ReferralEarningsChart";
+import StatsDashboard from "./StatsDashboard";
 
-export default function Dashboard() {
+interface Props {
+  userId: string;
+}
+
+const Dashboard = ({ userId }: Props) => {
   return (
     <div className="space-y-8 p-2">
       <div>
@@ -16,7 +21,11 @@ export default function Dashboard() {
       {/* Dashboard Status  */}
       <StatsDashboard />
 
+      <ReferralTracking userId={userId} />
+
       <ReferralEarningsChart />
     </div>
   );
-}
+};
+
+export default Dashboard;
