@@ -1,29 +1,14 @@
 "use client";
-import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { useState } from "react";
-import AddBankMethodForm from "./AddBankMethodForm";
 
 const PaymentMethod = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const handlePaymentMethodForm = () => {
-    setIsOpen(!isOpen);
-  };
   return (
     <div className="py-[56px]">
       <div className="rounded-[16px] bg-[#F8F5F2] p-[24px] md:p-[32px] lg:p-[40px]">
         <div className="flex flex-col items-start justify-start gap-[24px] md:flex-row md:items-center md:justify-between">
           <h5 className="text-lg font-medium leading-[21px] text-[#1F2937] md:text-xl md:leading-[24px]">
-            Profit Sharing
+            Account Management
           </h5>
-          <Button
-            onClick={handlePaymentMethodForm}
-            className="text-base font-medium leading-[19px] text-[#1F2937]"
-            size="xl"
-            variant="outline"
-          >
-            Add A Method
-          </Button>
         </div>
         {/* second part  */}
         <div className="pt-[40px]">
@@ -96,17 +81,18 @@ const PaymentMethod = () => {
         </div>
 
         {/* modal part  */}
-        {isOpen && (
-          <section className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30 backdrop-blur-sm">
-            {/* Modal content */}
-            <div className="relative z-10">
-              <AddBankMethodForm setIsOpen={setIsOpen} />
-            </div>
-          </section>
-        )}
       </div>
     </div>
   );
 };
 
 export default PaymentMethod;
+
+// {isOpen && (
+//   <section className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30 backdrop-blur-sm">
+//     {/* Modal content */}
+//     <div className="relative z-10">
+//       <AddBankMethodForm setIsOpen={setIsOpen} />
+//     </div>
+//   </section>
+// )}
