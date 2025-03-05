@@ -1,22 +1,30 @@
 "use client";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { VendorProfile } from "@/types/admin";
 import { ColumnDef } from "@tanstack/react-table";
-import { VendorManagementDataType } from "./vendor-management-data";
+import moment from "moment";
 import ViewVendorDetails from "./ViewVendorDetails";
 
-const ViewDetails = ({ id }: { id: number }) => {
+interface ViewDetailsProps {
+  data: VendorProfile;
+}
+
+const ViewDetails = ({ data: initialData }: ViewDetailsProps) => {
   return (
     <div>
       <div className="flex justify-center">
         <Sheet>
           <div className="flex items-center justify-start">
-            <SheetTrigger className="text-smtext-base font-medium leading-[19px] text-[#1D3557] underline">
+            <SheetTrigger
+              className="text-smtext-base font-medium leading-[19px] text-[#1D3557] underline disabled:opacity-50"
+              disabled={!initialData}
+            >
               View Details
             </SheetTrigger>
           </div>
 
-          <SheetContent>
-            <ViewVendorDetails id={id} />
+          <SheetContent className="w-[400px]">
+            <ViewVendorDetails initialData={initialData} />
           </SheetContent>
         </Sheet>
       </div>
@@ -28,7 +36,7 @@ export default ViewDetails;
 
 // ActionsDropdown component  end
 
-export const VendorManagementColumn: ColumnDef<VendorManagementDataType>[] = [
+export const VendorManagementColumn: ColumnDef<VendorProfile>[] = [
   // {
   //   id: "select",
   //   header: ({ table }) => (
@@ -59,10 +67,10 @@ export const VendorManagementColumn: ColumnDef<VendorManagementDataType>[] = [
       return (
         <div className="text-center">
           <h4 className="text-sm font-medium leading-[16px] text-[#1F2937]">
-            {row.original.businessName}
+            {row.original.businessName || row.original.organizationName}
           </h4>
           <h4 className="pt-[8px] text-xs font-normal leading-[14px] text-[#6B7280]">
-            {row?.original?.businessType}
+            {row?.original?.role}
           </h4>
         </div>
       );
@@ -74,7 +82,7 @@ export const VendorManagementColumn: ColumnDef<VendorManagementDataType>[] = [
       return (
         <div className="flex justify-center gap-[2px]">
           <span className="text-sm font-normal leading-[16px] text-[#1F2937]">
-            {row.original.onBoardingDate}
+            {moment(row.original.createdAt).format("MMM D, YYYY")}
           </span>
         </div>
       );
@@ -86,9 +94,9 @@ export const VendorManagementColumn: ColumnDef<VendorManagementDataType>[] = [
       return (
         <div className="flex justify-center gap-[2px]">
           <span
-            className={`rounded-[20px] px-2 py-1 text-xs font-normal leading-[14px] ${row.original.status === "Approved" ? "bg-[#F0FDF4] text-[#16A34A]" : row.original.status === "Pending" ? "bg-[#FEFCE8] text-[#CA8A04]" : "bg-[#FEF2F2] text-[#DC2626]"}`}
+            className={`rounded-[20px] px-2 py-1 text-xs font-normal leading-[14px] ${row.original.isVerified === "approved" ? "bg-[#F0FDF4] text-[#16A34A]" : row.original.isVerified === "pending" ? "bg-[#FEFCE8] text-[#CA8A04]" : "bg-[#FEF2F2] text-[#DC2626]"}`}
           >
-            {row.original.status}
+            {row.original.isVerified}
           </span>
         </div>
       );
@@ -96,6 +104,6 @@ export const VendorManagementColumn: ColumnDef<VendorManagementDataType>[] = [
   },
   {
     header: "Actions",
-    cell: ({ row }) => <ViewDetails id={row?.original?.id} />,
+    cell: ({ row }) => <ViewDetails data={row.original} />,
   },
 ];

@@ -1,7 +1,54 @@
+"use client";
 import { Button } from "@/components/ui/button";
-import { EllipsisVertical, Share2 } from "lucide-react";
+import { ReferResponse } from "@/types/refferel";
+import { useMutation } from "@tanstack/react-query";
+import { EllipsisVertical, Loader2, Share2 } from "lucide-react";
+import dynamic from "next/dynamic";
+import { useState } from "react";
+import { toast } from "sonner";
 
-const ReferralTracking = () => {
+const QRCodeShareModal = dynamic(
+  () => import("@/components/shared/modals/qr-code-share-modal"),
+  { ssr: false },
+);
+
+interface Props {
+  userId: string;
+}
+
+const ReferralTracking = ({ userId }: Props) => {
+  const [isOpen, setOpen] = useState(false);
+  const [url, setUrl] = useState("");
+
+  const { isPending, mutate: createSlug } = useMutation<ReferResponse>({
+    mutationKey: ["refer-slug-generate"],
+    mutationFn: () =>
+      fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/reffer`, {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({
+          creator: userId,
+        }),
+      }).then((res) => res.json()),
+    onSuccess: (data) => {
+      if (!data.success) {
+        toast.error(data.message, {
+          position: "top-right",
+          richColors: true,
+        });
+        return;
+      }
+
+      // handle success
+      setUrl(
+        `${process.env.NEXT_PUBLIC_FRONTEND_URL}/onboarding?ref=${data.data.slug}`,
+      );
+      setOpen(true);
+    },
+  });
+
   return (
     <div className="">
       <div className="rounded-[16px] bg-[#F8F5F2] p-[24px] md:p-[32px] lg:p-[40px]">
@@ -48,13 +95,23 @@ const ReferralTracking = () => {
             <Button
               size="xl"
               className="flex items-center gap-[8px] px-[16px] py-[14px] text-base font-semibold leading-[19px] text-white"
+              onClick={() => createSlug()}
+              disabled={isPending}
             >
               <Share2 className="block h-[18px] w-[18px] text-white md:hidden" />{" "}
-              Share QR Code
+              Share QR Code {isPending && <Loader2 className="animate-spin" />}
             </Button>
           </div>
         </div>
       </div>
+
+      {url && (
+        <QRCodeShareModal
+          isOpen={isOpen}
+          onClose={() => setOpen(false)}
+          qrCodeValue={url}
+        />
+      )}
     </div>
   );
 };

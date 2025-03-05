@@ -5,6 +5,7 @@ export type ExtendedUser = DefaultSession["user"] & {
   userId: string;
   role: string;
   accountType: "merchant" | "professional" | "organization" | null;
+  paymentAdded: boolean;
 };
 
 declare module "next-auth" {
@@ -25,6 +26,7 @@ declare module "next-auth/jwt" {
       email: string;
       accountType: "merchant" | "professional" | "organization" | null;
       token: string;
+      paymentAdded: boolean;
     };
   }
 }

@@ -44,6 +44,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           email: token.user.email,
           role: token.user.role,
           token: token.user.token,
+          paymentAdded: token.user.paymentAdded,
         };
       }
       return session;

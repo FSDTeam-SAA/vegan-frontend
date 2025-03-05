@@ -10,6 +10,7 @@ type StoreState = {
   data: CartProduct[];
   addProductToCart: (product: CartProduct) => void;
   removeProductFromCart: (productId: string) => void;
+  resetCartState: () => void; // Adding the resetCartState method
 };
 
 export const useCartDataState = create<StoreState>()(
@@ -29,6 +30,7 @@ export const useCartDataState = create<StoreState>()(
         set((state) => ({
           data: state.data.filter((item) => item._id !== productId),
         })),
+      resetCartState: () => set({ data: [] }), // Reset the cart data
     }),
     {
       name: "cart-data", // The key for localStorage

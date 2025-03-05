@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import AlertModal from "@/components/ui/alert-modal";
 import { Button } from "@/components/ui/button";
 import { MerchantProduct } from "@/types/merchant";
+import { useSession } from "next-auth/react";
 import AddProductDialog from "./add-product-dialog";
 
 interface Props {
@@ -19,6 +20,10 @@ const MerchantProductActions = ({ data }: Props) => {
   const [editModalOpen, setEditModalOpen] = useState<boolean>(false);
 
   const queryClient = useQueryClient();
+
+  const session = useSession();
+
+  const merchantID = session.data?.user.userId;
 
   const { mutate: deleteMutate, isPending: isDeleting } = useMutation({
     mutationKey: ["merchant-product-delete"],
@@ -44,6 +49,10 @@ const MerchantProductActions = ({ data }: Props) => {
     },
   });
 
+  if (!session || session.status === "loading") return null;
+
+  if (!merchantID) return null;
+
   return (
     <div>
       <AlertModal
@@ -54,6 +63,7 @@ const MerchantProductActions = ({ data }: Props) => {
       />
       {/* edit product modal */}
       <AddProductDialog
+        merchantID={merchantID}
         open={editModalOpen}
         onOpenChange={setEditModalOpen}
         initialData={data}

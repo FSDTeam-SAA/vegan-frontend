@@ -1,10 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { X } from "lucide-react";
+import { Loader2, X } from "lucide-react";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
 import {
   Form,
   FormControl,
@@ -13,6 +10,11 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
 
 const formSchema = z.object({
   description: z.string().min(2, {
@@ -20,11 +22,23 @@ const formSchema = z.object({
   }),
 });
 
+interface Props {
+  userId: string;
+  setDeclineModalOpen: (open: boolean) => void;
+  onComplete: () => void;
+}
+
+type Body = {
+  userId: string;
+  status: string;
+  message: string;
+};
+
 const DeclineApplication = ({
-    setDeclineModalOpen,
-}: {
-    setDeclineModalOpen: (open: boolean) => void;
-}) => {
+  setDeclineModalOpen,
+  userId,
+  onComplete,
+}: Props) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -32,19 +46,66 @@ const DeclineApplication = ({
     },
   });
 
+  const queryClient = useQueryClient();
+  const { mutate: declinedApplication, isPending } = useMutation({
+    mutationKey: ["approveApplication"],
+    mutationFn: (body: Body) =>
+      fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/update-verification-status`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        },
+      ).then((res) => res.json()),
+    onSuccess: (data) => {
+      if (!data.success) {
+        toast.error(data.message, {
+          position: "top-right",
+          richColors: true,
+        });
+
+        return;
+      }
+
+      // handle success
+      queryClient.invalidateQueries({
+        queryKey: ["vendorSingleProfile", "vendorManagement"],
+      });
+      setDeclineModalOpen(false);
+      toast.success("Application declined successfully", {
+        position: "top-right",
+        richColors: true,
+      });
+      onComplete();
+    },
+    onError: (error) => {
+      toast.error(error?.message || "Something went wrong", {
+        position: "top-right",
+        richColors: true,
+      });
+    },
+  });
+
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    declinedApplication({
+      userId,
+      status: "declined",
+      message: values?.description,
+    });
   }
 
   return (
-    <div className="h-[361px] md:h-[409px] w-[327px] md:w-[700px] rounded-2xl bg-white px-6 md:px-7 lg:px-8 py-8 md:py-9 lg:py-10">
+    <div className="h-[361px] w-[327px] rounded-2xl bg-white px-6 py-8 md:h-[409px] md:w-[700px] md:px-7 md:py-9 lg:px-8 lg:py-10">
       {/* Header */}
-      <div className="mb-8 md:mb-9 lg:mb-10 flex items-center justify-between">
-        <h4 className="text-lg md:text-xl font-medium text-[#1F2937] leading-[21px] md:leading-[24px]">
-        Decline Application
+      <div className="mb-8 flex items-center justify-between md:mb-9 lg:mb-10">
+        <h4 className="text-lg font-medium leading-[21px] text-[#1F2937] md:text-xl md:leading-[24px]">
+          Decline Application
         </h4>
         <X
-          className="h-6 w-6 cursor-pointer text-[#1F2937] -mt-4 -mr-2"
+          className="-mr-2 -mt-4 h-6 w-6 cursor-pointer text-[#1F2937]"
           onClick={() => setDeclineModalOpen(false)}
           aria-label="Close"
         />
@@ -58,7 +119,9 @@ const DeclineApplication = ({
             name="description"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-sm md:text-base lg:text-lg font-medium text-[#1F2937] leading-[20px] md:leading-[26px]">Description</FormLabel>
+                <FormLabel className="text-sm font-medium leading-[20px] text-[#1F2937] md:text-base md:leading-[26px] lg:text-lg">
+                  Description
+                </FormLabel>
                 <FormControl className="mt-4">
                   <textarea
                     className="h-[127px] w-full rounded-[8px] border border-[#F3F4F6] bg-[#F9FAFB] px-[16px] py-[13px] outline-none placeholder:text-base placeholder:font-normal placeholder:leading-[23px] placeholder:text-[#9CA3AF]"
@@ -72,9 +135,9 @@ const DeclineApplication = ({
           />
 
           {/* Buttons */}
-          <div className="flex items-center justify-end gap-4 mt-10 md:mt-12">
+          <div className="mt-10 flex items-center justify-end gap-4 md:mt-12">
             <Button
-            className="px-[24px] md:px-[36px] lg:px-[48px] py-[14px] shadow-none text-base font-medium leading-[19px] text-[#6B7280] rounded-[10px]"
+              className="rounded-[10px] px-[24px] py-[14px] text-base font-medium leading-[19px] text-[#6B7280] shadow-none md:px-[36px] lg:px-[48px]"
               type="button"
               onClick={() => setDeclineModalOpen(false)}
               size="xl"
@@ -82,8 +145,14 @@ const DeclineApplication = ({
             >
               Cancel
             </Button>
-            <Button className="px-[44px] py-[14px] shadow-none text-base font-semibold leading-[19px] text-white rounded-[10px]" variant="destructive" type="submit" size="xl">
-              Confirm
+            <Button
+              className="rounded-[10px] px-[44px] py-[14px] text-base font-semibold leading-[19px] text-white shadow-none"
+              variant="destructive"
+              type="submit"
+              size="xl"
+              disabled={isPending}
+            >
+              Confirm {isPending && <Loader2 className="animate-spin" />}
             </Button>
           </div>
         </form>

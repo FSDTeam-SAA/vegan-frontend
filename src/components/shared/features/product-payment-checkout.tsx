@@ -1,13 +1,79 @@
 "use client";
 import VeganModal from "@/components/ui/vegan-modal";
 import useCartState from "@/hooks/useCartState";
-import PaymentForm, { PaymentFormValues } from "./payment/payment-form";
+import { MerchantProfile } from "@/types/merchant";
+import { useCartDataState } from "@/zustand/features/cart/useCartState";
+import { useMutation } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
+import { toast } from "sonner";
+import PaymentForm from "./payment/payment-form";
 
-const ProductPaymentCheckout = () => {
-  const { checkoutModal, onCheckoutClose } = useCartState();
+export interface BodyProps {
+  userID: string;
+  amount: number;
+  merchantID: string;
+  productId: string[];
+}
 
-  async function onSubmit(values: PaymentFormValues) {
-    console.log(values);
+interface Props {
+  initialData?: MerchantProfile;
+}
+
+const ProductPaymentCheckout = ({ initialData }: Props) => {
+  const { checkoutModal, onCheckoutClose, setLoading } = useCartState();
+  const { data } = useCartDataState();
+  const amount = data.reduce((prev, curr) => {
+    return prev + curr.price;
+  }, 0);
+  const { mutate: createPurchase } = useMutation({
+    mutationKey: ["purchase"],
+    mutationFn: (body: BodyProps) =>
+      fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/payment/purchase`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      }).then((res) => res.json()),
+    onSuccess: (data) => {
+      if (!data.success) {
+        toast.error(data.message || "Failed to purchase", {
+          position: "top-right",
+          richColors: true,
+        });
+
+        return;
+      }
+
+      // handle success
+      toast.success(data.message, {
+        position: "top-right",
+        richColors: true,
+      });
+      onCheckoutClose();
+      setLoading(false);
+    },
+  });
+  const session = useSession();
+
+  if (session.status === "loading") return null;
+
+  if (!session.data?.user.userId) return null;
+
+  if (!initialData) return null;
+
+  async function onSubmit() {
+    setLoading(true);
+    if (!initialData?._id) return;
+    // do purchase
+    if (session.data) {
+      createPurchase({
+        userID: session.data.user.userId,
+        amount: amount,
+        merchantID: initialData._id,
+        productId: data.map((product) => product._id),
+      });
+    }
   }
 
   return (
