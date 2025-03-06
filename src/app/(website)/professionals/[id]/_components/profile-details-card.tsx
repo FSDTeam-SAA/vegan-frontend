@@ -3,6 +3,7 @@
 import { MapPin, Star } from "lucide-react";
 
 import ErrorContainer from "@/components/shared/sections/error-container";
+import VeganHeader from "@/components/shared/sections/VeganHeader";
 import SkeletonWrapper from "@/components/ui/skeleton-wrapper";
 import { ProfessionalInfoResponse } from "@/types/professional";
 import { useQuery } from "@tanstack/react-query";
@@ -21,7 +22,8 @@ export default function ProfileCard({ professionalId }: Props) {
         ).then((res) => res.json()),
     });
 
-  const { fullName, profilePhoto, designation, address } = data?.data || {};
+  const { fullName, profilePhoto, designation, address, about } =
+    data?.data || {};
 
   let content;
 
@@ -78,5 +80,17 @@ export default function ProfileCard({ professionalId }: Props) {
       <ErrorContainer message={error.message || "Something went wrong"} />
     );
   }
-  return content;
+  return (
+    <>
+      <VeganHeader
+        img={
+          "https://i.ibb.co.com/7JBkM5Mq/pexels-elly-fairytale-3822688-1.png"
+        }
+        heading={fullName || ""}
+        subheading={about || ""}
+      />
+
+      <div className="mt-[56px]">{content}</div>
+    </>
+  );
 }
