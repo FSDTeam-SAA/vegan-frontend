@@ -6,6 +6,33 @@ export type HighlightedStatement = {
   _id: string;
 };
 
+export type ProfessionalInfoResponse = {
+  success: boolean;
+  message: string;
+  data: {
+    _id: string;
+    userId: string;
+    profilePhoto: string;
+    fullName: string;
+    designation: string;
+    businessName: string;
+    address: string;
+    about: string;
+    highlightedStatement: {
+      title: string;
+      description: string;
+      _id: string;
+    }[];
+    experience: string[];
+    certifications: string[];
+    websiteURL: string;
+    isVerified: "pending" | "verified" | "rejected"; // Assuming possible values
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+  };
+};
+
 export type ProfessionalProfile = {
   _id: string;
   userID: string;
