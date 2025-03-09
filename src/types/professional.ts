@@ -78,8 +78,8 @@ export type ProfessionalService = {
 
 export type ProfessionalServiceResponse = {
   success: boolean;
-  messasge?: string;
-  services: ProfessionalService[];
+  messasge: string;
+  data: ProfessionalService[];
 };
 
 export interface SupportTicket {

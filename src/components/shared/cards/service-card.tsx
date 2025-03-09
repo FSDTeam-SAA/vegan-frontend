@@ -1,9 +1,14 @@
 import ServiceBookModal from "@/app/(website)/professionals/[id]/_components/tabs/services/service-book-modal";
 import { truncateText } from "@/lib/helper";
+import { ProfessionalService } from "@/types/professional";
 import Image from "next/image";
 import { useState } from "react";
 
-const ServiceCard = () => {
+interface Props {
+  data?: ProfessionalService;
+}
+
+const ServiceCard = ({}: Props) => {
   const [open, setOpen] = useState(false);
   let text =
     " Join Sarah Green, a certified yoga instructor offering personalized yoga classes for all levels Enhance your flexibility, strength, and mindfulness in a supportive and relaxing environment.";
