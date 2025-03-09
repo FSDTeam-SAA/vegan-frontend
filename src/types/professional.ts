@@ -35,7 +35,8 @@ export type ProfessionalInfoResponse = {
 
 export type ProfessionalProfile = {
   _id: string;
-  userID: string;
+  userID?: string;
+  userId?: string;
   fullName: string;
   designation: string;
   businessName: string;
@@ -44,6 +45,10 @@ export type ProfessionalProfile = {
   highlightedStatement: HighlightedStatement[];
   experience: string[];
   certifications: string[];
+  governmentIssuedID: string;
+  photoWithID: string;
+  professionalCertification: string;
+  profilePhoto: string;
   websiteURL: string;
   createdAt: string;
   updatedAt: string;

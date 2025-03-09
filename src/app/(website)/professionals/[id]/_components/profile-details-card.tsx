@@ -15,7 +15,7 @@ interface Props {
 export default function ProfileCard({ professionalId }: Props) {
   const { isLoading, data, isError, error } =
     useQuery<ProfessionalInfoResponse>({
-      queryKey: ["professionalInfo", professionalId],
+      queryKey: ["professionalInfoSingle", professionalId],
       queryFn: () =>
         fetch(
           `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/ProfessionalInfo/${professionalId}`,

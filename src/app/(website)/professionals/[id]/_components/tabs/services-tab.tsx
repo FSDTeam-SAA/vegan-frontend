@@ -12,7 +12,7 @@ interface Props {
 export default function ServicesTab({ professionalId }: Props) {
   const { isLoading, data, isError, error } =
     useQuery<ProfessionalServiceResponse>({
-      queryKey: ["professionalService", professionalId],
+      queryKey: ["professionalServices"],
       queryFn: () =>
         fetch(
           `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/offline/${professionalId}`,
@@ -25,7 +25,7 @@ export default function ServicesTab({ professionalId }: Props) {
     content = (
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {[1, 2, 3, 4, 5, 6].map((_, index) => (
-          <SkeletonWrapper isLoading={false} key={index}>
+          <SkeletonWrapper isLoading={isLoading} key={index}>
             <ServiceCard />
           </SkeletonWrapper>
         ))}
@@ -45,9 +45,7 @@ export default function ServicesTab({ professionalId }: Props) {
     content = (
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {data.data.map((item, index) => (
-          <SkeletonWrapper isLoading key={index}>
-            <ServiceCard data={item} />
-          </SkeletonWrapper>
+          <ServiceCard data={item} key={index} />
         ))}
       </div>
     );

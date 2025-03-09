@@ -39,7 +39,7 @@ const ProfessionalTab = ({ professionalId }: Props) => {
       case "services":
         return <ServicesTab professionalId={professionalId} />;
       case "live-stream":
-        return <LiveStreamTab />;
+        return <LiveStreamTab professionalId={professionalId} />;
       case "faqs":
         return <FAQsTab />;
       case "reviews":
