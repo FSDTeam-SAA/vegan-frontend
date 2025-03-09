@@ -86,11 +86,11 @@ const CartsModal = ({ initialData }: Props) => {
   }
 
   const handleCheckout = () => {
-    setLoading(true);
     if (!isPaymentAdded || !session.data) {
       onCheckout();
       return;
     } else {
+      setLoading(true);
       createPurchase({
         userID: session.data.user.userId,
         amount: amount,

@@ -3,8 +3,11 @@ import AnimatedTabs, { VeganTab } from "@/components/ui/Vegan-Tab";
 import dynamic from "next/dynamic";
 import { useState } from "react";
 import OrganizationAbout from "./tab/about/organization-about";
-import OrganizationEventContainer from "./tab/events/organization-event-container";
 import OrganizationNewsContainer from "./tab/news/organization-news-container";
+const OrganizationEventContainer = dynamic(
+  () => import("./tab/events/organization-event-container"),
+  { ssr: false },
+);
 
 const OrganizationVolunteerEventContainer = dynamic(
   () => import("./tab/volunteer/volunteer-container"),
