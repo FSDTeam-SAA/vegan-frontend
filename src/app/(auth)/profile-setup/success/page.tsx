@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Info } from "lucide-react";
 import Link from "next/link";
+import { SuccessBody } from "./_components/Sucess-Body";
 
 const Page = () => {
   return (
@@ -10,11 +11,7 @@ const Page = () => {
         Verification in Progress
       </h1>
 
-      <p className="mt-[16px] text-[16px] font-normal leading-[28px] text-[#1F2937]">
-        Thank you for registering with Vegan Collective! Our team will review
-        your documents and profile to ensure alignment with our values. You will
-        receive a notification once your account is verified and active
-      </p>
+      <SuccessBody />
       <Button className="mt-[40px] h-[48px] w-full" asChild>
         <Link href={`/onboarding`} className="w-full">
           Return to Log in
