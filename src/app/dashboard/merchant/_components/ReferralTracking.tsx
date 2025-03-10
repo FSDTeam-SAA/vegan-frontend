@@ -111,7 +111,7 @@ const ReferralTracking = ({ userId }: Props) => {
             Total Referrals <EllipsisVertical className="h-[24px] w-[24px]" />
           </p>
           <p className="pt-[16px] text-2xl font-medium leading-[29px] text-[#1F2937] md:text-3xl md:leading-[36px]">
-            {data.data.participants?.length}
+            {data.data.participants?.length ?? 0}
           </p>
         </div>
         <div className="rounded-[10px] border border-[#E8DFD6] py-4 pl-4 pr-[6px] md:col-span-1">
@@ -119,7 +119,7 @@ const ReferralTracking = ({ userId }: Props) => {
             Commision Remain <EllipsisVertical className="h-[24px] w-[24px]" />
           </p>
           <p className="pt-[16px] text-2xl font-medium leading-[29px] text-[#1F2937] md:text-3xl md:leading-[36px]">
-            ${data?.data?.remain}
+            ${data?.data?.remain ?? 0}
           </p>
         </div>
         <div className="rounded-[10px] border border-[#E8DFD6] py-4 pl-4 pr-[6px] md:col-span-1">
@@ -127,7 +127,7 @@ const ReferralTracking = ({ userId }: Props) => {
             Commission Paid <EllipsisVertical className="h-[24px] w-[24px]" />
           </p>
           <p className="pt-[16px] text-2xl font-medium leading-[29px] text-[#1F2937] md:text-3xl md:leading-[36px]">
-            ${data.data.paid}
+            ${data.data.paid ?? 0}
           </p>
         </div>
       </div>

@@ -15,3 +15,18 @@ export type ReferResponse = {
   message: string;
   data: Refer;
 };
+
+export type TopReffer = {
+  creator: string;
+  totalReferrals: number;
+  amount: number;
+  type: "Professional" | "OtherPossibleTypes"; // Add more types if applicable
+  fullName: string;
+  designation: string;
+};
+
+export type TopRefferResponse = {
+  success: boolean;
+  message: string;
+  data: TopReffer[];
+};

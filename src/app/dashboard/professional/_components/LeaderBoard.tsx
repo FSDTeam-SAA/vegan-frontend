@@ -1,41 +1,58 @@
-import {
-    ProfessionalLeaderBoardData,
-    ProfessionalLeaderBoardDataType,
-} from "@/data/professional-leader-board-data";
+"use client";
+
+import ErrorContainer from "@/components/shared/sections/error-container";
+import SkeletonWrapper from "@/components/ui/skeleton-wrapper";
+import { TopRefferResponse } from "@/types/refferel";
+import { useQuery } from "@tanstack/react-query";
+import TopProfessionalLeaderBoardCard from "./top-professional-leaderboard-card";
 
 const LeaderBoard = () => {
-    return (
-        <div className='pb-[98px] md:pb-[105px] pt-[40px] md:pt-[48px] lg:pt-[56px]'>
-            <div className='bg-[#F8F5F2] rounded-[16px] p-[24px] md:p-[32px] lg:p-[40px]'>
-                <h4 className='text-lg md:text-xl font-medium text-[#1F2937] leading-[24px] pb-[32px] md:pb-[40px]'>Leader Board Of Top Professionals</h4>
-                <div>
-                    {
-                        ProfessionalLeaderBoardData?.map((data: ProfessionalLeaderBoardDataType) => {
-                            return <div key={data?.id} className='flex items-center justify-between bg-white p-3 md:p-4 rounded-[10px] mb-[24px]'>
-                                <div className='flex flex-col md:flex-row items-start md:items-center gap-[16px]'>
-                                    <div className='w-[48px] h-[48px] rounded-[60px] bg-white border border-[#F4F0EB] flex items-center justify-center'>
-                                        <span className='text-2xl font-medium text-[#1F2937] leading-[29px]'>
-                                            {data?.id}
-                                        </span>
+  const { isLoading, data, isError, error } = useQuery<TopRefferResponse>({
+    queryKey: ["toprefferleaderboard"],
+    queryFn: () =>
+      fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/topprofessionalsbyreffer`,
+      ).then((res) => res.json()),
+  });
 
-                                    </div>
-                                    <div>
-                                        <h5 className='text-base md:text-lg font-medium text-[#1F2937] leading-[19px] md:leading-[21px]'>{data?.name}</h5>
-                                        <p className='text-sm md:text-base font-normal text-[#4B5563] leading-[16px] md:leading-[19px] pt-[8px] md:pt-[10px] lg:pt-[12px]'>{data?.profession}</p>
-                                    </div>
-
-                                </div>
-                                <div>
-                                    <h5 className='text-lg md:text-xl lg:text-[22px] font-medium text-[#1F2937] leading-[21px] md:leading-[26px] text-right'>{data?.amount}</h5>
-                                    <p className='text-sm md:text-base font-normal text-[#4B5563] leading-[16px] md:leading-[19px] pt-[8px] md:pt-[10px] lg:pt-[12px] text-right' >{data?.review}</p>
-                                </div>
-                            </div>
-                        })
-                    }
-                </div>
-            </div>
-        </div>
+  let content;
+  if (isLoading) {
+    content = (
+      <div>
+        {[1, 2, 3, 4].map((n) => (
+          <SkeletonWrapper isLoading={isLoading} key={n}>
+            <TopProfessionalLeaderBoardCard />
+          </SkeletonWrapper>
+        ))}
+      </div>
     );
+  } else if (isError) {
+    content = (
+      <ErrorContainer message={error?.message ?? "Failed to load data"} />
+    );
+  } else if (data) {
+    content = (
+      <div>
+        {data?.data.map((item, index) => (
+          <TopProfessionalLeaderBoardCard
+            key={index}
+            data={item}
+            index={index}
+          />
+        ))}
+      </div>
+    );
+  }
+  return (
+    <div className="pb-[98px] pt-[40px] md:pb-[105px] md:pt-[48px] lg:pt-[56px]">
+      <div className="rounded-[16px] bg-[#F8F5F2] p-[24px] md:p-[32px] lg:p-[40px]">
+        <h4 className="pb-[32px] text-lg font-medium leading-[24px] text-[#1F2937] md:pb-[40px] md:text-xl">
+          Leader Board Of Top Professionals
+        </h4>
+        {content}
+      </div>
+    </div>
+  );
 };
 
 export default LeaderBoard;
