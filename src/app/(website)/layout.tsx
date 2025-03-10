@@ -1,5 +1,6 @@
 import { auth } from "@/auth";
 import Footer from "@/components/home/footer/footer";
+import ProfessionalGreetings from "@/components/ui/professional-greetings";
 import dynamic from "next/dynamic";
 import { ReactNode } from "react";
 const Navbar = dynamic(() => import("@/components/navbar/navbar"), {
@@ -27,6 +28,8 @@ const WebsiteLayout = async ({ children }: { children: ReactNode }) => {
       />
       {children}
       <Footer />
+
+      <ProfessionalGreetings />
     </div>
   );
 };

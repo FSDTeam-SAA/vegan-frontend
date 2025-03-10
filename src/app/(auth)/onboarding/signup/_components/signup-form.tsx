@@ -131,12 +131,17 @@ export default function SignUpForm() {
 
   const searchParams = useSearchParams();
   const role = searchParams.get("role");
+  const ref = searchParams.get("ref");
+  const agree = searchParams.get("agree");
   const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
 
     context: { role },
+    defaultValues: {
+      agree: !!agree,
+    },
   });
 
   useEffect(() => {
@@ -150,6 +155,7 @@ export default function SignUpForm() {
     const { agree, ...proccedData } = {
       ...values,
       role: role === "customer" ? "user" : role,
+      ref,
     };
 
     mutate(proccedData);
@@ -267,9 +273,14 @@ export default function SignUpForm() {
                   />
                 </FormControl>
                 <div className="space-y-1 leading-none">
-                  <FormLabel className="font-inter text-[14px] font-normal leading-[20px] text-[#1F2937]">
-                    I agree to receive notifications about platform updates and
-                    opportunities.
+                  <FormLabel className="font-inter text-[12px] font-normal leading-[20px] text-[#1F2937]">
+                    I agree to receive updates and accept the{" "}
+                    <Link
+                      className="font-semibold text-blue-700 hover:underline"
+                      href={`/terms?callback=/onboarding/signup?role=${role}`}
+                    >
+                      Terms & Conditions.
+                    </Link>
                   </FormLabel>
 
                   <FormMessage />
