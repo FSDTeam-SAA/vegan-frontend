@@ -131,6 +131,7 @@ export default function SignUpForm() {
 
   const searchParams = useSearchParams();
   const role = searchParams.get("role");
+  const ref = searchParams.get("ref");
   const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -150,6 +151,7 @@ export default function SignUpForm() {
     const { agree, ...proccedData } = {
       ...values,
       role: role === "customer" ? "user" : role,
+      ref,
     };
 
     mutate(proccedData);
