@@ -25,9 +25,9 @@ const ReferralTracking = ({ userId }: Props) => {
   const { isLoading, data, isError, error } = useQuery<ReferResponse>({
     queryKey: ["my-refer-stats"],
     queryFn: () =>
-      fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/reffer/${userId}`).then(
-        (res) => res.json(),
-      ),
+      fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/reffer/${userId}`,
+      ).then((res) => res.json()),
   });
 
   const { isPending, mutate: createSlug } = useMutation<ReferResponse>({
@@ -111,16 +111,15 @@ const ReferralTracking = ({ userId }: Props) => {
             Total Referrals <EllipsisVertical className="h-[24px] w-[24px]" />
           </p>
           <p className="pt-[16px] text-2xl font-medium leading-[29px] text-[#1F2937] md:text-3xl md:leading-[36px]">
-            68
+            {data.data.participants?.length}
           </p>
         </div>
         <div className="rounded-[10px] border border-[#E8DFD6] py-4 pl-4 pr-[6px] md:col-span-1">
           <p className="flex items-center justify-between text-sm font-normal leading-[16px] text-[#6B7280]">
-            Amount Deducted For Charity{" "}
-            <EllipsisVertical className="h-[24px] w-[24px]" />
+            Commision Remain <EllipsisVertical className="h-[24px] w-[24px]" />
           </p>
           <p className="pt-[16px] text-2xl font-medium leading-[29px] text-[#1F2937] md:text-3xl md:leading-[36px]">
-            $100.00
+            ${data?.data?.remain}
           </p>
         </div>
         <div className="rounded-[10px] border border-[#E8DFD6] py-4 pl-4 pr-[6px] md:col-span-1">
@@ -128,7 +127,7 @@ const ReferralTracking = ({ userId }: Props) => {
             Commission Paid <EllipsisVertical className="h-[24px] w-[24px]" />
           </p>
           <p className="pt-[16px] text-2xl font-medium leading-[29px] text-[#1F2937] md:text-3xl md:leading-[36px]">
-            $524.00
+            ${data.data.paid}
           </p>
         </div>
       </div>
