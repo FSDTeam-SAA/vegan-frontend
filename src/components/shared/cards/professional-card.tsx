@@ -24,7 +24,10 @@ const ProfessionalCard = ({ data }: Props) => {
     <div className="w-full rounded-[16px] bg-white p-[24px] lg:w-[400px]">
       <div className="relative h-[232px] w-full rounded-[12px]">
         <Image
-          src="https://i.postimg.cc/qqPMLNtk/pexels-los-muertos-crew-10041258.png"
+          src={
+            data?.profilePhoto ??
+            "https://i.postimg.cc/qqPMLNtk/pexels-los-muertos-crew-10041258.png"
+          }
           alt="name"
           fill
           className="rounded-[12px]"
@@ -74,7 +77,7 @@ const ProfessionalCard = ({ data }: Props) => {
           $100/<span>hour</span>
         </h3>
         <Link
-          href={`/professionals/${data?._id}`}
+          href={`/professionals/${data?.userId ?? data?.userID}`}
           className="flex h-[48px] w-full items-center justify-center rounded-[8px] bg-[#1D3557] text-[16px] font-medium leading-[19.36px] text-white transition-colors duration-300 hover:bg-[#1D3557]/90"
         >
           View Details

@@ -29,18 +29,20 @@ export default function Service({ id }: Props) {
 
   let content;
 
-  if (isLoading || data?.success) {
-    if (data?.services.length === 0) {
+  console.log(data);
+
+  if (isLoading || data) {
+    if (data?.data?.length === 0) {
       content = (
         <EmptyContainer message={data.messasge || "No Services found"} />
       );
-    } else if ((data?.services && data.services.length > 0) || isLoading) {
+    } else if ((data?.data && data.data.length > 0) || isLoading) {
       content = (
         <SkeletonWrapper isLoading={isLoading}>
           <div className="rounded-[16px] bg-[#F8F5F2] p-[24px] md:p-[32px] lg:p-[40px]">
             <div className="space-y-5">
-              {data?.services &&
-                data.services.map((item: ProfessionalService) => (
+              {data?.data &&
+                data.data.map((item: ProfessionalService) => (
                   <ProfessionalServiceCard
                     key={item._id}
                     data={item}
