@@ -6,9 +6,37 @@ export type HighlightedStatement = {
   _id: string;
 };
 
+export type ProfessionalInfoResponse = {
+  success: boolean;
+  message: string;
+  data: {
+    _id: string;
+    userId: string;
+    profilePhoto: string;
+    fullName: string;
+    designation: string;
+    businessName: string;
+    address: string;
+    about: string;
+    highlightedStatement: {
+      title: string;
+      description: string;
+      _id: string;
+    }[];
+    experience: string[];
+    certifications: string[];
+    websiteURL: string;
+    isVerified: "pending" | "verified" | "rejected"; // Assuming possible values
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+  };
+};
+
 export type ProfessionalProfile = {
   _id: string;
-  userID: string;
+  userID?: string;
+  userId?: string;
   fullName: string;
   designation: string;
   businessName: string;
@@ -17,6 +45,10 @@ export type ProfessionalProfile = {
   highlightedStatement: HighlightedStatement[];
   experience: string[];
   certifications: string[];
+  governmentIssuedID: string;
+  photoWithID: string;
+  professionalCertification: string;
+  profilePhoto: string;
   websiteURL: string;
   createdAt: string;
   updatedAt: string;
@@ -51,8 +83,8 @@ export type ProfessionalService = {
 
 export type ProfessionalServiceResponse = {
   success: boolean;
-  messasge?: string;
-  services: ProfessionalService[];
+  messasge: string;
+  data: ProfessionalService[];
 };
 
 export interface SupportTicket {

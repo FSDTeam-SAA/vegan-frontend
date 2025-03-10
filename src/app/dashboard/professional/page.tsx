@@ -23,7 +23,9 @@ const Page = async () => {
       </div>
 
       <TotalEarnings />
-      <ReferralTracking userId={user.user.userId} />
+      <div className="mt-10">
+        <ReferralTracking userId={user.user.userId} />
+      </div>
       <LeaderBoard />
     </div>
   );

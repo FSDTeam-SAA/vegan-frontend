@@ -23,19 +23,23 @@ const lists = [
   { id: "reviews", label: "Reviews" },
 ] as VeganTab[];
 
-const ProfessionalTab = () => {
+interface Props {
+  professionalId: string;
+}
+
+const ProfessionalTab = ({ professionalId }: Props) => {
   const [activeTab, setActiveTab] = useState<string>("about");
 
   const renderTabContent = () => {
     switch (activeTab) {
       case "about":
-        return <AboutTab />;
+        return <AboutTab professionalId={professionalId} />;
       case "experience":
-        return <ExperienceTab />;
+        return <ExperienceTab professionalId={professionalId} />;
       case "services":
-        return <ServicesTab />;
+        return <ServicesTab professionalId={professionalId} />;
       case "live-stream":
-        return <LiveStreamTab />;
+        return <LiveStreamTab professionalId={professionalId} />;
       case "faqs":
         return <FAQsTab />;
       case "reviews":
