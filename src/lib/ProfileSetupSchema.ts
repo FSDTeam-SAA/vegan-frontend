@@ -61,7 +61,7 @@ export const profileSchema = z.discriminatedUnion("type", [
     fullName: z.string().min(1, "Full name is required"),
     businessName: z.string().optional(),
     about: z.string().optional(),
-    Profession: z.string({ message: "Profession is required" }),
+    designation: z.string({ message: "Designation is required" }),
     experiences: z.array(experienceSchema).optional(),
     certifications: z.array(certificationSchema).optional(),
     highlightedTitle: z.string().optional(),

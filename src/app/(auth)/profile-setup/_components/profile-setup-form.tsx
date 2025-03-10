@@ -223,6 +223,7 @@ export default function ProfileSetupForm() {
         formData.append("about", data.about ?? "");
         formData.append("address", data.address ?? "");
         formData.append("websiteURL", data.websiteURL ?? "");
+        formData.append("designation", data.designation);
 
         // Append experiences as a JSON string
         formData.append(
@@ -312,6 +313,7 @@ export default function ProfileSetupForm() {
         "shortDescriptionOfOrganization",
         data.shortDescriptionOfOrganization,
       );
+
       formData.append("websiteURL", data.websiteURL ?? "");
 
       // Append experiences as a JSON string
@@ -486,7 +488,7 @@ export default function ProfileSetupForm() {
               {type === "professional" && (
                 <FormField
                   control={form.control}
-                  name="Profession"
+                  name="designation"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-[14px] text-[#1F2937]">
@@ -495,7 +497,7 @@ export default function ProfileSetupForm() {
                       <FormControl>
                         <Input
                           className="h-[48px] bg-white px-[26px] py-[13px]"
-                          placeholder="Enter your profession"
+                          placeholder="Enter your Designation"
                           {...field}
                         />
                       </FormControl>
