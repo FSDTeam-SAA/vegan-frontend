@@ -271,7 +271,8 @@ export default function SignUpForm() {
                 <div className="space-y-1 leading-none">
                   <FormLabel className="font-inter text-[14px] font-normal leading-[20px] text-[#1F2937]">
                     I agree to receive notifications about platform updates and
-                    opportunities.
+                    opportunities. I also acknowledge and accept the Terms and
+                    Conditions and Privacy Policy.
                   </FormLabel>
 
                   <FormMessage />
