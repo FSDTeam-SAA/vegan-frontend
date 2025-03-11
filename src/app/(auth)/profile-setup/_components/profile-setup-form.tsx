@@ -533,13 +533,16 @@ export default function ProfileSetupForm() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-[14px] font-medium">
-                      {type === "professional" ? "About Me" : "About Us"}
+                      {type === "professional"
+                        ? "Service Description"
+                        : "About Us"}
                     </FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder={`Provide a brief insight about ${
-                          type === "professional" ? "yourself" : "your " + type
-                        }`}
+                        // placeholder={`Provide a brief insight about ${
+                        //   type === "professional" ? "yourself" : "your " + type
+                        // }`}
+                        placeholder={`${type === "professional" ? "Briefly describe the services you offer (max 300 words)." : "Provide a brief insight about you"}`}
                         className="bg-white px-[26px] py-[13px] lg:h-[127px]"
                         maxLength={300}
                         {...field}

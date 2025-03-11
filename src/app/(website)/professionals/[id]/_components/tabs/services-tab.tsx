@@ -15,7 +15,7 @@ export default function ServicesTab({ professionalId }: Props) {
       queryKey: ["professionalServices"],
       queryFn: () =>
         fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/offline/${professionalId}`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/allservices/${professionalId}`,
         ).then((res) => res.json()),
     });
 
