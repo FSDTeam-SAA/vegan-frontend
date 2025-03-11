@@ -199,6 +199,8 @@ export default function AddServiceForm({ onOpenChange, initialdata }: Props) {
       return;
     }
 
+    const date = new Date(values.date).toISOString().split("T")[0];
+
     const formData = new FormData();
 
     formData.append("userID", userID);
@@ -217,7 +219,7 @@ export default function AddServiceForm({ onOpenChange, initialdata }: Props) {
     formData.append("sessionType", values.sessionType);
     formData.append("isLiveStream", JSON.stringify(values.isLiveStream));
 
-    formData.append("date", JSON.stringify(values.date));
+    formData.append("date", JSON.stringify(date));
     values.timeSlots.forEach((item) => {
       formData.append("timeSlots", item);
     });
