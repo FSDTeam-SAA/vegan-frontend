@@ -76,6 +76,8 @@ export type ProfessionalService = {
   sessionType: string;
   isLiveStream: boolean;
   visibility: boolean;
+  date: string;
+  timeSlots: string[];
   createdAt: string;
   updatedAt: string;
   __v: number;

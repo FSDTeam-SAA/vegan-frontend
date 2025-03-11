@@ -52,6 +52,7 @@ const ServiceCard = ({ data }: Props) => {
             </h4>
             <div className="w-full">
               <ServiceBookModal
+                data={data}
                 open={open}
                 onOpenChange={toggleModal}
                 trigger={

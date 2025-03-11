@@ -1,20 +1,36 @@
 "use client";
 
 // Packages
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  CalendarIcon,
+  Check,
+  ChevronsUpDown,
+  Loader2,
+  Upload,
+  X,
+} from "lucide-react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import { toast } from "sonner";
-
-// Local imports
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2, Upload, X } from "lucide-react";
 import type React from "react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import * as z from "zod";
 
+// Local imports
+
 import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
 import {
   Form,
   FormControl,
@@ -27,6 +43,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import OpacityLoader from "@/components/ui/opacity-loader";
 import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -35,7 +56,9 @@ import {
 } from "@/components/ui/select";
 import { TagsInput } from "@/components/ui/tags-input";
 import { Textarea } from "@/components/ui/textarea";
+import { cn } from "@/lib/utils";
 import { ProfessionalService } from "@/types/professional";
+import { format } from "date-fns";
 
 const formSchema = z.object({
   serviceName: z
@@ -57,6 +80,12 @@ const formSchema = z.object({
   sessionType: z.string({
     message: "Please select your session type",
   }),
+  date: z.date({
+    required_error: "Please select a date.",
+  }),
+  timeSlots: z.array(z.string()).min(1, {
+    message: "Please select at least one time slot.",
+  }),
   isLiveStream: z.boolean(),
   price: z
     .string()
@@ -64,11 +93,23 @@ const formSchema = z.object({
     .transform((val) => (val === "" ? "0.00" : val)),
 });
 
+// Time slots data
+const timeSlots = Array.from({ length: 24 }, (_, i) => {
+  const startHour = i % 12 || 12;
+  const endHour = (i + 1) % 12 || 12;
+  const periodStart = i < 12 ? "AM" : "PM";
+  const periodEnd = i + 1 < 12 || i + 1 === 24 ? "AM" : "PM";
+
+  const value = `${startHour}:00 ${periodStart} - ${endHour}:00 ${periodEnd}`;
+  return { value, label: value };
+});
+
 interface Props {
   onOpenChange: (v: boolean) => void;
   initialdata?: ProfessionalService;
 }
 export default function AddServiceForm({ onOpenChange, initialdata }: Props) {
+  const [open, setOpen] = useState(false);
   const [image, setImage] = useState<File | null | string>(
     initialdata?.serviceImage ?? null,
   );
@@ -148,6 +189,7 @@ export default function AddServiceForm({ onOpenChange, initialdata }: Props) {
       isLiveStream: initialdata?.isLiveStream ?? undefined,
       paymentType: initialdata?.paymentType ?? undefined,
       price: initialdata?.price.toString() ?? undefined,
+      timeSlots: [],
     },
   });
 
@@ -156,6 +198,8 @@ export default function AddServiceForm({ onOpenChange, initialdata }: Props) {
       toast.warning("userID is missing. Please login again.");
       return;
     }
+
+    const date = new Date(values.date).toISOString().split("T")[0];
 
     const formData = new FormData();
 
@@ -174,6 +218,11 @@ export default function AddServiceForm({ onOpenChange, initialdata }: Props) {
     }
     formData.append("sessionType", values.sessionType);
     formData.append("isLiveStream", JSON.stringify(values.isLiveStream));
+
+    formData.append("date", JSON.stringify(date));
+    values.timeSlots.forEach((item) => {
+      formData.append("timeSlots", item);
+    });
 
     // api call
 
@@ -328,6 +377,116 @@ export default function AddServiceForm({ onOpenChange, initialdata }: Props) {
               )}
             />
           </div>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            {/* Date Field */}
+            <FormField
+              control={form.control}
+              name="date"
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
+                  <FormLabel>Date</FormLabel>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant="outline"
+                          className={cn(
+                            "w-full pl-3 text-left font-normal",
+                            !field.value && "text-muted-foreground",
+                          )}
+                        >
+                          <CalendarIcon className="mr-2 h-4 w-4" />
+                          {field.value ? (
+                            format(field.value, "PPP")
+                          ) : (
+                            <span>Select date</span>
+                          )}
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={field.value}
+                        onSelect={field.onChange}
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Time Slots Field - Multiple Select */}
+            <FormField
+              control={form.control}
+              name="timeSlots"
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
+                  <FormLabel>Time Slots</FormLabel>
+                  <Popover open={open} onOpenChange={setOpen}>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant="outline"
+                          role="combobox"
+                          aria-expanded={open}
+                          className={cn(
+                            "w-full justify-between",
+                            !field.value.length && "text-muted-foreground",
+                          )}
+                        >
+                          {field.value.length > 0
+                            ? `${field.value.length} slot${field.value.length > 1 ? "s" : ""} selected`
+                            : "Select time slots"}
+                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-full p-0">
+                      <Command>
+                        <CommandInput placeholder="Search time slot..." />
+                        <CommandList>
+                          <CommandEmpty>No time slot found.</CommandEmpty>
+                          <CommandGroup className="max-h-64 overflow-auto">
+                            {timeSlots.map((slot) => (
+                              <CommandItem
+                                key={slot.value}
+                                value={slot.value}
+                                onSelect={() => {
+                                  const currentValues = new Set(field.value);
+                                  if (currentValues.has(slot.value)) {
+                                    currentValues.delete(slot.value);
+                                  } else {
+                                    currentValues.add(slot.value);
+                                  }
+                                  field.onChange(Array.from(currentValues));
+                                }}
+                              >
+                                <Check
+                                  className={cn(
+                                    "mr-2 h-4 w-4",
+                                    field.value.includes(slot.value)
+                                      ? "opacity-100"
+                                      : "opacity-0",
+                                  )}
+                                />
+                                {slot.label}
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
+
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <FormField
               control={form.control}

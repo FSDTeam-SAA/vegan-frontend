@@ -90,8 +90,9 @@ export default function OnBoardingForm() {
                               Join as a Customer
                             </span>
                             <span className="hidden text-left font-inter text-[12px] text-xs font-normal italic leading-[18px] text-[#9CA3AF] md:block">
-                              to offer services, products or non-profit
-                              initiatives
+                              Join as a Customer to explore our platform,
+                              discover vegan services and products, and support
+                              ethical initiatives.
                             </span>
                           </FormLabel>
                         </div>
@@ -118,8 +119,8 @@ export default function OnBoardingForm() {
                               Join as a Vendor
                             </span>
                             <span className="hidden text-left font-inter text-[12px] text-xs font-normal italic leading-[18px] text-[#9CA3AF] md:block">
-                              to discover vegan services, products and support
-                              ethical initiatives
+                              Join as a Vendor to offer services, products, or
+                              nonprofit initiatives through Vegan Collective.
                             </span>
                           </FormLabel>
                         </div>
