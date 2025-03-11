@@ -18,6 +18,7 @@ const WebsiteLayout = async ({ children }: { children: ReactNode }) => {
     accounRole = session.user.accountType!;
   }
 
+  console.log(session);
   return (
     <div className="">
       <Navbar
@@ -29,7 +30,13 @@ const WebsiteLayout = async ({ children }: { children: ReactNode }) => {
       {children}
       <Footer />
 
-      <ProfessionalGreetings />
+      {session?.user && (
+        <ProfessionalGreetings
+          isGreetings={!!session.user.isgratings}
+          userId={session.user.userId!}
+          isVerified={session.user.isVerified}
+        />
+      )}
     </div>
   );
 };
