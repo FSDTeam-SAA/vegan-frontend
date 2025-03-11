@@ -9,7 +9,7 @@ interface Props {
 }
 
 const ServiceCard = ({ data }: Props) => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   let text = data?.serviceDescription ?? "";
 
   text = truncateText(text, 190);

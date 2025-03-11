@@ -217,6 +217,11 @@ export default function AddServiceForm({ onOpenChange, initialdata }: Props) {
     formData.append("sessionType", values.sessionType);
     formData.append("isLiveStream", JSON.stringify(values.isLiveStream));
 
+    formData.append("date", JSON.stringify(values.date));
+    values.timeSlots.forEach((item) => {
+      formData.append("timeSlots", item);
+    });
+
     // api call
 
     if (initialdata) {

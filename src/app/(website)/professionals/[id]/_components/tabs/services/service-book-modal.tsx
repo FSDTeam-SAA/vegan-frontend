@@ -41,7 +41,7 @@ const ServiceBookModal = ({ open, onOpenChange, trigger }: Props) => {
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogTrigger className="w-full">{trigger}</AlertDialogTrigger>
-      <AlertDialogContent className="max-w-[380px] py-[24px]">
+      <AlertDialogContent className="w-full max-w-[380px] py-[24px] md:min-w-[600px]">
         <AlertDialogHeader>
           <div className="flex items-center justify-between">
             <AlertDialogTitle className="max-w-[350px] text-left font-inter text-[18px] font-medium leading-[21.78px] text-[#1F2937]">
@@ -53,7 +53,7 @@ const ServiceBookModal = ({ open, onOpenChange, trigger }: Props) => {
           </div>
         </AlertDialogHeader>
 
-        <div className="flex w-full flex-col gap-x-5">
+        <div className="flex w-full flex-col gap-x-5 md:flex-row">
           <Calendar
             mode="single"
             selected={date}
