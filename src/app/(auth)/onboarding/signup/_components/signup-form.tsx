@@ -161,6 +161,10 @@ export default function SignUpForm() {
     mutate(proccedData);
   }
 
+  const termsPage = ref
+    ? `/terms?role=${role}&ref=${ref}`
+    : `/terms?role=${role}`;
+
   return (
     <div className="mt-[40px]">
       <SocialLogin />
@@ -182,13 +186,32 @@ export default function SignUpForm() {
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select Account type" />
+                        <SelectValue placeholder="Select Account type">
+                          {form.watch("accountType")}
+                        </SelectValue>
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="merchant">Merchant</SelectItem>
-                      <SelectItem value="organization">Organization</SelectItem>
-                      <SelectItem value="professional">Professional</SelectItem>
+                      <SelectItem value="merchant" className="max-w-3xl">
+                        Merchant
+                        <p className="text-[10px]">
+                          Sell 100% vegan products on a trusted platform.
+                        </p>
+                      </SelectItem>
+                      <SelectItem value="organization" className="max-w-3xl">
+                        Organization{" "}
+                        <p className="text-[10px]">
+                          Promote your nonprofit initiatives, raise funds, and
+                          connect with the vegan community.
+                        </p>
+                      </SelectItem>
+                      <SelectItem value="professional" className="max-w-3xl">
+                        Professional{" "}
+                        <p className="text-[10px]">
+                          Offer your services as a verified vegan professional
+                          to a global audience.
+                        </p>
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -274,13 +297,16 @@ export default function SignUpForm() {
                 </FormControl>
                 <div className="space-y-1 leading-none">
                   <FormLabel className="font-inter text-[12px] font-normal leading-[20px] text-[#1F2937]">
-                    I agree to receive updates and accept the{" "}
+                    As a Professional on Vegan Collective, you are part of a
+                    trusted platform for ethical services. By continuing, you
+                    agree to uphold{" "}
                     <Link
+                      href={termsPage}
                       className="font-semibold text-blue-700 hover:underline"
-                      href={`/terms?callback=/onboarding/signup?role=${role}`}
                     >
-                      Terms & Conditions.
-                    </Link>
+                      these commitments
+                    </Link>{" "}
+                    to ensure trust, quality, and alignment with our mission.
                   </FormLabel>
 
                   <FormMessage />
