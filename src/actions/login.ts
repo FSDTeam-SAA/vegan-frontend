@@ -68,6 +68,8 @@ export type UserData = {
     accountType: "merchant" | "professional" | "organization" | null;
     token: string;
     paymentAdded: boolean;
+    isgratings: boolean;
+    isVerified: "approved" | "pending" | "declined";
   };
 };
 

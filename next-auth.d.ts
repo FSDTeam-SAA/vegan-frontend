@@ -6,6 +6,8 @@ export type ExtendedUser = DefaultSession["user"] & {
   role: string;
   accountType: "merchant" | "professional" | "organization" | null;
   paymentAdded: boolean;
+  isgratings: boolean;
+  isVerified: "approved" | "pending" | "declined";
 };
 
 declare module "next-auth" {
@@ -27,6 +29,8 @@ declare module "next-auth/jwt" {
       accountType: "merchant" | "professional" | "organization" | null;
       token: string;
       paymentAdded: boolean;
+      isgratings: boolean;
+      isVerified: "approved" | "pending" | "declined";
     };
   }
 }
