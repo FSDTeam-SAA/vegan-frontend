@@ -1,127 +1,185 @@
 "use client"
+
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form"
 import { Textarea } from "@/components/ui/textarea"
-import { PencilIcon, TrashIcon, PlusIcon } from "lucide-react"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useFieldArray, useForm } from "react-hook-form"
-import * as z from "zod"
+import { Card } from "@/components/ui/card"
+import { Pencil, Trash2,  Loader2 } from "lucide-react"
+import { toast } from "sonner"
+import { useMutation } from "@tanstack/react-query"
 
-const faqSchema = z.object({
-  faqs: z.array(
-    z.object({
-      question: z.string().max(100),
-      answer: z.string().max(200),
-    }),
-  ),
-})
+interface Question {
+  id: number
+  question: string
+  answer: string
+}
 
-type FaqFormValues = z.infer<typeof faqSchema>
+interface MutateBody {
+  question: string;
+  answer: string;
+  userID: string;
+}
+interface Props {
+  userId: string;
+}
 
-export default function Faqs() {
-  const form = useForm<FaqFormValues>({
-    resolver: zodResolver(faqSchema),
-    defaultValues: {
-      faqs: [
-        {
-          question: "What services do you offer?",
-          answer:
-            "I specialize in vegan nutrition coaching and meal planning. This includes personalized diet plans, cooking tutorials, and ongoing support for your plant-based journey.",
-        },
-      ],
-    },
-  })
+export default function QAForm({userId}: Props) {
+  const [pendingId, setPendingId] = useState<number | null>(null)
 
-  const { fields, append, remove } = useFieldArray({
-    name: "faqs",
-    control: form.control,
-  })
 
-  function onSubmit(data: FaqFormValues) {
-    console.log(data)
+  const [questions, setQuestions] = useState<Question[]>([
+    {
+      id: 1,
+      question: "",
+      answer:
+        "",
+    }
+  ])
+
+
+
+  const { mutate: createMuate, isPending } = useMutation({
+  mutationKey: ["forget-password"],
+  mutationFn: (data: MutateBody) =>
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/faqs`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }).then((res) => res.json()),
+  onSuccess: (data) => {
+    setPendingId (null)
+
+    if (!data.success) {
+      toast.error(data.message, {
+        position: "top-right",
+        richColors: true,
+      });
+
+      return;
+    }
+
+    // handle success
+    toast.success(data.message, {
+      position: "bottom-right",
+      richColors: true,
+    });
+
+   
+  },
+  onError: (err) => {
+    setPendingId (null)
+    toast.error(err.message ?? "Something went wrong" , {
+      position: "top-right",
+      richColors: true
+    });
+  },
+});
+
+  const handleQuestionChange = (id: number, value: string) => {
+    setQuestions(questions.map((q) => (q.id === id ? { ...q, question: value } : q)))
   }
 
+  const handleAnswerChange = (id: number, value: string) => {
+    setQuestions(questions.map((q) => (q.id === id ? { ...q, answer: value } : q)))
+  }
+
+  const handleCreate = (id: number) => {
+    const question = questions.find((q) => q.id === id)
+    console.log("Form data:", question)
+
+    if(!question?.question || !question?.answer) {
+      toast.error("Question and Answer is required", {
+        position: "top-right",
+        richColors: true,
+      });
+
+      return;
+    }
+
+    const data = {
+      question: question?.question, answer: question?.answer, userID: userId} 
+
+      // call api
+      setPendingId(question.id)
+      createMuate(data)
+
+  }
+
+  const handleDelete = (id: number) => {
+    setQuestions(questions.filter((q) => q.id !== id))
+  }
+
+  // const addNewQuestion = () => {
+  //   if (questions.length < 10) {
+  //     setQuestions([
+  //       ...questions,
+  //       {
+  //         id: Math.max(...questions.map((q) => q.id)) + 1,
+  //         question: "",
+  //         answer: "",
+  //       },
+  //     ])
+  //   }
+  // }
+
   return (
-    <div className="mt-[48px] bg-[#F8F5F2] rounded-[16px] p-[24px] md:p-[32px] lg:p-[40px]">
-        <Form {...form} >
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 ">
-        <div className="space-y-4">
-          {fields.map((field, index) => (
-            <Card key={field.id} className="">
-              <CardContent className="pt-6">
-                <div className="space-y-4">
-                  <FormField
-                    control={form.control}
-                    name={`faqs.${index}.question`}
-                    render={({ field }) => (
-                      <FormItem>
-                        <div className="flex justify-between">
-                          <FormLabel>Question {index + 1}</FormLabel>
-                          <span className="text-sm text-muted-foreground">{field.value.length}/100</span>
-                        </div>
-                        <FormControl>
-                          <Textarea placeholder="Enter your question" className="resize-none" {...field} />
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name={`faqs.${index}.answer`}
-                    render={({ field }) => (
-                      <FormItem>
-                        <div className="flex justify-between">
-                          <FormLabel>Answer</FormLabel>
-                          <span className="text-sm text-muted-foreground">{field.value.length}/200</span>
-                        </div>
-                        <FormControl>
-                          <Textarea placeholder="Enter your answer" className="resize-none" {...field} />
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-                  <div className="flex justify-end gap-2">
-                    <Button type="button" variant="ghost" size="sm" className="h-8 px-2">
-                      <PencilIcon className="h-4 w-4" />
-                      <span className="ml-2">Edit</span>
-                    </Button>
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      className="h-8 px-2 text-destructive"
-                      onClick={() => remove(index)}
-                    >
-                      <TrashIcon className="h-4 w-4" />
-                      <span className="ml-2">Delete</span>
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+    <div className="w-full mt-[48px] bg-[#F8F5F2] p-6 rounded-lg">
+      {questions.map((q, ) => (
+        <Card key={q.id} className="mb-6 p-6 bg-white">
+          <div className="mb-4">
+            <div className="flex justify-between items-center mb-2">
+              <label className="font-medium text-gray-900">Question {q.id}</label>
+              <span className="text-sm text-gray-500">{q.question.length}/100</span>
+            </div>
+            <Textarea
+              value={q.question}
+              onChange={(e) => handleQuestionChange(q.id, e.target.value)}
+              placeholder="Enter your question"
+              className="w-full p-3 border rounded"
+              maxLength={100}
+            />
+          </div>
+
+          <div className="mb-4">
+            <div className="flex justify-between items-center mb-2">
+              <label className="font-medium text-gray-900">Answer</label>
+              <span className="text-sm text-gray-500">{q.answer.length}/200</span>
+            </div>
+            <Textarea
+              value={q.answer}
+              onChange={(e) => handleAnswerChange(q.id, e.target.value)}
+              placeholder="Enter your answer"
+              className="w-full p-3 border rounded"
+              maxLength={200}
+            />
+          </div>
+
+          <div className="flex justify-end gap-2">
+            <Button variant="outline" size="icon" className="h-9 w-9">
+              <Pencil className="h-4 w-4" />
+              <span className="sr-only">Edit</span>
+            </Button>
+            <Button variant="outline" size="icon" className="h-9 w-9 text-red-500" onClick={() => handleDelete(q.id)}>
+              <Trash2 className="h-4 w-4" />
+              <span className="sr-only">Delete</span>
+            </Button>
+            <Button className="bg-slate-800 text-white hover:bg-slate-700" onClick={() => handleCreate(q.id)} disabled={pendingId === q.id && isPending}>
+              Create {pendingId === q.id && isPending && <Loader2 className="h-4 w-4 animate-spin" />}
+            </Button>
+          </div>
+        </Card>
+      ))}
+
+      {/* {questions.length < 10 && (
+        <div className="flex justify-center">
+          <Button variant="ghost" className="flex items-center gap-2" onClick={addNewQuestion}>
+            <Plus className="h-4 w-4" />
+            Add New Q&A (Maximum 10)
+          </Button>
         </div>
-
-        <Button
-          type="button"
-          variant="outline"
-          className="w-full border-dashed"
-          onClick={() => {
-            if (fields.length < 10) {
-              append({ question: "", answer: "" })
-            }
-          }}
-        >
-          <PlusIcon className="mr-2 h-4 w-4" />
-          Add New Q&A (Maximum 10)
-        </Button>
-
-        <Button type="submit" className="w-32">
-          Save Changes
-        </Button>
-      </form>
-    </Form>
+      )} */}
     </div>
   )
 }

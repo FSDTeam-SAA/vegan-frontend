@@ -11,7 +11,12 @@ const tabs = [
   { id: "faqs", label: "FAQS" }
 ] as VeganTab[];
 
-export default function ClientManagementContainer() {
+
+interface Props {
+  userId: string;
+}
+
+export default function ClientManagementContainer({userId}: Props) {
   const [activeTab, setActiveTab] = useState("bookings");
 
   return (
@@ -38,7 +43,7 @@ export default function ClientManagementContainer() {
       <div className="">
         {activeTab === "bookings" && <BookingsContainer />}
         {activeTab === "policies" && <Policies />}
-        {activeTab === "faqs" && <Faqs />}
+        {activeTab === "faqs" && <Faqs userId={userId} />}
       </div>
     </div>
   );
