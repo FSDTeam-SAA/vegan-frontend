@@ -1,12 +1,21 @@
 "use client";
+import PaymentForm from "@/components/shared/features/payment/payment-form";
+import AlertModal from "@/components/ui/alert-modal";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import VeganModal from "@/components/ui/vegan-modal";
+import { cn } from "@/lib/utils";
 import Image from "next/image";
-import React, { useState } from "react";
-import AddBankMethodForm from "./AddBankMethodForm";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
-const PaymentMethod = () => {
+interface Props {
+  isPaymentAdded: boolean;
+}
+
+const PaymentMethod = ({ isPaymentAdded }: Props) => {
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
   const handlePaymentMethodForm = () => {
     setIsOpen(!isOpen);
   };
@@ -17,14 +26,14 @@ const PaymentMethod = () => {
           <h5 className="text-lg font-medium leading-[21px] text-[#1F2937] md:text-xl md:leading-[24px]">
             Payment Methods
           </h5>
-          <Button
+          {/* <Button
             onClick={handlePaymentMethodForm}
             className="text-base font-medium leading-[19px] text-[#1F2937]"
             size="xl"
             variant="outline"
           >
             Add A Method
-          </Button>
+          </Button> */}
         </div>
         {/* second part  */}
         <div className="pt-[40px]">
@@ -33,99 +42,65 @@ const PaymentMethod = () => {
               <Image src="/assets/wise.png" alt="icon" width={26} height={18} />
               <div>
                 <p className="text-base font-medium leading-[19px] text-[#1F2937] md:text-lg md:leading-[21px]">
-                  Wise
-                </p>
-                <p className="pt-[8px] text-sm font-normal leading-[16px] text-[#4B5563] md:text-base md:leading-[19px]">
-                  Not Connected
-                </p>
-              </div>
-            </div>
-            <div>
-              <Button
-                className="text-base font-medium leading-[19px] text-[#1D3557]"
-                variant="ghost"
-              >
-                Connect
-              </Button>
-            </div>
-          </div>
-          <div className="mb-[24px] flex items-center justify-between rounded-[10px] bg-white p-[16px]">
-            <div className="flex items-center gap-[8px] md:gap-[13px] lg:gap-[18px]">
-              <Image src="/assets/wise.png" alt="icon" width={26} height={18} />
-              <div>
-                <p className="text-base font-medium leading-[19px] text-[#1F2937] md:text-lg md:leading-[21px]">
-                  PayPal
-                </p>
-                <p className="pt-[8px] text-sm font-normal leading-[16px] text-[#4B5563] md:text-base md:leading-[19px]">
-                  Not Connected
-                </p>
-              </div>
-            </div>
-            <div>
-              <Button
-                className="text-base font-medium leading-[19px] text-[#1D3557]"
-                variant="ghost"
-              >
-                Connect
-              </Button>
-            </div>
-          </div>
-          <div className="mb-[24px] flex items-center justify-between rounded-[10px] bg-white p-[16px]">
-            <div className="flex items-center gap-[8px] md:gap-[13px] lg:gap-[18px]">
-              <Image src="/assets/wise.png" alt="icon" width={26} height={18} />
-              <div>
-                <p className="text-base font-medium leading-[19px] text-[#1F2937] md:text-lg md:leading-[21px]">
                   Stripe
                 </p>
                 <p className="pt-[8px] text-sm font-normal leading-[16px] text-[#4B5563] md:text-base md:leading-[19px]">
-                  Connected
+                  {isPaymentAdded ? "Connected" : "Add Your stripe card"}
                 </p>
               </div>
             </div>
             <div>
-              <Button
-                className="text-base font-medium leading-[19px] text-[#EF4444]"
-                variant="ghost"
-              >
-                Remove
-              </Button>
-            </div>
-          </div>
-          <div className="flex items-center justify-between rounded-[10px] bg-white p-[16px]">
-            <div className="flex items-center gap-[8px] md:gap-[13px] lg:gap-[18px]">
-              <Image src="/assets/wise.png" alt="icon" width={26} height={18} />
-              <div>
-                <p className="text-base font-medium leading-[19px] text-[#1F2937] md:text-lg md:leading-[21px]">
-                  Bank Account
-                </p>
-                <p className="pt-[8px] text-sm font-normal leading-[16px] text-[#4B5563] md:text-base md:leading-[19px]">
-                  Add your bank details
-                </p>
-              </div>
-            </div>
-            <div>
-              <Button
-                className="text-base font-medium leading-[19px] text-[#1D3557]"
-                variant="ghost"
-              >
-                <ArrowRight />
-              </Button>
+              {isPaymentAdded ? (
+                <Button
+                  className={cn(
+                    "text-base font-medium leading-[19px] text-[#EF4444]",
+                  )}
+                  variant="ghost"
+                  onClick={() => setIsDeleteModalOpen(true)}
+                >
+                  Remove
+                </Button>
+              ) : (
+                <Button
+                  className={cn(
+                    "text-base font-medium leading-[19px] text-black",
+                  )}
+                  variant="ghost"
+                  onClick={handlePaymentMethodForm}
+                >
+                  Connect
+                </Button>
+              )}
             </div>
           </div>
         </div>
-
-        {/* modal part  */}
-        {isOpen && (
-          <section className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30 backdrop-blur-sm">
-            {/* Modal content */}
-            <div className="relative z-10">
-              <AddBankMethodForm setIsOpen={setIsOpen} />
-            </div>
-          </section>
-        )}
       </div>
+
+      <VeganModal open={isOpen} onOpenChange={setIsOpen} className="">
+        <PaymentForm
+          onSubmit={() => {
+            router.refresh();
+            handlePaymentMethodForm();
+          }}
+        />
+      </VeganModal>
+
+      <AlertModal
+        loading={false}
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onConfirm={() => {}}
+        message="want to disconnect your Stripe account?"
+      />
     </div>
   );
 };
 
 export default PaymentMethod;
+
+// <section className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30 backdrop-blur-sm">
+//   {/* Modal content */}
+//   <div className="relative z-10">
+//     <AddBankMethodForm setIsOpen={setIsOpen} />
+//   </div>
+// </section>
