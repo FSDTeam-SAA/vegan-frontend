@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -161,6 +162,14 @@ export default function SignUpForm() {
     mutate(proccedData);
   }
 
+  const accountTypeMessage = {
+    merchant: "Sell 100% vegan products on a trusted platform.",
+    organization:
+      "Promote your nonprofit initiatives, raise funds, and connect with the vegan community.",
+    professional:
+      "Offer your services as a verified vegan professional to a global audience.",
+  };
+
   const termsPage = ref
     ? `/terms?role=${role}&ref=${ref}`
     : `/terms?role=${role}`;
@@ -173,6 +182,7 @@ export default function SignUpForm() {
           onSubmit={form.handleSubmit(onSubmit)}
           className="mx-auto max-w-3xl space-y-[16px] pt-[24px]"
         >
+          <p></p>
           {role === "vendor" && (
             <FormField
               control={form.control}
@@ -186,35 +196,31 @@ export default function SignUpForm() {
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select Account type">
-                          {form.watch("accountType")}
-                        </SelectValue>
+                        <SelectValue placeholder="Select Account type" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
                       <SelectItem value="merchant" className="max-w-3xl">
                         Merchant
-                        <p className="text-[10px]">
-                          Sell 100% vegan products on a trusted platform.
-                        </p>
                       </SelectItem>
                       <SelectItem value="organization" className="max-w-3xl">
-                        Organization{" "}
-                        <p className="text-[10px]">
-                          Promote your nonprofit initiatives, raise funds, and
-                          connect with the vegan community.
-                        </p>
+                        Organization <p className="text-[10px]"></p>
                       </SelectItem>
                       <SelectItem value="professional" className="max-w-3xl">
-                        Professional{" "}
-                        <p className="text-[10px]">
-                          Offer your services as a verified vegan professional
-                          to a global audience.
-                        </p>
+                        Professional
                       </SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
+                  <FormDescription>
+                    {
+                      accountTypeMessage[
+                        (form.watch(
+                          "accountType",
+                        ) as keyof typeof accountTypeMessage) ?? "merchant"
+                      ]
+                    }
+                  </FormDescription>
                 </FormItem>
               )}
             />
