@@ -76,7 +76,9 @@ const SavePaymentMethod = ({ onPurchase }: Props) => {
     const data = await res.json();
 
     if (data.success) {
-      toast.success("Payment method saved successfully");
+      toast.success("Payment method saved successfully", {
+        richColors: true,
+      });
       onPurchase();
     } else {
       toast.error("Failed to save payment method");

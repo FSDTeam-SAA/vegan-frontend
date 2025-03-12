@@ -1,24 +1,63 @@
 "use client";
+// Packages
+import { useMutation } from "@tanstack/react-query";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { toast } from "sonner";
+
+// Local imports
 import PaymentForm from "@/components/shared/features/payment/payment-form";
 import AlertModal from "@/components/ui/alert-modal";
 import { Button } from "@/components/ui/button";
 import VeganModal from "@/components/ui/vegan-modal";
 import { cn } from "@/lib/utils";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
 
 interface Props {
   isPaymentAdded: boolean;
+  userId: string;
 }
 
-const PaymentMethod = ({ isPaymentAdded }: Props) => {
+const PaymentMethod = ({ isPaymentAdded, userId }: Props) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const handlePaymentMethodForm = () => {
     setIsOpen(!isOpen);
   };
+
+  const { mutate: removeCard, isPending } = useMutation({
+    mutationKey: ["removeCard"],
+    mutationFn: () =>
+      fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/payment/remove-payment-method`,
+        {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify({
+            userID: userId,
+          }),
+        },
+      ).then((res) => res.json()),
+    onSuccess: (data) => {
+      if (!data.status) {
+        toast.error(data.message ?? "Failed to remove payment method", {
+          position: "top-right",
+          richColors: true,
+        });
+        return;
+      }
+
+      // handle success
+      router.refresh();
+      setIsDeleteModalOpen(false);
+      toast.success(data.message, {
+        richColors: true,
+      });
+    },
+  });
   return (
     <div className="py-[56px]">
       <div className="rounded-[16px] bg-[#F8F5F2] p-[24px] md:p-[32px] lg:p-[40px]">
@@ -53,7 +92,7 @@ const PaymentMethod = ({ isPaymentAdded }: Props) => {
               {isPaymentAdded ? (
                 <Button
                   className={cn(
-                    "text-base font-medium leading-[19px] text-[#EF4444]",
+                    "text-base font-medium leading-[19px] text-[#EF4444] hover:bg-rose-50 hover:text-[#EF4444]",
                   )}
                   variant="ghost"
                   onClick={() => setIsDeleteModalOpen(true)}
@@ -86,10 +125,10 @@ const PaymentMethod = ({ isPaymentAdded }: Props) => {
       </VeganModal>
 
       <AlertModal
-        loading={false}
+        loading={isPending}
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
-        onConfirm={() => {}}
+        onConfirm={() => removeCard()}
         message="want to disconnect your Stripe account?"
       />
     </div>
