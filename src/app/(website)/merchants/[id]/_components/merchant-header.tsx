@@ -1,20 +1,25 @@
 import ProfileCartButton from "@/app/(website)/professionals/[id]/_components/tabs/profile-cart-button";
+import { MerchantProfile } from "@/types/merchant";
 import { Star } from "lucide-react";
 
-const MerchantHeader = () => {
+interface Props {
+  data?: MerchantProfile;
+}
+
+const MerchantHeader = ({ data }: Props) => {
   return (
     <div className="container my-[58px] flex h-[71px] items-center justify-between">
       <div className="space-y-[8px] lg:space-y-[12px]">
         <div className="flex items-center gap-x-[32px]">
           <h1 className="font-lexend text-[18px] font-medium leading-[26.1px] text-[#1D3557] lg:text-[24px] lg:leading-[34.8px]">
-            Green Earth Organics
+            {data?.businessName}
           </h1>
           <div className="hidden md:block">
             <Review />
           </div>
         </div>
         <p className="font-inter text-[16px] font-normal leading-[24.2px] text-[#4B5563] lg:text-[20px]">
-          Sustainable and ethical vegan products for conscious consumers
+          {data?.shortDescriptionOfStore}
         </p>
 
         <div className="md:hidden">
@@ -23,7 +28,7 @@ const MerchantHeader = () => {
       </div>
 
       <div>
-        <ProfileCartButton />
+        <ProfileCartButton data={data} />
       </div>
     </div>
   );

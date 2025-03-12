@@ -1,7 +1,14 @@
-import React from "react";
-import SupportHelpForm from "../_components/SupportHelpCenter/SupportHelpForm";
+import { auth } from "@/auth";
+import dynamic from "next/dynamic";
+import { redirect } from "next/navigation";
+const SupportHelpForm = dynamic(
+  () => import("../_components/SupportHelpCenter/SupportHelpForm"),
+  { ssr: false },
+);
 
-export default function page() {
+export default async function page() {
+  const currentUser = await auth();
+  if (!currentUser) redirect("/onboarding");
   return (
     <div>
       <div className="mb-5">
@@ -12,7 +19,7 @@ export default function page() {
           Find everything you need to succeed on our platform.
         </p>
       </div>
-      <SupportHelpForm />
+      <SupportHelpForm userId={currentUser.user.userId} />
     </div>
   );
 }

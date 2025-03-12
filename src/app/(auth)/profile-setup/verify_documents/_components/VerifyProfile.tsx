@@ -1,33 +1,172 @@
 "use client";
 
+// Packages
+import { useMutation } from "@tanstack/react-query";
+import { InfoIcon, Loader2 } from "lucide-react";
+import Link from "next/link";
+import { redirect, useRouter, useSearchParams } from "next/navigation";
+import { useMemo, useState } from "react";
+import { toast } from "sonner";
+
+// Local imports
 import FileUploader from "@/components/shared/Uploader/FileUploader";
 import { Button } from "@/components/ui/button";
-import { InfoIcon } from "lucide-react";
-import Link from "next/link";
-import { useState } from "react";
 
 export default function VerifyProfile() {
-  const [files, setFiles] = useState<{ type: string; file: File }[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [files, setFiles] = useState({
+    governmentIssuedID: undefined as File | undefined,
+    professionalCertification: undefined as File | undefined,
+    photoWithID: undefined as File | undefined,
+  });
 
-  const handleFileSelect = (type: string) => (file: File | null) => {
-    setFiles((prevFiles) => {
-      if (file) {
-        // Replace file if the type already exists, otherwise add new
-        const filteredFiles = prevFiles.filter((f) => f.type !== type);
-        return [...filteredFiles, { type, file }];
-      } else {
-        // Remove file if null
-        return prevFiles.filter((f) => f.type !== type);
+  const router = useRouter();
+  const userID = useSearchParams().get("userId");
+  const type = useSearchParams().get("type");
+
+  // Redirect if userID is missing
+  if (!userID) redirect("/");
+
+  // Mutation for professional verification
+  const { mutate, isPending } = useMutation({
+    mutationKey: ["documents"],
+    mutationFn: (data: FormData) =>
+      fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/ProfessionalInfo/uploadImages`,
+        {
+          method: "PUT",
+          body: data,
+        },
+      ).then((res) => res.json()),
+
+    onSuccess: (data) => {
+      if (data.success) {
+        setLoading(true);
+        toast.success(data.message, {
+          position: "top-right",
+          richColors: true,
+        });
+        router.push(`/profile-setup/success?type=${type}`);
       }
+    },
+    onError: (err) => {
+      toast.error(err.message || "An error occurred. Please try again.", {
+        position: "top-right",
+        richColors: true,
+      });
+    },
+  });
+
+  // Mutation for merchant verification
+  const { mutate: merchantVerificationMutate, isPending: merchantPending } =
+    useMutation({
+      mutationKey: ["documents"],
+      mutationFn: (data: FormData) =>
+        fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/merchant/uploadImages`,
+          {
+            method: "PUT",
+            body: data,
+          },
+        ).then((res) => res.json()),
+
+      onSuccess: (data) => {
+        if (data.success) {
+          setLoading(true);
+          toast.success(data.message, {
+            position: "top-right",
+            richColors: true,
+          });
+          router.push(`/profile-setup/success?type=${type}`);
+        }
+      },
+      onError: (err) => {
+        toast.error(err.message || "An error occurred. Please try again.", {
+          position: "top-right",
+          richColors: true,
+        });
+      },
     });
+  const {
+    mutate: organizationVerificationMutate,
+    isPending: organizationPending,
+  } = useMutation({
+    mutationKey: ["documents"],
+    mutationFn: (data: FormData) =>
+      fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/organization/uploadImages`,
+        {
+          method: "PUT",
+          body: data,
+        },
+      ).then((res) => res.json()),
+
+    onSuccess: (data) => {
+      if (data.success) {
+        setLoading(true);
+        toast.success(data.message, {
+          position: "top-right",
+          richColors: true,
+        });
+        router.push(`/profile-setup/success?type=${type}`);
+      }
+    },
+    onError: (err) => {
+      toast.error(err.message || "An error occurred. Please try again.", {
+        position: "top-right",
+        richColors: true,
+      });
+    },
+  });
+
+  // Handle continue button click
+  const handleContinue = () => {
+    if (
+      !files.governmentIssuedID ||
+      !files.professionalCertification ||
+      !files.photoWithID
+    ) {
+      toast.error("Please upload all required documents.", {
+        position: "top-right",
+        richColors: true,
+      });
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("userID", userID);
+    formData.append("governmentIssuedID", files.governmentIssuedID);
+    formData.append(
+      "professionalCertification",
+      files.professionalCertification,
+    );
+    formData.append("photoWithID", files.photoWithID);
+
+    // Handle file upload mutations based on user type
+    if (type === "professional") {
+      mutate(formData);
+    } else if (type === "merchant") {
+      merchantVerificationMutate(formData);
+    } else if (type === "organization") {
+      organizationVerificationMutate(formData);
+    }
   };
 
-  const handleContinue = () => {
-    console.log("Uploaded files:", files);
-  };
+  // Memoized loading state
+  const isLoading = useMemo(
+    () =>
+      isPending ||
+      merchantPending ||
+      loading ||
+      !files.governmentIssuedID ||
+      !files.photoWithID ||
+      !files.professionalCertification ||
+      organizationPending,
+    [isPending, merchantPending, loading, files, organizationPending],
+  );
 
   return (
-    <div className="mt-[48px ] container pb-[48px] lg:mt-[110px]">
+    <div className="container mt-[48px] pb-[48px] lg:mt-[110px]">
       <div className="space-y-6">
         {/* Header */}
         <div className="space-y-2 text-center">
@@ -55,34 +194,43 @@ export default function VerifyProfile() {
 
         {/* Upload Section */}
         <div className="grid gap-[50px] md:grid-cols-2 lg:grid-cols-3 lg:pt-10">
-          <div className="max-w-[334px] space-y-2">
+          <div className="mx-auto max-w-[334px] space-y-2">
             <p className="text-sm font-medium text-[#1D3557]">
               Government-Issued ID (Upload a government-issued ID of the
               business owner)
             </p>
             <FileUploader
-              onFileSelect={handleFileSelect("government-id")}
+              onFileSelect={(file) =>
+                setFiles((prev) => ({ ...prev, governmentIssuedID: file! }))
+              }
               accept=".pdf,.jpg,.jpeg,.png"
             />
           </div>
 
-          <div className="max-w-[334px] space-y-2">
+          <div className="mx-auto max-w-[334px] space-y-2">
             <p className="text-sm font-medium text-[#1D3557]">
               Business License (Upload proof of business registration or
               license)
             </p>
             <FileUploader
-              onFileSelect={handleFileSelect("business-license")}
+              onFileSelect={(file) =>
+                setFiles((prev) => ({
+                  ...prev,
+                  professionalCertification: file!,
+                }))
+              }
               accept=".pdf,.jpg,.jpeg,.png"
             />
           </div>
 
-          <div className="max-w-[334px] space-y-2">
+          <div className="mx-auto max-w-[334px] space-y-2">
             <p className="text-sm font-medium text-[#1D3557]">
               Photo with ID (Upload a photo of the owner holding their ID)
             </p>
             <FileUploader
-              onFileSelect={handleFileSelect("photo-with-id")}
+              onFileSelect={(file) =>
+                setFiles((prev) => ({ ...prev, photoWithID: file! }))
+              }
               accept=".pdf,.jpg,.jpeg,.png"
             />
           </div>
@@ -93,9 +241,13 @@ export default function VerifyProfile() {
           <Button
             className="h-[48px] w-[180px] bg-[#1D3557] transition-colors duration-300 hover:bg-[#1D3557]/90"
             onClick={handleContinue}
-            disabled={files.length < 3}
+            disabled={isLoading}
           >
-            Continue
+            Continue{" "}
+            {(isPending ||
+              loading ||
+              merchantPending ||
+              organizationPending) && <Loader2 className="ml-2 animate-spin" />}
           </Button>
         </div>
 

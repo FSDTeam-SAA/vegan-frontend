@@ -25,6 +25,18 @@ const nextConfig = {
         protocol: "https",
         hostname: "hebbkx1anhila5yf.public.blob.vercel-storage.com",
       },
+      {
+        protocol: "https",
+        hostname: "images.pexels.com",
+      },
+      {
+        protocol: "https",
+        hostname: "placehold.co",
+      },
+      {
+        protocol: "https",
+        hostname: "api.qrserver.com",
+      },
     ],
   },
 };

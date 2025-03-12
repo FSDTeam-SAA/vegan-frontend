@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { cn } from "@/lib/utils";
+import { useSearchParams } from "next/navigation";
 
 const formSchema = z.object({
   role: z.enum(["customer", "vendor"], {
@@ -36,6 +37,9 @@ export default function OnBoardingForm() {
   });
 
   const { watch } = form;
+  const searchParams = useSearchParams();
+
+  const ref = searchParams.get("ref");
 
   const isDisabled = !watch("role");
 
@@ -44,6 +48,11 @@ export default function OnBoardingForm() {
   function onSubmit() {
     // nothing have to do
   }
+
+  const loginUrl = `/onboarding/login?role=${role}`;
+  const registrationUrl = ref
+    ? `/onboarding/signup?role=${role}&ref=${ref}`
+    : `/onboarding/signup?role=${role}`;
 
   return (
     <div className="mt-[40px] h-full w-full space-y-[56px]">
@@ -81,8 +90,9 @@ export default function OnBoardingForm() {
                               Join as a Customer
                             </span>
                             <span className="hidden text-left font-inter text-[12px] text-xs font-normal italic leading-[18px] text-[#9CA3AF] md:block">
-                              to offer services, products or non-profit
-                              initiatives
+                              Join as a Customer to explore our platform,
+                              discover vegan services and products, and support
+                              ethical initiatives.
                             </span>
                           </FormLabel>
                         </div>
@@ -109,8 +119,8 @@ export default function OnBoardingForm() {
                               Join as a Vendor
                             </span>
                             <span className="hidden text-left font-inter text-[12px] text-xs font-normal italic leading-[18px] text-[#9CA3AF] md:block">
-                              to discover vegan services, products and support
-                              ethical initiatives
+                              Join as a Vendor to offer services, products, or
+                              nonprofit initiatives through Vegan Collective.
                             </span>
                           </FormLabel>
                         </div>
@@ -129,7 +139,7 @@ export default function OnBoardingForm() {
             asChild
           >
             <Link
-              href={`/onboarding/signup?role=${role}`}
+              href={registrationUrl}
               className={cn(isDisabled && "pointer-events-none")}
             >
               Join as a Customer
@@ -141,7 +151,7 @@ export default function OnBoardingForm() {
       <div className="text-center text-sm">
         Already have an account?{" "}
         <Link
-          href={`/onboarding/login?role=${role}`}
+          href={loginUrl}
           className={cn(
             "text-primary hover:underline",
             isDisabled && "pointer-events-none",

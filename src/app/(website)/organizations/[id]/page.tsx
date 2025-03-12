@@ -1,7 +1,7 @@
 import VeganHeader from "@/components/shared/sections/VeganHeader";
 import OrganizationTab from "./_components/organization-tab";
 
-const Page = () => {
+const Page = ({ params }: { params: { id: string } }) => {
   return (
     <div>
       <VeganHeader
@@ -10,7 +10,7 @@ const Page = () => {
         img="https://res.cloudinary.com/dgnustmny/image/upload/v1738814782/pexels-shvetsa-5029861_1_1_ygagu7.png"
       />
       <div>
-        <OrganizationTab />
+        <OrganizationTab organizationId={params.id} />
       </div>
     </div>
   );

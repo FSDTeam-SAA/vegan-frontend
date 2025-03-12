@@ -14,24 +14,21 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import VeganSelector from "@/components/ui/vegan-selector";
+import { useMerchantState } from "@/zustand/merchant";
 import { ListFilter } from "lucide-react";
 import { categoryList, LocationList, SortByList } from "./data";
 
 const MerchantFilterContainer = () => {
-  const [value, setValue] = useState("");
-  const [category, setCategory] = useState("expertise");
-  const [location, setLocation] = useState("washington");
-  const [sortBy, setSortBy] = useState("newest");
-  const [price, setPrice] = useState<number[]>([0, 50]);
+  const { value, setValue, sortBy, setSortBy } = useMerchantState();
   return (
-    <div className="flex items-center gap-x-[32px]">
+    <div className="flex items-center justify-between gap-x-[32px]">
       <Search
         value={value}
         onChange={(e) => setValue(e.target.value)}
-        className="w-full min-w-[353px]"
+        className="w-full min-w-[353px] max-w-[500px]"
         inputClassName="h-[40px] "
       />
-      <VeganSelector
+      {/* <VeganSelector
         list={categoryList}
         selectedValue={category}
         onValueChange={(value) => setCategory(value)}
@@ -47,7 +44,7 @@ const MerchantFilterContainer = () => {
         step={10}
         defaultValue={[price[0], price[1]]}
         onRangeChange={(range) => setPrice(range)}
-      />
+      /> */}
       <VeganSelector
         list={SortByList}
         selectedValue={sortBy}
@@ -60,7 +57,7 @@ const MerchantFilterContainer = () => {
 export default MerchantFilterContainer;
 
 export const MerchantFilterContainerMobile = () => {
-  const [value, setValue] = useState("");
+  const { value, setValue } = useMerchantState();
   const [category, setCategory] = useState("expertise");
   const [location, setLocation] = useState("washington");
   const [sortBy, setSortBy] = useState("newest");

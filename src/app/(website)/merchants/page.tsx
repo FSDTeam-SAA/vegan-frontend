@@ -1,10 +1,14 @@
 import VeganHeader from "@/components/shared/sections/VeganHeader";
+import dynamic from "next/dynamic";
 import HowWeVerify from "../professionals/_components/how-we-verify/how-we-verify";
 import MerchantCTA from "./_components/cta/merchant_cta";
-import MerchantContainer from "./_components/merchant-container";
 import MerchantFilterContainer, {
   MerchantFilterContainerMobile,
 } from "./_components/merchants-filter-container";
+const MerchantContainer = dynamic(
+  () => import("./_components/merchant-container"),
+  { ssr: false },
+);
 
 const Page = () => {
   return (

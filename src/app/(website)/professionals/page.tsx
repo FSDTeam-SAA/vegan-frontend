@@ -21,7 +21,7 @@ const Page = () => {
       <div className="container mb-[109px] mt-[70px] hidden lg:block">
         <ProfessionalFilterContainer />
       </div>
-      <div className="mb-[40px] mt-[24px] lg:hidden">
+      <div className="mb-[40px] mt-[24px] lg:mb-0 lg:hidden">
         <ProfessionalFilterContainerMobile />
       </div>
       <ProfessionalContainer />

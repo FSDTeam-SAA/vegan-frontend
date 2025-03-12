@@ -18,7 +18,7 @@ const ProfitSharing = () => {
                 </div>
 
                 {/* second part  */}
-                <div className='grid grid-cols-1 md:grid-cols-3 gap-[16px] pt-[56px]'>
+                <div className='grid grid-cols-1 md:grid-cols-3 gap-[16px] pt-[32px] md:pt-[44px] lg:pt-[56px]'>
                     <div className='md:col-span-1 border border-[#E8DFD6] rounded-[10px] py-4 pl-4 pr-[6px]'>
                         <p className='flex items-center justify-between text-sm font-normal leading-[16px] text-[#6B7280]'>Total Earnings <EllipsisVertical className='w-[24px] h-[24px]' /></p>
                         <p className='text-2xl md:text-3xl font-medium leading-[29px] md:leading-[36px] text-[#1F2937] pt-[16px]'>$5,240.00</p>
@@ -35,7 +35,7 @@ const ProfitSharing = () => {
                         <p className='flex items-center justify-between text-sm font-normal leading-[16px] text-[#6B7280]'>Platform Fee  <EllipsisVertical className='w-[24px] h-[24px]' /></p>
                         <div className='flex items-center justify-between pt-[16px]'>
                             <p className='text-2xl md:text-3xl font-medium leading-[29px] md:leading-[36px] text-[#1F2937]'>$524.00</p>
-                            <button className='py-[6px] px-[4px] rounded-[6px] bg-white text-[13px] font-medium leading-[15px] text-[#6B7280]'>0%</button>
+                            <button className='py-[6px] px-[4px] rounded-[6px] bg-white text-[13px] font-medium leading-[15px] text-[#6B7280]'>10%</button>
                         </div>
                     </div>
                 </div>

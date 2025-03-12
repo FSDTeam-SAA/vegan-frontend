@@ -40,7 +40,7 @@ interface VerifyOTPFormProps {
 }
 
 interface Response {
-  status: boolean;
+  success: boolean;
   message: string;
 }
 
@@ -74,7 +74,7 @@ export function VerifyOTPForm({ onVerified }: VerifyOTPFormProps) {
         body: JSON.stringify(data),
       }).then((res) => res.json()),
     onSuccess: (data) => {
-      if (!data.status) {
+      if (!data.success) {
         toast.error(data.message, {
           position: "top-right",
           richColors: true,
@@ -101,7 +101,7 @@ export function VerifyOTPForm({ onVerified }: VerifyOTPFormProps) {
         body: JSON.stringify(data),
       }).then((res) => res.json()),
     onSuccess: (data) => {
-      if (!data.status) {
+      if (!data.success) {
         form.setError("otp", {
           type: "manual",
           message: data.message,

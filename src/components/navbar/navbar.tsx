@@ -35,18 +35,31 @@ const hideRoutes = [
 
 interface Props {
   loggedin: boolean;
+  role: "professional" | "merchant" | "organization" | "user";
 }
 
-const Navbar = ({ loggedin }: Props) => {
+const profilePages: {
+  [key in "professional" | "merchant" | "organization" | "user"]: string;
+} = {
+  professional: "/dashboard/professional",
+  merchant: "/dashboard/merchant",
+  organization: "/dashboard/organization",
+  user: "/dashboard/users",
+};
+
+const Navbar = ({ loggedin, role }: Props) => {
   const [scrolling, setScrolling] = useState(false); // Track scrolling state for styling changes
 
   const pathname = usePathname(); // Get current route to highlight active menu
   const router = useRouter();
 
+  const dashboardPage =
+    profilePages[role as "professional" | "merchant" | "organization" | "user"];
+
   const menus = [
     { id: 1, href: "/professionals", linkText: "Professional" },
     { id: 2, href: "/merchants", linkText: "Merchant" },
-    { id: 3, href: "/organizations", linkText: "Organiation" },
+    { id: 3, href: "/organizations", linkText: "Organization" },
     { id: 4, href: "/profit-calculator", linkText: "Profit-sharing" },
     { id: 5, href: "/store", linkText: "Store" },
   ];
@@ -139,8 +152,11 @@ const Navbar = ({ loggedin }: Props) => {
                       <DropdownMenuLabel>My Account</DropdownMenuLabel>
                       <DropdownMenuSeparator />
                       <DropdownMenuGroup>
-                        <DropdownMenuItem>Profile</DropdownMenuItem>
-                        <DropdownMenuItem>Settings</DropdownMenuItem>
+                        <DropdownMenuItem>
+                          <Link href={dashboardPage} className="h-full w-full">
+                            Profile
+                          </Link>
+                        </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem
                           onClick={logout}

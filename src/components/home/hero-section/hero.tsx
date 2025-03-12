@@ -1,15 +1,28 @@
+// Packages
+import dynamic from "next/dynamic";
 import Image from "next/image";
-import MerchantSearch from "./MerchantSearch";
+
+// Local imports
+const HeroSearch = dynamic(() => import("./heroSearch"), {
+  ssr: false,
+});
 
 export default function HeroSection() {
   return (
-    <div
-      className={
-        "hero-section relative h-screen bg-[url('https://res.cloudinary.com/dgnustmny/image/upload/v1738650556/hero-img_h42gjh.png')] bg-cover bg-no-repeat"
-      }
-    >
-      <div className="bg-opacity absolute z-10 flex h-full w-full flex-col items-center justify-center bg-black/40 bg-[url('https://res.cloudinary.com/dgnustmny/image/upload/v1738649859/logo_white_zsmua3.png')] bg-center bg-no-repeat text-center backdrop:blur-md" />
-      {/* hero content  */}
+    <div className="hero-section relative h-screen">
+      {/* Background video */}
+      <video
+        src="/alaska.mp4"
+        autoPlay
+        loop
+        muted
+        className="absolute left-0 top-0 h-full w-full object-cover"
+      />
+
+      {/* Overlay for visual effect */}
+      <div className="bg-opacity absolute z-10 flex h-full w-full flex-col items-center justify-center bg-black/40 bg-center bg-no-repeat text-center backdrop:blur-md" />
+
+      {/* hero content */}
       <div className="absolute z-20 flex h-full w-full flex-col items-center justify-center bg-black/60 backdrop:blur-sm">
         <div className="container flex max-w-[792px] flex-col items-center">
           <h1 className="hero-title text-center text-[40px] font-semibold leading-[50px] text-white md:mx-8 md:tracking-[-4px] lg:text-[64px]">
@@ -28,7 +41,7 @@ export default function HeroSection() {
             Book vegan professionals, shop cruelty-free products, connect with
             charity organizations.
           </p>
-          <MerchantSearch />
+          <HeroSearch />
         </div>
       </div>
     </div>

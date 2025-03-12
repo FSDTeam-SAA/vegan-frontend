@@ -34,7 +34,12 @@ export const loginWithEmailAndPassword = async (
 
     // // Attempt to sign in with credentials
     await signIn("credentials", {
-      data: resData.user,
+      data: JSON.stringify({
+        token: resData["data"]["token"],
+        userId: resData["data"]["user"]["_id"],
+        role: resData["data"]["user"]["role"],
+        accountType: resData["data"]["user"]["accountType"] ?? "",
+      }),
       redirect: false, // Disable automatic redirect to handle it manually
       email: data.email,
       password: data.password,
@@ -52,3 +57,31 @@ export const loginWithEmailAndPassword = async (
     } as ServerResType;
   }
 };
+
+export type UserData = {
+  status: boolean;
+  message: string;
+  data: {
+    _id: string;
+    role: string;
+    email: string;
+    accountType: "merchant" | "professional" | "organization" | null;
+    token: string;
+    paymentAdded: boolean;
+    isgratings: boolean;
+    isVerified: "approved" | "pending" | "declined";
+  };
+};
+
+export async function getUser(userId: string) {
+  const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/profile/${userId}`;
+
+  try {
+    const response = await fetch(url);
+    if (!response.ok) return null;
+    return await response.json();
+  } catch (error) {
+    console.error("Failed to fetch user:", error);
+    return null;
+  }
+}

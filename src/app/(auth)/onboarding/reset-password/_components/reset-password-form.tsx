@@ -25,7 +25,7 @@ import { Input } from "@/components/ui/input";
 
 // Response interface for API results
 interface Response {
-  status: boolean;
+  success: boolean;
   message: string;
 }
 
@@ -60,7 +60,7 @@ export function ResetPasswordForm() {
     mutationFn: async (data) => {
       try {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/reset-password`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/change-password`,
           {
             method: "POST",
             headers: {
@@ -84,7 +84,7 @@ export function ResetPasswordForm() {
     // eslint-disable-next-line  @typescript-eslint/no-explicit-any
     onSuccess: (data: any) => {
       setLoading(true); // Show loading when updating
-      if (!data.status) {
+      if (!data.success) {
         toast.error(data.message, {
           position: "bottom-right",
           richColors: true,

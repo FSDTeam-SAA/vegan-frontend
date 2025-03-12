@@ -5,6 +5,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { signOut } from "next-auth/react";
 import Image from "next/image";
 import { FaRegBell } from "react-icons/fa";
 
@@ -20,6 +21,9 @@ export default function DashboardNavbar() {
 }
 
 const ProfileBar = () => {
+  const onLogout = () => {
+    signOut({ redirectTo: "/onboarding" });
+  };
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="border-0 outline-0 ring-0">
@@ -33,15 +37,12 @@ const ProfileBar = () => {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-40">
         <DropdownMenuItem
-          onClick={() => window.open("https://yourwebsite.com", "_blank")}
+          onClick={() => window.open("http://localhost:3000", "_blank")}
           className="cursor-pointer"
         >
           Visit Website
         </DropdownMenuItem>
-        <DropdownMenuItem
-          onClick={() => alert("Logging out...")}
-          className="cursor-pointer"
-        >
+        <DropdownMenuItem onClick={onLogout} className="cursor-pointer">
           Logout
         </DropdownMenuItem>
       </DropdownMenuContent>

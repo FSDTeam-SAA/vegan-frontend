@@ -1,7 +1,7 @@
 "use client";
 
-//Packages
-import { useState } from "react";
+// Packages
+import { ListFilter } from "lucide-react";
 
 // Local imports
 import { PriceRangeSelector } from "@/components/ui/price-range-selector";
@@ -14,24 +14,26 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import VeganSelector from "@/components/ui/vegan-selector";
-import { ListFilter } from "lucide-react";
+import { useProfessionalState } from "@/zustand/professional";
 import { categoryList, LocationList, SortByList } from "./data";
 
 const ProfessionalFilterContainer = () => {
-  const [value, setValue] = useState("");
-  const [category, setCategory] = useState("expertise");
-  const [location, setLocation] = useState("washington");
-  const [sortBy, setSortBy] = useState("newest");
-  const [price, setPrice] = useState<number[]>([0, 50]);
+  const {
+    setValue, // Using Zustand setter directly
+    value,
+    sortBy,
+    setSortBy,
+  } = useProfessionalState();
+
   return (
-    <div className="flex items-center gap-x-[32px]">
+    <div className="flex items-center justify-between gap-x-[32px]">
       <Search
         value={value}
         onChange={(e) => setValue(e.target.value)}
-        className="w-full min-w-[353px]"
+        className="w-full min-w-[353px] max-w-[500px]"
         inputClassName="h-[40px] "
       />
-      <VeganSelector
+      {/* <VeganSelector
         list={categoryList}
         selectedValue={category}
         onValueChange={(value) => setCategory(value)}
@@ -47,7 +49,7 @@ const ProfessionalFilterContainer = () => {
         step={10}
         defaultValue={[price[0], price[1]]}
         onRangeChange={(range) => setPrice(range)}
-      />
+      /> */}
       <VeganSelector
         list={SortByList}
         selectedValue={sortBy}
@@ -60,11 +62,18 @@ const ProfessionalFilterContainer = () => {
 export default ProfessionalFilterContainer;
 
 export const ProfessionalFilterContainerMobile = () => {
-  const [value, setValue] = useState("");
-  const [category, setCategory] = useState("expertise");
-  const [location, setLocation] = useState("washington");
-  const [sortBy, setSortBy] = useState("newest");
-  const [price, setPrice] = useState<number[]>([0, 50]);
+  const {
+    value,
+    setValue,
+    category,
+    setCategory,
+    location,
+    setLocation,
+    price,
+    setPrice,
+    sortBy,
+    setSortBy,
+  } = useProfessionalState();
   return (
     <div className="container flex w-full items-center gap-[5px]">
       <Search

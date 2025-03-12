@@ -1,38 +1,45 @@
-import React from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import BookingsContainer from './BookingsContainer';
-import Policies from './Policies';
-import Faqs from './Faqs';
+"use client";
+import { useState } from "react";
+import BookingsContainer from "./BookingsContainer";
+import Faqs from "./Faqs";
+import Policies from "./Policies";
+import VeganTabs, { VeganTab } from "@/components/ui/Vegan-Tab";
 
+const tabs = [
+  { id: "bookings", label: "Bookings" },
+  { id: "policies", label: "Policies" },
+  { id: "faqs", label: "FAQS" }
+] as VeganTab[];
 
-const ClientManagementContainer = () => {
-    return (
-        <div>
-            <Tabs defaultValue="bookings" className="w-full">
-                <TabsList>
-                    <TabsTrigger value="bookings">Bookings</TabsTrigger>
-                    <TabsTrigger value="policies">Policies</TabsTrigger>
-                    <TabsTrigger value="faqs">FAQS</TabsTrigger>
-                </TabsList>
-                <div className='border-b-[2px] border-[#F4F0EB] -mt-[6px]'/>
-                <TabsContent value="bookings">
-                    <BookingsContainer />
-                </TabsContent>
-                <TabsContent value="policies">
-                    <div className='pt-[40px] pb-[136px]'>
-                        <Policies />
-                    </div>
+export default function ClientManagementContainer() {
+  const [activeTab, setActiveTab] = useState("bookings");
 
-                </TabsContent>
-                <TabsContent value="faqs">
-                    <div className=''>
-                        <Faqs/>
-                    </div>
-                </TabsContent>
-            </Tabs>
-
-        </div>
-    );
-};
-
-export default ClientManagementContainer;
+  return (
+    <div className="">
+      {/* <div className="flex space-x-10 border-b-[2px] border-[#F4F0EB]">
+          {tabs.map((tab) => (
+            <button
+              key={tab.id}
+              className={`pb-2 text-lg font-normal text-[#717680] leading-[21px] ${
+                activeTab === tab.id
+                  && "border-b-[2px] border-[#1F2937] font-medium text-[#1F2937]"
+              }`}
+              onClick={() => setActiveTab(tab.id)}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div> */}
+      <VeganTabs
+        tabs={tabs}
+        defaultActiveTab={activeTab}
+        onTabChange={(tab) => setActiveTab(tab)}
+      />
+      <div className="">
+        {activeTab === "bookings" && <BookingsContainer />}
+        {activeTab === "policies" && <Policies />}
+        {activeTab === "faqs" && <Faqs />}
+      </div>
+    </div>
+  );
+}

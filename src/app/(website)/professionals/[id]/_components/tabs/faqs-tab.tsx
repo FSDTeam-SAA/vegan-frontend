@@ -61,7 +61,7 @@ const faqs = [
   },
 ];
 
-export function FAQsTab() {
+export default function FAQsTab() {
   return (
     <div className="max-w-[848px] p-4">
       <h1 className="mb-6 font-lexend text-xl font-medium leading-[25px] text-[#1D3557]">

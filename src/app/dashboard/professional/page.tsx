@@ -1,8 +1,16 @@
+import { auth } from "@/auth";
+import dynamic from "next/dynamic";
 import LeaderBoard from "./_components/LeaderBoard";
-import ReferralTracking from "./_components/ReferralTracking";
 import TotalEarnings from "./_components/TotalEarnings";
+const ReferralTracking = dynamic(
+  () => import("../merchant/_components/ReferralTracking"),
+  { ssr: false },
+);
 
-const Page = () => {
+const Page = async () => {
+  const user = await auth();
+
+  if (!user) return;
   return (
     <div className="p-10">
       <div className="pb-[40px] md:pb-[48px] lg:pb-[56px]">
@@ -15,7 +23,9 @@ const Page = () => {
       </div>
 
       <TotalEarnings />
-      <ReferralTracking />
+      <div className="mt-10">
+        <ReferralTracking userId={user.user.userId} />
+      </div>
       <LeaderBoard />
     </div>
   );

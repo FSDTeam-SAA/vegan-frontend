@@ -1,9 +1,20 @@
 "use client";
 import AnimatedTabs, { VeganTab } from "@/components/ui/Vegan-Tab";
+import dynamic from "next/dynamic";
 import { useState } from "react";
-import OrganizationEventContainer from "./tab/events/organization-event-container";
+import OrganizationAbout from "./tab/about/organization-about";
 import OrganizationNewsContainer from "./tab/news/organization-news-container";
-import VolunteerContainer from "./tab/volunteer/volunteer-container";
+const OrganizationEventContainer = dynamic(
+  () => import("./tab/events/organization-event-container"),
+  { ssr: false },
+);
+
+const OrganizationVolunteerEventContainer = dynamic(
+  () => import("./tab/volunteer/volunteer-container"),
+  {
+    ssr: false,
+  },
+);
 
 const lists = [
   {
@@ -24,7 +35,11 @@ const lists = [
   },
 ] as VeganTab[];
 
-const OrganizationTab = () => {
+interface Props {
+  organizationId: string;
+}
+
+const OrganizationTab = ({ organizationId }: Props) => {
   const [activeTab, setActiveTab] = useState<
     "about" | "news" | "events" | "volunteer"
   >("about");
@@ -38,10 +53,20 @@ const OrganizationTab = () => {
       />
 
       <div className="mt-[40px]">
-        {activeTab === "about" && <></>}
+        {activeTab === "about" && (
+          <>
+            <OrganizationAbout organizationId={organizationId} />
+          </>
+        )}
         {activeTab === "news" && <OrganizationNewsContainer />}
-        {activeTab === "events" && <OrganizationEventContainer />}
-        {activeTab === "volunteer" && <VolunteerContainer />}
+        {activeTab === "events" && (
+          <OrganizationEventContainer organizationId={organizationId} />
+        )}
+        {activeTab === "volunteer" && (
+          <OrganizationVolunteerEventContainer
+            organizationId={organizationId}
+          />
+        )}
       </div>
     </div>
   );

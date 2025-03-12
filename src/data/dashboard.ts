@@ -1,7 +1,9 @@
 "use client";
 import {
+  BadgeCheck,
   Box,
   Briefcase,
+  Calendar,
   CalendarCheck,
   CircleDotDashed,
   CircleHelp,
@@ -9,9 +11,13 @@ import {
   Heart,
   Info,
   LayoutDashboard,
+  ListVideo,
+  Newspaper,
   Package,
   PhoneCallIcon,
+  Target,
   Truck,
+  User,
   Users,
   Video,
   Wallet,
@@ -28,6 +34,44 @@ export type NavigationItem = {
   linkText: string;
   roles: string[];
 };
+
+export const adminDashboardTabsList = [
+  {
+    id: crypto.randomUUID(),
+    path: "/dashboard/admin",
+    icon: LayoutDashboard,
+    linkText: "Overview",
+    roles: ["admin"],
+  },
+  {
+    id: crypto.randomUUID(),
+    path: "/dashboard/admin/vendor-management",
+    icon: User,
+    linkText: "Vendor Management",
+    roles: ["admin"],
+  },
+  {
+    id: crypto.randomUUID(),
+    path: "/dashboard/admin/verification-management",
+    icon: BadgeCheck,
+    linkText: "Verification Management",
+    roles: ["admin"],
+  },
+  // {
+  //   id: crypto.randomUUID(),
+  //   path: "/dashboard/admin/go-live",
+  //   icon: Video,
+  //   linkText: "Go Live",
+  //   roles: ["admin"],
+  // },
+  {
+    id: crypto.randomUUID(),
+    path: "/dashboard/admin/support",
+    icon: CircleHelp,
+    linkText: "Support & Help Center",
+    roles: ["admin"],
+  },
+] as NavigationItem[];
 
 export const merchantTabsList = [
   {
@@ -134,6 +178,51 @@ export const professionalTabsList = [
   },
 ] as NavigationItem[];
 
+export const organizationTabsList = [
+  {
+    id: crypto.randomUUID(),
+    path: "/dashboard/organization",
+    icon: LayoutDashboard,
+    linkText: "Overview",
+    roles: ["admin"],
+  },
+  {
+    id: crypto.randomUUID(),
+    path: "/dashboard/organization/update-and-news",
+    icon: Newspaper,
+    linkText: "Update & News",
+    roles: ["admin"],
+  },
+  {
+    id: crypto.randomUUID(),
+    path: "/dashboard/organization/event-management",
+    icon: Calendar,
+    linkText: "Event Management",
+    roles: ["admin", "user"],
+  },
+  {
+    id: crypto.randomUUID(),
+    path: "/dashboard/organization/fundraising-management",
+    icon: Target,
+    linkText: "Fundraising Management",
+    roles: ["admin", "user"],
+  },
+  {
+    id: crypto.randomUUID(),
+    path: "/dashboard/organization/go-live",
+    icon: ListVideo,
+    linkText: "Go Live",
+    roles: ["admin", "user", "delivery man"],
+  },
+  {
+    id: crypto.randomUUID(),
+    path: "/dashboard/organization/support-center",
+    icon: Info,
+    linkText: "Support & Help Center",
+    roles: ["admin", "delivery man"],
+  },
+] as NavigationItem[];
+
 // User Dashboard Menu Item
 export const usersTabsList = [
   {
@@ -162,14 +251,14 @@ export const usersTabsList = [
     path: "/dashboard/users/go-live",
     icon: Video,
     linkText: "Go Live",
-    roles: ["user", "delivery man"],
+    roles: ["user"],
   },
   {
     id: crypto.randomUUID(),
     path: "/dashboard/users/product-order-management",
     icon: Package,
     linkText: "Product Order Management",
-    roles: ["admin", "delivery man"],
+    roles: ["user"],
   },
   {
     id: crypto.randomUUID(),
@@ -180,7 +269,7 @@ export const usersTabsList = [
   },
   {
     id: crypto.randomUUID(),
-    path: "/dashboard/users/",
+    path: "/dashboard/users/profile-settings",
     icon: CircleDotDashed,
     linkText: "Profile & Settings",
     roles: ["user"],
@@ -190,6 +279,6 @@ export const usersTabsList = [
     path: "/dashboard/users/support-help-center",
     icon: Info,
     linkText: "Support & Help Center",
-    roles: ["admin", "delivery man"],
+    roles: ["user"],
   },
 ] as NavigationItem[];

@@ -1,15 +1,17 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
-import { useState } from "react";
+import SkeletonWrapper from "@/components/ui/skeleton-wrapper";
 import { NavigationItem } from "@/data/dashboard";
 import { Menu } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { useState } from "react";
 interface Props {
   lists: NavigationItem[];
 }
@@ -40,20 +42,33 @@ export function Sidebar({ lists }: Props) {
     </nav>
   );
 
-  const UserProfile = () => (
-    <div className="border-t border-white/10 p-4">
-      <div className="flex items-center gap-3">
-        <Avatar>
-          <AvatarImage src="/placeholder-avatar.jpg" alt="Alison Eyo" />
-          <AvatarFallback>AE</AvatarFallback>
-        </Avatar>
-        <div>
-          <p className="text-sm font-medium text-white">Alison Eyo</p>
-          <p className="text-xs text-gray-400">alison.e@rayna.ui</p>
+  const UserProfile = () => {
+    const session = useSession();
+
+    return (
+      <SkeletonWrapper isLoading={session.status === "loading"}>
+        <div className="border-t border-white/10 p-4">
+          <div className="flex items-center gap-3">
+            <Avatar>
+              <AvatarImage
+                src={session?.data?.user?.image ?? "/placeholder-avatar.jpg"}
+                alt="Alison Eyo"
+              />
+              <AvatarFallback>AE</AvatarFallback>
+            </Avatar>
+            <div>
+              <p className="text-sm font-medium text-white">
+                {session?.data?.user?.name}
+              </p>
+              <p className="text-xs text-gray-400">
+                {session?.data?.user?.email}
+              </p>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-  );
+      </SkeletonWrapper>
+    );
+  };
 
   // Mobile Header
   const MobileHeader = () => (

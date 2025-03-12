@@ -9,7 +9,7 @@ import TopProfessionals from "@/components/home/top-professional/top-professiona
 
 export default async function Home() {
   return (
-    <div className="">
+    <div>
       <HeroSection />
       <HomeAboutSection />
       <TopProfessionals />

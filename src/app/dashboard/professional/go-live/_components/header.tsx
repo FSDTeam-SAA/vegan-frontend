@@ -1,12 +1,16 @@
+"use client";
 import DashboardHeading from "@/app/dashboard/merchant/_components/dashboard-heading";
 import { Button } from "@/components/ui/button";
-import { Video, Plus } from "lucide-react";
+import { Plus, Video } from "lucide-react";
+import dynamic from "next/dynamic";
+import { useState } from "react";
+const ProfessionalEventDiolog = dynamic(
+  () => import("./professional-event-dialog"),
+  { ssr: false },
+);
 
-interface HeaderProps {
-  onCreateClick: () => void;
-}
-
-export function Header({ onCreateClick }: HeaderProps) {
+export function Header() {
+  const [open, setOpen] = useState(false);
   return (
     <header className="">
       <div className="items-center justify-between md:mb-10 md:flex">
@@ -14,21 +18,21 @@ export function Header({ onCreateClick }: HeaderProps) {
           title="Go Live"
           subTitle="Keep track of your earnings, breakdowns, and payout preferences."
         />
-        <div className="flex flex-col md:flex-row items-center gap-[24px] md:gap-4 mt-[24px] md:mt-0 mb-[56px] md:mb-0">
-          <Button size="xl" className="gap-2 w-full">
+        <div className="flex items-center gap-4">
+          <Button variant="outline" className="gap-2">
             <Video className="h-4 w-4" />
             Zoom Connected
           </Button>
           <Button
-            size="xl"
-            className="w-full gap-2 bg-[#1f3a5f] hover:bg-[#162942]"
-            onClick={onCreateClick}
+            className="gap-2 bg-[#1f3a5f] hover:bg-[#162942]"
+            onClick={() => setOpen(true)}
           >
             <Plus className="h-4 w-4" />
             Create New Event
           </Button>
         </div>
       </div>
+      <ProfessionalEventDiolog open={open} onOpenChange={setOpen} />
     </header>
   );
 }

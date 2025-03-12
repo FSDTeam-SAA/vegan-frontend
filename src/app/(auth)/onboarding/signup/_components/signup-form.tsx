@@ -58,18 +58,7 @@ const formSchema = z
     password: z
       .string()
       .min(8, { message: "Password must be at least 8 characters long." })
-      .max(128, { message: "Password must be at most 128 characters long." })
-      .regex(/[A-Z]/, {
-        message: "Password must contain at least one uppercase letter.",
-      })
-      .regex(/[a-z]/, {
-        message: "Password must contain at least one lowercase letter.",
-      })
-      .regex(/[0-9]/, { message: "Password must contain at least one number." })
-      .regex(/[@$!%*?&]/, {
-        message:
-          "Password must contain at least one special character (@, $, !, %, *, ?, &).",
-      }),
+      .max(128, { message: "Password must be at most 128 characters long." }),
     agree: z.boolean().refine((val) => val === true, {
       message: "You must agree to the terms and conditions.",
     }),
@@ -99,13 +88,13 @@ export default function SignUpForm() {
   const { mutate, isPending } = useMutation({
     mutationKey: ["signup"],
     mutationFn: (data: {
-      joinAs: string | null;
+      role: string | null;
       email: string;
       password: string;
       fullName?: string;
       accountType?: string;
     }) =>
-      fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/signup`, {
+      fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/register`, {
         method: "POST",
         headers: {
           "content-type": "application/json",
@@ -142,12 +131,17 @@ export default function SignUpForm() {
 
   const searchParams = useSearchParams();
   const role = searchParams.get("role");
+  const ref = searchParams.get("ref");
+  const agree = searchParams.get("agree");
   const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
 
     context: { role },
+    defaultValues: {
+      agree: !!agree,
+    },
   });
 
   useEffect(() => {
@@ -160,13 +154,16 @@ export default function SignUpForm() {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { agree, ...proccedData } = {
       ...values,
-      joinAs: role,
+      role: role === "customer" ? "user" : role,
+      ref,
     };
-
-    console.log(proccedData);
 
     mutate(proccedData);
   }
+
+  const termsPage = ref
+    ? `/terms?role=${role}&ref=${ref}`
+    : `/terms?role=${role}`;
 
   return (
     <div className="mt-[40px]">
@@ -189,13 +186,32 @@ export default function SignUpForm() {
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select Account type" />
+                        <SelectValue placeholder="Select Account type">
+                          {form.watch("accountType")}
+                        </SelectValue>
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="merchant">Merchant</SelectItem>
-                      <SelectItem value="organization">Organization</SelectItem>
-                      <SelectItem value="professional">Professional</SelectItem>
+                      <SelectItem value="merchant" className="max-w-3xl">
+                        Merchant
+                        <p className="text-[10px]">
+                          Sell 100% vegan products on a trusted platform.
+                        </p>
+                      </SelectItem>
+                      <SelectItem value="organization" className="max-w-3xl">
+                        Organization{" "}
+                        <p className="text-[10px]">
+                          Promote your nonprofit initiatives, raise funds, and
+                          connect with the vegan community.
+                        </p>
+                      </SelectItem>
+                      <SelectItem value="professional" className="max-w-3xl">
+                        Professional{" "}
+                        <p className="text-[10px]">
+                          Offer your services as a verified vegan professional
+                          to a global audience.
+                        </p>
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -280,9 +296,17 @@ export default function SignUpForm() {
                   />
                 </FormControl>
                 <div className="space-y-1 leading-none">
-                  <FormLabel className="font-inter text-[14px] font-normal leading-[20px] text-[#1F2937]">
-                    I agree to receive notifications about platform updates and
-                    opportunities.
+                  <FormLabel className="font-inter text-[12px] font-normal leading-[20px] text-[#1F2937]">
+                    As a Professional on Vegan Collective, you are part of a
+                    trusted platform for ethical services. By continuing, you
+                    agree to uphold{" "}
+                    <Link
+                      href={termsPage}
+                      className="font-semibold text-blue-700 hover:underline"
+                    >
+                      these commitments
+                    </Link>{" "}
+                    to ensure trust, quality, and alignment with our mission.
                   </FormLabel>
 
                   <FormMessage />

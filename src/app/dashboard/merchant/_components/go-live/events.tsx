@@ -1,85 +1,75 @@
 "use client";
 
+// Packages
+import { useQuery } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
-import { Header } from "./header";
-import { EventDialog } from "./event-dialog";
-import { EventCard, type EventData } from "./EventCard";
-import { EventsData } from "../data";
-import { cn } from "@/lib/utils";
+
+// Local imports
+
+import EmptyContainer from "@/components/shared/sections/empty-container";
+import ErrorContainer from "@/components/shared/sections/error-container";
+import SkeletonWrapper from "@/components/ui/skeleton-wrapper";
+import VeganTabs from "@/components/ui/Vegan-Tab";
+import { MerchantEvent, MerchantEventResponse } from "@/types/merchant";
+import { EventCard } from "./EventCard";
+
+const tabs = [
+  {
+    id: "upcoming",
+    label: "Upcoming Events",
+  },
+  {
+    id: "past",
+    label: "Past Events",
+  },
+];
 
 export default function EventsMangement() {
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [editingEvent, setEditingEvent] = useState<EventData | undefined>();
-  const [activeTab, setActiveTab] = useState("upcoming-events");
-  const handleSubmit = (data: unknown) => {
-    if (editingEvent) {
-      console.log("Editing event:", data);
-    } else {
-      console.log("Creating new event:", data);
+  const [activeTab, setActiveTab] = useState("upcoming");
+  const session = useSession();
+  const merchantID = session?.data?.user?.userId;
+
+  const { isLoading, data, isError, error } = useQuery<MerchantEventResponse>({
+    queryKey: ["eventsbyMerchant", activeTab],
+    queryFn: () =>
+      fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/merchantGoLive?type=${activeTab}&merchantID=${merchantID}`,
+      ).then((res) => res.json()),
+  });
+
+  let content;
+
+  if (isLoading || data?.success) {
+    if (data?.events?.length === 0) {
+      content = <EmptyContainer message="No Event found" />;
+    } else if ((data?.events?.length ?? 0) > 0) {
+      content = (
+        <SkeletonWrapper isLoading={isLoading}>
+          <div className="space-y-6 rounded-lg bg-[#F8F5F2] p-10">
+            {data?.events.map((item: MerchantEvent) => (
+              <EventCard key={item._id} data={item} />
+            ))}
+          </div>
+        </SkeletonWrapper>
+      );
     }
-    setDialogOpen(false);
-    setEditingEvent(undefined);
-  };
-
-  const handleEdit = (eventData: EventData) => {
-    setEditingEvent(eventData);
-    setDialogOpen(true);
-  };
-
-  const handleDelete = (sectionId: string, eventIndex: number) => {
-    console.log("Deleting event:", sectionId, eventIndex);
-  };
+  } else if (isError) {
+    content = (
+      <ErrorContainer message={error?.message || "something went wrong!"} />
+    );
+  }
 
   return (
-    <div className="min-h-screen">
-      <Header
-        onCreateClick={() => {
-          setEditingEvent(undefined);
-          setDialogOpen(true);
-        }}
-      />
+    <div>
       <div className="overflow-x-auto md:mb-12">
-        <nav className="flex space-x-1 border-b-2 border-white">
-          {EventsData.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={cn(
-                "relative px-4 py-2 text-[18px] font-medium",
-                activeTab === tab.id
-                  ? "border-b-2 border-primary text-primary"
-                  : "text-gray-500 hover:text-gray-700",
-              )}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </nav>
+        <VeganTabs
+          tabs={tabs}
+          defaultActiveTab={activeTab}
+          onTabChange={(tab) => setActiveTab(tab)}
+        />
       </div>
-      <div className="">
-        {EventsData.filter((items) => items.id === activeTab).map((section) => (
-          <div key={section.id}>
-            <div className="space-y-6 rounded-lg bg-[#F8F5F2] p-10">
-              {section.items.map((event, index) => (
-                <EventCard
-                  key={`${section.id}-${index}`}
-                  {...event}
-                  onEdit={() => handleEdit(event)}
-                  onDelete={() => handleDelete(section.id, index)}
-                />
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <EventDialog
-        open={dialogOpen}
-        onOpenChange={setDialogOpen}
-        onSubmit={handleSubmit}
-        mode={editingEvent ? "edit" : "add"}
-        initialData={editingEvent}
-      />
+      <div>{content}</div>
     </div>
   );
 }

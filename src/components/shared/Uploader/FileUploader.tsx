@@ -1,20 +1,24 @@
 "use client";
 
-import { useState, useRef } from "react";
-import { XIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { XIcon } from "lucide-react";
 import Image from "next/image";
+import { useRef, useState } from "react";
 
 interface FileUploadProps {
   onFileSelect?: (file: File | null) => void;
   accept?: string;
   title?: string;
+  className?: string;
+  imageUrl?: string;
 }
 
 export default function FileUploader({
   onFileSelect,
   accept = ".pdf,.jpg,.jpeg,.png",
   title = "Click to upload or drag and drop",
+  className,
+  imageUrl,
 }: FileUploadProps) {
   const [file, setFile] = useState<File | null>(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -74,7 +78,8 @@ export default function FileUploader({
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
       className={cn(
-        "relative flex h-[250px] max-w-[334px] cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed transition-colors",
+        className,
+        "relative flex h-[250px] w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed transition-colors",
         isDragging
           ? "border-primary bg-primary/5"
           : "border-gray-200 hover:border-gray-400",
@@ -90,18 +95,18 @@ export default function FileUploader({
       />
 
       <div className="flex flex-col items-center justify-center pb-6 pt-5">
-        {file ? (
+        {file || imageUrl ? (
           <div className="flex flex-col items-center">
             <Image
-              src="/assets/docIcon.png"
+              src={imageUrl || "/assets/docIcon.png"}
               alt="file-upload"
               width={50}
               height={50}
-              className="mb-3 h-[50px] w-[50px]"
+              className="mb-3 h-[100px] w-[100px]"
             />
             <p className="mx-auto mb-3 w-[95%] text-center text-sm text-gray-500">
               <span className="text-center text-[16px] font-semibold">
-                {file.name}
+                {file?.name || "Change Photo"}
               </span>
             </p>
             <button
