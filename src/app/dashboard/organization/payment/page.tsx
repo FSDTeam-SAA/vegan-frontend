@@ -1,4 +1,5 @@
 import { auth } from "@/auth";
+import AccountSetup from "@/components/shared/features/stripe-account-setup/page";
 import PaymentMethod from "../../professional/payment/_components/PaymentMethod";
 
 const Page = async () => {
@@ -10,6 +11,8 @@ const Page = async () => {
         isPaymentAdded={currentUser.user.paymentAdded}
         userId={currentUser.user.userId}
       />
+
+      <AccountSetup />
     </div>
   );
 };
