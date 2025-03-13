@@ -107,8 +107,7 @@ export interface SupportTicketResponse {
   tickets: SupportTicket[];
 }
 
-
-// faqs 
+// faqs
 export type FAQ = {
   _id: string;
   userID: string;

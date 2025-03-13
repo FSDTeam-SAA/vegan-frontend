@@ -39,7 +39,7 @@ export default function FaqCreateForm({ userId, onSuccess }: Props) {
   });
 
   const { mutate: createMuate, isPending } = useMutation({
-    mutationKey: ["forget-password"],
+    mutationKey: ["faq-create"],
     mutationFn: (data: MutateBody) =>
       fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/faqs`, {
         method: "POST",
