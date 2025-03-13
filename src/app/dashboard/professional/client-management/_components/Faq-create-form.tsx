@@ -11,7 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -37,6 +37,8 @@ export default function FaqCreateForm({ userId, onSuccess }: Props) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
+
+  const queryClient = useQueryClient();
 
   const { mutate: createMuate, isPending } = useMutation({
     mutationKey: ["faq-create"],
@@ -65,6 +67,8 @@ export default function FaqCreateForm({ userId, onSuccess }: Props) {
         position: "bottom-right",
         richColors: true,
       });
+
+      queryClient.invalidateQueries({ queryKey: ["faqs"] });
 
       onSuccess();
     },
