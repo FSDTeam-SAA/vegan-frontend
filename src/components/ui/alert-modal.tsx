@@ -10,9 +10,16 @@ interface Props {
   loading: boolean;
   onClose: () => void;
   onConfirm: () => void;
+  message?: string;
 }
 
-const AlertModal = ({ isOpen, loading, onClose, onConfirm }: Props) => {
+const AlertModal = ({
+  isOpen,
+  loading,
+  onClose,
+  onConfirm,
+  message,
+}: Props) => {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -25,7 +32,7 @@ const AlertModal = ({ isOpen, loading, onClose, onConfirm }: Props) => {
   return (
     <Modal
       title="Are you sure?"
-      description="This action cannot be undone."
+      description={message ?? "This action cannot be undone."}
       isOpen={isOpen}
       onClose={onClose}
     >

@@ -73,9 +73,9 @@ const ProfessionalCard = ({ data }: Props) => {
           <MapPin className="h-[16px] w-[13.5px] text-[#4B5563]" />{" "}
           {data?.address}
         </p>
-        <h3 className="font-lexend text-[20px] font-normal leading-[25px] text-[#1D3557]">
+        {/* <h3 className="font-lexend text-[20px] font-normal leading-[25px] text-[#1D3557]">
           $100/<span>hour</span>
-        </h3>
+        </h3> */}
         <Link
           href={`/professionals/${data?.userId ?? data?.userID}`}
           className="flex h-[48px] w-full items-center justify-center rounded-[8px] bg-[#1D3557] text-[16px] font-medium leading-[19.36px] text-white transition-colors duration-300 hover:bg-[#1D3557]/90"

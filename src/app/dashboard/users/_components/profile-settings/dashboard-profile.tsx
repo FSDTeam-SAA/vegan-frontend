@@ -1,9 +1,13 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ProfileForm } from "@/app/dashboard/users/_components/profile-settings/profile-form";
-import { PaymentMethods } from "@/app/dashboard/users/_components/profile-settings/payment-methods";
+import PaymentMethod from "@/app/dashboard/professional/payment/_components/PaymentMethod";
 import { NotificationSettings } from "@/app/dashboard/users/_components/profile-settings/notification-settings";
+import { ProfileForm } from "@/app/dashboard/users/_components/profile-settings/profile-form";
+import { auth } from "@/auth";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-export default function DashboardProfileSettings() {
+export default async function DashboardProfileSettings() {
+  const currentUser = await auth();
+
+  if (!currentUser?.user) return;
   return (
     <main className="">
       <Tabs defaultValue="profile" className="space-y-6">
@@ -31,7 +35,10 @@ export default function DashboardProfileSettings() {
           <ProfileForm />
         </TabsContent>
         <TabsContent value="payment" className="mt-6">
-          <PaymentMethods />
+          <PaymentMethod
+            isPaymentAdded={currentUser.user.paymentAdded}
+            userId={currentUser.user.userId}
+          />
         </TabsContent>
         <TabsContent value="notifications" className="mt-6">
           <NotificationSettings />

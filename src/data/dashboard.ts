@@ -216,6 +216,13 @@ export const organizationTabsList = [
   },
   {
     id: crypto.randomUUID(),
+    path: "/dashboard/organization/payment",
+    icon: Wallet,
+    linkText: "Payment",
+    roles: ["admin", "user", "delivery man"],
+  },
+  {
+    id: crypto.randomUUID(),
     path: "/dashboard/organization/support-center",
     icon: Info,
     linkText: "Support & Help Center",
