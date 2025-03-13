@@ -22,6 +22,7 @@ const CartsModal = ({ initialData }: Props) => {
   const { isOpen, toggleCart, onCheckout, setLoading, loading } =
     useCartState();
   const session = useSession();
+
   const { data, resetCartState } = useCartDataState();
 
   const amount = data.reduce((prev, curr) => {
@@ -40,7 +41,7 @@ const CartsModal = ({ initialData }: Props) => {
       }).then((res) => res.json()),
     onSuccess: (data) => {
       setLoading(false);
-      if (!data.success) {
+      if (!data.status) {
         toast.error(data.message || "Failed to purchase", {
           position: "top-right",
           richColors: true,

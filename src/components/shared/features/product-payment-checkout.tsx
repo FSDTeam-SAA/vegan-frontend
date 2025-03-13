@@ -26,7 +26,7 @@ const ProductPaymentCheckout = ({ initialData }: Props) => {
     return prev + curr.price;
   }, 0);
   const { mutate: createPurchase } = useMutation({
-    mutationKey: ["purchase"],
+    mutationKey: ["purchase-product"],
     mutationFn: (body: BodyProps) =>
       fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/payment/purchase`, {
         method: "POST",
@@ -36,7 +36,8 @@ const ProductPaymentCheckout = ({ initialData }: Props) => {
         body: JSON.stringify(body),
       }).then((res) => res.json()),
     onSuccess: (data) => {
-      if (!data.success) {
+      console.log("data", data);
+      if (!data.status) {
         toast.error(data.message || "Failed to purchase", {
           position: "top-right",
           richColors: true,
@@ -52,6 +53,13 @@ const ProductPaymentCheckout = ({ initialData }: Props) => {
       });
       onCheckoutClose();
       setLoading(false);
+    },
+    onError: (err) => {
+      console.log("err", err);
+      toast.error(err.message || "Failed to purchase", {
+        position: "top-right",
+        richColors: true,
+      });
     },
   });
   const session = useSession();
