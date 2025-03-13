@@ -1,5 +1,4 @@
 "use client";
-import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
 import ErrorContainer from "@/components/shared/sections/error-container";
@@ -26,7 +25,6 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { Upload } from "lucide-react";
 import dynamic from "next/dynamic";
 import { organizationEventColumns } from "./organizationEventColumns";
 const AddEventDialog = dynamic(() => import("./add-event-dialog"), {
@@ -102,10 +100,10 @@ export default function EventManaging() {
           </p>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" className="h-[40px] gap-2">
+          {/* <Button variant="outline" className="h-[40px] gap-2">
             <Upload className="h-4 w-4" />
             Bulk Upload
-          </Button>
+          </Button> */}
           <AddEventDialog />
         </div>
       </div>

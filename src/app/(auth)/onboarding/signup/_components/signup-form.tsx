@@ -3,7 +3,6 @@
 // Packages
 import { useMutation } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -175,8 +174,8 @@ export default function SignUpForm() {
     : `/terms?role=${role}`;
 
   return (
-    <div className="mt-[40px]">
-      <SocialLogin />
+    <div>
+      {/* <SocialLogin /> */}
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -346,34 +345,34 @@ export default function SignUpForm() {
   );
 }
 
-const SocialLogin = () => {
-  const searchParams = useSearchParams();
-  const role = searchParams.get("role");
+// const SocialLogin = () => {
+//   const searchParams = useSearchParams();
+//   const role = searchParams.get("role");
 
-  if (role === "customer") {
-    return (
-      <div>
-        <Button className="h-[48px] w-full rounded-[10px] border-[1px] border-[#F4F0EB] bg-white text-[#374151] shadow-none transition-colors duration-300 hover:bg-gray-50">
-          <Image
-            src="https://res.cloudinary.com/dgnustmny/image/upload/v1738667858/flat-color-icons_google_rdpzpr.png"
-            alt="Google"
-            height={24}
-            width={24}
-          />
-          <span>Continue with Google</span>
-        </Button>
+//   if (role === "customer") {
+//     return (
+//       <div>
+//         <Button className="h-[48px] w-full rounded-[10px] border-[1px] border-[#F4F0EB] bg-white text-[#374151] shadow-none transition-colors duration-300 hover:bg-gray-50">
+//           <Image
+//             src="https://res.cloudinary.com/dgnustmny/image/upload/v1738667858/flat-color-icons_google_rdpzpr.png"
+//             alt="Google"
+//             height={24}
+//             width={24}
+//           />
+//           <span>Continue with Google</span>
+//         </Button>
 
-        <div className="mt-[24px] flex items-center gap-[15px]">
-          <div className="h-[1.17px] w-full bg-[#D1D5DB]" />
-          <span className="text-[14px] font-normal leading-[16.41px] text-[#6B7280]">
-            OR
-          </span>
-          <div className="h-[1.17px] w-full bg-[#D1D5DB]" />
-          <div />
-        </div>
-      </div>
-    );
-  } else {
-    return <></>;
-  }
-};
+//         <div className="mt-[24px] flex items-center gap-[15px]">
+//           <div className="h-[1.17px] w-full bg-[#D1D5DB]" />
+//           <span className="text-[14px] font-normal leading-[16.41px] text-[#6B7280]">
+//             OR
+//           </span>
+//           <div className="h-[1.17px] w-full bg-[#D1D5DB]" />
+//           <div />
+//         </div>
+//       </div>
+//     );
+//   } else {
+//     return <></>;
+//   }
+// };

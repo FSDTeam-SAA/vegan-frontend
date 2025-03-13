@@ -133,7 +133,7 @@ export function EventCard({ data }: Props) {
                 </div>
               </div>
               <div className="flex items-center justify-between">
-                {data?.price && (
+                {Number(data?.price) !== 0 && (
                   <span className="font-inter text-xl font-medium leading-[29px] text-[#1F2937]">
                     ${data?.price}
                   </span>
