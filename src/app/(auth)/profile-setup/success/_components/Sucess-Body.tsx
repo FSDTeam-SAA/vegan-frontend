@@ -16,6 +16,15 @@ export const SuccessBody = () => {
           verified and active.
         </p>
       )}
+
+      {type === "organization" && (
+        <p className="mt-[16px] text-center text-[16px] font-normal leading-[28px] text-[#1F2937]">
+          Thank you for registering your organization with Vegan Collective! Our
+          team will review your documents and profile to ensure alignment with
+          our values. You will receive a notification once your account is
+          verified and active.
+        </p>
+      )}
     </div>
   );
 };

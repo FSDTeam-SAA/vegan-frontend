@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-import AccountSetup from "@/components/shared/features/stripe-account-setup/page";
+import AccountSetup from "@/components/shared/features/stripe-account-setup/stripe-account-setup";
 import PaymentMethod from "../../professional/payment/_components/PaymentMethod";
 
 const Page = async () => {
@@ -12,7 +12,7 @@ const Page = async () => {
         userId={currentUser.user.userId}
       />
 
-      <AccountSetup />
+      <AccountSetup userId={currentUser.user.userId} />
     </div>
   );
 };
