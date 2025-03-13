@@ -7,7 +7,7 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { Download, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 
@@ -112,14 +112,14 @@ export default function ProductsManagement({ merchantID }: Props) {
           />
         </div>
         <div className="flex gap-4">
-          <Button
+          {/* <Button
             variant="outline"
             className="flex items-center gap-2"
             onClick={() => setBulkUploadOpen(true)}
           >
             <Download className="h-4 w-4" />
             Bulk Upload
-          </Button>
+          </Button> */}
           <Button
             className="flex items-center gap-2"
             onClick={() => setAddDialogOpen(true)}

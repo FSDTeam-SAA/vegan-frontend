@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { FileUp, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { BulkUploadDialog } from "./bulk-upload-dialog";
@@ -41,7 +41,7 @@ const ServiceManagementHeader = () => {
           </p>
         </div>
         <div className="flex w-full items-center justify-between md:w-auto md:gap-[16px]">
-          <Button
+          {/* <Button
             onClick={() => setOpen(!open)}
             variant="outline"
             size="lg"
@@ -49,7 +49,7 @@ const ServiceManagementHeader = () => {
           >
             <FileUp className="h-[16px] w-[14px] text-[#6B7280]" /> Upload Bulk
             Services
-          </Button>
+          </Button> */}
           <Button
             onClick={() => setIsOpenService(!isOenService)}
             size="lg"
