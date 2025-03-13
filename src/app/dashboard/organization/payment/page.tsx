@@ -1,6 +1,15 @@
 import { auth } from "@/auth";
-import AccountSetup from "@/components/shared/features/stripe-account-setup/stripe-account-setup";
+import dynamic from "next/dynamic";
 import PaymentMethod from "../../professional/payment/_components/PaymentMethod";
+const AccountSetup = dynamic(
+  () =>
+    import(
+      "@/components/shared/features/stripe-account-setup/stripe-account-setup"
+    ),
+  {
+    ssr: false,
+  },
+);
 
 const Page = async () => {
   const currentUser = await auth();
