@@ -1,4 +1,5 @@
 import { auth } from "@/auth";
+import { StripeConnectionAlert } from "@/components/ui/stripe-connect-alert";
 import dynamic from "next/dynamic";
 import PaymentHeader from "./_components/PaymentHeader";
 import PaymentMethod from "./_components/PaymentMethod";
@@ -18,6 +19,12 @@ const Page = async () => {
   if (!currentUser?.user) return;
   return (
     <div className="px-6 pb-[24px] pt-[32px] md:px-8 md:pb-[40px] md:pt-[40px] lg:px-10 lg:pb-[56px]">
+      <StripeConnectionAlert
+        rediretTo="#accountSetup"
+        message="Connect your Stripe account to enable payments."
+        userId={currentUser.user.userId}
+        role="professional"
+      />
       <PaymentHeader />
       <ProfitSharing />
       <PaymentMethod

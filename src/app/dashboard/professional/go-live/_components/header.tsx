@@ -13,7 +13,7 @@ export function Header() {
   const [open, setOpen] = useState(false);
   return (
     <header className="">
-      <div className="items-center justify-between md:mb-10 md:flex">
+      <div className="items-center justify-between md:mb-5 md:flex">
         <DashboardHeading
           title="Go Live"
           subTitle="Keep track of your earnings, breakdowns, and payout preferences."
