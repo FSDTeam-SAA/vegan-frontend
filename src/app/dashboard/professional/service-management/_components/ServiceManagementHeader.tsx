@@ -10,7 +10,11 @@ const AddServiceForm = dynamic(() => import("./add-service-form"), {
   ssr: false,
 });
 
-const ServiceManagementHeader = () => {
+interface Props {
+  userId: string;
+}
+
+const ServiceManagementHeader = ({ userId }: Props) => {
   const [open, setOpen] = useState(false);
   const [isOenService, setIsOpenService] = useState(false);
 
@@ -74,7 +78,7 @@ const ServiceManagementHeader = () => {
           {/* Modal content */}
           <div className="relative z-10">
             <ScrollArea className="h-[700px] w-[327px] rounded-b-[16px] md:w-[500px] lg:w-[769px]">
-              <AddServiceForm onOpenChange={setIsOpenService} />
+              <AddServiceForm onOpenChange={setIsOpenService} userId={userId} />
             </ScrollArea>
           </div>
         </section>

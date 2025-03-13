@@ -20,7 +20,7 @@ interface Props {
 export default function Service({ id }: Props) {
   const { data, isLoading, isError, error } =
     useQuery<ProfessionalServiceResponse>({
-      queryKey: ["professional-services"],
+      queryKey: ["professional-services", id],
       queryFn: () =>
         fetch(
           `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/allservices/${id}`,
@@ -28,8 +28,6 @@ export default function Service({ id }: Props) {
     });
 
   let content;
-
-  console.log(data);
 
   if (isLoading || data) {
     if (data?.data?.length === 0) {
