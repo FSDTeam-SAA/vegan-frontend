@@ -18,7 +18,9 @@ const DashboardLayout = async ({ children }: { children: ReactNode }) => {
       <Sidebar lists={professionalTabsList} />
       <main className="min-h-screen flex-1 overflow-y-auto bg-[#E8DFD6]">
         <DashboardNavbar />
-        <div className="md:ml-[272px]">{children}</div>
+        <div className="md:ml-[272px]">
+          <div>{children}</div>
+        </div>
       </main>
     </div>
   );

@@ -133,10 +133,12 @@ export function EventCard({ data }: Props) {
                 </div>
               </div>
               <div className="flex items-center justify-between">
-                {Number(data?.price) !== 0 && (
+                {data?.price ? (
                   <span className="font-inter text-xl font-medium leading-[29px] text-[#1F2937]">
                     ${data?.price}
                   </span>
+                ) : (
+                  <Badge className="bg-green-400">Free</Badge>
                 )}
                 <Button className="ml-4 bg-[#1D3557] px-[30px] py-[15px] text-center font-inter text-base !font-medium leading-[19.36px] text-white">
                   Join Event

@@ -52,12 +52,16 @@ const PaymentMethod = ({ isPaymentAdded, userId }: Props) => {
 
       // handle success
       router.refresh();
+
       setIsDeleteModalOpen(false);
       toast.success(data.message, {
         richColors: true,
       });
+
+      window.location.reload();
     },
   });
+
   return (
     <div className="py-[56px]">
       <div className="rounded-[16px] bg-[#F8F5F2] p-[24px] md:p-[32px] lg:p-[40px]">

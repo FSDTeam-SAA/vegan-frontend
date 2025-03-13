@@ -123,7 +123,7 @@ const AccountSetup = ({ userId }: Props) => {
 
   return (
     <>
-      <div className="pb-[56px]">
+      <div className="pb-[56px]" id="accountSetup">
         <div className="rounded-[16px] bg-[#F8F5F2] p-[24px] md:p-[32px] lg:p-[40px]">
           <div className="flex flex-col items-start justify-start gap-[24px] md:flex-row md:items-center md:justify-between">
             <div>
