@@ -44,7 +44,14 @@ const ProfessionalGreetings = ({ isGreetings, userId, isVerified }: Props) => {
   }, [isGreetings, isVerified, updateGreetings]);
 
   return (
-    <VeganModal open={isOpen} onOpenChange={setOpen} className="">
+    <VeganModal
+      open={isOpen}
+      onOpenChange={() => {
+        window.location.reload();
+        setOpen(false);
+      }}
+      className=""
+    >
       <div className="flex w-full flex-col items-center justify-center rounded-[16px] bg-white px-[16px] py-[16px]">
         <Image
           src="https://res.cloudinary.com/dgnustmny/image/upload/v1738925272/Rectangle_yzijtk.png"

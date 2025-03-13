@@ -67,7 +67,7 @@ const CartsModal = ({ initialData }: Props) => {
     },
   });
 
-  if (!initialData) return null;
+  if (!initialData) return <p>Loading...</p>;
 
   const isPaymentAdded = session.data?.user.paymentAdded;
 
