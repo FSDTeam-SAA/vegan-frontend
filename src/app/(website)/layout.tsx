@@ -18,7 +18,6 @@ const WebsiteLayout = async ({ children }: { children: ReactNode }) => {
     accounRole = session.user.accountType!;
   }
 
-  console.log(session);
   return (
     <div className="">
       <Navbar
