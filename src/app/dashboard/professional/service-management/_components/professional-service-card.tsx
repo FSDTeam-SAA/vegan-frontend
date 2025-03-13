@@ -36,7 +36,7 @@ interface Props {
   id: string;
 }
 
-const ProfessionalServiceCard = ({ data }: Props) => {
+const ProfessionalServiceCard = ({ data, id }: Props) => {
   const [openAccordions, setOpenAccordions] = useState<string[]>([]);
   const [openEditModal, setOpenEditModal] = useState(false);
   const [checked, setChecked] = useState(data?.visibility || false);
@@ -45,7 +45,7 @@ const ProfessionalServiceCard = ({ data }: Props) => {
   const queryClient = useQueryClient();
 
   const { mutate: editMutate, isPending: editPending } = useMutation({
-    mutationKey: ["professional-service-edit"],
+    mutationKey: ["professional-service-edit", data?._id],
     mutationFn: (body: FormData) =>
       fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/updateservice/${data?._id}`,
@@ -257,6 +257,7 @@ const ProfessionalServiceCard = ({ data }: Props) => {
               <AddServiceForm
                 onOpenChange={setOpenEditModal}
                 initialdata={data}
+                userId={id}
               />
             </ScrollArea>
           </div>

@@ -11,7 +11,6 @@ import {
   Upload,
   X,
 } from "lucide-react";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
 import type React from "react";
 import { useState } from "react";
@@ -107,8 +106,13 @@ const timeSlots = Array.from({ length: 24 }, (_, i) => {
 interface Props {
   onOpenChange: (v: boolean) => void;
   initialdata?: ProfessionalService;
+  userId: string;
 }
-export default function AddServiceForm({ onOpenChange, initialdata }: Props) {
+export default function AddServiceForm({
+  onOpenChange,
+  initialdata,
+  userId,
+}: Props) {
   const [open, setOpen] = useState(false);
   const [image, setImage] = useState<File | null | string>(
     initialdata?.serviceImage ?? null,
@@ -117,10 +121,7 @@ export default function AddServiceForm({ onOpenChange, initialdata }: Props) {
     initialdata?.serviceVideo ?? null,
   );
 
-  const session = useSession();
   const queryClient = useQueryClient();
-
-  const userID = session?.data?.user?.userId;
 
   const { mutate, isPending } = useMutation({
     mutationKey: ["professional-service-create"],
@@ -189,12 +190,13 @@ export default function AddServiceForm({ onOpenChange, initialdata }: Props) {
       isLiveStream: initialdata?.isLiveStream ?? undefined,
       paymentType: initialdata?.paymentType ?? undefined,
       price: initialdata?.price.toString() ?? undefined,
-      timeSlots: [],
+      timeSlots: initialdata?.timeSlots ?? [],
+      date: initialdata?.date ? new Date(initialdata.date) : undefined,
     },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    if (!userID) {
+    if (!userId) {
       toast.warning("userID is missing. Please login again.");
       return;
     }
@@ -203,7 +205,7 @@ export default function AddServiceForm({ onOpenChange, initialdata }: Props) {
 
     const formData = new FormData();
 
-    formData.append("userID", userID);
+    formData.append("userID", userId);
     formData.append("serviceName", values?.serviceName);
     formData.append("metaDescription", values.metaDescription);
     formData.append("serviceDescription", values.serviceDescription);
@@ -574,7 +576,6 @@ export default function AddServiceForm({ onOpenChange, initialdata }: Props) {
                     <SelectContent className="w-[344px]">
                       <SelectItem value="free">Free</SelectItem>
                       <SelectItem value="one-time">One-time Payment</SelectItem>
-                      <SelectItem value="subscription">Subscription</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
