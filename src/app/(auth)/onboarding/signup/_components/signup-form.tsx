@@ -301,18 +301,63 @@ export default function SignUpForm() {
                   />
                 </FormControl>
                 <div className="space-y-1 leading-none">
-                  <FormLabel className="font-inter text-[12px] font-normal leading-[20px] text-[#1F2937]">
-                    As a Professional on Vegan Collective, you are part of a
-                    trusted platform for ethical services. By continuing, you
-                    agree to uphold{" "}
-                    <Link
-                      href={termsPage}
-                      className="font-semibold text-blue-700 hover:underline"
-                    >
-                      these commitments
-                    </Link>{" "}
-                    to ensure trust, quality, and alignment with our mission.
-                  </FormLabel>
+                  {form.watch("accountType") === "professional" && (
+                    <FormLabel className="font-inter text-[12px] font-normal leading-[20px] text-[#1F2937]">
+                      As a Professional on Vegan Collective, you are part of a
+                      trusted platform for ethical services. By continuing, you
+                      agree to uphold{" "}
+                      <Link
+                        href={termsPage}
+                        className="font-semibold text-blue-700 hover:underline"
+                      >
+                        these commitments
+                      </Link>{" "}
+                      to ensure trust, quality, and alignment with our mission.
+                    </FormLabel>
+                  )}
+                  {form.watch("accountType") === "merchant" && (
+                    <FormLabel className="font-inter text-[12px] font-normal leading-[20px] text-[#1F2937]">
+                      As a Merchant on Vegan Collective, you are joining a
+                      trusted platform for vegan products. By continuing, you
+                      agree to uphold{" "}
+                      <Link
+                        href={termsPage}
+                        className="font-semibold text-blue-700 hover:underline"
+                      >
+                        these commitments
+                      </Link>{" "}
+                      to ensure trust, quality, and alignment with our mission.
+                    </FormLabel>
+                  )}
+                  {form.watch("accountType") === "organization" && (
+                    <FormLabel className="font-inter text-[12px] font-normal leading-[20px] text-[#1F2937]">
+                      As an Organization on Vegan Collective, you are part of a
+                      trusted platform for promoting ethical initiatives. By
+                      continuing, you agree to uphold{" "}
+                      <Link
+                        href={termsPage}
+                        className="font-semibold text-blue-700 hover:underline"
+                      >
+                        these commitments
+                      </Link>{" "}
+                      to ensure alignment with our mission and the trust of your
+                      supporters.
+                    </FormLabel>
+                  )}
+
+                  {role === "customer" && (
+                    <FormLabel className="font-inter text-[12px] font-normal leading-[20px] text-[#1F2937]">
+                      As a Vegan on Vegan Collective, you are part of a
+                      community committed to ethical practices and meaningful
+                      impact. By joining, you agree to uphold the following{" "}
+                      <Link
+                        href={termsPage}
+                        className="font-semibold text-blue-700 hover:underline"
+                      >
+                        commitments
+                      </Link>
+                    </FormLabel>
+                  )}
 
                   <FormMessage />
                 </div>
