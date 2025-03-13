@@ -20,6 +20,7 @@ const ProfessionalCard = ({ data }: Props) => {
   const isAlreadySelected = professionals?.find(
     (item) => item._id === data?._id,
   );
+
   return (
     <div className="w-full rounded-[16px] bg-white p-[24px] lg:w-[400px]">
       <div className="relative h-[232px] w-full rounded-[12px]">

@@ -14,9 +14,11 @@ import { Calendar } from "@/components/ui/calendar";
 import VeganModal from "@/components/ui/vegan-modal";
 import { cn } from "@/lib/utils";
 import { ProfessionalService } from "@/types/professional";
+import { useMutation } from "@tanstack/react-query";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { ReactNode, useState } from "react";
+import { toast } from "sonner";
 
 interface Props {
   open: boolean;
@@ -25,11 +27,54 @@ interface Props {
   data?: ProfessionalService;
 }
 
+interface PurchaseBody {
+  userID: string;
+  amount: number;
+  professionalID: string;
+  serviceBookingTime: string;
+  professionalServicesId: string;
+}
+
 const ServiceBookModal = ({ open, onOpenChange, trigger, data }: Props) => {
   const session = useSession();
 
   const [selectedTime, setSelectedTime] = useState<string>("");
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+
+  const { mutate: purchase } = useMutation({
+    mutationKey: ["service_purchase"],
+    mutationFn: (body: PurchaseBody) =>
+      fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/payment/purchase`, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(body),
+      }).then((res) => res.json()),
+    onSuccess: (data) => {
+      if (!data.success) {
+        toast.error(data.message, {
+          position: "top-right",
+          richColors: true,
+        });
+        return;
+      }
+
+      // handle success
+      toast.success(data.message, {
+        position: "top-right",
+        richColors: true,
+      });
+      setSelectedTime("");
+      onOpenChange();
+    },
+    onError: (err) => {
+      toast.error(err.message, {
+        position: "top-right",
+        richColors: true,
+      });
+    },
+  });
 
   if (!session.data) return;
 
@@ -42,13 +87,59 @@ const ServiceBookModal = ({ open, onOpenChange, trigger, data }: Props) => {
     : new Date(new Date().setFullYear(new Date().getFullYear() + 1));
 
   const bookServiceBeforePaymentMethodAdd = () => {
-    console.log("Payment Method Created");
+    if (
+      !session.data.user.userId ||
+      !data?.price ||
+      !data?.userID ||
+      !selectedTime ||
+      !data._id
+    ) {
+      toast.warning("All field are required", {
+        position: "top-right",
+        richColors: true,
+      });
+      return;
+    }
+    // make purchase
+    const prceedData = {
+      userID: session.data.user.userId,
+      amount: data.price,
+      professionalID: data.userID,
+      serviceBookingTime: selectedTime,
+      professionalServicesId: data._id,
+    };
+    purchase(prceedData);
   };
 
   const handleProceedToCheckout = () => {
     if (!isPaymentAdded) {
       setIsPaymentModalOpen(true);
+      return;
     }
+
+    if (
+      !session.data.user.userId ||
+      !data?.price ||
+      !data?.userID ||
+      !selectedTime ||
+      !data._id
+    ) {
+      toast.warning("All field are required", {
+        position: "top-right",
+        richColors: true,
+      });
+      return;
+    }
+
+    // make purchase
+    const prceedData = {
+      userID: session.data.user.userId,
+      amount: data.price,
+      professionalID: data.userID,
+      serviceBookingTime: selectedTime,
+      professionalServicesId: data._id,
+    };
+    purchase(prceedData);
   };
   return (
     <>
