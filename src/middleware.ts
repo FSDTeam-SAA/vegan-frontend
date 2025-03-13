@@ -11,6 +11,7 @@ export default auth((req) => {
   const { nextUrl } = req;
   const isLoggedin = !!req.auth;
 
+  return NextResponse.next();
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
 
   if (isApiAuthRoute) {
@@ -20,8 +21,6 @@ export default auth((req) => {
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 
   const isProtectedRoutes = protectedRoutes.includes(nextUrl.pathname);
-
-  return NextResponse.next();
 
   if (isProtectedRoutes) {
     if (!isLoggedin) {

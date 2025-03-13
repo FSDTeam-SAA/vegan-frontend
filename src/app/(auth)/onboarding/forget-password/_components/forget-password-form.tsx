@@ -60,7 +60,6 @@ export function ForgotPasswordForm() {
         body: JSON.stringify(data),
       }).then((res) => res.json()),
     onSuccess: (data) => {
-      console.log(data);
       setLoading(true);
 
       if (!data.success) {
