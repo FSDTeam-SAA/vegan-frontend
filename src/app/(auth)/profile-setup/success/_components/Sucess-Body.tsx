@@ -43,8 +43,9 @@ export const SuccessBody = () => {
       )}
       {(type === "vegan" || type === "nonVegan") && (
         <p className="mt-[16px] text-center text-[16px] font-normal leading-[28px] text-[#1F2937]">
-          Thank you for registering on Vegan Collective! We've sent you an email
-          for confirmation. Please check your inbox and verify your account.
+          Thank you for registering on Vegan Collective! We&apos;ve sent you an
+          email for confirmation. Please check your inbox and verify your
+          account.
         </p>
       )}
     </div>

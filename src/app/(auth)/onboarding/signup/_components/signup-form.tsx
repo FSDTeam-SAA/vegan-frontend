@@ -206,9 +206,11 @@ export default function SignUpForm() {
       "Join as someone interested in exploring veganism. Support ethical practices while enjoying shared profits from your purchases.",
   };
 
+  const accountType = form.watch("accountType");
+
   const termsPage = ref
-    ? `/terms?role=${role}&ref=${ref}`
-    : `/terms?role=${role}`;
+    ? `/terms?role=${role}&ref=${ref}&accountType=${accountType}`
+    : `/terms?role=${role}&accountType=${accountType}`;
 
   return (
     <div>
