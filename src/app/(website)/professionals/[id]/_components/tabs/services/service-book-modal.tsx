@@ -17,13 +17,12 @@ import { ProfessionalService } from "@/types/professional";
 import { useMutation } from "@tanstack/react-query";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { useSession } from "next-auth/react";
-import { ReactNode, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 
 interface Props {
   open: boolean;
   onOpenChange: VoidFunction;
-  trigger: ReactNode;
   data?: ProfessionalService;
 }
 
@@ -35,7 +34,7 @@ interface PurchaseBody {
   professionalServicesId: string;
 }
 
-const ServiceBookModal = ({ open, onOpenChange, trigger, data }: Props) => {
+const ServiceBookModal = ({ open, onOpenChange, data }: Props) => {
   const session = useSession();
 
   const [selectedTime, setSelectedTime] = useState<string>("");
@@ -144,7 +143,11 @@ const ServiceBookModal = ({ open, onOpenChange, trigger, data }: Props) => {
   return (
     <>
       <AlertDialog open={open} onOpenChange={onOpenChange}>
-        <AlertDialogTrigger className="w-full">{trigger}</AlertDialogTrigger>
+        <AlertDialogTrigger className="w-full">
+          <button className="mt-[12px] flex h-[48px] w-full items-center justify-center rounded-[8px] bg-[#1D3557] text-[16px] font-medium leading-[19.36px] text-white transition-colors duration-300 hover:bg-[#1D3557]/90">
+            Book Service
+          </button>
+        </AlertDialogTrigger>
         <AlertDialogContent className="w-full max-w-[380px] py-[24px] md:min-w-[600px]">
           <AlertDialogHeader>
             <div className="flex items-center justify-between">

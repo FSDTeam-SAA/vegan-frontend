@@ -1,6 +1,7 @@
 "use client";
 
-import { Star, ChevronDown, SlidersHorizontal } from "lucide-react";
+import CreateReview from "@/components/shared/features/review/create-review";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -8,8 +9,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Badge } from "@/components/ui/badge";
-import Image from "next/image";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
   Sheet,
   SheetContent,
@@ -17,8 +18,8 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
+import { ChevronDown, SlidersHorizontal, Star } from "lucide-react";
+import Image from "next/image";
 
 const reviews = [
   {
@@ -47,59 +48,68 @@ const reviews = [
   },
 ];
 
-export function ReviewCard() {
+interface Props {
+  userId: string;
+}
+
+export function ReviewCard({ userId }: Props) {
   return (
     <div className="min-h-screen">
       <div className="max-w-4xl">
         {/* Desktop Filters */}
-        <div className="mb-6 hidden gap-3 md:flex">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="outline"
-                className="border border-gray-400 bg-transparent font-inter font-normal leading-[19.36px] text-[#4B5563]"
-              >
-                Most Recent
-                <ChevronDown className="ml-2 h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuItem>Most Recent</DropdownMenuItem>
-              <DropdownMenuItem>Oldest</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+        <div className="hidden justify-between md:flex">
+          <div className="mb-6 hidden gap-3 md:flex">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="outline"
+                  className="border border-gray-400 bg-transparent font-inter font-normal leading-[19.36px] text-[#4B5563]"
+                >
+                  Most Recent
+                  <ChevronDown className="ml-2 h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem>Most Recent</DropdownMenuItem>
+                <DropdownMenuItem>Oldest</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
 
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="outline"
-                className="border border-gray-400 bg-transparent font-inter font-normal leading-[19.36px] text-[#4B5563]"
-              >
-                Relevant
-                <ChevronDown className="ml-2 h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuItem>Most Relevant</DropdownMenuItem>
-              <DropdownMenuItem>Least Relevant</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="outline"
+                  className="border border-gray-400 bg-transparent font-inter font-normal leading-[19.36px] text-[#4B5563]"
+                >
+                  Relevant
+                  <ChevronDown className="ml-2 h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem>Most Relevant</DropdownMenuItem>
+                <DropdownMenuItem>Least Relevant</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
 
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="outline"
-                className="border border-gray-400 bg-transparent font-inter font-normal leading-[19.36px] text-[#4B5563]"
-              >
-                Ratings
-                <ChevronDown className="ml-2 h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuItem>Highest Rating</DropdownMenuItem>
-              <DropdownMenuItem>Lowest Rating</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="outline"
+                  className="border border-gray-400 bg-transparent font-inter font-normal leading-[19.36px] text-[#4B5563]"
+                >
+                  Ratings
+                  <ChevronDown className="ml-2 h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem>Highest Rating</DropdownMenuItem>
+                <DropdownMenuItem>Lowest Rating</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+          <div>
+            <CreateReview userId={userId} />
+          </div>
         </div>
 
         {/* Mobile Filter */}

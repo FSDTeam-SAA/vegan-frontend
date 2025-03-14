@@ -41,7 +41,7 @@ const CartsModal = ({ initialData }: Props) => {
       }).then((res) => res.json()),
     onSuccess: (data) => {
       setLoading(false);
-      if (!data.status) {
+      if (!data.success) {
         toast.error(data.message || "Failed to purchase", {
           position: "top-right",
           richColors: true,
