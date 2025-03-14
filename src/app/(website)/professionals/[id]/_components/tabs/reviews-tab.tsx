@@ -1,9 +1,13 @@
 import { ReviewCard } from "../review-card";
 
-export default function ReviewsTab() {
+interface Props {
+  userId: string;
+}
+
+export default async function ReviewsTab({ userId }: Props) {
   return (
     <>
-      <ReviewCard />
+      <ReviewCard userId={userId} />
     </>
   );
 }

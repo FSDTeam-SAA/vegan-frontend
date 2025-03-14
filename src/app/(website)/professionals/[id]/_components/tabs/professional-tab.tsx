@@ -43,7 +43,7 @@ const ProfessionalTab = ({ professionalId }: Props) => {
       case "faqs":
         return <FAQsTab userId={professionalId} />;
       case "reviews":
-        return <ReviewsTab />;
+        return <ReviewsTab userId={professionalId} />;
       default:
         return null;
     }
