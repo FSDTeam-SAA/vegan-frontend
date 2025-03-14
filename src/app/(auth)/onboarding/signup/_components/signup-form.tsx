@@ -216,7 +216,7 @@ export default function SignUpForm() {
                       accountTypeMessage[
                         (form.watch(
                           "accountType",
-                        ) as keyof typeof accountTypeMessage) ?? "merchant"
+                        ) as keyof typeof accountTypeMessage) ?? ""
                       ]
                     }
                   </FormDescription>
@@ -289,81 +289,85 @@ export default function SignUpForm() {
             )}
           />
 
-          <FormField
-            control={form.control}
-            name="agree"
-            render={({ field }) => (
-              <FormItem className="flex flex-row items-center space-x-3 space-y-0 rounded-md pt-[24px]">
-                <FormControl>
-                  <Checkbox
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
-                </FormControl>
-                <div className="space-y-1 leading-none">
-                  {form.watch("accountType") === "professional" && (
-                    <FormLabel className="font-inter text-[12px] font-normal leading-[20px] text-[#1F2937]">
-                      As a Professional on Vegan Collective, you are part of a
-                      trusted platform for ethical services. By continuing, you
-                      agree to uphold{" "}
-                      <Link
-                        href={termsPage}
-                        className="font-semibold text-blue-700 hover:underline"
-                      >
-                        these commitments
-                      </Link>{" "}
-                      to ensure trust, quality, and alignment with our mission.
-                    </FormLabel>
-                  )}
-                  {form.watch("accountType") === "merchant" && (
-                    <FormLabel className="font-inter text-[12px] font-normal leading-[20px] text-[#1F2937]">
-                      As a Merchant on Vegan Collective, you are joining a
-                      trusted platform for vegan products. By continuing, you
-                      agree to uphold{" "}
-                      <Link
-                        href={termsPage}
-                        className="font-semibold text-blue-700 hover:underline"
-                      >
-                        these commitments
-                      </Link>{" "}
-                      to ensure trust, quality, and alignment with our mission.
-                    </FormLabel>
-                  )}
-                  {form.watch("accountType") === "organization" && (
-                    <FormLabel className="font-inter text-[12px] font-normal leading-[20px] text-[#1F2937]">
-                      As an Organization on Vegan Collective, you are part of a
-                      trusted platform for promoting ethical initiatives. By
-                      continuing, you agree to uphold{" "}
-                      <Link
-                        href={termsPage}
-                        className="font-semibold text-blue-700 hover:underline"
-                      >
-                        these commitments
-                      </Link>{" "}
-                      to ensure alignment with our mission and the trust of your
-                      supporters.
-                    </FormLabel>
-                  )}
+          {form.watch("accountType") && (
+            <FormField
+              control={form.control}
+              name="agree"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-center space-x-3 space-y-0 rounded-md pt-[24px]">
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                  <div className="space-y-1 leading-none">
+                    {form.watch("accountType") === "professional" && (
+                      <FormLabel className="font-inter text-[12px] font-normal leading-[20px] text-[#1F2937]">
+                        As a Professional on Vegan Collective, you are part of a
+                        trusted platform for ethical services. By continuing,
+                        you agree to uphold{" "}
+                        <Link
+                          href={termsPage}
+                          className="font-semibold text-blue-700 hover:underline"
+                        >
+                          these commitments
+                        </Link>{" "}
+                        to ensure trust, quality, and alignment with our
+                        mission.
+                      </FormLabel>
+                    )}
+                    {form.watch("accountType") === "merchant" && (
+                      <FormLabel className="font-inter text-[12px] font-normal leading-[20px] text-[#1F2937]">
+                        As a Merchant on Vegan Collective, you are joining a
+                        trusted platform for vegan products. By continuing, you
+                        agree to uphold{" "}
+                        <Link
+                          href={termsPage}
+                          className="font-semibold text-blue-700 hover:underline"
+                        >
+                          these commitments
+                        </Link>{" "}
+                        to ensure trust, quality, and alignment with our
+                        mission.
+                      </FormLabel>
+                    )}
+                    {form.watch("accountType") === "organization" && (
+                      <FormLabel className="font-inter text-[12px] font-normal leading-[20px] text-[#1F2937]">
+                        As an Organization on Vegan Collective, you are part of
+                        a trusted platform for promoting ethical initiatives. By
+                        continuing, you agree to uphold{" "}
+                        <Link
+                          href={termsPage}
+                          className="font-semibold text-blue-700 hover:underline"
+                        >
+                          these commitments
+                        </Link>{" "}
+                        to ensure alignment with our mission and the trust of
+                        your supporters.
+                      </FormLabel>
+                    )}
 
-                  {role === "customer" && (
-                    <FormLabel className="font-inter text-[12px] font-normal leading-[20px] text-[#1F2937]">
-                      As a Vegan on Vegan Collective, you are part of a
-                      community committed to ethical practices and meaningful
-                      impact. By joining, you agree to uphold the following{" "}
-                      <Link
-                        href={termsPage}
-                        className="font-semibold text-blue-700 hover:underline"
-                      >
-                        commitments
-                      </Link>
-                    </FormLabel>
-                  )}
+                    {role === "customer" && (
+                      <FormLabel className="font-inter text-[12px] font-normal leading-[20px] text-[#1F2937]">
+                        As a Vegan on Vegan Collective, you are part of a
+                        community committed to ethical practices and meaningful
+                        impact. By joining, you agree to uphold the following{" "}
+                        <Link
+                          href={termsPage}
+                          className="font-semibold text-blue-700 hover:underline"
+                        >
+                          commitments
+                        </Link>
+                      </FormLabel>
+                    )}
 
-                  <FormMessage />
-                </div>
-              </FormItem>
-            )}
-          />
+                    <FormMessage />
+                  </div>
+                </FormItem>
+              )}
+            />
+          )}
           <Button
             type="submit"
             className="relative mt-[24px] h-[48px] w-full rounded-[10px] bg-[#1D3557] transition-colors duration-300 hover:bg-[#1D3557]/90 disabled:opacity-60"
