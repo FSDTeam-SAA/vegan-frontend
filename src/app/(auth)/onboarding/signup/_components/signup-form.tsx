@@ -67,13 +67,13 @@ const formSchema = z
   .superRefine((data, ctx) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const context = ctx as any;
-    if (context?.role === "vendor" && !data.accountType) {
+    /* if (context?.role === "vendor" && !data.accountType) {
       ctx.addIssue({
         code: "custom",
         path: ["accountType"],
         message: "Account type is required for vendors.",
       });
-    }
+    } */
     if (context?.role === "customer" && !data.fullName) {
       ctx.addIssue({
         code: "custom",
@@ -82,6 +82,39 @@ const formSchema = z
       });
     }
   });
+
+const accountTypeLists = [
+  {
+    id: 1,
+    value: "merchant",
+    label: "Merchant",
+    for: "vendor",
+  },
+  {
+    id: 3,
+    value: "organization",
+    label: "Organization",
+    for: "vendor",
+  },
+  {
+    id: 3,
+    value: "professional",
+    label: "Professional",
+    for: "vendor",
+  },
+  {
+    id: 4,
+    value: "vegan",
+    label: "Vegan",
+    for: "customer",
+  },
+  {
+    id: 5,
+    value: "nonVegan",
+    label: "Non-Vegan",
+    for: "customer",
+  },
+];
 
 export default function SignUpForm() {
   const [loading, setLoading] = useState<true | false>(false);
@@ -167,6 +200,10 @@ export default function SignUpForm() {
       "Promote your nonprofit initiatives, raise funds, and connect with the vegan community.",
     professional:
       "Offer your services as a verified vegan professional to a global audience.",
+    vegan:
+      "Join as a Vegan to maximize your impact, explore all-vegan services and products, and enjoy full profit-sharing benefits.",
+    nonVegan:
+      "Join as someone interested in exploring veganism. Support ethical practices while enjoying shared profits from your purchases.",
   };
 
   const termsPage = ref
@@ -182,48 +219,50 @@ export default function SignUpForm() {
           className="mx-auto max-w-3xl space-y-[16px] pt-[24px]"
         >
           <p></p>
-          {role === "vendor" && (
-            <FormField
-              control={form.control}
-              name="accountType"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Account Type</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select Account type" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="merchant" className="max-w-3xl">
-                        Merchant
-                      </SelectItem>
-                      <SelectItem value="organization" className="max-w-3xl">
-                        Organization <p className="text-[10px]"></p>
-                      </SelectItem>
-                      <SelectItem value="professional" className="max-w-3xl">
-                        Professional
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                  <FormDescription>
-                    {
-                      accountTypeMessage[
-                        (form.watch(
-                          "accountType",
-                        ) as keyof typeof accountTypeMessage) ?? ""
-                      ]
-                    }
-                  </FormDescription>
-                </FormItem>
-              )}
-            />
-          )}
+
+          <FormField
+            control={form.control}
+            name="accountType"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Account Type</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select Account type" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {accountTypeLists
+                      .filter((item) => item.for === role)
+                      .map(({ value, label, id }) => (
+                        <SelectItem
+                          value={value}
+                          className="max-w-3xl"
+                          key={id}
+                        >
+                          {label}
+                        </SelectItem>
+                      ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+                <FormDescription>
+                  {
+                    accountTypeMessage[
+                      (form.watch(
+                        "accountType",
+                      ) as keyof typeof accountTypeMessage) ?? ""
+                    ]
+                  }
+                </FormDescription>
+              </FormItem>
+            )}
+          />
+
           {role === "customer" && (
             <FormField
               control={form.control}
@@ -350,15 +389,8 @@ export default function SignUpForm() {
 
                     {role === "customer" && (
                       <FormLabel className="font-inter text-[12px] font-normal leading-[20px] text-[#1F2937]">
-                        As a Vegan on Vegan Collective, you are part of a
-                        community committed to ethical practices and meaningful
-                        impact. By joining, you agree to uphold the following{" "}
-                        <Link
-                          href={termsPage}
-                          className="font-semibold text-blue-700 hover:underline"
-                        >
-                          commitments
-                        </Link>
+                        I agree to receive notifications about platform updates
+                        and opportunities (optional).
                       </FormLabel>
                     )}
 
