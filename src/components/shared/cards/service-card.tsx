@@ -55,11 +55,6 @@ const ServiceCard = ({ data }: Props) => {
                 data={data}
                 open={open}
                 onOpenChange={toggleModal}
-                trigger={
-                  <button className="mt-[12px] flex h-[48px] w-full items-center justify-center rounded-[8px] bg-[#1D3557] text-[16px] font-medium leading-[19.36px] text-white transition-colors duration-300 hover:bg-[#1D3557]/90">
-                    Book Service
-                  </button>
-                }
               />
             </div>
           </div>
