@@ -39,7 +39,40 @@ const ServiceBookModal = ({ open, onOpenChange, data }: Props) => {
   const [selectedTime, setSelectedTime] = useState<string>("");
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
 
-  const { mutate: purchase } = useMutation({
+  // confirm booking
+  const { mutate: confirmBooking, isPending: isConfirming } = useMutation({
+    mutationKey: ["confirm-booking"],
+    mutationFn: (body: { userID: string; serviceID: string }) =>
+      fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/payment/confirm-booking`,
+        {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(body),
+        },
+      ).then((res) => res.json()),
+    onSuccess: (data) => {
+      if (!data.success) {
+        toast.error(data.message, {
+          position: "top-right",
+          richColors: true,
+        });
+        return;
+      }
+
+      // handle success
+      toast.success("Booking confirmed successfully 🎉", {
+        position: "top-right",
+        richColors: true,
+      });
+      setSelectedTime("");
+      onOpenChange();
+    },
+  });
+
+  const { mutate: purchase, isPending } = useMutation({
     mutationKey: ["service_purchase"],
     mutationFn: (body: PurchaseBody) =>
       fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/payment/purchase`, {
@@ -58,13 +91,20 @@ const ServiceBookModal = ({ open, onOpenChange, data }: Props) => {
         return;
       }
 
-      // handle success
-      toast.success(data.message, {
-        position: "top-right",
-        richColors: true,
-      });
-      setSelectedTime("");
-      onOpenChange();
+      if (!session.data?.user) {
+        toast.warning("user is not found for confirm your booking.", {
+          richColors: true,
+        });
+        return;
+      }
+
+      const confirmBookingBody = {
+        serviceID: data.bookedService,
+        userID: session.data.user.userId,
+      };
+
+      // handle success confirming booking
+      confirmBooking(confirmBookingBody);
     },
     onError: (err) => {
       toast.error(err.message, {
@@ -78,7 +118,7 @@ const ServiceBookModal = ({ open, onOpenChange, data }: Props) => {
 
   const isPaymentAdded = session.data.user.paymentAdded;
 
-  const isDisabled = !selectedTime;
+  const isDisabled = !selectedTime || isPending || isConfirming;
 
   const afterDate = data?.date
     ? new Date(data?.date)
@@ -199,7 +239,11 @@ const ServiceBookModal = ({ open, onOpenChange, data }: Props) => {
               disabled={isDisabled}
               onClick={handleProceedToCheckout}
             >
-              Proceed To Checkout
+              {isPending
+                ? "Payment Processing..."
+                : isConfirming
+                  ? "Wait a second"
+                  : "Proceed to checkout"}
             </Button>
           </AlertDialogFooter>
         </AlertDialogContent>
