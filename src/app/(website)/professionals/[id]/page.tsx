@@ -4,7 +4,6 @@ import ProfessionalTab from "./_components/tabs/professional-tab";
 
 export default async function page({ params }: { params: { id: string } }) {
   const currentUser = await auth();
-  if (!currentUser?.user) return;
 
   return (
     <div className="mt-[100px]">
@@ -13,7 +12,7 @@ export default async function page({ params }: { params: { id: string } }) {
       </div>
       <ProfessionalTab
         professionalId={params.id}
-        loggedinUserId={currentUser.user.userId}
+        loggedinUserId={currentUser?.user.userId}
       />
     </div>
   );

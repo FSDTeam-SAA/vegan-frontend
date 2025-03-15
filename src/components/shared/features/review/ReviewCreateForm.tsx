@@ -1,65 +1,65 @@
-"use client"
+"use client";
 
-import type React from "react"
-import { useState } from "react"
-import { Star } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Textarea } from "@/components/ui/textarea"
-import { toast } from "sonner"
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Textarea } from "@/components/ui/textarea";
+import { Star } from "lucide-react";
+import type React from "react";
+import { useState } from "react";
+import { toast } from "sonner";
 
 interface Props {
-    userId: string;
-  }
+  userId: string;
+  professionalID: string;
+}
 
-export default function ReviewCreateForm({ userId }: Props) {
-  const [rating, setRating] = useState<number>(0)
-  const [hoveredRating, setHoveredRating] = useState<number>(0)
-  const [description, setDescription] = useState<string>("")
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
+export default function ReviewCreateForm({}: Props) {
+  const [rating, setRating] = useState<number>(0);
+  const [hoveredRating, setHoveredRating] = useState<number>(0);
+  const [description, setDescription] = useState<string>("");
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
     if (rating === 0) {
-      toast.error("Please select a rating before submitting")
-      return
+      toast.error("Please select a rating before submitting");
+      return;
     }
 
-    console.log("Review Data:", { rating, description })
-
-    setIsSubmitting(true)
+    setIsSubmitting(true);
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-      toast.success("Review submitted! Thank you for your feedback.")
-      
-      setRating(0)
-      setDescription("")
-    } catch  {
-      toast.error("Failed to submit review. Please try again.")
-    } finally {
-      setIsSubmitting(false)
-    }
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      toast.success("Review submitted! Thank you for your feedback.");
 
-  }
+      setRating(0);
+      setDescription("");
+    } catch {
+      toast.error("Failed to submit review. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
-    <Card className="w-full max-w-md mx-auto">
-      <CardHeader>
-        <CardTitle className="text-2xl">Submit Your Review</CardTitle>
+    <Card className="mx-auto w-full border-0 p-0 shadow-none">
+      <CardHeader className="p-0">
+        <CardTitle className="pl-0 text-2xl">Submit Your Review</CardTitle>
       </CardHeader>
       <form onSubmit={handleSubmit}>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-4 p-0">
           <div className="space-y-2">
             {/* <div className="flex items-center space-x-2">
               <span className="text-sm font-medium">User:</span>
               <span className="text-sm">Name</span>
             </div> */}
-            <div className="flex items-center space-x-2">
-              <span className="text-sm font-medium">ID:</span>
-              <span className="text-sm text-muted-foreground">{userId}</span>
-            </div>
           </div>
 
           <div className="space-y-2">
@@ -77,13 +77,15 @@ export default function ReviewCreateForm({ userId }: Props) {
                   <Star
                     size={24}
                     className={`${
-                      star <= (hoveredRating || rating) ? "fill-yellow-400 text-yellow-400" : "text-gray-300"
+                      star <= (hoveredRating || rating)
+                        ? "fill-yellow-400 text-yellow-400"
+                        : "text-gray-300"
                     } transition-colors`}
                   />
                 </button>
               ))}
-              <span className="ml-2 text-sm self-center">
-                {rating > 0 ? `${rating} star${rating > 1 ? "s" : ""}` : "Select rating"}
+              <span className="ml-2 self-center text-sm">
+                {rating > 0 ? `${rating} star${rating > 1 ? "s" : ""}` : ""}
               </span>
             </div>
           </div>
@@ -103,12 +105,12 @@ export default function ReviewCreateForm({ userId }: Props) {
           </div>
         </CardContent>
 
-        <CardFooter>
+        <CardFooter className="p-0 pt-5">
           <Button type="submit" className="w-full" disabled={isSubmitting}>
             {isSubmitting ? "Submitting..." : "Submit Review"}
           </Button>
         </CardFooter>
       </form>
     </Card>
-  )
+  );
 }

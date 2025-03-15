@@ -4,9 +4,10 @@ import { useState } from "react";
 import ReviewCreateForm from "./ReviewCreateForm";
 
 interface Props {
-  userId: string;
+  loggedinUserId: string;
+  reviewUserId: string;
 }
-const CreateReview = ({ userId }: Props) => {
+const CreateReview = ({ loggedinUserId, reviewUserId }: Props) => {
   const [open, setOpen] = useState(false);
   return (
     <div>
@@ -14,8 +15,11 @@ const CreateReview = ({ userId }: Props) => {
         Send Feedback
       </Button>
 
-      <VeganModal open={open} onOpenChange={setOpen} className="">
-        <ReviewCreateForm userId={userId}/>
+      <VeganModal open={open} onOpenChange={setOpen} className="md:w-[500px]">
+        <ReviewCreateForm
+          userId={loggedinUserId}
+          professionalID={reviewUserId}
+        />
       </VeganModal>
     </div>
   );

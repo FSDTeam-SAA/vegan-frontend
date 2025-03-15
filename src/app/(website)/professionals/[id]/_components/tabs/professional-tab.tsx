@@ -25,7 +25,7 @@ const lists = [
 
 interface Props {
   professionalId: string;
-  loggedinUserId: string;
+  loggedinUserId?: string;
 }
 
 const ProfessionalTab = ({ professionalId, loggedinUserId }: Props) => {
