@@ -25,9 +25,10 @@ const lists = [
 
 interface Props {
   professionalId: string;
+  loggedinUserId?: string;
 }
 
-const ProfessionalTab = ({ professionalId }: Props) => {
+const ProfessionalTab = ({ professionalId, loggedinUserId }: Props) => {
   const [activeTab, setActiveTab] = useState<string>("about");
 
   const renderTabContent = () => {
@@ -43,7 +44,9 @@ const ProfessionalTab = ({ professionalId }: Props) => {
       case "faqs":
         return <FAQsTab userId={professionalId} />;
       case "reviews":
-        return <ReviewsTab userId={professionalId} />;
+        return (
+          <ReviewsTab userId={professionalId} loggedinUserId={loggedinUserId} />
+        );
       default:
         return null;
     }

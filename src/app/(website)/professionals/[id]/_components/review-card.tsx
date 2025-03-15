@@ -50,9 +50,10 @@ const reviews = [
 
 interface Props {
   userId: string;
+  loggedinUserId?: string;
 }
 
-export function ReviewCard({ userId }: Props) {
+export function ReviewCard({ userId, loggedinUserId }: Props) {
   return (
     <div className="min-h-screen">
       <div className="max-w-4xl">
@@ -107,9 +108,14 @@ export function ReviewCard({ userId }: Props) {
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-          <div>
-            <CreateReview userId={userId} />
-          </div>
+          {loggedinUserId && (
+            <div>
+              <CreateReview
+                reviewUserId={userId}
+                loggedinUserId={loggedinUserId}
+              />
+            </div>
+          )}
         </div>
 
         {/* Mobile Filter */}

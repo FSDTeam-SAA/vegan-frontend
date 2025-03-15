@@ -1,13 +1,13 @@
 import { Button } from "@/components/ui/button";
 import VeganModal from "@/components/ui/vegan-modal";
 import { useState } from "react";
+import ReviewCreateForm from "./ReviewCreateForm";
 
 interface Props {
-  reviewUserId: string;
   loggedinUserId: string;
+  reviewUserId: string;
 }
-
-const CreateReview = ({}: Props) => {
+const CreateReview = ({ loggedinUserId, reviewUserId }: Props) => {
   const [open, setOpen] = useState(false);
   return (
     <div>
@@ -15,8 +15,11 @@ const CreateReview = ({}: Props) => {
         Send Feedback
       </Button>
 
-      <VeganModal open={open} onOpenChange={setOpen} className="">
-        fdsf
+      <VeganModal open={open} onOpenChange={setOpen} className="md:w-[500px]">
+        <ReviewCreateForm
+          userId={loggedinUserId}
+          professionalID={reviewUserId}
+        />
       </VeganModal>
     </div>
   );
