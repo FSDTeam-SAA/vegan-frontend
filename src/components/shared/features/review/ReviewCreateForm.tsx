@@ -1,52 +1,107 @@
-"use client";
+"use client"
 
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Textarea } from "@/components/ui/textarea";
-import { Star } from "lucide-react";
-import type React from "react";
-import { useState } from "react";
-import { toast } from "sonner";
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Textarea } from "@/components/ui/textarea"
+import { Star } from "lucide-react"
+import type React from "react"
+import { useState, useEffect } from "react"
+import { toast } from "sonner"
+import { useMutation } from "@tanstack/react-query"
 
-interface Props {
-  userId: string;
-  professionalID: string;
+interface ReviewData {
+  userID: string
+  professionalID: string
+  rating: number
+  comment: string
 }
 
-export default function ReviewCreateForm({}: Props) {
-  const [rating, setRating] = useState<number>(0);
-  const [hoveredRating, setHoveredRating] = useState<number>(0);
-  const [description, setDescription] = useState<string>("");
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+interface ReviewResponse {
+  success: boolean
+  message: string
+  data?: any
+}
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+interface Props {
+  userId: string
+  professionalID: string
+}
+
+export default function ReviewCreateForm({ userId, professionalID }: Props) {
+  const [rating, setRating] = useState<number>(0)
+  const [hoveredRating, setHoveredRating] = useState<number>(0)
+  const [description, setDescription] = useState<string>("")
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+
+  const { mutate, isPending } = useMutation<ReviewResponse, unknown, ReviewData>({
+    mutationKey: ["submit-review"],
+    mutationFn: (data) =>
+      fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/professionalReview`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }).then((res) => res.json()),
+    onSuccess: (data) => {
+      setIsLoading(true)
+
+      if (!data.success) {
+        toast.error(data.message, {
+          position: "top-right",
+          richColors: true,
+        })
+
+        setIsLoading(false)
+        return
+      }
+
+      // handle success
+      toast.success(data.message || "Review submitted successfully!", {
+        position: "bottom-right",
+        richColors: true,
+      })
+
+      // Reset form
+      setRating(0)
+      setDescription("")
+      setIsLoading(false)
+    },
+    onError: () => {
+      toast.error("Something went wrong while submitting your review", {
+        position: "top-right",
+        richColors: true,
+      })
+      setIsLoading(false)
+    },
+  })
+
+  useEffect(() => {
+    return () => {
+      setIsLoading(false)
+    }
+  }, [])
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
 
     if (rating === 0) {
-      toast.error("Please select a rating before submitting");
-      return;
+      toast.error("Please select a rating before submitting", {
+        position: "top-right",
+        richColors: true,
+      })
+      return
     }
 
-    setIsSubmitting(true);
-
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      toast.success("Review submitted! Thank you for your feedback.");
-
-      setRating(0);
-      setDescription("");
-    } catch {
-      toast.error("Failed to submit review. Please try again.");
-    } finally {
-      setIsSubmitting(false);
+    const reviewData: ReviewData = {
+      userID: userId,
+      professionalID: professionalID,
+      rating: rating,
+      comment: description,
     }
-  };
+
+    mutate(reviewData)
+  }
 
   return (
     <Card className="mx-auto w-full border-0 p-0 shadow-none">
@@ -77,9 +132,7 @@ export default function ReviewCreateForm({}: Props) {
                   <Star
                     size={24}
                     className={`${
-                      star <= (hoveredRating || rating)
-                        ? "fill-yellow-400 text-yellow-400"
-                        : "text-gray-300"
+                      star <= (hoveredRating || rating) ? "fill-yellow-400 text-yellow-400" : "text-gray-300"
                     } transition-colors`}
                   />
                 </button>
@@ -106,11 +159,12 @@ export default function ReviewCreateForm({}: Props) {
         </CardContent>
 
         <CardFooter className="p-0 pt-5">
-          <Button type="submit" className="w-full" disabled={isSubmitting}>
-            {isSubmitting ? "Submitting..." : "Submit Review"}
+          <Button type="submit" className="w-full" disabled={isPending || isLoading}>
+            {isPending || isLoading ? "Submitting..." : "Submit Review"}
           </Button>
         </CardFooter>
       </form>
     </Card>
-  );
+  )
 }
+
