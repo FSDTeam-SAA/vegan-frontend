@@ -3,7 +3,8 @@ import VeganModal from "@/components/ui/vegan-modal";
 import { useState } from "react";
 
 interface Props {
-  userId: string;
+  reviewUserId: string;
+  loggedinUserId: string;
 }
 
 const CreateReview = ({}: Props) => {
