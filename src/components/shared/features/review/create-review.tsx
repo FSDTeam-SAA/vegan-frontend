@@ -19,6 +19,9 @@ const CreateReview = ({ loggedinUserId, reviewUserId }: Props) => {
         <ReviewCreateForm
           userId={loggedinUserId}
           professionalID={reviewUserId}
+          onClose={() => {
+            setOpen(false);
+          }}
         />
       </VeganModal>
     </div>
