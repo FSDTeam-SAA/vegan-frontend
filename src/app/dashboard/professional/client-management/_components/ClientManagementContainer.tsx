@@ -1,22 +1,21 @@
 "use client";
+import VeganTabs, { VeganTab } from "@/components/ui/Vegan-Tab";
 import { useState } from "react";
 import BookingsContainer from "./BookingsContainer";
 import Faqs from "./Faqs";
 import Policies from "./Policies";
-import VeganTabs, { VeganTab } from "@/components/ui/Vegan-Tab";
 
 const tabs = [
   { id: "bookings", label: "Bookings" },
   { id: "policies", label: "Policies" },
-  { id: "faqs", label: "FAQS" }
+  { id: "faqs", label: "FAQS" },
 ] as VeganTab[];
-
 
 interface Props {
   userId: string;
 }
 
-export default function ClientManagementContainer({userId}: Props) {
+export default function ClientManagementContainer({ userId }: Props) {
   const [activeTab, setActiveTab] = useState("bookings");
 
   return (
@@ -41,7 +40,7 @@ export default function ClientManagementContainer({userId}: Props) {
         onTabChange={(tab) => setActiveTab(tab)}
       />
       <div className="">
-        {activeTab === "bookings" && <BookingsContainer />}
+        {activeTab === "bookings" && <BookingsContainer userId={userId} />}
         {activeTab === "policies" && <Policies />}
         {activeTab === "faqs" && <Faqs userId={userId} />}
       </div>
