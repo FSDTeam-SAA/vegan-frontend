@@ -62,27 +62,6 @@ export type ProfessionalProfileResponse = {
   pagination: MetaPagination;
 };
 
-export type ProfessionalService = {
-  _id: string;
-  userID: string;
-  serviceName: string;
-  metaDescription: string;
-  serviceDescription: string;
-  keyWords: string[];
-  paymentType: string;
-  price: number;
-  serviceImage: string;
-  serviceVideo: string;
-  sessionType: string;
-  isLiveStream: boolean;
-  visibility: boolean;
-  date: string;
-  timeSlots: string[];
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
-};
-
 export type ProfessionalServiceResponse = {
   success: boolean;
   messasge: string;
@@ -122,4 +101,70 @@ export type FAQResponse = {
   success: boolean;
   message: string;
   data: FAQ[];
+};
+
+type User = {
+  _id: string;
+  role: string;
+  fullName: string;
+  email: string;
+  password: string;
+  accountType: string | null;
+  verifyEmail: boolean;
+  paymentAdded: boolean;
+  isgratings: boolean;
+  isVerified: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+};
+
+export type ProfessionalService = {
+  _id: string;
+  userID: string;
+  serviceName: string;
+  metaDescription: string;
+  serviceDescription: string;
+  keyWords: string[];
+  paymentType: string;
+  price: number;
+  serviceImage: string;
+  serviceVideo: string;
+  sessionType: string;
+  isLiveStream: boolean;
+  visibility: boolean;
+  timeSlots: string[];
+  date: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+};
+
+export type ServiceBooking = {
+  _id: string;
+  userID: User;
+  customerId: string;
+  paymentMethodId: string;
+  sellerID: string;
+  sellerType: string;
+  sellerStripeAccountId: string;
+  amount: number;
+  professionalServicesId: ProfessionalService;
+  serviceBookingTime: string;
+  productId: string[];
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+  status: string;
+};
+
+export type ServiceBookingResponse = {
+  success: boolean;
+  data: ServiceBooking[];
+  message?: string;
+  pagination: {
+    page: number;
+    totalPages: number;
+    totalResults: number;
+  };
 };
