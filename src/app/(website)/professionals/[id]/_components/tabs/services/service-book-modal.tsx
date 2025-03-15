@@ -2,7 +2,6 @@
 import PaymentForm from "@/components/shared/features/payment/payment-form";
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogContent,
   AlertDialogFooter,
   AlertDialogHeader,
@@ -143,11 +142,7 @@ const ServiceBookModal = ({ open, onOpenChange, data }: Props) => {
   return (
     <>
       <AlertDialog open={open} onOpenChange={onOpenChange}>
-        <AlertDialogTrigger className="w-full">
-          <button className="mt-[12px] flex h-[48px] w-full items-center justify-center rounded-[8px] bg-[#1D3557] text-[16px] font-medium leading-[19.36px] text-white transition-colors duration-300 hover:bg-[#1D3557]/90">
-            Book Service
-          </button>
-        </AlertDialogTrigger>
+        <AlertDialogTrigger className="w-full" asChild></AlertDialogTrigger>
         <AlertDialogContent className="w-full max-w-[380px] py-[24px] md:min-w-[600px]">
           <AlertDialogHeader>
             <div className="flex items-center justify-between">
@@ -199,13 +194,13 @@ const ServiceBookModal = ({ open, onOpenChange, data }: Props) => {
             </div>
           </div>
           <AlertDialogFooter>
-            <AlertDialogAction
+            <Button
               className="h-[48px]"
               disabled={isDisabled}
               onClick={handleProceedToCheckout}
             >
               Proceed To Checkout
-            </AlertDialogAction>
+            </Button>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

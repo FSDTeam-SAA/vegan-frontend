@@ -51,6 +51,12 @@ const ServiceCard = ({ data }: Props) => {
               ${data?.price}
             </h4>
             <div className="w-full">
+              <button
+                className="mt-[12px] flex h-[48px] w-full items-center justify-center rounded-[8px] bg-[#1D3557] text-[16px] font-medium leading-[19.36px] text-white transition-colors duration-300 hover:bg-[#1D3557]/90"
+                onClick={() => setOpen(true)}
+              >
+                Book Service
+              </button>
               <ServiceBookModal
                 data={data}
                 open={open}
