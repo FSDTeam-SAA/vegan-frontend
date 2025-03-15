@@ -391,8 +391,15 @@ export default function SignUpForm() {
 
                     {role === "customer" && (
                       <FormLabel className="font-inter text-[12px] font-normal leading-[20px] text-[#1F2937]">
-                        I agree to receive notifications about platform updates
-                        and opportunities (optional).
+                        I agree to receive notifications about platform updates,
+                        opportunities, and{" "}
+                        <Link
+                          href={termsPage}
+                          className="font-semibold text-blue-700 hover:underline"
+                        >
+                          commitments
+                        </Link>{" "}
+                        (optional).
                       </FormLabel>
                     )}
 
