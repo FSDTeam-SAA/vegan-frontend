@@ -72,7 +72,7 @@ const AccountSetup = ({ userId }: Props) => {
         return;
       }
 
-      toast.success(data.message ?? "Stripe Account Connected 🎉", {
+      toast.success("Stripe Account Connected 🎉", {
         position: "top-right",
         richColors: true,
       });

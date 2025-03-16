@@ -4,11 +4,13 @@ import { useState } from "react";
 import BookingsContainer from "./BookingsContainer";
 import Faqs from "./Faqs";
 import Policies from "./Policies";
+import Calender from "./calender";
 
 const tabs = [
   { id: "bookings", label: "Bookings" },
   { id: "policies", label: "Policies" },
   { id: "faqs", label: "FAQS" },
+  { id: "calender", label: "Calender" },
 ] as VeganTab[];
 
 interface Props {
@@ -40,9 +42,10 @@ export default function ClientManagementContainer({ userId }: Props) {
         onTabChange={(tab) => setActiveTab(tab)}
       />
       <div className="">
-        {activeTab === "bookings" && <BookingsContainer userId={userId} />}
+        {activeTab === "bookingss" && <BookingsContainer userId={userId} />}
         {activeTab === "policies" && <Policies />}
         {activeTab === "faqs" && <Faqs userId={userId} />}
+        {activeTab === "calender" && <Calender></Calender>}
       </div>
     </div>
   );
