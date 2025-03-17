@@ -1,12 +1,15 @@
 "use client";
 
-import type React from "react";
-
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import VeganModal from "@/components/ui/vegan-modal";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { OrganizationEvent } from "@/types/organization";
 import { useMutation } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
@@ -201,7 +204,7 @@ export function EventRegistration({
           </form>
         </div>
       </VeganModal>
-
+      
       {/* Thank You Modal */}
       <VeganModal
         open={isThankYouModalOpen}
@@ -219,12 +222,7 @@ export function EventRegistration({
           </p>
 
           <div className="mt-6 flex justify-center">
-            <Button
-              onClick={() => setIsThankYouModalOpen(false)}
-              className="w-full bg-[#1e3a5f] hover:bg-[#152a45]"
-            >
-              Go Back
-            </Button>
+            <Button onClick={() => setIsThankYouModalOpen(false)} className="w-full bg-[#1e3a5f] hover:bg-[#152a45]">Go Back</Button>
           </div>
         </div>
       </VeganModal>
