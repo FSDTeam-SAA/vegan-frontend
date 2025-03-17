@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { EventRegistration } from "@/app/(website)/organizations/_components/main/EventRegistration";
 import { Button } from "@/components/ui/button";
 import VeganBadge from "@/components/ui/vegan-badge";
@@ -12,9 +12,7 @@ interface Props {
 }
 
 const EventCard = ({ data }: Props) => {
-
-const [open, setOpen] = useState(false);
-
+  const [open, setOpen] = useState(false);
 
   return (
     <div className="max-w-[552px] space-y-[30px] rounded-[16px] bg-white p-[24px]">
@@ -46,14 +44,19 @@ const [open, setOpen] = useState(false);
               <Users className="h-4 w-4 text-[18px] text-[#4B5563]" />{" "}
               {data?.capacity} slots
             </p>
-            <Button  onClick={() => setOpen(true)} className="mt-[32px] flex h-[48px] w-full items-center justify-center bg-[#1D3557] font-inter font-medium hover:bg-[#1D3557]/90 lg:mt-0 lg:w-[142px]">
+            <Button
+              onClick={() => setOpen(true)}
+              className="mt-[32px] flex h-[48px] w-full items-center justify-center bg-[#1D3557] font-inter font-medium hover:bg-[#1D3557]/90 lg:mt-0 lg:w-[142px]"
+            >
               Register
             </Button>
 
-
             {/* modal  */}
-            <EventRegistration isOpen={open} onClose={() => setOpen(false)} />
-
+            <EventRegistration
+              isOpen={open}
+              onClose={() => setOpen(false)}
+              data={data}
+            />
           </div>
         </div>
       </div>
