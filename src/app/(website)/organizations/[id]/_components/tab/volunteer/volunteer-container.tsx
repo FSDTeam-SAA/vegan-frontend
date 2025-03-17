@@ -9,9 +9,13 @@ import { useState } from "react";
 
 interface Props {
   organizationId: string;
+  loggedInUserId: string;
 }
 
-const OrganizationVolunteerEventContainer = ({ organizationId }: Props) => {
+const OrganizationVolunteerEventContainer = ({
+  organizationId,
+  loggedInUserId,
+}: Props) => {
   const [currentPage, setCurrentPage] = useState(1);
   const { isLoading, data, isError, error } =
     useQuery<OrganizationEventResponse>({
@@ -27,7 +31,7 @@ const OrganizationVolunteerEventContainer = ({ organizationId }: Props) => {
     content = (
       <div className="grid grid-cols-1 gap-[32px] md:grid-cols-2">
         {[1, 2, 3, 4].map((n) => (
-          <EventCard key={n} />
+          <EventCard key={n} loggedInUserId={loggedInUserId} />
         ))}
       </div>
     );

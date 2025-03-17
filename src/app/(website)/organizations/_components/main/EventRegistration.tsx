@@ -8,32 +8,76 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import VeganModal from "@/components/ui/vegan-modal";
 import { OrganizationEvent } from "@/types/organization";
+import { useMutation } from "@tanstack/react-query";
+import { Loader2 } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 
 type FormData = {
   fullName: string;
   email: string;
   phoneNumber: string;
-  specialRequirements: string;
+  specialRequirement: string;
 };
 
 interface EventRegistrationProps {
   isOpen: boolean;
   onClose: () => void;
   data?: OrganizationEvent;
+  loggedInUserId: string;
 }
 
 export function EventRegistration({
   isOpen,
   onClose,
   data,
+  loggedInUserId,
 }: EventRegistrationProps) {
   const [isThankYouModalOpen, setIsThankYouModalOpen] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     fullName: "",
     email: "",
     phoneNumber: "",
-    specialRequirements: "",
+    specialRequirement: "",
+  });
+
+  const { mutate: createBooking, isPending } = useMutation({
+    mutationKey: ["purchase-event"],
+    mutationFn: (body: any) =>
+      fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/organizationbookings`,
+        {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(body),
+        },
+      ).then((res) => res.json()),
+    onSuccess: (data) => {
+      if (!data.success) {
+        toast.error(data.message ?? "Failed to book your event", {
+          position: "top-right",
+          richColors: true,
+        });
+        return;
+      }
+
+      // handle success
+      toast.success("Booking Confirmed successfully 🎉", {
+        position: "top-right",
+        richColors: true,
+      });
+
+      onClose();
+      setIsThankYouModalOpen(true);
+    },
+    onError: (err) => {
+      toast.error(err.message, {
+        position: "top-right",
+        richColors: true,
+      });
+    },
   });
 
   const handleChange = (
@@ -49,12 +93,25 @@ export function EventRegistration({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Log form data to console
-    console.log("Registration Form Data:", formData);
+    if (!data?._id) {
+      toast.warning("Event ID Not Found for booking");
+      return;
+    }
 
-    // Close registration modal and open thank you modal
-    onClose();
-    setIsThankYouModalOpen(true);
+    createBooking({
+      organizationEventID: data._id,
+      attendeeDetail: {
+        ...formData,
+        userID: loggedInUserId,
+      },
+    });
+
+    // Log form data to console
+    // console.log("Registration Form Data:", formData);
+
+    // // Close registration modal and open thank you modal
+    // onClose();
+    // setIsThankYouModalOpen(true);
   };
 
   return (
@@ -115,14 +172,14 @@ export function EventRegistration({
             </div>
 
             <div>
-              <Label htmlFor="specialRequirements">
+              <Label htmlFor="specialRequirement">
                 Special Requirements (if applicable)
               </Label>
               <Textarea
-                id="specialRequirements"
-                name="specialRequirements"
+                id="specialRequirement"
+                name="specialRequirement"
                 placeholder="Do you have any dietary restrictions or accessibility needs?"
-                value={formData.specialRequirements}
+                value={formData.specialRequirement}
                 onChange={handleChange}
                 className="min-h-[100px]"
               />
@@ -132,8 +189,13 @@ export function EventRegistration({
               <Button type="button" variant="outline" onClick={onClose}>
                 Cancel
               </Button>
-              <Button type="submit" className="bg-[#1e3a5f] hover:bg-[#152a45]">
-                Confirm Registration
+              <Button
+                type="submit"
+                className="bg-[#1e3a5f] hover:bg-[#152a45]"
+                disabled={isPending}
+              >
+                Confirm Registration{" "}
+                {isPending && <Loader2 className="ml-2 animate-spin" />}
               </Button>
             </div>
           </form>
@@ -152,7 +214,7 @@ export function EventRegistration({
           </div>
 
           <p className="mt-4 text-left text-gray-600">
-            Your registration for Beach Cleanup Drive has been successfully
+            Your registration for {data?.eventTitle} has been successfully
             submitted. Check your email for event details.
           </p>
 
