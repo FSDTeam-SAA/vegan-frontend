@@ -37,10 +37,10 @@ const Page = () => {
             width={40}
             alt="Logo"
           />
-          <p className="font-lexend text-[16px] font-normal leading-[23.2px] tracking-[-4%] text-[#1D3557]">
+          {/* <p className="font-lexend text-[16px] font-normal leading-[23.2px] tracking-[-4%] text-[#1D3557]">
             Proudly protected with{" "}
             <span className="font-semibold text-[#1D3557]">SiteLock</span>.
-          </p>
+          </p> */}
         </div>
       </div>
     </>
