@@ -37,9 +37,10 @@ const lists = [
 
 interface Props {
   organizationId: string;
+  loggedInUserId: string;
 }
 
-const OrganizationTab = ({ organizationId }: Props) => {
+const OrganizationTab = ({ organizationId, loggedInUserId }: Props) => {
   const [activeTab, setActiveTab] = useState<
     "about" | "news" | "events" | "volunteer"
   >("about");
@@ -60,11 +61,15 @@ const OrganizationTab = ({ organizationId }: Props) => {
         )}
         {activeTab === "news" && <OrganizationNewsContainer />}
         {activeTab === "events" && (
-          <OrganizationEventContainer organizationId={organizationId} />
+          <OrganizationEventContainer
+            organizationId={organizationId}
+            loggedInUserId={loggedInUserId}
+          />
         )}
         {activeTab === "volunteer" && (
           <OrganizationVolunteerEventContainer
             organizationId={organizationId}
+            loggedInUserId={loggedInUserId}
           />
         )}
       </div>
