@@ -8,9 +8,13 @@ import { useState } from "react";
 
 interface Props {
   organizationId: string;
+  loggedInUserId: string;
 }
 
-const OrganizationEventContainer = ({ organizationId }: Props) => {
+const OrganizationEventContainer = ({
+  organizationId,
+  loggedInUserId,
+}: Props) => {
   const [currentPage, setCurrentPage] = useState(1);
   const { isLoading, data, isError, error } =
     useQuery<OrganizationEventResponse>({
@@ -26,7 +30,7 @@ const OrganizationEventContainer = ({ organizationId }: Props) => {
     content = (
       <div className="grid grid-cols-1 gap-[32px] md:grid-cols-2">
         {[1, 2, 3, 4].map((n) => (
-          <EventCard key={n} />
+          <EventCard key={n} loggedInUserId={loggedInUserId} />
         ))}
       </div>
     );
@@ -41,7 +45,13 @@ const OrganizationEventContainer = ({ organizationId }: Props) => {
   } else if (data && data.data.length > 0) {
     content = (
       <div className="grid grid-cols-1 gap-[32px] pb-[50px] md:grid-cols-2 md:pb-[87px]">
-        {data?.data.map((item) => <EventCard key={item._id} data={item} />)}
+        {data?.data.map((item) => (
+          <EventCard
+            key={item._id}
+            data={item}
+            loggedInUserId={loggedInUserId}
+          />
+        ))}
       </div>
     );
   }

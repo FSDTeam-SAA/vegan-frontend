@@ -9,9 +9,10 @@ import { useState } from "react";
 
 interface Props {
   data?: OrganizationEvent;
+  loggedInUserId: string;
 }
 
-const EventCard = ({ data }: Props) => {
+const EventCard = ({ data, loggedInUserId }: Props) => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -56,6 +57,7 @@ const EventCard = ({ data }: Props) => {
               isOpen={open}
               onClose={() => setOpen(false)}
               data={data}
+              loggedInUserId={loggedInUserId}
             />
           </div>
         </div>
