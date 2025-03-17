@@ -46,7 +46,11 @@ const tabs = [
   },
 ] as VeganTab[];
 
-export default function EventManaging() {
+interface Props {
+  userId: string;
+}
+
+export default function EventManaging({ userId }: Props) {
   const [currentPage, setCurrentPage] = useState(1);
   const [query, setQuery] = useState("");
   const debouncedQuery = useDebounce(query, 500);
@@ -104,7 +108,7 @@ export default function EventManaging() {
             <Upload className="h-4 w-4" />
             Bulk Upload
           </Button> */}
-          <AddEventDialog />
+          <AddEventDialog userId={userId} />
         </div>
       </div>
 
