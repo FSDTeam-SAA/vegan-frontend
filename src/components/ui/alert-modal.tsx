@@ -11,6 +11,7 @@ interface Props {
   onClose: () => void;
   onConfirm: () => void;
   message?: string;
+  title?: string;
 }
 
 const AlertModal = ({
@@ -19,6 +20,7 @@ const AlertModal = ({
   onClose,
   onConfirm,
   message,
+  title,
 }: Props) => {
   const [isMounted, setIsMounted] = useState(false);
 
@@ -31,7 +33,7 @@ const AlertModal = ({
   }
   return (
     <Modal
-      title="Are you sure?"
+      title={title ?? "Are you sure?"}
       description={message ?? "This action cannot be undone."}
       isOpen={isOpen}
       onClose={onClose}

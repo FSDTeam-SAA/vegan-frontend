@@ -211,7 +211,7 @@ export default function AddServiceForm({
     formData.append("serviceDescription", values.serviceDescription);
     formData.append("keyWords", JSON.stringify(values.keyWords));
     formData.append("paymentType", values.paymentType);
-    formData.append("price", values.price!);
+    formData.append("price", values.price ?? "0");
     if (image) {
       formData.append("serviceImage", image);
     }
