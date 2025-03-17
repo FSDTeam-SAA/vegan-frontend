@@ -34,6 +34,7 @@ const WebsiteLayout = async ({ children }: { children: ReactNode }) => {
           isGreetings={!!session.user.isgratings}
           userId={session.user.userId!}
           isVerified={session.user.isVerified}
+          role={accounRole as "user" | "vendor"}
         />
       )}
     </div>

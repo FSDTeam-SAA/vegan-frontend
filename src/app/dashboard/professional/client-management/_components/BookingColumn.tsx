@@ -66,7 +66,8 @@ export const BookingColumn: ColumnDef<ServiceBooking>[] = [
       return (
         <div className="flex justify-start gap-[2px]">
           <span className="text-sm font-medium leading-[16px] text-[#1F2937]">
-            {row.original.professionalServicesId.serviceName}
+            {row.original.professionalServicesId?.serviceName ??
+              "NO service name found"}
           </span>
         </div>
       );

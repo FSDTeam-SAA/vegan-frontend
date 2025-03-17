@@ -1,12 +1,18 @@
-import React from "react";
+import { auth } from "@/auth";
+import dynamic from "next/dynamic";
 import BookingManagementHeader from "./_components/BookingManagementHeader";
-import BooklingManagementcontainerTab from "./_components/BooklingManagementcontainerTab";
+const BooklingManagementcontainerTab = dynamic(
+  () => import("./_components/BooklingManagementcontainerTab"),
+  { ssr: false },
+);
 
-export default function page() {
+export default async function page() {
+  const currentUser = await auth();
+  if (!currentUser?.user) return;
   return (
     <div>
-      <BookingManagementHeader/>
-      <BooklingManagementcontainerTab/>
+      <BookingManagementHeader />
+      <BooklingManagementcontainerTab userId={currentUser.user.userId} />
     </div>
   );
 }

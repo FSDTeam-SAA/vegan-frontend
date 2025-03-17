@@ -1,17 +1,24 @@
 "use client";
 import { useMutation } from "@tanstack/react-query";
-import Image from "next/image";
-import { useEffect, useState } from "react";
-import VeganModal from "./vegan-modal";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 interface Props {
   isGreetings: boolean;
   userId: string;
   isVerified: "approved" | "pending" | "declined";
+  role: "user" | "vendor";
 }
 
-const ProfessionalGreetings = ({ isGreetings, userId, isVerified }: Props) => {
-  const [isOpen, setOpen] = useState(false); // Initially closed
+const ProfessionalGreetings = ({
+  isGreetings,
+  userId,
+  isVerified,
+  role,
+}: Props) => {
+  /*  const [isOpen, setOpen] = useState(false); // Initially closed */
+
+  const router = useRouter();
 
   // API call mutation
   const updateGreetings = useMutation({
@@ -31,7 +38,8 @@ const ProfessionalGreetings = ({ isGreetings, userId, isVerified }: Props) => {
     },
     onSuccess: (data) => {
       if (data.status) {
-        setOpen(true); // Open the modal only when API call is successful
+        // setOpen(true); // Open the modal only when API call is successful
+        router.push(`/onboarding/success?role=${role}`);
       }
     },
   });
@@ -42,8 +50,9 @@ const ProfessionalGreetings = ({ isGreetings, userId, isVerified }: Props) => {
       updateGreetings.mutate(); // Call API instantly
     }
   }, [isGreetings, isVerified, updateGreetings]);
+  return <></>;
 
-  return (
+  /* return (
     <VeganModal
       open={isOpen}
       onOpenChange={() => {
@@ -69,7 +78,7 @@ const ProfessionalGreetings = ({ isGreetings, userId, isVerified }: Props) => {
         </p>
       </div>
     </VeganModal>
-  );
+  ); */
 };
 
 export default ProfessionalGreetings;
