@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import VolunteerRegistration from "@/app/(website)/organizations/_components/main/VolunteerRegistration";
 import { Button } from "@/components/ui/button";
 import VeganBadge from "@/components/ui/vegan-badge";
@@ -11,7 +11,7 @@ interface Props {
 }
 
 const VolunteerCard = ({ data }: Props) => {
-    const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
   return (
     <div className="flex h-auto w-full max-w-[600px] flex-col justify-between rounded-[16px] bg-white p-[24px]">
       <div className="space-y-[24px]">
@@ -42,19 +42,20 @@ const VolunteerCard = ({ data }: Props) => {
         </div>
       </div>
       <div>
-        <Button 
+        <Button
           onClick={() => setOpen(true)}
-        className="mt-[32px] h-[40px] w-[180px] rounded-[8px] bg-[#1D3557] p-[10px] transition-colors duration-300 hover:bg-[#1D3557]/90 md:h-[48px]">
+          className="mt-[32px] h-[40px] w-[180px] rounded-[8px] bg-[#1D3557] p-[10px] transition-colors duration-300 hover:bg-[#1D3557]/90 md:h-[48px]"
+        >
           Apply Now
         </Button>
       </div>
 
-         {/* modal  */}
-                  <VolunteerRegistration
-                    isOpen={open}
-                    onClose={() => setOpen(false)}
-                    data={data}
-                  />
+      {/* modal  */}
+      <VolunteerRegistration
+        isOpen={open}
+        onClose={() => setOpen(false)}
+        data={data}
+      />
     </div>
   );
 };
