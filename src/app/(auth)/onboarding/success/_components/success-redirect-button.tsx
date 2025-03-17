@@ -30,10 +30,7 @@ const SuccessRedirectButton = () => {
       onClick={() => setLoading(true)}
       disabled={loading}
     >
-      <Link
-        href={`/onboarding/login?role=${role}`}
-        className={cn(loading && "pointer-events-none")}
-      >
+      <Link href={`/`} className={cn(loading && "pointer-events-none")}>
         {loading ? "Wait a second..." : "Get Started"}
       </Link>
     </Button>
