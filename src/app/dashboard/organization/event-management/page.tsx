@@ -5,10 +5,10 @@ import EventManaging from "../_components/event/event-managing";
 const page = async () => {
   const currentUser = await auth();
 
-  if (!currentUser) redirect("/onboarding");
+  if (!currentUser?.user) redirect("/onboarding");
   return (
     <div>
-      <EventManaging />
+      <EventManaging userId={currentUser.user.userId} />
     </div>
   );
 };
