@@ -1,37 +1,45 @@
-"use client"
-import React, { useState } from 'react';
-import UpcomingBooking from './UpcomingBooking';
-import AllBookedService from './AllBookedService';
-import VeganTabs, { VeganTab } from '@/components/ui/Vegan-Tab';
+"use client";
+import VeganTabs, { VeganTab } from "@/components/ui/Vegan-Tab";
+import { useState } from "react";
+import BookingManagementContainer from "./BookingManagementContainer";
+import SearchBar from "./SearchBar";
 
 const tabs = [
-    {
-        id : "upcoming-bookings",
-        label : "Upcoming Bookings"
-    },
-    {
-        id : "all-booked-services",
-        label : "All Booked Services"
-    }
+  {
+    id: "UpcomingBookings",
+    label: "Upcoming Bookings",
+  },
+  {
+    id: "all",
+    label: "All Booked Services",
+  },
 ] as VeganTab[];
 
-const BooklingManagementcontainerTab = () => {
-    const [activeTab, setActiveTab] = useState("upcoming-bookings");
+interface Props {
+  userId: string;
+}
 
-    
-    return (
-        <div className='pt-[56px]'>
-            <VeganTabs 
-             tabs={tabs}
-             defaultActiveTab={activeTab}
-             onTabChange={(tab)=> setActiveTab(tab)}
-            />
-            <div>
-                {activeTab === "upcoming-bookings" && <UpcomingBooking/>}
-                {activeTab === "all-booked-services" && <AllBookedService/>}
-            </div>
-        </div>
-    );
+const BooklingManagementcontainerTab = ({ userId }: Props) => {
+  const [activeTab, setActiveTab] = useState("UpcomingBookings");
+  const [searchQuery, setSearchQuery] = useState("");
+
+  return (
+    <div className="pt-[56px]">
+      <VeganTabs
+        tabs={tabs}
+        defaultActiveTab={activeTab}
+        onTabChange={(tab) => setActiveTab(tab)}
+      />
+      <div className="mt-5">
+        <SearchBar value={searchQuery} setValue={(v) => setSearchQuery(v)} />
+        <BookingManagementContainer
+          tab={activeTab}
+          searchQuery={searchQuery}
+          userId={userId}
+        />
+      </div>
+    </div>
+  );
 };
 
 export default BooklingManagementcontainerTab;

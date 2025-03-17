@@ -147,8 +147,9 @@ const ReferralTracking = ({ userId }: Props) => {
           <h6 className="text-lg font-semibold leading-[21px] text-[#1F2937]">
             Refer People To Vegan Collective
           </h6>
-          <p className="pt-[8px] text-base font-normal leading-[19px] text-[#4B5563]">
-            Click this button to invite people and earn more rewards
+          <p className="pt-[8px] text-[10px] text-base font-normal leading-[19px] text-[#4B5563]">
+            Share your unique QR code to invite others to Vegan Collective.
+            You’ll earn a share of profits from every transaction they make!
           </p>
           <div className="pb-[78px] pt-[32px] md:pb-0">
             <Button

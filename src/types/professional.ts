@@ -156,6 +156,7 @@ export type ServiceBooking = {
   updatedAt: string;
   __v: number;
   status: string;
+  bookingID: string;
 };
 
 export type ServiceBookingResponse = {
