@@ -42,7 +42,7 @@ export default function ClientManagementContainer({ userId }: Props) {
         onTabChange={(tab) => setActiveTab(tab)}
       />
       <div className="">
-        {activeTab === "bookingss" && <BookingsContainer userId={userId} />}
+        {activeTab === "bookings" && <BookingsContainer userId={userId} />}
         {activeTab === "policies" && <Policies />}
         {activeTab === "faqs" && <Faqs userId={userId} />}
         {activeTab === "calender" && <Calender></Calender>}
