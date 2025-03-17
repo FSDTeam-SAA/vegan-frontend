@@ -30,7 +30,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Loader2, Plus } from "lucide-react";
-import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -52,10 +51,12 @@ const eventFormSchema = z.object({
 
 type EventFormValues = z.infer<typeof eventFormSchema>;
 
-export default function AddEventDialog() {
+interface Props {
+  userId: string;
+}
+
+export default function AddEventDialog({ userId }: Props) {
   const [open, setOpen] = useState(false);
-  const session = useSession();
-  const organizationID = session?.data?.user?.userId;
 
   const queryClient = useQueryClient();
 
@@ -76,7 +77,7 @@ export default function AddEventDialog() {
           body: JSON.stringify({
             ...body,
             capacity: Number(body.capacity),
-            organizationID,
+            organizationID: userId,
           }),
         },
       ).then((res) => res.json()),
