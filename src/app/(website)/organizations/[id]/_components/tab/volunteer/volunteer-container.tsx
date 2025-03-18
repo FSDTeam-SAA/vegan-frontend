@@ -46,7 +46,13 @@ const OrganizationVolunteerEventContainer = ({
   } else if (data && data.data.length > 0) {
     content = (
       <div className="grid grid-cols-1 gap-[32px] pb-[50px] md:grid-cols-2 md:pb-[87px]">
-        {data?.data.map((item) => <VolunteerCard key={item._id} data={item} />)}
+        {data?.data.map((item) => (
+          <VolunteerCard
+            loggedinuserId={loggedInUserId}
+            key={item._id}
+            data={item}
+          />
+        ))}
       </div>
     );
   }

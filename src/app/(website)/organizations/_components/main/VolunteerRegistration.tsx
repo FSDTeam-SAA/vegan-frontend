@@ -14,16 +14,20 @@ import { Textarea } from "@/components/ui/textarea";
 import VeganModal from "@/components/ui/vegan-modal";
 import { OrganizationEvent } from "@/types/organization";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import * as z from "zod";
 
 const formSchema = z.object({
   fullName: z.string().min(2, "Full Name is required"),
   email: z.string().email("Invalid email address"),
   phoneNumber: z.string().min(10, "Phone number is required"),
-  skillExperience: z.string().min(10, "Please describe your skills/experience"),
-  motivationStatement: z
+  skillAndExperience: z
+    .string()
+    .min(10, "Please describe your skills/experience"),
+  motivationalStatement: z
     .string()
     .min(10, "Please provide a motivation statement"),
 });
@@ -32,12 +36,14 @@ interface GardenApplicationModalProps {
   isOpen: boolean;
   onClose: () => void;
   data?: OrganizationEvent;
+  loggedinuserid: string;
 }
 
 export default function GardenApplicationModal({
   isOpen,
   onClose,
   data,
+  loggedinuserid,
 }: GardenApplicationModalProps) {
   const [showThankYouModal, setShowThankYouModal] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
@@ -48,8 +54,35 @@ export default function GardenApplicationModal({
       fullName: "",
       email: "",
       phoneNumber: "",
-      skillExperience: "",
-      motivationStatement: "",
+      skillAndExperience: "",
+      motivationalStatement: "",
+    },
+  });
+
+  const { mutate, isPending } = useMutation({
+    mutationKey: ["create-volunteer"],
+    mutationFn: (body: any) =>
+      fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/organizationvolunteers`,
+        {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(body),
+        },
+      ).then((res) => res.json()),
+    onSuccess: (data) => {
+      if (!data.success) {
+        toast.error(data.message, {
+          position: "top-right",
+          richColors: true,
+        });
+        return;
+      }
+
+      onClose();
+      setShowThankYouModal(true);
     },
   });
 
@@ -75,9 +108,19 @@ export default function GardenApplicationModal({
   }, [isOpen, onClose, showThankYouModal, handleCloseThankYou]);
 
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log("Form Data:", values);
-    setShowThankYouModal(true);
-    onClose();
+    // console.log("Form Data:", values);
+    // setShowThankYouModal(true);
+    // onClose();
+
+    if (!data?._id) return;
+
+    mutate({
+      organizationEventID: data._id,
+      attendeeDetail: {
+        ...values,
+        userID: loggedinuserid,
+      },
+    });
   };
 
   if (!isOpen && !showThankYouModal) return null;
@@ -149,7 +192,7 @@ export default function GardenApplicationModal({
               />
 
               <FormField
-                name="skillExperience"
+                name="skillAndExperience"
                 control={form.control}
                 render={({ field }) => (
                   <FormItem>
@@ -166,7 +209,7 @@ export default function GardenApplicationModal({
               />
 
               <FormField
-                name="motivationStatement"
+                name="motivationalStatement"
                 control={form.control}
                 render={({ field }) => (
                   <FormItem>
@@ -194,6 +237,7 @@ export default function GardenApplicationModal({
                 <Button
                   type="submit"
                   className="h-[40px] bg-[#1e3a5f] hover:bg-[#152a45]"
+                  disabled={isPending}
                 >
                   Submit Application
                 </Button>
