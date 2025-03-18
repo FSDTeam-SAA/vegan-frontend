@@ -21,6 +21,8 @@ export default function CustomerCommunication({ userId }: Props) {
   //     ).then((res) => res.json()),
   // });
 
+  // console.log(data);
+
   return (
     <div className="flex-col items-center justify-center md:mt-20">
       <div className="mx-auto max-w-2xl">
