@@ -15,6 +15,7 @@ import {
   Newspaper,
   Package,
   PhoneCallIcon,
+  Send,
   Target,
   Truck,
   User,
@@ -57,13 +58,13 @@ export const adminDashboardTabsList = [
     linkText: "Verification Management",
     roles: ["admin"],
   },
-  // {
-  //   id: crypto.randomUUID(),
-  //   path: "/dashboard/admin/go-live",
-  //   icon: Video,
-  //   linkText: "Go Live",
-  //   roles: ["admin"],
-  // },
+  {
+    id: crypto.randomUUID(),
+    path: "/dashboard/admin/sms",
+    icon: Send,
+    linkText: "SMS",
+    roles: ["admin"],
+  },
   {
     id: crypto.randomUUID(),
     path: "/dashboard/admin/support",
