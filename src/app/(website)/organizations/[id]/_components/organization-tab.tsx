@@ -33,6 +33,10 @@ const lists = [
     id: "volunteer",
     label: "Volunteer",
   },
+  {
+    id: "reviews",
+    label: "Reviews",
+  },
 ] as VeganTab[];
 
 interface Props {
