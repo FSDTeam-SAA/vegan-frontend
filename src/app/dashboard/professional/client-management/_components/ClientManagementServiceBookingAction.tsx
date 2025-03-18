@@ -33,6 +33,7 @@ const ClientManagementServiceBookingAction = ({ data }: Props) => {
           body: JSON.stringify({
             userID: userId,
             professionalServicesId: data._id,
+            serviceBookingTime: data.serviceBookingTime,
           }),
         },
       ).then((res) => res.json()),
