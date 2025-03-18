@@ -8,9 +8,10 @@ import { useState } from "react";
 
 interface Props {
   data?: OrganizationEvent;
+  loggedinuserId: string;
 }
 
-const VolunteerCard = ({ data }: Props) => {
+const VolunteerCard = ({ data, loggedinuserId }: Props) => {
   const [open, setOpen] = useState(false);
   return (
     <div className="flex h-auto w-full max-w-[600px] flex-col justify-between rounded-[16px] bg-white p-[24px]">
@@ -55,6 +56,7 @@ const VolunteerCard = ({ data }: Props) => {
         isOpen={open}
         onClose={() => setOpen(false)}
         data={data}
+        loggedinuserid={loggedinuserId}
       />
     </div>
   );
