@@ -134,7 +134,7 @@ export function SetupModal({
             />
           </div>
           <div className="flex justify-end gap-3">
-            <Button type="submit" variant="outline">
+            <Button type="button" variant="outline">
               Cancel
             </Button>
             <Button type="submit" disabled={isPending}>

@@ -13,21 +13,18 @@ interface Props {
 export default function CustomerCommunication({ userId }: Props) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // const { isLoading, data, isError, error } =
-  //   useQuery({
-  //     queryKey: [
-  //       "merchantCustomerSupport",
-  //     ],
-  //     queryFn: () =>
-  //       fetch(
-  //         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/organizationevents?`,
-  //       ).then((res) => res.json()),
-  //   });
+  // const { isLoading, data, isError, error } = useQuery({
+  //   queryKey: ["merchantCustomerSupport"],
+  //   queryFn: () =>
+  //     fetch(
+  //       `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/merchantCustomer/${userId}`,
+  //     ).then((res) => res.json()),
+  // });
 
   return (
     <div className="flex-col items-center justify-center md:mt-20">
       <div className="mx-auto max-w-2xl">
-        {"sggdf".length === 1 ? (
+        {true ? (
           <div className="rounded-lg p-8 text-center">
             <div className="mb-4 flex justify-center">
               <div className="flex h-16 w-16 items-center justify-center rounded-full bg-blue-950">
@@ -43,7 +40,7 @@ export default function CustomerCommunication({ userId }: Props) {
             </p>
             <Button
               onClick={() => setIsModalOpen(true)}
-              className="bg-[#1D3557] px-[16px] py-[14.5px] font-inter text-base leading-[19.36px] text-white hover:bg-blue-900 md:mt-10"
+              className="bg-[#1D3557] px-[16px] py-[14.5px] font-inter text-base leading-[19.36px] text-white md:mt-10"
             >
               <Plus className="h-4 w-4" />
               Set Up Communication
