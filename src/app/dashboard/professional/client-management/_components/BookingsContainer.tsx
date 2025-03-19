@@ -24,7 +24,7 @@ const BookingsContainer = ({ userId }: Props) => {
     queryKey: ["service-booking-table", currentPage],
     queryFn: () =>
       fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/payments/user-bookings?userID=${userId}&page=${currentPage}&limit=10`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/payments/professional-bookings?userID=${userId}&page=${currentPage}&limit=10`,
       ).then((res) => res.json()),
   });
 

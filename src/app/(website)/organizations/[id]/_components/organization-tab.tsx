@@ -1,4 +1,5 @@
 "use client";
+import { ReviewCard } from "@/app/(website)/professionals/[id]/_components/review-card";
 import AnimatedTabs, { VeganTab } from "@/components/ui/Vegan-Tab";
 import dynamic from "next/dynamic";
 import { useState } from "react";
@@ -33,6 +34,10 @@ const lists = [
     id: "volunteer",
     label: "Volunteer",
   },
+  {
+    id: "reviews",
+    label: "Reviews",
+  },
 ] as VeganTab[];
 
 interface Props {
@@ -42,14 +47,16 @@ interface Props {
 
 const OrganizationTab = ({ organizationId, loggedInUserId }: Props) => {
   const [activeTab, setActiveTab] = useState<
-    "about" | "news" | "events" | "volunteer"
+    "about" | "news" | "events" | "volunteer" | "reviews"
   >("about");
   return (
     <div className="container mt-[40px] md:mt-[56px]">
       <AnimatedTabs
         tabs={lists}
         onTabChange={(id) =>
-          setActiveTab(id as "about" | "news" | "events" | "volunteer")
+          setActiveTab(
+            id as "about" | "news" | "events" | "volunteer" | "reviews",
+          )
         }
       />
 
@@ -71,6 +78,10 @@ const OrganizationTab = ({ organizationId, loggedInUserId }: Props) => {
             organizationId={organizationId}
             loggedInUserId={loggedInUserId}
           />
+        )}
+
+        {activeTab === "reviews" && (
+          <ReviewCard userId={organizationId} loggedinUserId={loggedInUserId} />
         )}
       </div>
     </div>

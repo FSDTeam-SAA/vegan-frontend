@@ -152,6 +152,7 @@ const ServiceBookModal = ({ open, onOpenChange, data }: Props) => {
   const handleProceedToCheckout = () => {
     if (!isPaymentAdded) {
       setIsPaymentModalOpen(true);
+      onOpenChange();
       return;
     }
 
@@ -182,7 +183,7 @@ const ServiceBookModal = ({ open, onOpenChange, data }: Props) => {
   return (
     <>
       <AlertDialog open={open} onOpenChange={onOpenChange}>
-        <AlertDialogTrigger className="w-full" asChild></AlertDialogTrigger>
+        <AlertDialogTrigger className="w-full"></AlertDialogTrigger>
         <AlertDialogContent className="w-full max-w-[380px] py-[24px] md:min-w-[600px]">
           <AlertDialogHeader>
             <div className="flex items-center justify-between">
