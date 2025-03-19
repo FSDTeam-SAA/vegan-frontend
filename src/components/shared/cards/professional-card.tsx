@@ -40,16 +40,21 @@ const ProfessionalCard = ({ data }: Props) => {
             <h4 className="font-lexend text-[18px] font-normal leading-[22.5px] text-[#1D3557]">
               {data?.fullName}
             </h4>
+
             <div className="flex items-center gap-x-2">
-              <Image
-                src="https://i.postimg.cc/hG2DYyJZ/Vector.png"
-                height={18}
-                width={18}
-                alt="star"
-              />
-              <p className="font-inter text-[16px] font-normal leading-[19.36px] text-[#4B5563]">
-                4.8 (127)
-              </p>
+              {(data?.totalReviews ?? 0) > 0 && (
+                <>
+                  <Image
+                    src="https://i.postimg.cc/hG2DYyJZ/Vector.png"
+                    height={18}
+                    width={18}
+                    alt="star"
+                  />
+                  <p className="font-inter text-[16px] font-normal leading-[19.36px] text-[#4B5563]">
+                    {data?.averageRating} ({data?.totalReviews})
+                  </p>
+                </>
+              )}
 
               {data && (
                 <button
