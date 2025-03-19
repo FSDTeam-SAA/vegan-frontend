@@ -17,6 +17,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { useQuery } from "@tanstack/react-query";
 import { ChevronDown, SlidersHorizontal, Star } from "lucide-react";
 import Image from "next/image";
 import CreateOrganizationReview from "./create-organization-review-modal";
@@ -54,6 +55,13 @@ interface Props {
 }
 
 export function OrganizationReviewContainer({ userId, loggedinUserId }: Props) {
+  const {} = useQuery({
+    queryKey: ["organizationReviewGet", userId],
+    queryFn: () =>
+      fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/organization/review/all/${userId}`,
+      ).then((res) => res.json()),
+  });
   return (
     <div className="min-h-screen">
       <div className="max-w-4xl">
