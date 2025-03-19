@@ -22,7 +22,7 @@ const Page = async () => {
         </p>
       </div>
 
-      <TotalEarnings />
+      <TotalEarnings loggedInUserId={user.user.userId} />
       <div className="mt-10">
         <ReferralTracking userId={user.user.userId} />
       </div>

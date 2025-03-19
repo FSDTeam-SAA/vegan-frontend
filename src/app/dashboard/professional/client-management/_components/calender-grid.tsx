@@ -7,7 +7,7 @@ export interface Event {
   email: string;
   title: string;
   datetime: string;
-  type: "meeting" | "reminder" | "task";
+  type: "meeting" | "reminder" | "task" | "booking";
 }
 
 interface CalendarGridProps {
@@ -96,7 +96,7 @@ export default function CalendarGrid({
                 {getEventsForDay(day.date).map((event) => (
                   <div
                     key={event.id}
-                    className={`my-0.5 cursor-pointer rounded p-1 px-2 text-xs text-[#202124] ${event.type === "meeting" ? "border-l-2 border-[#1a73e8] bg-[#e8f0fe]" : ""} ${event.type === "reminder" ? "border-l-2 border-[#fbbc04] bg-[#fef7e0]" : ""} ${event.type === "task" ? "border-l-2 border-[#34a853] bg-[#e7f4e9]" : ""} `}
+                    className={`my-0.5 cursor-pointer rounded p-1 px-2 text-xs text-[#202124] ${event.type === "booking" ? "border-l-2 border-[#1a73e8] bg-[#e8f0fe]" : ""} ${event.type === "reminder" ? "border-l-2 border-[#fbbc04] bg-[#fef7e0]" : ""} ${event.type === "task" ? "border-l-2 border-[#34a853] bg-[#e7f4e9]" : ""} `}
                   >
                     <div className="truncate font-medium">{event.title}</div>
                     <div className="text-[10px] opacity-80">
