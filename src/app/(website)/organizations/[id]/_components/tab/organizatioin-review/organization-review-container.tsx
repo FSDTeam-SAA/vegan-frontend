@@ -2,16 +2,17 @@
 
 import EmptyContainer from "@/components/shared/sections/empty-container";
 import ErrorContainer from "@/components/shared/sections/error-container";
-import { Button } from "@/components/ui/button";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { ReviewsResponse } from "@/types/organization";
 import { useQuery } from "@tanstack/react-query";
-import { ChevronDown, Loader2, Star } from "lucide-react";
+import { Loader2, Star } from "lucide-react";
+import { useState } from "react";
 import CreateOrganizationReview from "./create-organization-review-modal";
 
 interface Props {
@@ -20,11 +21,12 @@ interface Props {
 }
 
 export function OrganizationReviewContainer({ userId, loggedinUserId }: Props) {
+  const [sort, setSort] = useState<"lowest" | "highest">("highest");
   const { data, isLoading, isError, error } = useQuery<ReviewsResponse>({
-    queryKey: ["organizationReviewGet", userId],
+    queryKey: ["organizationReviewGet", userId, sort],
     queryFn: () =>
       fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/organization/review/all/${userId}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/organization/review/all/${userId}?page=1&limit=2&sort=${sort}`,
       ).then((res) => res.json()),
   });
 
@@ -84,21 +86,17 @@ export function OrganizationReviewContainer({ userId, loggedinUserId }: Props) {
         {/* Desktop Filters */}
         <div className="flex justify-between">
           <div className="mb-6 gap-3 md:flex">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="outline"
-                  className="border border-gray-400 bg-transparent font-inter font-normal leading-[19.36px] text-[#4B5563]"
-                >
-                  Ratings
-                  <ChevronDown className="ml-2 h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuItem>Highest Rating</DropdownMenuItem>
-                <DropdownMenuItem>Lowest Rating</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <Select
+              onValueChange={(val) => setSort(val as "lowest" | "highest")}
+            >
+              <SelectTrigger className="border-primary/50">
+                <SelectValue placeholder="Sort By" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="highest">Highest Rating</SelectItem>
+                <SelectItem value="lowest">Lowest Rating</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
           {loggedinUserId && (
             <div>

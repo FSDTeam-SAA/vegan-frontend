@@ -111,4 +111,5 @@ export type ReviewsResponse = {
   success: boolean;
   message?: string;
   reviews: Review[];
+  pagination: MetaPagination;
 };
