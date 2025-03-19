@@ -1,10 +1,10 @@
 "use client";
-import { ReviewCard } from "@/app/(website)/professionals/[id]/_components/review-card";
 import AnimatedTabs, { VeganTab } from "@/components/ui/Vegan-Tab";
 import dynamic from "next/dynamic";
 import { useState } from "react";
 import OrganizationAbout from "./tab/about/organization-about";
 import OrganizationNewsContainer from "./tab/news/organization-news-container";
+import { OrganizationReviewContainer } from "./tab/organizatioin-review/organization-review-container";
 const OrganizationEventContainer = dynamic(
   () => import("./tab/events/organization-event-container"),
   { ssr: false },
@@ -81,7 +81,10 @@ const OrganizationTab = ({ organizationId, loggedInUserId }: Props) => {
         )}
 
         {activeTab === "reviews" && (
-          <ReviewCard userId={organizationId} loggedinUserId={loggedInUserId} />
+          <OrganizationReviewContainer
+            userId={organizationId}
+            loggedinUserId={loggedInUserId}
+          />
         )}
       </div>
     </div>

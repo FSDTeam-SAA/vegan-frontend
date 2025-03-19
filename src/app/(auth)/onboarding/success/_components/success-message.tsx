@@ -4,11 +4,17 @@ import { useSearchParams } from "next/navigation";
 
 const SuccessMessage = () => {
   const searchParams = useSearchParams();
-  const accountType = (searchParams.get("role") ?? "user") as "user" | "vendor";
+  const accountType = (searchParams.get("role") ?? "user") as
+    | "user"
+    | "organization";
 
   const message = {
     user: "Welcome to Vegan Collective, the world’s trusted all-vegan platform! Discover services, products, and opportunities tailored to your values.",
-    vendor:
+    organization:
+      "Congratulations! You are now a vendor on Vegan Collective, the world’s trusted all-vegan platform.",
+    merchant:
+      "Congratulations! You are now a vendor on Vegan Collective, the world’s trusted all-vegan platform.",
+    professional:
       "Congratulations! You are now a vendor on Vegan Collective, the world’s trusted all-vegan platform.",
   };
   return (
