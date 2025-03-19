@@ -98,3 +98,17 @@ export type SingleOrganizationProfileResponse = {
   message: string;
   data: OrganizationProfile;
 };
+
+export type Review = {
+  userID: string;
+  userName: string;
+  rating: number;
+  comment: string;
+  createdAt: string;
+};
+
+export type ReviewsResponse = {
+  success: boolean;
+  message?: string;
+  reviews: Review[];
+};
