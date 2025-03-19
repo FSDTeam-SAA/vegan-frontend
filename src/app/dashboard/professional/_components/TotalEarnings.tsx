@@ -1,5 +1,4 @@
 "use client";
-import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
 import {
   Card,
   CardContent,
@@ -15,17 +14,18 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { ChartLine } from "lucide-react";
+import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
 const chartData = [
-  { month: "January", desktop: 186 },
-  { month: "February", desktop: 305 },
-  { month: "March", desktop: 237 },
-  { month: "April", desktop: 73 },
-  { month: "May", desktop: 209 },
-  { month: "June", desktop: 214 },
+  { month: "January", service: 186, reffer: 150, GoLive: 200 },
+  { month: "February", service: 305, reffer: 150, GoLive: 200 },
+  { month: "March", service: 237, reffer: 150, GoLive: 200 },
+  { month: "April", service: 73, reffer: 150, GoLive: 200 },
+  { month: "May", service: 209, reffer: 150, GoLive: 200 },
+  { month: "June", service: 214, reffer: 150, GoLive: 200 },
 ];
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
+  service: {
+    label: "service",
     color: "#2A9D90",
   },
 } satisfies ChartConfig;
@@ -46,7 +46,7 @@ const TotalEarnings = () => {
         <Card className="mt-[40px]">
           <CardHeader className="">
             <CardTitle className="flex w-full items-center gap-[6px] border-b border-[#E4E4E7] pb-[20px] pt-[1px] text-sm font-normal leading-[19px] text-[#71717A] md:pt-[8px]">
-              <ChartLine className="h-[14px] w-[14px] text-[#71717A]" /> 
+              <ChartLine className="h-[14px] w-[14px] text-[#71717A]" />
               Line Chart
             </CardTitle>
             <CardDescription className="pt-[36px] text-sm font-normal leading-[20px] text-[#71717A] md:pt-[46px]">
@@ -76,9 +76,23 @@ const TotalEarnings = () => {
                   content={<ChartTooltipContent hideLabel />}
                 />
                 <Line
-                  dataKey="desktop"
+                  dataKey="service"
                   type="natural"
-                  stroke="var(--color-desktop)"
+                  stroke="var(--color-service)"
+                  strokeWidth={2}
+                  dot={false}
+                />
+                <Line
+                  dataKey="reffer"
+                  type="natural"
+                  stroke="var(--color-service)"
+                  strokeWidth={2}
+                  dot={false}
+                />
+                <Line
+                  dataKey="GoLive"
+                  type="natural"
+                  stroke="var(--color-service)"
                   strokeWidth={2}
                   dot={false}
                 />
