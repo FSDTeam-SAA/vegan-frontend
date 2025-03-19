@@ -1,20 +1,12 @@
 "use client";
 import PaymentForm from "@/components/shared/features/payment/payment-form";
-import {
-  AlertDialog,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import VeganModal from "@/components/ui/vegan-modal";
 import { cn } from "@/lib/utils";
 import { ProfessionalService } from "@/types/professional";
 import { useMutation } from "@tanstack/react-query";
-import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -182,73 +174,66 @@ const ServiceBookModal = ({ open, onOpenChange, data }: Props) => {
   };
   return (
     <>
-      <AlertDialog open={open} onOpenChange={onOpenChange}>
-        <AlertDialogTrigger className="w-full"></AlertDialogTrigger>
-        <AlertDialogContent className="w-full max-w-[380px] py-[24px] md:min-w-[600px]">
-          <AlertDialogHeader>
-            <div className="flex items-center justify-between">
-              <AlertDialogTitle className="max-w-[350px] text-left font-inter text-[18px] font-medium leading-[21.78px] text-[#1F2937]">
-                Check & Select Available Date & Time
-              </AlertDialogTitle>
-              <button onClick={onOpenChange}>
-                <X />
-              </button>
-            </div>
-          </AlertDialogHeader>
+      <VeganModal
+        open={open}
+        onOpenChange={onOpenChange}
+        className="w-full max-w-[380px] py-[24px] md:min-w-[600px]"
+      >
+        <p className="max-w-[350px] text-left font-inter text-[18px] font-medium leading-[21.78px] text-[#1F2937]">
+          Check & Select Available Date & Time
+        </p>
 
-          <div className="flex w-full flex-col gap-x-5 md:flex-row">
-            <Calendar
-              mode="single"
-              selected={data?.date ? new Date(data.date) : undefined}
-              className=""
-              components={{
-                IconLeft: () => <ChevronLeft className="h-4 w-4" />,
-                IconRight: () => <ChevronRight className="h-4 w-4" />,
-              }}
-              disabled={{
-                before: afterDate,
-                after: afterDate,
-              }}
-            />
-            <div className="flex-1">
-              <div className="mt-4">
-                <h3 className="mb-3 text-sm font-medium">
-                  Available Time Slot
-                </h3>
-                <div className="grid gap-2">
-                  {data?.timeSlots.map((slot) => (
-                    <Button
-                      key={slot}
-                      variant={"outline"}
-                      className={cn(
-                        "w-full",
-                        selectedTime === slot &&
-                          "bg-[#1D3557] text-primary-foreground hover:bg-[#1D3557] hover:text-white",
-                      )}
-                      onClick={() => setSelectedTime(slot)}
-                    >
-                      {slot}
-                    </Button>
-                  ))}
-                </div>
+        <div className="flex w-full flex-col gap-x-5 md:flex-row">
+          <Calendar
+            mode="single"
+            selected={data?.date ? new Date(data.date) : undefined}
+            className=""
+            components={{
+              IconLeft: () => <ChevronLeft className="h-4 w-4" />,
+              IconRight: () => <ChevronRight className="h-4 w-4" />,
+            }}
+            disabled={{
+              before: afterDate,
+              after: afterDate,
+            }}
+          />
+          <div className="flex-1">
+            <div className="mt-4">
+              <h3 className="mb-3 text-sm font-medium">Available Time Slot</h3>
+              <div className="grid gap-2">
+                {data?.timeSlots.map((slot) => (
+                  <Button
+                    key={slot}
+                    variant={"outline"}
+                    className={cn(
+                      "w-full",
+                      selectedTime === slot &&
+                        "bg-[#1D3557] text-primary-foreground hover:bg-[#1D3557] hover:text-white",
+                    )}
+                    onClick={() => setSelectedTime(slot)}
+                  >
+                    {slot}
+                  </Button>
+                ))}
               </div>
             </div>
           </div>
-          <AlertDialogFooter>
-            <Button
-              className="h-[48px]"
-              disabled={isDisabled}
-              onClick={handleProceedToCheckout}
-            >
-              {isPending
-                ? "Payment Processing..."
-                : isConfirming
-                  ? "Wait a second"
-                  : "Proceed to checkout"}
-            </Button>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+        </div>
+
+        <div className="flex justify-end">
+          <Button
+            className="h-[40px]"
+            disabled={isDisabled}
+            onClick={handleProceedToCheckout}
+          >
+            {isPending
+              ? "Payment Processing..."
+              : isConfirming
+                ? "Wait a second"
+                : "Proceed to checkout"}
+          </Button>
+        </div>
+      </VeganModal>
 
       <VeganModal
         open={isPaymentModalOpen}
