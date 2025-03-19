@@ -13,28 +13,48 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import SkeletonWrapper from "@/components/ui/skeleton-wrapper";
+import { useQuery } from "@tanstack/react-query";
 import { ChartLine } from "lucide-react";
 import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
-const chartData = [
-  { month: "January", service: 186, reffer: 150, GoLive: 200 },
-  { month: "February", service: 305, reffer: 150, GoLive: 200 },
-  { month: "March", service: 237, reffer: 150, GoLive: 200 },
-  { month: "April", service: 73, reffer: 150, GoLive: 200 },
-  { month: "May", service: 209, reffer: 150, GoLive: 200 },
-  { month: "June", service: 214, reffer: 150, GoLive: 200 },
-];
 const chartConfig = {
   service: {
     label: "service",
-    color: "#2A9D90",
+    color: "#2A9D90", // Teal
+  },
+  reffer: {
+    label: "reffer",
+    color: "#1E3A8A", // Blue
+  },
+  goLive: {
+    label: "GoLive",
+    color: "#F97316", // Orange
   },
 } satisfies ChartConfig;
 
-const TotalEarnings = () => {
-  // const {} = useQuery({
-  //   queryKey: ["professional-graph"],
-  //   queryFn: () => fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/get/professional/graph`).then((res) => res.json( ))
-  // })
+type GraphResponse = {
+  success: boolean;
+  data: Array<{
+    month: string;
+    service: number;
+    reffer: number;
+    GoLive: number;
+  }>;
+};
+
+interface Props {
+  loggedInUserId: string;
+}
+
+const TotalEarnings = ({ loggedInUserId }: Props) => {
+  const { data, isLoading } = useQuery<GraphResponse>({
+    queryKey: ["professional-graph"],
+    queryFn: () =>
+      fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/get/professional/graph/${loggedInUserId}`,
+      ).then((res) => res.json()),
+  });
+
   return (
     <div>
       <div className="rounded-[16px] bg-[#F8F5F2] p-[24px] md:p-[32px] lg:p-[40px]">
@@ -47,68 +67,71 @@ const TotalEarnings = () => {
         <p className="text-base font-normal leading-[19px] text-[#6B7280]">
           Last updated: Today at 12:00 PM
         </p>
-        <Card className="mt-[40px]">
-          <CardHeader className="">
-            <CardTitle className="flex w-full items-center gap-[6px] border-b border-[#E4E4E7] pb-[20px] pt-[1px] text-sm font-normal leading-[19px] text-[#71717A] md:pt-[8px]">
-              <ChartLine className="h-[14px] w-[14px] text-[#71717A]" />
-              Line Chart
-            </CardTitle>
-            <CardDescription className="pt-[36px] text-sm font-normal leading-[20px] text-[#71717A] md:pt-[46px]">
-              January - June 2024
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="">
-            <ChartContainer config={chartConfig} className="h-[195px] w-full">
-              <LineChart
-                accessibilityLayer
-                data={chartData}
-                margin={{
-                  left: 12,
-                  right: 12,
-                }}
-              >
-                <CartesianGrid vertical={false} />
-                <XAxis
-                  dataKey="month"
-                  tickLine={false}
-                  axisLine={false}
-                  tickMargin={8}
-                  tickFormatter={(value) => value.slice(0, 3)}
-                />
-                <ChartTooltip
-                  cursor={false}
-                  content={<ChartTooltipContent hideLabel />}
-                />
-                <Line
-                  dataKey="service"
-                  type="natural"
-                  stroke="var(--color-service)"
-                  strokeWidth={2}
-                  dot={false}
-                />
-                <Line
-                  dataKey="reffer"
-                  type="natural"
-                  stroke="var(--color-service)"
-                  strokeWidth={2}
-                  dot={false}
-                />
-                <Line
-                  dataKey="GoLive"
-                  type="natural"
-                  stroke="var(--color-service)"
-                  strokeWidth={2}
-                  dot={false}
-                />
-              </LineChart>
-            </ChartContainer>
-          </CardContent>
-          <CardFooter className="pt-[15px]">
-            <p className="text-sm font-normal leading-[21px] text-[#71717A]">
-              Showing earning overview for the last 6 months
-            </p>
-          </CardFooter>
-        </Card>
+        <SkeletonWrapper isLoading={isLoading}>
+          <Card className="mt-[40px]">
+            <CardHeader className="">
+              <CardTitle className="flex w-full items-center gap-[6px] border-b border-[#E4E4E7] pb-[20px] pt-[1px] text-sm font-normal leading-[19px] text-[#71717A] md:pt-[8px]">
+                <ChartLine className="h-[14px] w-[14px] text-[#71717A]" />
+                Line Chart
+              </CardTitle>
+              <CardDescription className="pt-[36px] text-sm font-normal leading-[20px] text-[#71717A] md:pt-[46px]">
+                {data?.data[0].month} - {data?.data[data.data.length - 1].month}{" "}
+                {2025}
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="">
+              <ChartContainer config={chartConfig} className="h-[195px] w-full">
+                <LineChart
+                  accessibilityLayer
+                  data={data?.data ?? []}
+                  margin={{
+                    left: 12,
+                    right: 12,
+                  }}
+                >
+                  <CartesianGrid vertical={false} />
+                  <XAxis
+                    dataKey="month"
+                    tickLine={false}
+                    axisLine={false}
+                    tickMargin={8}
+                    tickFormatter={(value) => value.slice(0, 3)}
+                  />
+                  <ChartTooltip
+                    cursor={false}
+                    content={<ChartTooltipContent hideLabel />}
+                  />
+                  <Line
+                    dataKey="service"
+                    type="natural"
+                    stroke="var(--color-service)"
+                    strokeWidth={2}
+                    dot={false}
+                  />
+                  <Line
+                    dataKey="reffer"
+                    type="natural"
+                    stroke="var(--color-reffer)"
+                    strokeWidth={2}
+                    dot={false}
+                  />
+                  <Line
+                    dataKey="GoLive"
+                    type="natural"
+                    stroke="var(--color-goLive)"
+                    strokeWidth={2}
+                    dot={false}
+                  />
+                </LineChart>
+              </ChartContainer>
+            </CardContent>
+            <CardFooter className="pt-[15px]">
+              <p className="text-sm font-normal leading-[21px] text-[#71717A]">
+                Showing earning overview for the last 6 months
+              </p>
+            </CardFooter>
+          </Card>
+        </SkeletonWrapper>
       </div>
     </div>
   );
