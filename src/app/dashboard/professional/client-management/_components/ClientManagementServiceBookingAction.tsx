@@ -7,9 +7,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { EllipsisVertical } from "lucide-react";
-import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -20,9 +19,11 @@ interface Props {
 const ClientManagementServiceBookingAction = ({ data }: Props) => {
   const [open, setOpen] = useState(false);
 
+  const queryClient = useQueryClient();
+
   const { mutate, isPending } = useMutation({
     mutationKey: ["status-change"],
-    mutationFn: (userId: string) =>
+    mutationFn: () =>
       fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/payments/update-status`,
         {
@@ -31,13 +32,28 @@ const ClientManagementServiceBookingAction = ({ data }: Props) => {
             "content-type": "application/json",
           },
           body: JSON.stringify({
-            userID: userId,
-            professionalServicesId: data._id,
+            userID: data.userID._id,
+            professionalServicesId: data.professionalServicesId._id,
+            serviceBookingTime: data.serviceBookingTime,
           }),
         },
       ).then((res) => res.json()),
     onSuccess: (data) => {
-      console.log(data);
+      if (!data.success) {
+        toast.error(data.message, {
+          position: "top-right",
+          richColors: true,
+        });
+        return;
+      }
+
+      // handle success
+      toast.success("The service has been successfully canceled.", {
+        position: "top-right",
+        richColors: true,
+      });
+      setOpen(false);
+      queryClient.invalidateQueries({ queryKey: ["service-booking-table"] });
     },
     onError: (err) => {
       toast.error(err.message, {
@@ -46,9 +62,6 @@ const ClientManagementServiceBookingAction = ({ data }: Props) => {
       });
     },
   });
-
-  const session = useSession();
-  if (!session.data) return;
 
   return (
     <div>
@@ -78,7 +91,7 @@ const ClientManagementServiceBookingAction = ({ data }: Props) => {
         isOpen={open}
         onClose={() => setOpen(false)}
         loading={isPending}
-        onConfirm={() => mutate(session.data.user.userId)}
+        onConfirm={() => mutate()}
         message="This action cannot be undone, and you may lose your reservation. If applicable, cancellation fees may apply."
         title="Are you sure you want to cancel your event booking?"
       />

@@ -1,6 +1,5 @@
 "use client";
 
-import { Checkbox } from "@/components/ui/checkbox";
 import { toWellFormed } from "@/lib/helper";
 import { ServiceBooking } from "@/types/professional";
 
@@ -9,34 +8,33 @@ import moment from "moment";
 import ClientManagementServiceBookingAction from "./ClientManagementServiceBookingAction";
 
 export const BookingColumn: ColumnDef<ServiceBooking>[] = [
+  // {
+  //   id: "select",
+  //   header: ({ table }) => (
+  //     <div className="flex items-center justify-center">
+  //       <Checkbox
+  //         checked={
+  //           table.getIsAllPageRowsSelected() ||
+  //           (table.getIsSomePageRowsSelected() && "indeterminate")
+  //         }
+  //         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+  //         aria-label="Select all"
+  //       />
+  //     </div>
+  //   ),
+  //   cell: ({ row }) => (
+  //     <Checkbox
+  //       checked={row.getIsSelected()}
+  //       onCheckedChange={(value) => row.toggleSelected(!!value)}
+  //       aria-label="Select row"
+  //     />
+  //   ),
+  //   enableSorting: false,
+  //   enableHiding: false,
+  // },
   {
-    id: "select",
-    header: ({ table }) => (
-      <div className="flex items-center justify-center">
-        <Checkbox
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && "indeterminate")
-          }
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all"
-        />
-      </div>
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    header: "Client Nmae",
+    header: "Client Name",
     cell: ({ row }) => {
-      console.log(row);
       return (
         <div className="flex items-center gap-4">
           <div>
@@ -64,7 +62,7 @@ export const BookingColumn: ColumnDef<ServiceBooking>[] = [
     header: "Service",
     cell: ({ row }) => {
       return (
-        <div className="flex justify-start gap-[2px]">
+        <div className="flex justify-center gap-[2px]">
           <span className="text-sm font-medium leading-[16px] text-[#1F2937]">
             {row.original.professionalServicesId?.serviceName ??
               "NO service name found"}
@@ -77,7 +75,7 @@ export const BookingColumn: ColumnDef<ServiceBooking>[] = [
     header: "Date",
     cell: ({ row }) => {
       return (
-        <div className="flex justify-start gap-[2px]">
+        <div className="flex justify-center gap-[2px]">
           <span className="text-sm font-medium leading-[16px] text-[#1F2937]">
             {moment(row.original.createdAt).format("MMM DD, YYYY")}
           </span>
@@ -89,7 +87,7 @@ export const BookingColumn: ColumnDef<ServiceBooking>[] = [
     header: "Time",
     cell: ({ row }) => {
       return (
-        <div className="flex justify-start gap-[2px]">
+        <div className="flex justify-center gap-[2px]">
           <span className="text-sm font-medium leading-[16px] text-[#1F2937]">
             {row.original.serviceBookingTime}
           </span>
@@ -103,7 +101,7 @@ export const BookingColumn: ColumnDef<ServiceBooking>[] = [
       const status = row.original.status;
 
       return (
-        <div className="flex justify-start gap-[2px]">
+        <div className="flex justify-center gap-[2px]">
           <span
             className={`rounded-[20px] px-[8px] py-[4px] text-sm font-medium leading-[16px] ${status === "confirmed" ? "bg-[#F0FDF4] text-[#16A34A]" : "bg-[#F8F5F2] text-[#CA8A04]"}`}
           >

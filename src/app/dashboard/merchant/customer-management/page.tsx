@@ -6,8 +6,6 @@ export default async function page() {
   const currentUser = await auth();
   if (!currentUser) return null;
 
-  console.log(currentUser);
-
   return (
     <div className="min-h-screen p-6">
       <DashboardHeading

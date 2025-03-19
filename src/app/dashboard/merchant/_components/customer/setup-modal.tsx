@@ -9,15 +9,16 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
 import type { CommunicationFormData } from "./communication";
+import { Communication } from "./CustomerCommunication";
 
 interface SetupModalProps {
   isOpen: boolean;
   onClose: () => void;
-  initialData?: Partial<CommunicationFormData>;
+  initialData?: Communication;
   userId: string;
 }
 
@@ -29,9 +30,11 @@ export function SetupModal({
 }: SetupModalProps) {
   const [formData, setFormData] = useState<CommunicationFormData>({
     email: initialData?.email || "",
-    whatsapp: initialData?.whatsapp || "",
+    whatsapp: initialData?.whatsApp || "",
     messenger: initialData?.messenger || "",
   });
+
+  const queryClient = useQueryClient();
 
   const { mutate, isPending } = useMutation<any, unknown, any>({
     mutationKey: ["customerSupport"],
@@ -58,7 +61,52 @@ export function SetupModal({
         position: "top-right",
         richColors: true,
       });
-      // queryClient.invalidateQueries({ queryKey: ["merchantsProduct"] });
+      queryClient.invalidateQueries({
+        queryKey: ["merchantCustomerCommunication"],
+      });
+    },
+    onError: () => {
+      toast.error("Failed to add product. Please try again later", {
+        position: "top-right",
+        richColors: true,
+      });
+    },
+  });
+  const { mutate: editCommunication, isPending: isEditing } = useMutation<
+    any,
+    unknown,
+    any
+  >({
+    mutationKey: ["customerSupportEdit"],
+    mutationFn: (body) =>
+      fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/merchantCustomer/${initialData?._id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        },
+      ).then((res) => res.json()),
+    onSuccess: (data) => {
+      if (!data.success) {
+        toast.error(data.message, {
+          position: "top-right",
+          richColors: true,
+        });
+        return;
+      }
+
+      // handle success
+      onClose();
+      toast.success("Communication options saved successfully", {
+        position: "top-right",
+        richColors: true,
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["merchantCustomerCommunication"],
+      });
     },
     onError: () => {
       toast.error("Failed to add product. Please try again later", {
@@ -70,12 +118,21 @@ export function SetupModal({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    mutate({
-      email: formData.email ?? "",
-      whatsApp: formData.whatsapp ?? "",
-      messenger: formData.messenger ?? "",
-      merchantID: userId,
-    });
+    if (initialData) {
+      editCommunication({
+        email: formData.email ?? "",
+        whatsApp: formData.whatsapp ?? "",
+        messenger: formData.messenger ?? "",
+        merchantID: userId,
+      });
+    } else {
+      mutate({
+        email: formData.email ?? "",
+        whatsApp: formData.whatsapp ?? "",
+        messenger: formData.messenger ?? "",
+        merchantID: userId,
+      });
+    }
   };
 
   return (
@@ -134,11 +191,11 @@ export function SetupModal({
             />
           </div>
           <div className="flex justify-end gap-3">
-            <Button type="submit" variant="outline">
+            <Button type="button" variant="outline">
               Cancel
             </Button>
-            <Button type="submit" disabled={isPending}>
-              Save Communication Options
+            <Button type="submit" disabled={isPending || isEditing}>
+              {initialData ? "Save Now" : "Add Now"}
             </Button>
           </div>
         </form>
