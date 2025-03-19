@@ -1,5 +1,6 @@
 import { auth } from "@/auth";
 import Footer from "@/components/home/footer/footer";
+import { CrispProvider } from "@/components/shared/features/crisp/crisp-provider";
 import ProfessionalGreetings from "@/components/ui/professional-greetings";
 import dynamic from "next/dynamic";
 import { ReactNode } from "react";
@@ -27,7 +28,10 @@ const WebsiteLayout = async ({ children }: { children: ReactNode }) => {
         }
       />
       {children}
+
       <Footer />
+
+      <CrispProvider />
 
       {session?.user && (
         <ProfessionalGreetings
