@@ -1,6 +1,5 @@
 "use client";
 
-import CreateReview from "@/components/shared/features/review/create-review";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -20,6 +19,7 @@ import {
 } from "@/components/ui/sheet";
 import { ChevronDown, SlidersHorizontal, Star } from "lucide-react";
 import Image from "next/image";
+import CreateOrganizationReview from "./create-organization-review-modal";
 
 const reviews = [
   {
@@ -110,7 +110,7 @@ export function OrganizationReviewContainer({ userId, loggedinUserId }: Props) {
           </div>
           {loggedinUserId && (
             <div>
-              <CreateReview
+              <CreateOrganizationReview
                 reviewUserId={userId}
                 loggedinUserId={loggedinUserId}
               />
