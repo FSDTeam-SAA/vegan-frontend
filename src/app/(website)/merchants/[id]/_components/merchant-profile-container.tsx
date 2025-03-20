@@ -9,9 +9,10 @@ import MerchantsTabs from "./merchant-tabs";
 
 interface Props {
   merchatId: string;
+  loggedinUserId?: string;
 }
 
-const MerchantProfileContainer = ({ merchatId }: Props) => {
+const MerchantProfileContainer = ({ merchatId, loggedinUserId }: Props) => {
   const { isLoading, data, isError, error } =
     useQuery<SingleMerchantProfileResponse>({
       queryKey: ["single-merchant-profile", merchatId],
@@ -35,7 +36,7 @@ const MerchantProfileContainer = ({ merchatId }: Props) => {
             <MerchantHeader data={data?.data} />
           </SkeletonWrapper>
         </div>
-        <MerchantsTabs merchantId={merchatId} />
+        <MerchantsTabs merchantId={merchatId} loggedinUserId={loggedinUserId} />
       </div>
     );
   } else if (isError) {
