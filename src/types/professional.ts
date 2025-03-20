@@ -52,6 +52,8 @@ export type ProfessionalProfile = {
   websiteURL: string;
   createdAt: string;
   updatedAt: string;
+  totalReviews: number;
+  averageRating: string;
   __v: number;
 };
 
