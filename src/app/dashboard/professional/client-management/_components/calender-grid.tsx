@@ -8,6 +8,7 @@ export interface Event {
   title: string;
   datetime: string;
   type: "meeting" | "reminder" | "task" | "booking";
+  serviceBookingTime: string;
 }
 
 interface CalendarGridProps {
@@ -100,10 +101,7 @@ export default function CalendarGrid({
                   >
                     <div className="truncate font-medium">{event.title}</div>
                     <div className="text-[10px] opacity-80">
-                      {new Date(event.datetime).toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
+                      {event.serviceBookingTime}
                     </div>
                   </div>
                 ))}
