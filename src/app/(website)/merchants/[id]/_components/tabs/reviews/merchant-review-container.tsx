@@ -11,11 +11,26 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import VeganModal from "@/components/ui/vegan-modal";
-import { ReviewsResponse } from "@/types/organization";
 import { useQuery } from "@tanstack/react-query";
 import { Loader2, Star } from "lucide-react";
 import { useEffect, useState } from "react";
 import MerchantReviewCreateForm from "./create-merchant-review";
+
+type ProductReview = {
+  _id: string;
+  productID: string;
+  productName: string;
+  rating: number;
+  comment: string;
+  userID: string;
+  fullName: string;
+};
+
+type ProductReviewResponse = {
+  success: boolean;
+  message: string;
+  reviews: ProductReview[];
+};
 
 interface Props {
   userId: string;
@@ -25,11 +40,11 @@ interface Props {
 export function MerchantReviewContainer({ userId, loggedinUserId }: Props) {
   const [open, setOpen] = useState(false);
   const [sort, setSort] = useState<"lowest" | "highest">("highest");
-  const { data, isLoading, isError, error } = useQuery<ReviewsResponse>({
-    queryKey: ["organizationReviewGet", userId, sort],
+  const { data, isLoading, isError, error } = useQuery<ProductReviewResponse>({
+    queryKey: ["merchantReviewGet", userId, sort],
     queryFn: () =>
       fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/organization/review/all/${userId}?page=1&limit=2&sort=${sort}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/merchantProductsreviews/merchant/${userId}?page=1&limit=2&sort=${sort}`,
       ).then((res) => res.json()),
   });
 
@@ -77,7 +92,7 @@ export function MerchantReviewContainer({ userId, loggedinUserId }: Props) {
           /> */}
               <div>
                 <h3 className="tracting-[3%] font-inter text-base font-semibold leading-[24px] text-[#1F2937]">
-                  {review.userName}
+                  {review.fullName}
                 </h3>
                 <div className="flex pt-[7px]">
                   {[...Array(review.rating)].map((_, i) => (
