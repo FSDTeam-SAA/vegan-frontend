@@ -1,22 +1,39 @@
-import ServiceBookModal from "@/app/(website)/professionals/[id]/_components/tabs/services/service-book-modal";
+const ServiceBookModal = dynamic(
+  () =>
+    import(
+      "@/app/(website)/professionals/[id]/_components/tabs/services/service-book-modal"
+    ),
+  { ssr: false },
+);
 import { truncateText } from "@/lib/helper";
 import { ProfessionalService } from "@/types/professional";
+import dynamic from "next/dynamic";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 interface Props {
   data?: ProfessionalService;
+  loggedinUserId?: string;
+  paymentAdded: boolean;
 }
 
-const ServiceCard = ({ data }: Props) => {
+const ServiceCard = ({ data, loggedinUserId, paymentAdded }: Props) => {
   const [open, setOpen] = useState(false);
   let text = data?.serviceDescription ?? "";
+  const { push } = useRouter();
 
   text = truncateText(text, 190);
 
   const toggleModal = () => {
+    if (!loggedinUserId) {
+      push("/onboarding");
+      return;
+    }
+
     setOpen((prev) => !prev);
   };
+
   return (
     <>
       <div className="h-auto w-full space-y-[24px] rounded-[20px] bg-white p-[16px] md:h-[508px] md:p-[24px] lg:w-[390px]">
@@ -53,15 +70,19 @@ const ServiceCard = ({ data }: Props) => {
             <div className="w-full">
               <button
                 className="mt-[12px] flex h-[48px] w-full items-center justify-center rounded-[8px] bg-[#1D3557] text-[16px] font-medium leading-[19.36px] text-white transition-colors duration-300 hover:bg-[#1D3557]/90"
-                onClick={() => setOpen(true)}
+                onClick={toggleModal}
               >
                 Book Service
               </button>
-              <ServiceBookModal
-                data={data}
-                open={open}
-                onOpenChange={toggleModal}
-              />
+              {loggedinUserId && (
+                <ServiceBookModal
+                  data={data}
+                  open={open}
+                  onOpenChange={toggleModal}
+                  loggedinuserId={loggedinUserId}
+                  paymentAdded={paymentAdded}
+                />
+              )}
             </div>
           </div>
         </div>
