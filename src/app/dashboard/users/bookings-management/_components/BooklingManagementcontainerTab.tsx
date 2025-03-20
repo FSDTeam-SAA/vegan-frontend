@@ -1,4 +1,5 @@
 "use client";
+import Calender from "@/app/dashboard/professional/client-management/_components/calender";
 import VeganTabs, { VeganTab } from "@/components/ui/Vegan-Tab";
 import { useState } from "react";
 import BookingManagementContainer from "./BookingManagementContainer";
@@ -12,6 +13,10 @@ const tabs = [
   {
     id: "all",
     label: "All Booked Services",
+  },
+  {
+    id: "calender",
+    label: "Calender",
   },
 ] as VeganTab[];
 
@@ -31,12 +36,27 @@ const BooklingManagementcontainerTab = ({ userId }: Props) => {
         onTabChange={(tab) => setActiveTab(tab)}
       />
       <div className="mt-5">
-        <SearchBar value={searchQuery} setValue={(v) => setSearchQuery(v)} />
-        <BookingManagementContainer
-          tab={activeTab}
-          searchQuery={searchQuery}
-          userId={userId}
-        />
+        {activeTab !== "calender" && (
+          <SearchBar value={searchQuery} setValue={(v) => setSearchQuery(v)} />
+        )}
+        {activeTab === "UpcomingBookings" && (
+          <BookingManagementContainer
+            tab={activeTab}
+            searchQuery={searchQuery}
+            userId={userId}
+          />
+        )}
+        {activeTab === "all" && (
+          <BookingManagementContainer
+            tab={activeTab}
+            searchQuery={searchQuery}
+            userId={userId}
+          />
+        )}
+
+        {activeTab === "calender" && (
+          <Calender loggedInUser={userId} role="customer" />
+        )}
       </div>
     </div>
   );
