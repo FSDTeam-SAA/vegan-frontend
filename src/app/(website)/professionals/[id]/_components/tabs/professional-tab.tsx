@@ -3,9 +3,9 @@ import VeganTabs, { VeganTab } from "@/components/ui/Vegan-Tab";
 import { AnimatePresence, motion } from "framer-motion";
 import dynamic from "next/dynamic";
 import { useState } from "react";
+import AboutTab from "./about-tab";
 
 // Dynamically import components only when needed
-const AboutTab = dynamic(() => import("./about-tab"), { ssr: false });
 const ExperienceTab = dynamic(() => import("./experience-tab"), { ssr: false });
 const ServicesTab = dynamic(() => import("./services-tab"), { ssr: false });
 const LiveStreamTab = dynamic(() => import("./live-stream-tab"), {
