@@ -1,5 +1,6 @@
 "use client";
 
+import AnimatedSelect, { Option } from "@/components/ui/animated-select";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -8,15 +9,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import SkeletonWrapper from "@/components/ui/skeleton-wrapper";
 import { Textarea } from "@/components/ui/textarea";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -151,6 +143,11 @@ export default function MerchantReviewCreateForm({
     mutate(reviewData);
   };
 
+  const products = productRes?.data.map(({ _id, productName }) => ({
+    value: _id,
+    label: productName,
+  })) as Option[];
+
   return (
     <Card className="mx-auto w-full border-0 p-0 shadow-none">
       <CardHeader className="p-0">
@@ -194,7 +191,7 @@ export default function MerchantReviewCreateForm({
           </div>
 
           <SkeletonWrapper isLoading={isLoading}>
-            <Select onValueChange={(val) => setProductId(val)}>
+            {/* <Select onValueChange={(val) => setProductId(val)}>
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select a product" />
               </SelectTrigger>
@@ -208,7 +205,14 @@ export default function MerchantReviewCreateForm({
                   ))}
                 </SelectGroup>
               </SelectContent>
-            </Select>
+            </Select> */}
+
+            <AnimatedSelect
+              options={products}
+              onValueChange={(val) => setProductId(val)}
+              placeholder="Select a product"
+              label="Products"
+            />
           </SkeletonWrapper>
 
           <div className="space-y-2">

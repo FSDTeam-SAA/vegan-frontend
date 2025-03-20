@@ -2,14 +2,8 @@
 
 import EmptyContainer from "@/components/shared/sections/empty-container";
 import ErrorContainer from "@/components/shared/sections/error-container";
+import AnimatedSelect, { Option } from "@/components/ui/animated-select";
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import VeganModal from "@/components/ui/vegan-modal";
 import { useQuery } from "@tanstack/react-query";
 import { Loader2, Star } from "lucide-react";
@@ -112,6 +106,17 @@ export function MerchantReviewContainer({ userId, loggedinUserId }: Props) {
       </div>
     );
   }
+
+  const options = [
+    {
+      value: "highest",
+      label: "Highest Rating",
+    },
+    {
+      value: "lowest",
+      label: "Lowest Rating",
+    },
+  ] as Option[];
   return (
     <>
       <div className="min-h-screen">
@@ -119,7 +124,7 @@ export function MerchantReviewContainer({ userId, loggedinUserId }: Props) {
           {/* Desktop Filters */}
           <div className="flex justify-between">
             <div className="mb-6 gap-3 md:flex">
-              <Select
+              {/* <Select
                 onValueChange={(val) => setSort(val as "lowest" | "highest")}
               >
                 <SelectTrigger className="border-primary/50">
@@ -129,7 +134,14 @@ export function MerchantReviewContainer({ userId, loggedinUserId }: Props) {
                   <SelectItem value="highest">Highest Rating</SelectItem>
                   <SelectItem value="lowest">Lowest Rating</SelectItem>
                 </SelectContent>
-              </Select>
+              </Select> */}
+
+              <AnimatedSelect
+                options={options}
+                onValueChange={(val) => setSort(val as "highest" | "lowest")}
+                label=""
+                placeholder="Sort By"
+              />
             </div>
             {loggedinUserId && (
               <div>
