@@ -9,6 +9,7 @@ body {
   scrollbar-gutter: stable;
 }
 
+html,
 :root {
   --detail-medium-contrast: hsl(0, 0%, 100%);
   --text-body: #1d3557;

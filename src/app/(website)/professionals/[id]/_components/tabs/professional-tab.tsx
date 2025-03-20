@@ -3,9 +3,9 @@ import VeganTabs, { VeganTab } from "@/components/ui/Vegan-Tab";
 import { AnimatePresence, motion } from "framer-motion";
 import dynamic from "next/dynamic";
 import { useState } from "react";
+import AboutTab from "./about-tab";
 
 // Dynamically import components only when needed
-const AboutTab = dynamic(() => import("./about-tab"), { ssr: false });
 const ExperienceTab = dynamic(() => import("./experience-tab"), { ssr: false });
 const ServicesTab = dynamic(() => import("./services-tab"), { ssr: false });
 const LiveStreamTab = dynamic(() => import("./live-stream-tab"), {
@@ -26,9 +26,14 @@ const lists = [
 interface Props {
   professionalId: string;
   loggedinUserId?: string;
+  paymentAdded: boolean;
 }
 
-const ProfessionalTab = ({ professionalId, loggedinUserId }: Props) => {
+const ProfessionalTab = ({
+  professionalId,
+  loggedinUserId,
+  paymentAdded,
+}: Props) => {
   const [activeTab, setActiveTab] = useState<string>("about");
 
   const renderTabContent = () => {
@@ -38,7 +43,13 @@ const ProfessionalTab = ({ professionalId, loggedinUserId }: Props) => {
       case "experience":
         return <ExperienceTab professionalId={professionalId} />;
       case "services":
-        return <ServicesTab professionalId={professionalId} />;
+        return (
+          <ServicesTab
+            professionalId={professionalId}
+            loggedinUserId={loggedinUserId}
+            paymentAdded={paymentAdded}
+          />
+        );
       case "live-stream":
         return <LiveStreamTab professionalId={professionalId} />;
       case "faqs":

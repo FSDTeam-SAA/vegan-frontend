@@ -45,7 +45,9 @@ export default function ClientManagementContainer({ userId }: Props) {
         {activeTab === "bookings" && <BookingsContainer userId={userId} />}
         {activeTab === "policies" && <Policies />}
         {activeTab === "faqs" && <Faqs userId={userId} />}
-        {activeTab === "calender" && <Calender loggedInUser={userId} />}
+        {activeTab === "calender" && (
+          <Calender loggedInUser={userId} role="professional" />
+        )}
       </div>
     </div>
   );
