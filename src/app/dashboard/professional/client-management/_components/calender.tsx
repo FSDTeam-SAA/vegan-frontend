@@ -69,7 +69,7 @@ const Calender = ({ loggedInUser }: Props) => {
     queryKey: ["calenderData", month, year],
     queryFn: () =>
       fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/payment/calendar/${loggedInUser}?month=${month}&year=${year}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/payment/calendar/professional/${loggedInUser}?month=${month}&year=${year}`,
       ).then((res) => res.json()),
   });
 
