@@ -4,7 +4,7 @@ import VeganTabs, { VeganTab } from "@/components/ui/Vegan-Tab";
 import dynamic from "next/dynamic";
 import { useState } from "react";
 import MerchantAbout from "./tabs/about/merchant-about";
-import Merchantreviews from "./tabs/reviews/merchant-reviews";
+import { MerchantReviewContainer } from "./tabs/reviews/merchant-review-container";
 const MerchantProducts = dynamic(
   () => import("./tabs/products/merchants-product"),
   {
@@ -29,9 +29,10 @@ const tabs = [
 
 interface Props {
   merchantId: string;
+  loggedinUserId?: string;
 }
 
-const MerchantsTabs = ({ merchantId }: Props) => {
+const MerchantsTabs = ({ merchantId, loggedinUserId }: Props) => {
   const [activeTab, setActiveTab] = useState("products");
   return (
     <div className="container">
@@ -55,7 +56,10 @@ const MerchantsTabs = ({ merchantId }: Props) => {
         )}
         {activeTab === "reviews" && (
           <>
-            <Merchantreviews />
+            <MerchantReviewContainer
+              userId={merchantId}
+              loggedinUserId={loggedinUserId}
+            />
           </>
         )}
       </div>

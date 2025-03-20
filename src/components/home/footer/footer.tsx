@@ -1,8 +1,7 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import Hideon from "@/provider/HideOn";
 import Image from "next/image";
 import Link from "next/link";
+import SubscribeForm from "./subscribe-form";
 
 const hideRoutes = [
   "/onboarding",
@@ -56,21 +55,7 @@ export default function Footer() {
                 We invite vegans — and those curious about veganism — to explore
                 our marketplace.
               </p>
-              <div className="md:pt-[40px]">
-                <h3 className="pb-4 font-medium text-[#1B365D]">
-                  Stay Up To Date
-                </h3>
-                <div className="gap-2 md:flex">
-                  <Input
-                    type="email"
-                    placeholder="Enter email"
-                    className="mb-2 h-[48px] w-full rounded-[8px] border-0 bg-white p-[10px] md:w-[274px] lg:h-[40px]"
-                  />
-                  <Button className="h-[48px] w-full rounded-[8px] bg-[#1D3557] px-6 py-[10px] text-[14px] font-medium text-white hover:bg-[#1B365D]/90 md:w-[112px] lg:h-[40px]">
-                    Subscribe
-                  </Button>
-                </div>
-              </div>
+              <SubscribeForm />
             </div>
 
             <div className="justify-between gap-10 md:flex md:flex-1">

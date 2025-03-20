@@ -7,7 +7,6 @@ import { cn } from "@/lib/utils";
 import { ProfessionalService } from "@/types/professional";
 import { useMutation } from "@tanstack/react-query";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -15,6 +14,8 @@ interface Props {
   open: boolean;
   onOpenChange: VoidFunction;
   data?: ProfessionalService;
+  loggedinuserId: string;
+  paymentAdded: boolean;
 }
 
 interface PurchaseBody {
@@ -25,9 +26,13 @@ interface PurchaseBody {
   professionalServicesId: string;
 }
 
-const ServiceBookModal = ({ open, onOpenChange, data }: Props) => {
-  const session = useSession();
-
+const ServiceBookModal = ({
+  open,
+  onOpenChange,
+  data,
+  loggedinuserId,
+  paymentAdded,
+}: Props) => {
   const [selectedTime, setSelectedTime] = useState<string>("");
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
 
@@ -83,7 +88,7 @@ const ServiceBookModal = ({ open, onOpenChange, data }: Props) => {
         return;
       }
 
-      if (!session.data?.user) {
+      if (loggedinuserId) {
         toast.warning("user is not found for confirm your booking.", {
           richColors: true,
         });
@@ -92,7 +97,7 @@ const ServiceBookModal = ({ open, onOpenChange, data }: Props) => {
 
       const confirmBookingBody = {
         serviceID: data.bookedService,
-        userID: session.data.user.userId,
+        userID: loggedinuserId,
       };
 
       // handle success confirming booking
@@ -106,9 +111,7 @@ const ServiceBookModal = ({ open, onOpenChange, data }: Props) => {
     },
   });
 
-  if (!session.data) return;
-
-  const isPaymentAdded = session.data.user.paymentAdded;
+  const isPaymentAdded = paymentAdded;
 
   const isDisabled = !selectedTime || isPending || isConfirming;
 
@@ -118,7 +121,7 @@ const ServiceBookModal = ({ open, onOpenChange, data }: Props) => {
 
   const bookServiceBeforePaymentMethodAdd = () => {
     if (
-      !session.data.user.userId ||
+      loggedinuserId ||
       !data?.price ||
       !data?.userID ||
       !selectedTime ||
@@ -132,7 +135,7 @@ const ServiceBookModal = ({ open, onOpenChange, data }: Props) => {
     }
     // make purchase
     const prceedData = {
-      userID: session.data.user.userId,
+      userID: loggedinuserId,
       amount: data.price,
       professionalID: data.userID,
       serviceBookingTime: selectedTime,
@@ -149,7 +152,7 @@ const ServiceBookModal = ({ open, onOpenChange, data }: Props) => {
     }
 
     if (
-      !session.data.user.userId ||
+      loggedinuserId ||
       !data?.price ||
       !data?.userID ||
       !selectedTime ||
@@ -164,7 +167,7 @@ const ServiceBookModal = ({ open, onOpenChange, data }: Props) => {
 
     // make purchase
     const prceedData = {
-      userID: session.data.user.userId,
+      userID: loggedinuserId,
       amount: data.price,
       professionalID: data.userID,
       serviceBookingTime: selectedTime,

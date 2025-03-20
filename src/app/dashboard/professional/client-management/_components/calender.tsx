@@ -45,6 +45,7 @@ const years = [
 
 interface Props {
   loggedInUser: string;
+  role: "professional" | "customer";
 }
 
 interface Response {
@@ -53,7 +54,7 @@ interface Response {
   calendarData: Event[];
 }
 
-const Calender = ({ loggedInUser }: Props) => {
+const Calender = ({ loggedInUser, role }: Props) => {
   const [currentDate] = useState(new Date());
   const [month, setMonth] = useState(() => {
     const currentMonth = new Date().getMonth() + 1; // getMonth() returns 0-11, so we add 1
@@ -67,10 +68,17 @@ const Calender = ({ loggedInUser }: Props) => {
 
   const { data, isLoading, isError, error } = useQuery<Response>({
     queryKey: ["calenderData", month, year],
-    queryFn: () =>
-      fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/payment/calendar/${loggedInUser}?month=${month}&year=${year}`,
-      ).then((res) => res.json()),
+    queryFn: () => {
+      const url =
+        role === "professional"
+          ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/payment/calendar/professional/${loggedInUser}?month=${month}&year=${year}`
+          : role === "customer"
+            ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/payment/calendar/${loggedInUser}?month=${month}&year=${year}`
+            : "";
+      const res = fetch(url).then((res) => res.json());
+
+      return res;
+    },
   });
 
   let content;

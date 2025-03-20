@@ -1,15 +1,28 @@
-import ServiceCard from "@/components/shared/cards/service-card";
 import EmptyContainer from "@/components/shared/sections/empty-container";
 import ErrorContainer from "@/components/shared/sections/error-container";
 import SkeletonWrapper from "@/components/ui/skeleton-wrapper";
 import { ProfessionalServiceResponse } from "@/types/professional";
 import { useQuery } from "@tanstack/react-query";
+import dynamic from "next/dynamic";
+
+const ServiceCard = dynamic(
+  () => import("@/components/shared/cards/service-card"),
+  {
+    ssr: false,
+  },
+);
 
 interface Props {
   professionalId: string;
+  loggedinUserId?: string;
+  paymentAdded: boolean;
 }
 
-export default function ServicesTab({ professionalId }: Props) {
+export default function ServicesTab({
+  professionalId,
+  loggedinUserId,
+  paymentAdded,
+}: Props) {
   const { isLoading, data, isError, error } =
     useQuery<ProfessionalServiceResponse>({
       queryKey: ["professionalServices"],
@@ -26,7 +39,7 @@ export default function ServicesTab({ professionalId }: Props) {
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {[1, 2, 3, 4, 5, 6].map((_, index) => (
           <SkeletonWrapper isLoading={isLoading} key={index}>
-            <ServiceCard />
+            <ServiceCard paymentAdded={paymentAdded} />
           </SkeletonWrapper>
         ))}
       </div>
@@ -45,7 +58,12 @@ export default function ServicesTab({ professionalId }: Props) {
     content = (
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {data.data.map((item, index) => (
-          <ServiceCard data={item} key={index} />
+          <ServiceCard
+            data={item}
+            key={index}
+            loggedinUserId={loggedinUserId}
+            paymentAdded={paymentAdded}
+          />
         ))}
       </div>
     );
