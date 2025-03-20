@@ -1,5 +1,6 @@
 "use client";
 
+import AnimatedSelect, { Option } from "@/components/ui/animated-select";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -8,25 +9,18 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import SkeletonWrapper from "@/components/ui/skeleton-wrapper";
 import { Textarea } from "@/components/ui/textarea";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Star } from "lucide-react";
 import type React from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 
 interface ReviewData {
   userID: string;
-  organizationID: string;
+  merchantID: string;
+  productID: string;
   rating: number;
   comment: string;
 }
@@ -36,6 +30,15 @@ interface ReviewResponse {
   message: string;
   data?: any;
 }
+
+type ProductGetResponse = {
+  success: boolean;
+  message: string;
+  data: {
+    _id: string;
+    productName: string;
+  }[];
+};
 
 interface Props {
   userId: string;
@@ -51,6 +54,9 @@ export default function MerchantReviewCreateForm({
   const [rating, setRating] = useState<number>(0);
   const [hoveredRating, setHoveredRating] = useState<number>(0);
   const [description, setDescription] = useState<string>("");
+  const [productId, setProductId] = useState("");
+
+  const queryClient = useQueryClient();
 
   const { mutate, isPending } = useMutation<
     ReviewResponse,
@@ -60,7 +66,7 @@ export default function MerchantReviewCreateForm({
     mutationKey: ["submit-review"],
     mutationFn: (data) =>
       fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/organization/review/create`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/merchantProductsreviews`,
         {
           method: "POST",
           headers: {
@@ -89,6 +95,9 @@ export default function MerchantReviewCreateForm({
       setRating(0);
       setDescription("");
       onClose();
+
+      // invalidate
+      queryClient.invalidateQueries({ queryKey: ["merchantReviewGet"] });
     },
     onError: () => {
       toast.error("Something went wrong while submitting your review", {
@@ -98,7 +107,13 @@ export default function MerchantReviewCreateForm({
     },
   });
 
-  useEffect(() => {}, []);
+  const { data: productRes, isLoading } = useQuery<ProductGetResponse>({
+    queryKey: ["getProducts"],
+    queryFn: () =>
+      fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/products?merchantID=${merchantId}`,
+      ).then((res) => res.json()),
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -109,17 +124,29 @@ export default function MerchantReviewCreateForm({
         richColors: true,
       });
       return;
+    } else if (!productId) {
+      toast.error("Please select a product ", {
+        position: "top-right",
+        richColors: true,
+      });
+      return;
     }
 
     const reviewData: ReviewData = {
       userID: userId,
-      organizationID: merchantId,
+      merchantID: merchantId,
       rating: rating,
       comment: description,
+      productID: productId,
     };
 
     mutate(reviewData);
   };
+
+  const products = productRes?.data.map(({ _id, productName }) => ({
+    value: _id,
+    label: productName,
+  })) as Option[];
 
   return (
     <Card className="mx-auto w-full border-0 p-0 shadow-none">
@@ -163,23 +190,30 @@ export default function MerchantReviewCreateForm({
             </div>
           </div>
 
-          <div>
-            <Select>
+          <SkeletonWrapper isLoading={isLoading}>
+            {/* <Select onValueChange={(val) => setProductId(val)}>
               <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select a fruit" />
+                <SelectValue placeholder="Select a product" />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
                   <SelectLabel>Products</SelectLabel>
-                  <SelectItem value="apple">Apple</SelectItem>
-                  <SelectItem value="banana">Banana</SelectItem>
-                  <SelectItem value="blueberry">Blueberry</SelectItem>
-                  <SelectItem value="grapes">Grapes</SelectItem>
-                  <SelectItem value="pineapple">Pineapple</SelectItem>
+                  {productRes?.data.map(({ _id, productName }) => (
+                    <SelectItem value={_id} key={_id}>
+                      {productName}
+                    </SelectItem>
+                  ))}
                 </SelectGroup>
               </SelectContent>
-            </Select>
-          </div>
+            </Select> */}
+
+            <AnimatedSelect
+              options={products}
+              onValueChange={(val) => setProductId(val)}
+              placeholder="Select a product"
+              label="Products"
+            />
+          </SkeletonWrapper>
 
           <div className="space-y-2">
             <label htmlFor="description" className="text-sm font-medium">

@@ -2,20 +2,29 @@
 
 import EmptyContainer from "@/components/shared/sections/empty-container";
 import ErrorContainer from "@/components/shared/sections/error-container";
+import AnimatedSelect, { Option } from "@/components/ui/animated-select";
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import VeganModal from "@/components/ui/vegan-modal";
-import { ReviewsResponse } from "@/types/organization";
 import { useQuery } from "@tanstack/react-query";
 import { Loader2, Star } from "lucide-react";
 import { useEffect, useState } from "react";
 import MerchantReviewCreateForm from "./create-merchant-review";
+
+type ProductReview = {
+  _id: string;
+  productID: string;
+  productName: string;
+  rating: number;
+  comment: string;
+  userID: string;
+  fullName: string;
+};
+
+type ProductReviewResponse = {
+  success: boolean;
+  message: string;
+  reviews: ProductReview[];
+};
 
 interface Props {
   userId: string;
@@ -25,11 +34,11 @@ interface Props {
 export function MerchantReviewContainer({ userId, loggedinUserId }: Props) {
   const [open, setOpen] = useState(false);
   const [sort, setSort] = useState<"lowest" | "highest">("highest");
-  const { data, isLoading, isError, error } = useQuery<ReviewsResponse>({
-    queryKey: ["organizationReviewGet", userId, sort],
+  const { data, isLoading, isError, error } = useQuery<ProductReviewResponse>({
+    queryKey: ["merchantReviewGet", userId, sort],
     queryFn: () =>
       fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/organization/review/all/${userId}?page=1&limit=2&sort=${sort}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/merchantProductsreviews/merchant/${userId}?page=1&limit=2&sort=${sort}`,
       ).then((res) => res.json()),
   });
 
@@ -77,7 +86,7 @@ export function MerchantReviewContainer({ userId, loggedinUserId }: Props) {
           /> */}
               <div>
                 <h3 className="tracting-[3%] font-inter text-base font-semibold leading-[24px] text-[#1F2937]">
-                  {review.userName}
+                  {review.fullName}
                 </h3>
                 <div className="flex pt-[7px]">
                   {[...Array(review.rating)].map((_, i) => (
@@ -97,6 +106,17 @@ export function MerchantReviewContainer({ userId, loggedinUserId }: Props) {
       </div>
     );
   }
+
+  const options = [
+    {
+      value: "highest",
+      label: "Highest Rating",
+    },
+    {
+      value: "lowest",
+      label: "Lowest Rating",
+    },
+  ] as Option[];
   return (
     <>
       <div className="min-h-screen">
@@ -104,7 +124,7 @@ export function MerchantReviewContainer({ userId, loggedinUserId }: Props) {
           {/* Desktop Filters */}
           <div className="flex justify-between">
             <div className="mb-6 gap-3 md:flex">
-              <Select
+              {/* <Select
                 onValueChange={(val) => setSort(val as "lowest" | "highest")}
               >
                 <SelectTrigger className="border-primary/50">
@@ -114,7 +134,14 @@ export function MerchantReviewContainer({ userId, loggedinUserId }: Props) {
                   <SelectItem value="highest">Highest Rating</SelectItem>
                   <SelectItem value="lowest">Lowest Rating</SelectItem>
                 </SelectContent>
-              </Select>
+              </Select> */}
+
+              <AnimatedSelect
+                options={options}
+                onValueChange={(val) => setSort(val as "highest" | "lowest")}
+                label=""
+                placeholder="Sort By"
+              />
             </div>
             {loggedinUserId && (
               <div>
