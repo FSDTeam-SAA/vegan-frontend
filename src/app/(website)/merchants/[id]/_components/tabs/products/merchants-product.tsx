@@ -33,7 +33,7 @@ const MerchantProducts = ({ merchantId }: Props) => {
       ],
       queryFn: () =>
         fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/merchantproduct?merchantID=${merchantId}&page=${currentPage}&limit=6&search=${debounceValue}&category=${category}`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/merchantproduct?merchantID=${merchantId}&page=${currentPage}&limit=6&search=${debounceValue}&category=${category}&visibility=true`,
         ).then((res) => res.json()),
     });
   const pagination = data?.pagination;
