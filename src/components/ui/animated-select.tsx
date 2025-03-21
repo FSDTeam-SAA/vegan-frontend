@@ -57,24 +57,27 @@ const AnimatedSelect: React.FC<AnimatedSelectProps> = ({
       </button>
       <AnimatePresence>
         {isOpen && (
-          <motion.ul
+          <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
             className="absolute z-10 mt-2 w-full rounded-lg border border-gray-300 bg-white shadow-lg"
           >
-            <li className="px-4 py-2 font-bold text-gray-500">{label}</li>
-            {options.map(({ value, label }) => (
-              <li
-                key={value}
-                onClick={() => handleSelect(value)}
-                className="w-fit cursor-pointer px-4 py-2 hover:bg-gray-100"
-              >
-                {label}
-              </li>
-            ))}
-          </motion.ul>
+            <p className="px-4 py-2 font-bold text-gray-500">{label}</p>
+            <div className="flex w-full flex-col">
+              {options.map(({ value, label }) => (
+                <button
+                  key={value}
+                  type="button"
+                  onClick={() => handleSelect(value)}
+                  className="w-full cursor-pointer px-4 py-2 text-left text-[14px] hover:bg-gray-100"
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+          </motion.div>
         )}
       </AnimatePresence>
     </div>

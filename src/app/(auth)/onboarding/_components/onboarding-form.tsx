@@ -49,7 +49,7 @@ export default function OnBoardingForm() {
     // nothing have to do
   }
 
-  const loginUrl = `/onboarding/login?role=${role}`;
+  const loginUrl = `/onboarding/login`;
   const registrationUrl = ref
     ? `/onboarding/signup?role=${role}&ref=${ref}`
     : `/onboarding/signup?role=${role}`;
@@ -150,13 +150,7 @@ export default function OnBoardingForm() {
 
       <div className="text-center text-sm">
         Already have an account?{" "}
-        <Link
-          href={loginUrl}
-          className={cn(
-            "text-primary hover:underline",
-            isDisabled && "pointer-events-none",
-          )}
-        >
+        <Link href={loginUrl} className={cn("text-primary hover:underline")}>
           Log in
         </Link>
       </div>

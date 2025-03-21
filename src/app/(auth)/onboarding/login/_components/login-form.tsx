@@ -2,7 +2,7 @@
 
 // Packages
 import { Loader2 } from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
 
 // Local imports
@@ -34,8 +34,6 @@ export default function LoginForm() {
   const [isPending, startTransition] = useTransition();
   const [loading, setLoading] = useState<true | false>(false);
 
-  const searchParams = useSearchParams();
-  const role = searchParams.get("role");
   const router = useRouter();
 
   const form = useForm<z.infer<typeof loginSchema>>({
@@ -154,7 +152,7 @@ export default function LoginForm() {
       <p className="mt-[32px] text-center text-[14px] font-normal leading-[16.94px] text-[#9CA3AF]">
         Don&apos;t have an account?{" "}
         <Link
-          href={`/onboarding/signup?role=${role}`}
+          href={`/onboarding`}
           className="font-medium text-[#1D3557] hover:underline"
         >
           Sign Up
