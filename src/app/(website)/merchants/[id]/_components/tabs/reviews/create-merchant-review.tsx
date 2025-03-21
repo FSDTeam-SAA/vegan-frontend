@@ -231,7 +231,11 @@ export default function MerchantReviewCreateForm({
         </CardContent>
 
         <CardFooter className="p-0 pt-5">
-          <Button type="submit" className="w-full" disabled={isPending}>
+          <Button
+            type="submit"
+            className="h-[48px] w-full"
+            disabled={isPending}
+          >
             {isPending ? "Submitting..." : "Submit Review"}
           </Button>
         </CardFooter>
