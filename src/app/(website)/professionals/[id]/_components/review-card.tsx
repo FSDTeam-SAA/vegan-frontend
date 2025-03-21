@@ -3,13 +3,7 @@
 import CreateReview from "@/components/shared/features/review/create-review";
 import EmptyContainer from "@/components/shared/sections/empty-container";
 import ErrorContainer from "@/components/shared/sections/error-container";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import AnimatedSelect, { Option } from "@/components/ui/animated-select";
 import VeganPagination from "@/components/ui/vegan-pagination";
 import { useQuery } from "@tanstack/react-query";
 import { Loader2, Star } from "lucide-react";
@@ -111,26 +105,31 @@ export function ReviewCard({ userId, loggedinUserId }: Props) {
       </div>
     );
   }
+
+  const options = [
+    {
+      value: "mostRelevant",
+      label: "Releavent",
+    },
+    {
+      value: "latest",
+      label: "Latest Rating",
+    },
+  ] as Option[];
   return (
     <div className="min-h-screen">
       <div className="max-w-4xl">
         {/* Desktop Filters */}
         <div className="hidden justify-between md:flex">
           <div className="mb-6 hidden gap-3 md:flex">
-            <Select
-              defaultValue={sortBy}
+            <AnimatedSelect
+              options={options}
               onValueChange={(val) =>
                 setSortBy(val as "mostRelevant" | "latest")
               }
-            >
-              <SelectTrigger className="border-primary/50">
-                <SelectValue placeholder="Sort By" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="mostRelevant">Most Relevant</SelectItem>
-                <SelectItem value="latest">Latest</SelectItem>
-              </SelectContent>
-            </Select>
+              label=""
+              placeholder="Sort By"
+            />
           </div>
           {loggedinUserId && (
             <div>
