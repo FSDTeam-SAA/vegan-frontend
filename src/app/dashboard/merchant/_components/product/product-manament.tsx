@@ -65,7 +65,7 @@ export default function ProductsManagement({ merchantID }: Props) {
       queryKey: ["merchantsProduct", debouncedSearchQuery, currentPage],
       queryFn: () =>
         fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/merchantproduct?merchantID=${merchantID}&search=${debouncedSearchQuery}&page=${currentPage}&limit=5`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/merchantproduct?merchantID=${merchantID}&search=${debouncedSearchQuery}&page=${currentPage}&limit=5&visibility=all`,
         ).then((res) => res.json()),
     });
   const pagination = data?.pagination;
