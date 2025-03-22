@@ -4,12 +4,24 @@ import ErrorContainer from "@/components/shared/sections/error-container";
 import SkeletonWrapper from "@/components/ui/skeleton-wrapper";
 import { MerchantEventResponse } from "@/types/merchant";
 import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
+import { toast } from "sonner";
 
 interface Props {
   professionalId: string;
+  loggedinuserId?: string;
 }
 
-export default function LiveStreamTab({ professionalId }: Props) {
+interface PaymentAddedResponse {
+  success: boolean;
+  message: string;
+  paymentAdded: boolean;
+}
+
+export default function LiveStreamTab({
+  professionalId,
+  loggedinuserId,
+}: Props) {
   const { isLoading, data, isError, error } = useQuery<MerchantEventResponse>({
     queryKey: ["eventsByProfessional"],
     queryFn: () =>
@@ -17,6 +29,24 @@ export default function LiveStreamTab({ professionalId }: Props) {
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/goLive?type=upcoming&userID=${professionalId}`,
       ).then((res) => res.json()),
   });
+  const {
+    isLoading: isPaymentInfoLoading,
+    data: paymentRes,
+    isError: isPaymentInfoError,
+    error: paymentError,
+  } = useQuery<PaymentAddedResponse>({
+    queryKey: ["paymentAdded"],
+    queryFn: () =>
+      fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/payment/check-payment-method/${loggedinuserId}`,
+      ).then((res) => res.json()),
+  });
+
+  useEffect(() => {
+    if (isPaymentInfoError) {
+      toast.error(paymentError.message ?? "Payment info not found.");
+    }
+  }, [isPaymentInfoError, paymentError]);
 
   let content;
 
@@ -24,13 +54,16 @@ export default function LiveStreamTab({ professionalId }: Props) {
     content = (
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {[1, 2, 3, 4, 5, 6].map((_, index) => (
-          <SkeletonWrapper isLoading={isLoading} key={index}>
+          <SkeletonWrapper
+            isLoading={isLoading || isPaymentInfoLoading}
+            key={index}
+          >
             <LiveStreamCard />
           </SkeletonWrapper>
         ))}
       </div>
     );
-  } else if (isError) {
+  } else if (isError || isPaymentInfoError) {
     content = (
       <ErrorContainer
         message={error?.message ?? "Failed to load professionals data"}
@@ -44,7 +77,12 @@ export default function LiveStreamTab({ professionalId }: Props) {
     content = (
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {data.events.map((item, index) => (
-          <LiveStreamCard data={item} key={index} />
+          <LiveStreamCard
+            data={item}
+            key={index}
+            loggedInUserId={loggedinuserId}
+            paymentAdded={paymentRes?.paymentAdded}
+          />
         ))}
       </div>
     );

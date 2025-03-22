@@ -37,6 +37,7 @@ export interface MerchantEvent {
   __v: number; // Version key for Mongoose
   eventTitle: string;
   price?: string;
+  userID?: string;
 }
 
 export interface MerchantEventResponse {
