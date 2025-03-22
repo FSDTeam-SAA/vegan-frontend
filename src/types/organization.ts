@@ -113,3 +113,23 @@ export type ReviewsResponse = {
   reviews: Review[];
   pagination: MetaPagination;
 };
+
+export type News = {
+  _id: string;
+  organizationID: string;
+  title: string;
+  image: string;
+  shortDescription: string;
+  statement: string;
+  comments: string[];
+  likedBy: string[];
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+};
+
+export type NewsApiResponse = {
+  success: boolean;
+  message: string;
+  data: News[];
+};
