@@ -66,7 +66,12 @@ const OrganizationTab = ({ organizationId, loggedInUserId }: Props) => {
             <OrganizationAbout organizationId={organizationId} />
           </>
         )}
-        {activeTab === "news" && <OrganizationNewsContainer />}
+        {activeTab === "news" && (
+          <OrganizationNewsContainer
+            organizationID={organizationId}
+            loggedInUserId={loggedInUserId}
+          />
+        )}
         {activeTab === "events" && (
           <OrganizationEventContainer
             organizationId={organizationId}
