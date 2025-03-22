@@ -1,13 +1,90 @@
+import { Button } from "@/components/ui/button";
 import { truncateText } from "@/lib/helper";
 import { MerchantEvent } from "@/types/merchant";
-import { CalendarDays, Clock } from "lucide-react";
+import { useMutation } from "@tanstack/react-query";
+import { CalendarDays, Clock, Loader2 } from "lucide-react";
 import moment from "moment";
+import { redirect } from "next/navigation";
+import { toast } from "sonner";
 
 interface Props {
   data?: MerchantEvent;
+  loggedInUserId?: string;
+  paymentAdded?: boolean;
 }
 
-const LiveStreamCard = ({ data }: Props) => {
+const LiveStreamCard = ({ data, loggedInUserId, paymentAdded }: Props) => {
+  const { mutate, isPending } = useMutation({
+    mutationKey: ["livestreambuy"],
+    mutationFn: (body: any) =>
+      fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/payment/purchase`, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(body),
+      }).then((res) => res.json()),
+    onSuccess: (data) => {
+      if (!data.success) {
+        toast.error(data.message, {
+          position: "top-right",
+          richColors: true,
+        });
+        return;
+      }
+
+      // handle success
+      toast.success(data.message ?? "Booking confirmed", {
+        position: "top-right",
+        richColors: true,
+      });
+    },
+    onError: (err) => {
+      toast.error(err.message, {
+        position: "top-right",
+        richColors: true,
+      });
+    },
+  });
+
+  const handleBook = () => {
+    if (!loggedInUserId) {
+      toast.warning("Unauthorized user");
+      redirect("/login");
+    }
+
+    if (!data?.userID) {
+      toast.warning("professional ID not found", {
+        position: "top-right",
+        richColors: true,
+      });
+      return;
+    }
+
+    if (!data?._id) {
+      toast.warning("Go Live ID Missing", {
+        position: "top-right",
+        richColors: true,
+      });
+      return;
+    }
+    const processData = {
+      userID: loggedInUserId,
+      amount: data?.price ?? 0,
+      professionalID: data?.userID,
+      goLiveID: data?._id,
+    };
+
+    if (!paymentAdded) {
+      toast.warning("Payment card missing. Please setup your card info", {
+        position: "top-right",
+        richColors: true,
+      });
+      return;
+    }
+
+    mutate(processData);
+  };
   return (
     <div className="flex h-[360px] w-full flex-col justify-between rounded-[16px] bg-white p-[24px] lg:w-[390px]">
       <div className="h-auto w-full">
@@ -33,9 +110,16 @@ const LiveStreamCard = ({ data }: Props) => {
           </p>
         </div>
       </div>
-      <button className="flex h-[48px] w-full items-center justify-center rounded-[8px] bg-[#1D3557] text-[16px] font-medium leading-[19.36px] text-white transition-colors duration-300 hover:bg-[#1D3557]/90">
-        View Details
-      </button>
+      <Button
+        className="relative flex h-[48px] w-full items-center justify-center rounded-[8px] bg-[#1D3557] text-[16px] font-medium leading-[19.36px] text-white transition-colors duration-300 hover:bg-[#1D3557]/90"
+        onClick={handleBook}
+        disabled={isPending}
+      >
+        Book Now{" "}
+        {isPending && (
+          <Loader2 className="absolute right-3 h-4 w-4 animate-spin" />
+        )}
+      </Button>
     </div>
   );
 };
