@@ -26,7 +26,7 @@ export function OrganizationReviewContainer({ userId, loggedinUserId }: Props) {
     queryKey: ["organizationReviewGet", userId, sort],
     queryFn: () =>
       fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/organization/review/all/${userId}?page=1&limit=2&sort=${sort}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/organization/review/all/${userId}?page=1&limit=10&sort=${sort}`,
       ).then((res) => res.json()),
   });
 

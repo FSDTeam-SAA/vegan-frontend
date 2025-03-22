@@ -7,7 +7,9 @@ import type React from "react";
 import { useState } from "react";
 import { LuCloudDownload } from "react-icons/lu";
 
+import ErrorContainer from "@/components/shared/sections/error-container";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import SkeletonWrapper from "@/components/ui/skeleton-wrapper";
 import {
   CartesianGrid,
   Line,
@@ -26,44 +28,6 @@ interface ChartData {
   "Referral Earnings": number;
 }
 
-// Simulated API call
-const fetchChartData = async (timeRange: TimeRange): Promise<ChartData[]> => {
-  // In a real application, this would be an actual API call
-  await new Promise((resolve) => setTimeout(resolve, 500)); // Simulate network delay
-
-  const generateData = (count: number): ChartData[] => {
-    return Array.from({ length: count }, (_, i) => ({
-      month: `Month ${i + 1}`,
-      "Product Sales": Math.floor(Math.random() * 1000) + 200,
-      "Referral Earnings": Math.floor(Math.random() * 800) + 100,
-    }));
-  };
-
-  switch (timeRange) {
-    case "12 months":
-      return generateData(12);
-    case "3 months":
-      return generateData(3);
-    case "30 days":
-      return generateData(30).map((d) => ({
-        ...d,
-        month: `Day ${d.month.split(" ")[1]}`,
-      }));
-    case "7 days":
-      return generateData(7).map((d) => ({
-        ...d,
-        month: `Day ${d.month.split(" ")[1]}`,
-      }));
-    case "24 hours":
-      return generateData(24).map((d) => ({
-        ...d,
-        month: `Hour ${d.month.split(" ")[1]}`,
-      }));
-    default:
-      return generateData(12);
-  }
-};
-
 const EarningsDynamicChart: React.FC = () => {
   const [timeRange, setTimeRange] = useState<TimeRange>("12 months");
   const chartConfig = {
@@ -77,13 +41,19 @@ const EarningsDynamicChart: React.FC = () => {
     },
   };
   const {
-    data: chartData,
+    data: resData,
     isLoading,
     isError,
-  } = useQuery<ChartData[]>({
+    error,
+  } = useQuery<{ success: boolean; message: string; data: ChartData[] }>({
     queryKey: ["chartData", timeRange],
-    queryFn: () => fetchChartData(timeRange),
+    queryFn: () =>
+      fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/get/merchant/graph/67dbcbac5db094504c4a134e?filter=7days`,
+      ).then((res) => res.json()),
   });
+
+  const chartData = resData?.data ?? [];
 
   const exportReport = () => {
     if (!chartData) return;
@@ -106,6 +76,54 @@ const EarningsDynamicChart: React.FC = () => {
     link.click();
     document.body.removeChild(link);
   };
+
+  let content;
+
+  if (isLoading || resData) {
+    content = (
+      <SkeletonWrapper isLoading={isLoading}>
+        <CardContent>
+          <div className="mt-4 h-[300px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={chartData}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                <XAxis dataKey="month" />
+                <YAxis />
+                <Tooltip
+                  formatter={(value, name) => {
+                    if (name === "Referral Earnings") {
+                      return [`$${value}`, name]; // Adds a dollar sign
+                    } else if (name === "Product Sales") {
+                      return [`$${value}`, name]; // Adds a dollar sign
+                    }
+                    return [value, name]; // Keeps other values unchanged
+                  }}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="Product Sales"
+                  stroke={chartConfig.productSales.color}
+                  strokeWidth={2}
+                  dot={false}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="Referral Earnings"
+                  stroke={chartConfig.referralEarnings.color}
+                  strokeWidth={2}
+                  dot={false}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </CardContent>
+      </SkeletonWrapper>
+    );
+  } else if (isError) {
+    content = (
+      <ErrorContainer message={error?.message ?? "Something went wrong"} />
+    );
+  }
 
   return (
     <Card className="w-full">
@@ -176,42 +194,7 @@ const EarningsDynamicChart: React.FC = () => {
         </div>
         {/* Time stamp navigation */}
       </CardHeader>
-      <CardContent>
-        <div className="mt-4 h-[300px]">
-          {isLoading ? (
-            <div className="flex h-full items-center justify-center">
-              Loading...
-            </div>
-          ) : isError ? (
-            <div className="flex h-full items-center justify-center">
-              Error loading data
-            </div>
-          ) : (
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={chartData}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                <XAxis dataKey="month" />
-                <YAxis />
-                <Tooltip />
-                <Line
-                  type="monotone"
-                  dataKey="Product Sales"
-                  stroke={chartConfig.productSales.color}
-                  strokeWidth={2}
-                  dot={false}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="Referral Earnings"
-                  stroke={chartConfig.referralEarnings.color}
-                  strokeWidth={2}
-                  dot={false}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          )}
-        </div>
-      </CardContent>
+      {content}
     </Card>
   );
 };

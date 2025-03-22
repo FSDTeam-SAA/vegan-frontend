@@ -1,8 +1,15 @@
+import { TopOrganization } from "@/components/home/top-organizations/top-organizatins";
+import { truncateText } from "@/lib/helper";
 import { MapPin } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-const TopOrganizationCard = () => {
+interface Props {
+  data?: TopOrganization;
+}
+
+const TopOrganizationCard = ({ data }: Props) => {
+  const about = truncateText(data?.shortDescriptionOfOrganization ?? "", 91);
   return (
     <Link
       href={`organizations/123`}
@@ -18,14 +25,13 @@ const TopOrganizationCard = () => {
       </div>
       <div className="space-y-[16px]">
         <h3 className="font-lexend text-[18px] leading-[22.5px] tracking-[-1px] text-[#1D3557]">
-          Vegan Fitness Trainer
+          {data?.organizationName}
         </h3>
         <p className="max-w-[170px] font-inter text-[14px] leading-[21px] text-[#4B5563]">
-          I am here our certified trainers are here to guide and support you on
-          your fitness journey.
+          {about}
         </p>
         <p className="flex items-center gap-x-1 text-[14px] font-normal text-[#4B5563]">
-          <MapPin /> Shefiled, USA
+          <MapPin /> {data?.address}
         </p>
       </div>
     </Link>
