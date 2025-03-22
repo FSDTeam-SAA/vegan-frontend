@@ -52,14 +52,14 @@ const TopOrganizations = () => {
         />
       </div>
     );
-  } else if (data && data.topOrganizations.length === 0) {
+  } else if (data && data.topOrganizations?.length === 0) {
     content = (
       <EmptyContainer message="No Top professional found on vegan collective" />
     );
   } else if (data) {
     content = (
       <div className="mt-[54px] grid grid-cols-1 gap-[24px] md:mt-[80px] md:grid-cols-2 lg:grid-cols-3">
-        {data.topOrganizations.map((item) => (
+        {data.topOrganizations?.map((item) => (
           <TopOrganizationCard key={item.organizationID} data={item} />
         ))}
       </div>
