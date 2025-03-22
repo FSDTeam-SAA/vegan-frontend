@@ -61,7 +61,7 @@ const NewsCart = ({ data, setNewsDetails, loggedinUserId }: Props) => {
   });
 
   const doLike = () => {
-    if (!data || isLiked) {
+    if (!data) {
       toast.warning("Something went wrong", {
         richColors: true,
       });
