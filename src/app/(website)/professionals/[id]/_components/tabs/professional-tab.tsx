@@ -51,7 +51,12 @@ const ProfessionalTab = ({
           />
         );
       case "live-stream":
-        return <LiveStreamTab professionalId={professionalId} />;
+        return (
+          <LiveStreamTab
+            professionalId={professionalId}
+            loggedinuserId={loggedinUserId}
+          />
+        );
       case "faqs":
         return <FAQsTab userId={professionalId} />;
       case "reviews":

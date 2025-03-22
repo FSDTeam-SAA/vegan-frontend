@@ -7,9 +7,13 @@ import { useQuery } from "@tanstack/react-query";
 
 interface Props {
   professionalId: string;
+  loggedinuserId?: string;
 }
 
-export default function LiveStreamTab({ professionalId }: Props) {
+export default function LiveStreamTab({
+  professionalId,
+  loggedinuserId,
+}: Props) {
   const { isLoading, data, isError, error } = useQuery<MerchantEventResponse>({
     queryKey: ["eventsByProfessional"],
     queryFn: () =>
@@ -44,7 +48,11 @@ export default function LiveStreamTab({ professionalId }: Props) {
     content = (
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {data.events.map((item, index) => (
-          <LiveStreamCard data={item} key={index} />
+          <LiveStreamCard
+            data={item}
+            key={index}
+            loggedInUserId={loggedinuserId}
+          />
         ))}
       </div>
     );
