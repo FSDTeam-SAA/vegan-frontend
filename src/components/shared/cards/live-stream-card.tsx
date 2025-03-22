@@ -10,9 +10,10 @@ import { toast } from "sonner";
 interface Props {
   data?: MerchantEvent;
   loggedInUserId?: string;
+  paymentAdded?: boolean;
 }
 
-const LiveStreamCard = ({ data, loggedInUserId }: Props) => {
+const LiveStreamCard = ({ data, loggedInUserId, paymentAdded }: Props) => {
   const { mutate, isPending } = useMutation({
     mutationKey: ["livestreambuy"],
     mutationFn: (body: any) =>
@@ -73,6 +74,14 @@ const LiveStreamCard = ({ data, loggedInUserId }: Props) => {
       professionalID: data?.userID,
       goLiveID: data?._id,
     };
+
+    if (!paymentAdded) {
+      toast.warning("Payment card missing. Please setup your card info", {
+        position: "top-right",
+        richColors: true,
+      });
+      return;
+    }
 
     mutate(processData);
   };
