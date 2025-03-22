@@ -73,7 +73,7 @@ const TopOrganizations = () => {
           Some Of Our Top Merchants
         </h1>
         <Link
-          href="/merchants"
+          href="/organizations"
           className="group flex h-[30px] w-[150px] gap-[2px] border-b-[2px] border-[#1D3557] py-[4px] text-[14px] text-[#1D3557] transition-all duration-300 md:h-auto md:w-fit md:text-[16px]"
         >
           Browse all
