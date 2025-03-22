@@ -3,7 +3,7 @@
 import type React from "react";
 
 import { Button } from "@/components/ui/button";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Loader2, Send } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -15,6 +15,8 @@ interface Props {
 
 const CommentForm = ({ loggedinUserId, newsId }: Props) => {
   const [content, setContent] = useState("");
+
+  const queryClient = useQueryClient();
 
   const { mutate: createComment, isPending: isCreating } = useMutation({
     mutationKey: ["create-comment"],
@@ -45,6 +47,7 @@ const CommentForm = ({ loggedinUserId, newsId }: Props) => {
         richColors: true,
       });
       setContent("");
+      queryClient.invalidateQueries({ queryKey: ["comments"] });
     },
   });
 
