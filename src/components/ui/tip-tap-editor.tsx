@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button"; // Adjust based on your UI library
+import { cn } from "@/lib/utils";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { Bold, Italic, List, ListOrdered, Redo, Undo } from "lucide-react";
@@ -8,9 +9,10 @@ import { Bold, Italic, List, ListOrdered, Redo, Undo } from "lucide-react";
 interface EditorProps {
   content?: string;
   onChange?: (content: string) => void;
+  onlyView?: boolean;
 }
 
-const TiptapEditor = ({ content = "", onChange }: EditorProps) => {
+const TiptapEditor = ({ content = "", onChange, onlyView }: EditorProps) => {
   const editor = useEditor({
     extensions: [StarterKit], // StarterKit includes bold, italic, lists, etc.
     content: content || "<p>Write here...</p>",
@@ -22,9 +24,16 @@ const TiptapEditor = ({ content = "", onChange }: EditorProps) => {
   if (!editor) return <div>Loading editor...</div>;
 
   return (
-    <div className="min-h-[150px] rounded border p-3">
+    <div
+      className={cn(
+        "min-h-[150px] rounded border p-3",
+        onlyView && "border-0 p-0",
+      )}
+    >
       {/* Toolbar */}
-      <div className="mb-2 flex gap-2 border-b pb-2">
+      <div
+        className={cn("mb-2 flex gap-2 border-b pb-2", onlyView && "hidden")}
+      >
         <Button
           onClick={() => editor.chain().focus().toggleBold().run()}
           type="button"
@@ -70,7 +79,10 @@ const TiptapEditor = ({ content = "", onChange }: EditorProps) => {
       {/* Editor Content */}
       <EditorContent
         editor={editor}
-        className="rounded border p-2 outline-none ring-0 focus-visible:outline-0"
+        className={cn(
+          "rounded border p-2 outline-none ring-0 focus-visible:outline-0",
+          onlyView && "border-0 p-0",
+        )}
       />
     </div>
   );

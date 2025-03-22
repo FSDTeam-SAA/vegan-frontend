@@ -7,16 +7,70 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { truncateText } from "@/lib/helper";
+import { cn } from "@/lib/utils";
 import { News } from "@/types/organization";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ArrowUpRight, Heart, MessageCircle } from "lucide-react";
 import Image from "next/image";
+import { Dispatch, SetStateAction } from "react";
+import { toast } from "sonner";
 
 interface Props {
   data?: News;
+  setNewsDetails: Dispatch<SetStateAction<News | null>>;
+  loggedinUserId: string;
 }
 
-const NewsCart = ({ data }: Props) => {
+const NewsCart = ({ data, setNewsDetails, loggedinUserId }: Props) => {
   const desc = truncateText(data?.shortDescription ?? "", 96);
+  const likedUser = data?.likedBy ?? [];
+
+  const queryClient = useQueryClient();
+
+  const isLiked = likedUser.includes(loggedinUserId);
+
+  const { mutate, isPending } = useMutation({
+    mutationKey: ["giveLike"],
+    mutationFn: () =>
+      fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/commentManipulation/like`,
+        {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify({
+            updateAndNewsID: data?._id,
+            userID: loggedinUserId,
+          }),
+        },
+      ).then((res) => res.json()),
+
+    onSuccess: (data) => {
+      if (!data.success) {
+        toast.error(data.message, {
+          position: "top-right",
+          richColors: true,
+        });
+        return;
+      }
+
+      // handle success
+      queryClient.invalidateQueries({ queryKey: ["news"] });
+    },
+  });
+
+  const doLike = () => {
+    if (!data || isLiked) {
+      toast.warning("Something went wrong", {
+        richColors: true,
+      });
+
+      return;
+    }
+
+    mutate();
+  };
 
   return (
     <div>
@@ -44,22 +98,30 @@ const NewsCart = ({ data }: Props) => {
         </CardContent>
         <CardFooter className="flex items-center justify-between">
           <div className="flex items-center gap-[16px]">
-            <span className="flex items-center gap-[4px] text-base font-normal leading-[19px] text-[#4B5563]">
-              <Heart className="h-[16px] w-[16px] text-[#4B5563]" />{" "}
+            <button
+              className="flex items-center gap-[4px] rounded-[8px] p-2 text-base font-normal leading-[19px] text-[#4B5563] hover:text-[#20252b] disabled:opacity-70"
+              onClick={doLike}
+              disabled={!data || !loggedinUserId || isPending}
+            >
+              <Heart
+                className={cn(
+                  "h-[16px] w-[16px] text-[#4B5563] transition duration-300 hover:scale-105",
+                  isLiked ? "fill-[#1D3557]" : "",
+                )}
+              />{" "}
               {data?.likedBy.length}
-            </span>
+            </button>
             <span className="flex items-center gap-[4px] text-base font-normal leading-[19px] text-[#4B5563]">
-              {" "}
-              <MessageCircle className="h-[16px] w-[16px] text-[#4B5563]" />{" "}
+              <MessageCircle className="h-[16px] w-[16px] text-[#4B5563]" />
               {data?.comments.length}
             </span>
           </div>
-          <div>
+          <button onClick={() => setNewsDetails(data!)}>
             <span className="flex items-center gap-[4px] text-lg font-medium leading-[21px] text-[#1D3557]">
               Read More{" "}
               <ArrowUpRight className="h-[24px] w-[24px] text-[#1D3557]" />
             </span>
-          </div>
+          </button>
         </CardFooter>
       </Card>
     </div>
