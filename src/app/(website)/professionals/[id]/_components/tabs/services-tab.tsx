@@ -4,6 +4,9 @@ import SkeletonWrapper from "@/components/ui/skeleton-wrapper";
 import { ProfessionalServiceResponse } from "@/types/professional";
 import { useQuery } from "@tanstack/react-query";
 import dynamic from "next/dynamic";
+import { useEffect } from "react";
+import { toast } from "sonner";
+import { PaymentAddedResponse } from "./live-stream-tab";
 
 const ServiceCard = dynamic(
   () => import("@/components/shared/cards/service-card"),
@@ -15,14 +18,28 @@ const ServiceCard = dynamic(
 interface Props {
   professionalId: string;
   loggedinUserId?: string;
-  paymentAdded: boolean;
 }
 
-export default function ServicesTab({
-  professionalId,
-  loggedinUserId,
-  paymentAdded,
-}: Props) {
+export default function ServicesTab({ professionalId, loggedinUserId }: Props) {
+  const {
+    isLoading: isPaymentInfoLoading,
+    data: paymentRes,
+    isError: isPaymentInfoError,
+    error: paymentError,
+  } = useQuery<PaymentAddedResponse>({
+    queryKey: ["paymentAdded"],
+    queryFn: () =>
+      fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/payment/check-payment-method/${loggedinUserId}`,
+      ).then((res) => res.json()),
+  });
+
+  useEffect(() => {
+    if (isPaymentInfoError) {
+      toast.error(paymentError.message ?? "Payment info not found.");
+    }
+  }, [isPaymentInfoError, paymentError]);
+
   const { isLoading, data, isError, error } =
     useQuery<ProfessionalServiceResponse>({
       queryKey: ["professionalServices"],
@@ -33,13 +50,14 @@ export default function ServicesTab({
     });
 
   let content;
+  const loading = isPaymentInfoLoading || isLoading;
 
-  if (isLoading) {
+  if (loading) {
     content = (
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {[1, 2, 3, 4, 5, 6].map((_, index) => (
-          <SkeletonWrapper isLoading={isLoading} key={index}>
-            <ServiceCard paymentAdded={paymentAdded} />
+          <SkeletonWrapper isLoading={loading} key={index}>
+            <ServiceCard paymentAdded={!!paymentRes?.paymentAdded} />
           </SkeletonWrapper>
         ))}
       </div>
@@ -62,7 +80,7 @@ export default function ServicesTab({
             data={item}
             key={index}
             loggedinUserId={loggedinUserId}
-            paymentAdded={paymentAdded}
+            paymentAdded={!!paymentRes?.paymentAdded}
           />
         ))}
       </div>
