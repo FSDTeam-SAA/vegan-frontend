@@ -2,6 +2,7 @@
 import PaymentForm from "@/components/shared/features/payment/payment-form";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import VeganModal from "@/components/ui/vegan-modal";
 import { cn } from "@/lib/utils";
 import { ProfessionalService } from "@/types/professional";
@@ -50,9 +51,9 @@ const ServiceBookModal = ({
           body: JSON.stringify(body),
         },
       ).then((res) => res.json()),
-    onSuccess: (data) => {
-      if (!data.success) {
-        toast.error(data.message, {
+    onSuccess: (res) => {
+      if (!res.success) {
+        toast.error(res.message, {
           position: "top-right",
           richColors: true,
         });
@@ -79,16 +80,16 @@ const ServiceBookModal = ({
         },
         body: JSON.stringify(body),
       }).then((res) => res.json()),
-    onSuccess: (data) => {
-      if (!data.success) {
-        toast.error(data.message, {
+    onSuccess: (res) => {
+      if (!res.success) {
+        toast.error(res.message, {
           position: "top-right",
           richColors: true,
         });
         return;
       }
 
-      if (loggedinuserId) {
+      if (!loggedinuserId) {
         toast.warning("user is not found for confirm your booking.", {
           richColors: true,
         });
@@ -96,7 +97,7 @@ const ServiceBookModal = ({
       }
 
       const confirmBookingBody = {
-        serviceID: data.bookedService,
+        serviceID: data?._id as string,
         userID: loggedinuserId,
       };
 
@@ -121,7 +122,7 @@ const ServiceBookModal = ({
 
   const bookServiceBeforePaymentMethodAdd = () => {
     if (
-      loggedinuserId ||
+      !loggedinuserId ||
       !data?.price ||
       !data?.userID ||
       !selectedTime ||
@@ -151,17 +152,7 @@ const ServiceBookModal = ({
       return;
     }
 
-    if (
-      loggedinuserId ||
-      !data?.price ||
-      !data?.userID ||
-      !selectedTime ||
-      !data._id
-    ) {
-      toast.warning("All field are required", {
-        position: "top-right",
-        richColors: true,
-      });
+    if (!data) {
       return;
     }
 
@@ -203,22 +194,24 @@ const ServiceBookModal = ({
           <div className="flex-1">
             <div className="mt-4">
               <h3 className="mb-3 text-sm font-medium">Available Time Slot</h3>
-              <div className="grid gap-2">
-                {data?.timeSlots.map((slot) => (
-                  <Button
-                    key={slot}
-                    variant={"outline"}
-                    className={cn(
-                      "w-full",
-                      selectedTime === slot &&
-                        "bg-[#1D3557] text-primary-foreground hover:bg-[#1D3557] hover:text-white",
-                    )}
-                    onClick={() => setSelectedTime(slot)}
-                  >
-                    {slot}
-                  </Button>
-                ))}
-              </div>
+              <ScrollArea className="h-[300px] w-full">
+                <div className="grid gap-2">
+                  {data?.timeSlots.map((slot) => (
+                    <Button
+                      key={slot}
+                      variant={"outline"}
+                      className={cn(
+                        "w-full",
+                        selectedTime === slot &&
+                          "bg-[#1D3557] text-primary-foreground hover:bg-[#1D3557] hover:text-white",
+                      )}
+                      onClick={() => setSelectedTime(slot)}
+                    >
+                      {slot}
+                    </Button>
+                  ))}
+                </div>
+              </ScrollArea>
             </div>
           </div>
         </div>
