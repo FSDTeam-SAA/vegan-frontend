@@ -4,9 +4,10 @@ import { Star } from "lucide-react";
 
 interface Props {
   data?: MerchantProfile;
+  loggedinUserId?: string;
 }
 
-const MerchantHeader = ({ data }: Props) => {
+const MerchantHeader = ({ data, loggedinUserId }: Props) => {
   return (
     <div className="container my-[58px] flex h-[71px] items-center justify-between">
       <div className="space-y-[8px] lg:space-y-[12px]">
@@ -28,7 +29,7 @@ const MerchantHeader = ({ data }: Props) => {
       </div>
 
       <div>
-        <ProfileCartButton data={data} />
+        <ProfileCartButton data={data} loggedInUserId={loggedinUserId} />
       </div>
     </div>
   );

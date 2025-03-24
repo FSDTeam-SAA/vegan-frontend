@@ -4,22 +4,54 @@ import useCartState from "@/hooks/useCartState";
 import CartModal from "@/provider/CartModal";
 import { MerchantProfile } from "@/types/merchant";
 import { useCartDataState } from "@/zustand/features/cart/useCartState";
+import { useQuery } from "@tanstack/react-query";
+import { redirect } from "next/navigation";
+import { useEffect } from "react";
 import { BiShoppingBag } from "react-icons/bi";
+import { toast } from "sonner";
+import { PaymentAddedResponse } from "./live-stream-tab";
 
 interface Props {
   data?: MerchantProfile;
+  loggedInUserId?: string;
 }
 
-const ProfileCartButton = ({ data: initialData }: Props) => {
+const ProfileCartButton = ({ data: initialData, loggedInUserId }: Props) => {
   const { toggleCart } = useCartState();
   const { data } = useCartDataState();
+
+  const {
+    isLoading: isPaymentInfoLoading,
+    data: paymentRes,
+    isError: isPaymentInfoError,
+    error: paymentError,
+  } = useQuery<PaymentAddedResponse>({
+    queryKey: ["paymentAdded"],
+    queryFn: () =>
+      fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/payment/check-payment-method/${loggedInUserId}`,
+      ).then((res) => res.json()),
+  });
+
+  useEffect(() => {
+    if (isPaymentInfoError) {
+      toast.error(paymentError.message ?? "Payment info not found.");
+    }
+  }, [isPaymentInfoError, paymentError]);
 
   return (
     <>
       <div className="md:pr-8">
         <button
           className="relative flex items-center text-nowrap pr-0 *:text-[#1D3557]"
-          onClick={toggleCart}
+          onClick={() => {
+            if (!loggedInUserId) {
+              return redirect("/onboarding");
+            } else {
+              toggleCart();
+            }
+          }}
+          disabled={isPaymentInfoLoading}
         >
           View Cart
           <BiShoppingBag className="h-[15.5px] w-[19.1px] text-white" />
@@ -29,7 +61,10 @@ const ProfileCartButton = ({ data: initialData }: Props) => {
             </span>
           )}
         </button>
-        <CartModal initialData={initialData} />
+        <CartModal
+          initialData={initialData}
+          isPaymentAdded={!!paymentRes?.paymentAdded}
+        />
       </div>
       <ProductPaymentCheckout initialData={initialData} />
     </>
