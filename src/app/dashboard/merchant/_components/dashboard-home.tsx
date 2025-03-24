@@ -1,5 +1,4 @@
 import { auth } from "@/auth";
-import { MerchantLeaderBoardData } from "@/data/top-merchant";
 import TopMerchantBoard from "../../_components/TopMerchantBoard";
 import DashboardHeading from "./dashboard-heading";
 import EarningsDynamicChart from "./earning";
@@ -19,7 +18,7 @@ export default async function Dashboard() {
 
       <EarningsDynamicChart />
       <ReferralTracking userId={user.user.userId} />
-      <TopMerchantBoard LeaderBoardData={MerchantLeaderBoardData} />
+      <TopMerchantBoard />
     </div>
   );
 }
