@@ -16,9 +16,10 @@ import { toast } from "sonner";
 
 interface Props {
   initialData?: MerchantProfile;
+  isPaymentAdded: boolean;
 }
 
-const CartsModal = ({ initialData }: Props) => {
+const CartsModal = ({ initialData, isPaymentAdded }: Props) => {
   const { isOpen, toggleCart, onCheckout, setLoading, loading } =
     useCartState();
   const session = useSession();
@@ -68,8 +69,6 @@ const CartsModal = ({ initialData }: Props) => {
   });
 
   if (!initialData) return <p>Loading...</p>;
-
-  const isPaymentAdded = session.data?.user.paymentAdded;
 
   const totalAmount = data?.reduce((prev, curr) => {
     return prev + curr.price;

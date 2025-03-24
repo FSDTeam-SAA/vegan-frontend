@@ -38,8 +38,6 @@ const MerchantProducts = ({ merchantId }: Props) => {
     });
   const pagination = data?.pagination;
 
-  console.log(data);
-
   let content;
 
   if (isLoading || isRefetching) {

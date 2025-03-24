@@ -26,14 +26,9 @@ const lists = [
 interface Props {
   professionalId: string;
   loggedinUserId?: string;
-  paymentAdded: boolean;
 }
 
-const ProfessionalTab = ({
-  professionalId,
-  loggedinUserId,
-  paymentAdded,
-}: Props) => {
+const ProfessionalTab = ({ professionalId, loggedinUserId }: Props) => {
   const [activeTab, setActiveTab] = useState<string>("about");
 
   const renderTabContent = () => {
@@ -47,7 +42,6 @@ const ProfessionalTab = ({
           <ServicesTab
             professionalId={professionalId}
             loggedinUserId={loggedinUserId}
-            paymentAdded={paymentAdded}
           />
         );
       case "live-stream":

@@ -12,7 +12,7 @@ interface Props {
   loggedinuserId?: string;
 }
 
-interface PaymentAddedResponse {
+export interface PaymentAddedResponse {
   success: boolean;
   message: string;
   paymentAdded: boolean;

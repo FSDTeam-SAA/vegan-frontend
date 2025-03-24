@@ -33,7 +33,10 @@ const MerchantProfileContainer = ({ merchatId, loggedinUserId }: Props) => {
         />
         <div className="container">
           <SkeletonWrapper isLoading={isLoading}>
-            <MerchantHeader data={data?.data} />
+            <MerchantHeader
+              data={data?.data}
+              loggedinUserId={loggedinUserId as string}
+            />
           </SkeletonWrapper>
         </div>
         <MerchantsTabs merchantId={merchatId} loggedinUserId={loggedinUserId} />

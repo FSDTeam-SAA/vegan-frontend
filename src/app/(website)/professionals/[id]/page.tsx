@@ -13,7 +13,6 @@ export default async function page({ params }: { params: { id: string } }) {
       <ProfessionalTab
         professionalId={params.id}
         loggedinUserId={currentUser?.user.userId}
-        paymentAdded={currentUser?.user.paymentAdded ?? false}
       />
     </div>
   );
