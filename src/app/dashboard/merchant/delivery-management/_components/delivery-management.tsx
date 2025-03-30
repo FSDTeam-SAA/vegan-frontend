@@ -1,6 +1,5 @@
-import React from "react";
-import DashboardHeading from "../dashboard-heading";
-import DashboardDataTable from "@/app/dashboard/_components/dashboard-data-table";
+import DashboardHeading from "../../_components/dashboard-heading";
+import DeliveryManagementTableContainer from "./delivery-management-table-container";
 
 export default function DeliveryManagement() {
   return (
@@ -9,7 +8,7 @@ export default function DeliveryManagement() {
         title="Delivery Management"
         subTitle="Track and manage order fulfilment and delivery."
       />
-      <DashboardDataTable />
+      <DeliveryManagementTableContainer />
     </div>
   );
 }

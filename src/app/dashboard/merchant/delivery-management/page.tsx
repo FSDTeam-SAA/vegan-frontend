@@ -1,4 +1,4 @@
-import DeliveryManagement from "../_components/delivery/delivery-management";
+import DeliveryManagement from "./_components/delivery-management";
 
 export default function page() {
   return (
