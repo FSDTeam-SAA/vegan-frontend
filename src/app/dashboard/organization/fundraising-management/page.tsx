@@ -5,10 +5,11 @@ import FundraisingManagement from "../_components/fundraising/fundraising-manaem
 const page = async () => {
   const session = await auth();
 
-  if (!session?.user) redirect("/login");
+  if (!session) redirect("/login");
+
   return (
     <div>
-      <FundraisingManagement organizationId={session.user.id as string} />
+      <FundraisingManagement organizationId={session?.user.userId as string} />
     </div>
   );
 };
