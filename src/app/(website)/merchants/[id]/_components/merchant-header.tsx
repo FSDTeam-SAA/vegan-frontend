@@ -5,9 +5,16 @@ import { Star } from "lucide-react";
 interface Props {
   data?: MerchantProfile;
   loggedinUserId?: string;
+  totalRatings: number;
+  totalReviews: number;
 }
 
-const MerchantHeader = ({ data, loggedinUserId }: Props) => {
+const MerchantHeader = ({
+  data,
+  loggedinUserId,
+  totalRatings,
+  totalReviews,
+}: Props) => {
   return (
     <div className="container my-[58px] flex h-[71px] items-center justify-between">
       <div className="space-y-[8px] lg:space-y-[12px]">
@@ -16,7 +23,7 @@ const MerchantHeader = ({ data, loggedinUserId }: Props) => {
             {data?.businessName}
           </h1>
           <div className="hidden md:block">
-            <Review />
+            <Review totalRatings={totalRatings} totalReviews={totalReviews} />
           </div>
         </div>
         <p className="font-inter text-[16px] font-normal leading-[24.2px] text-[#4B5563] lg:text-[20px]">
@@ -24,7 +31,7 @@ const MerchantHeader = ({ data, loggedinUserId }: Props) => {
         </p>
 
         <div className="md:hidden">
-          <Review />
+          <Review totalRatings={totalRatings} totalReviews={totalReviews} />
         </div>
       </div>
 
@@ -37,7 +44,12 @@ const MerchantHeader = ({ data, loggedinUserId }: Props) => {
 
 export default MerchantHeader;
 
-const Review = () => {
+interface Props {
+  totalReviews: number;
+  totalRatings: number;
+}
+
+const Review = ({ totalRatings, totalReviews }: Props) => {
   return (
     <div className="flex items-center gap-x-2">
       <Star
@@ -46,7 +58,7 @@ const Review = () => {
         className="h-[19.02px] w-[19.02px]"
       />
       <span className="font-inter text-[14px] font-normal leading-[24.2px] text-[#4B5563] lg:text-[20px]">
-        4.8 (127 Reviews)
+        {totalRatings.toFixed(1)} ({totalReviews} Reviews)
       </span>
     </div>
   );
