@@ -1,9 +1,9 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import VeganModal from "@/components/ui/vegan-modal";
 import { Plus } from "lucide-react";
 import { useState } from "react";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import CampaignForm from "./campaign-form";
 
 interface Campaign {
@@ -80,7 +80,11 @@ function CampaignCard({ campaign }: { campaign: Campaign }) {
   );
 }
 
-export default function FundraisingManagement() {
+interface Props {
+  organizationId: string;
+}
+
+export default function FundraisingManagement({ organizationId }: Props) {
   const [open, setOpen] = useState(false);
   return (
     <div className="min-h-screen bg-[#f5f0eb] p-6">
@@ -95,17 +99,19 @@ export default function FundraisingManagement() {
               place.
             </p>
           </div>
-          <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>
-              <Button className="bg-[#1a365d] hover:bg-[#1a365d]/90">
-                <Plus className="mr-2 h-4 w-4" />
-                Add Campaign
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="xl:min-w-[705px]">
-              <CampaignForm />
-            </DialogContent>
-          </Dialog>
+          <Button
+            className="bg-[#1a365d] hover:bg-[#1a365d]/90"
+            onClick={() => setOpen((e) => !e)}
+          >
+            <Plus className="mr-2 h-4 w-4" />
+            Add Campaign
+          </Button>
+          <VeganModal open={open} onOpenChange={setOpen} className="">
+            <CampaignForm
+              organizationId={organizationId}
+              onClose={() => setOpen(false)}
+            />
+          </VeganModal>
         </div>
 
         <Card>
