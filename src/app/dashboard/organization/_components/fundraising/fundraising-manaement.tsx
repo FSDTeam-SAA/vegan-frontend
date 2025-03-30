@@ -9,6 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Plus } from "lucide-react";
 import { useState } from "react";
 import CampaignForm from "./campaign-form";
+import UpdateRaising from "./update-fundraising";
 
 export type Campaign = {
   id: string;
@@ -28,39 +29,62 @@ export type ApiResponse = {
 };
 
 function CampaignCard({ campaign }: { campaign?: Campaign }) {
+  const [open, setOpen] = useState(false);
   const percentage = Number(campaign?.percentage.replace("%", ""));
+
+  if (!campaign) return;
+
+  const togo =
+    campaign.fundraisingGoal! > campaign.achieved!
+      ? campaign.fundraisingGoal - campaign.achieved
+      : 0;
+
   return (
-    <div className="space-y-4 py-4">
-      <div className="flex flex-wrap items-start justify-between gap-5">
-        <div>
-          <h3 className="text-lg font-medium">{campaign?.campaignTitle}</h3>
-          <p className="text-sm text-muted-foreground">
-            Deadline: {campaign?.deadline}
-          </p>
+    <>
+      <div className="space-y-4 py-4">
+        <div className="flex flex-wrap items-start justify-between gap-5">
+          <div>
+            <h3 className="text-lg font-medium">{campaign?.campaignTitle}</h3>
+            <p className="text-sm text-muted-foreground">
+              Deadline: {campaign?.deadline}
+            </p>
+          </div>
+          <div className="text-right">
+            <Button
+              size="sm"
+              className="mb-2"
+              onClick={() => setOpen((p) => !p)}
+            >
+              Update
+            </Button>
+            <p className="font-medium">${campaign?.achieved} raised</p>
+            <p className="text-sm text-muted-foreground">
+              of ${campaign?.fundraisingGoal} goal
+            </p>
+          </div>
         </div>
-        <div className="text-right">
-          <p className="font-medium">${campaign?.achieved} raised</p>
-          <p className="text-sm text-muted-foreground">
-            of ${campaign?.fundraisingGoal} goal
-          </p>
+        <p className="text-sm">{campaign?.description}</p>
+        <div className="space-y-2">
+          <div className="flex justify-between text-sm">
+            <span>{campaign?.percentage} Complete</span>
+            {togo && <span>${togo} to go</span>}
+          </div>
+          <div className="h-2 overflow-hidden rounded-full bg-gray-100">
+            <div
+              className="h-full rounded-full bg-[#1a365d]"
+              style={{ width: `${percentage}%` }}
+            />
+          </div>
         </div>
       </div>
-      <p className="text-sm">{campaign?.description}</p>
-      <div className="space-y-2">
-        <div className="flex justify-between text-sm">
-          <span>{campaign?.percentage} Complete</span>
-          {campaign && (
-            <span>${campaign.fundraisingGoal - campaign.achieved!} to go</span>
-          )}
-        </div>
-        <div className="h-2 overflow-hidden rounded-full bg-gray-100">
-          <div
-            className="h-full rounded-full bg-[#1a365d]"
-            style={{ width: `${percentage}%` }}
-          />
-        </div>
-      </div>
-    </div>
+
+      <VeganModal open={open} onOpenChange={setOpen} className="md:max-w-md">
+        <UpdateRaising
+          campaignId={campaign?.id as string}
+          onClose={() => setOpen(false)}
+        />
+      </VeganModal>
+    </>
   );
 }
 

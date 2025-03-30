@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/popover";
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
@@ -57,6 +57,8 @@ export default function CampaignForm({ organizationId, onClose }: Props) {
       deadline: undefined,
     },
   });
+
+  const queryClient = useQueryClient();
 
   // Mutation for sending data to the API using fetch
   const createCampaignMutation = useMutation({
@@ -104,6 +106,7 @@ export default function CampaignForm({ organizationId, onClose }: Props) {
       form.reset();
       onClose();
       setDate(undefined);
+      queryClient.invalidateQueries({ queryKey: ["fundraising"] });
     },
     onError: (error) => {
       toast.error(error.message, {
