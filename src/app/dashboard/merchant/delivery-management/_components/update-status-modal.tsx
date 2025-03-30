@@ -5,9 +5,11 @@ import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import VeganModal from "@/components/ui/vegan-modal";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Loader2 } from "lucide-react";
 import type { Dispatch, SetStateAction } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import * as z from "zod";
 import { Booking } from "./delivery-management-table-container";
 
@@ -22,11 +24,12 @@ const formSchema = z.object({
 });
 
 const UpdateStatusModal = ({ open, setOpen, data }: UpdateStatusModalProps) => {
-  const { mutate } = useMutation({
+  const queryClient = useQueryClient();
+  const { mutate, isPending } = useMutation({
     mutationKey: ["status-update"],
     mutationFn: (body: any) =>
       fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/order/tracking/67de9b83f60e60110b667568`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/order/tracking/${data.orderId}`,
         {
           method: "PUT",
           headers: {
@@ -35,6 +38,23 @@ const UpdateStatusModal = ({ open, setOpen, data }: UpdateStatusModalProps) => {
           body: JSON.stringify(body),
         },
       ).then((res) => res.json()),
+    onSuccess: (data) => {
+      if (!data.success) {
+        toast.error(data.message, {
+          richColors: true,
+          position: "top-right",
+        });
+        return;
+      }
+      queryClient.invalidateQueries({ queryKey: ["productDelivery"] });
+      setOpen(false);
+    },
+    onError: (err) => {
+      toast.error(err.message, {
+        richColors: true,
+        position: "top-right",
+      });
+    },
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -46,7 +66,6 @@ const UpdateStatusModal = ({ open, setOpen, data }: UpdateStatusModalProps) => {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     const reqBody = {
-      orderNo: data.orderNo,
       shippingStatus: values.status,
     };
 
@@ -132,13 +151,17 @@ const UpdateStatusModal = ({ open, setOpen, data }: UpdateStatusModalProps) => {
               variant="outline"
               className="flex-1 border-[#D1D5DB] text-[#4B5563]"
               onClick={() => setOpen(false)}
+              disabled={isPending}
             >
               Cancel
             </Button>
             <Button
               type="submit"
               className="flex-1 bg-[#1F2937] hover:bg-[#111827]"
+              disabled={isPending}
+              variant={isPending ? "outline" : "default"}
             >
+              {isPending && <Loader2 className="mr-2 size-4 animate-spin" />}{" "}
               Update Status
             </Button>
           </div>
