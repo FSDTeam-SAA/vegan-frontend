@@ -236,7 +236,10 @@ const ServiceBookModal = ({
         onOpenChange={setIsPaymentModalOpen}
         className=""
       >
-        <PaymentForm onSubmit={bookServiceBeforePaymentMethodAdd} />
+        <PaymentForm
+          onSubmit={bookServiceBeforePaymentMethodAdd}
+          userId={loggedinuserId}
+        />
       </VeganModal>
     </>
   );

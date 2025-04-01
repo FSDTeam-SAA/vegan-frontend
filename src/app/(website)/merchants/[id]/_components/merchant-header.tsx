@@ -58,7 +58,7 @@ const Review = ({ totalRatings, totalReviews }: Props) => {
         className="h-[19.02px] w-[19.02px]"
       />
       <span className="font-inter text-[14px] font-normal leading-[24.2px] text-[#4B5563] lg:text-[20px]">
-        {totalRatings.toFixed(1)} ({totalReviews} Reviews)
+        {totalRatings?.toFixed(1)} ({totalReviews} Reviews)
       </span>
     </div>
   );

@@ -153,3 +153,23 @@ export type Comment = {
   updatedAt: string;
   __v: number;
 };
+
+export type OrganizationLiveStream = {
+  _id: string; // MongoDB ObjectId, represented as a string
+  organizationID: string; // Organization ID, also represented as a string
+  eventTitle: string; // Title of the event
+  description: string; // Description of the event
+  date: string; // Date in ISO format (YYYY-MM-DD)
+  time: string; // Time in HH:mm format
+  eventType: string; // Type of event (e.g., "paid event")
+  price: number; // Price of the event (numeric value)
+  createdAt: string; // Timestamp in ISO format
+  updatedAt: string; // Timestamp in ISO format
+  __v: number; // Version key, typically used by Mongoose
+};
+
+export type OrganizationLiveStreamRes = {
+  success: boolean;
+  message: string;
+  data: OrganizationLiveStream[];
+};

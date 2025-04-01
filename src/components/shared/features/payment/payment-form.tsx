@@ -6,9 +6,10 @@ import PaymentWrapper from "./save-payment-method";
 
 interface Props {
   onSubmit: () => void;
+  userId: string;
 }
 
-export default function PaymentForm({ onSubmit }: Props) {
+export default function PaymentForm({ onSubmit, userId }: Props) {
   const { checkoutModal, onCheckoutClose } = useCartState();
 
   const queryClient = useQueryClient();
@@ -30,6 +31,7 @@ export default function PaymentForm({ onSubmit }: Props) {
   return (
     <div className="mt-5">
       <PaymentWrapper
+        loggedInUserId={userId}
         onPurchase={() => {
           queryClient.invalidateQueries({ queryKey: ["paymentAdded"] });
           onSubmit();
