@@ -68,8 +68,6 @@ const CartsModal = ({ initialData, isPaymentAdded }: Props) => {
     },
   });
 
-  if (!initialData) return <p>Loading...</p>;
-
   const totalAmount = data?.reduce((prev, curr) => {
     return prev + curr.price;
   }, 0);
@@ -93,7 +91,7 @@ const CartsModal = ({ initialData, isPaymentAdded }: Props) => {
       createPurchase({
         userID: session.data.user.userId,
         amount: amount,
-        merchantID: initialData._id,
+        merchantID: initialData?._id as string,
         productId: data.map((product) => product._id),
       });
     }

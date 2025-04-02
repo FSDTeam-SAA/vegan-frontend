@@ -28,6 +28,7 @@ export interface Booking {
   amount: number;
   trackingNumber: string;
   shippingStatus: string;
+  orderId: string;
 }
 
 // Interface for the pagination details
