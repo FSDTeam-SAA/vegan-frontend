@@ -36,6 +36,8 @@ const MerchantProfileContainer = ({ merchatId, loggedinUserId }: Props) => {
             <MerchantHeader
               data={data?.data}
               loggedinUserId={loggedinUserId as string}
+              totalRatings={data?.totalRating as number}
+              totalReviews={data?.totalReviews as number}
             />
           </SkeletonWrapper>
         </div>

@@ -66,7 +66,10 @@ const ProfileCartButton = ({ data: initialData, loggedInUserId }: Props) => {
           isPaymentAdded={!!paymentRes?.paymentAdded}
         />
       </div>
-      <ProductPaymentCheckout initialData={initialData} />
+      <ProductPaymentCheckout
+        initialData={initialData}
+        loggedinuserId={loggedInUserId as string}
+      />
     </>
   );
 };

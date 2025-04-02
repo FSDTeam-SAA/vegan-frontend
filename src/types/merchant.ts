@@ -90,4 +90,6 @@ export type SingleMerchantProfileResponse = {
   success: boolean;
   message: string;
   data: MerchantProfile;
+  totalRating: number;
+  totalReviews: number;
 };

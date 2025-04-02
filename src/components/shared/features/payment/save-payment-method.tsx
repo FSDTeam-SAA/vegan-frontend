@@ -8,20 +8,13 @@ import {
   useElements,
   useStripe,
 } from "@stripe/react-stripe-js";
-import { useSession } from "next-auth/react";
 import React from "react";
 import { toast } from "sonner";
 
-const SavePaymentMethod = ({ onPurchase }: Props) => {
+const SavePaymentMethod = ({ onPurchase, loggedInUserId }: Props) => {
   const stripe = useStripe();
   const elements = useElements();
   const { loading, setLoading } = useCartState();
-
-  const session = useSession();
-
-  if (session.status === "loading") return;
-
-  const userId = session.data?.user.userId;
 
   //   const fetchOrCreateCustomer = async (email: string) => {
   //     const res = await fetch(
@@ -68,7 +61,7 @@ const SavePaymentMethod = ({ onPurchase }: Props) => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           paymentMethodId: paymentMethod.id,
-          userID: userId,
+          userID: loggedInUserId,
         }),
       },
     );
@@ -105,10 +98,14 @@ const SavePaymentMethod = ({ onPurchase }: Props) => {
 
 interface Props {
   onPurchase: () => void;
+  loggedInUserId: string;
 }
-const PaymentWrapper = ({ onPurchase }: Props) => (
+const PaymentWrapper = ({ onPurchase, loggedInUserId }: Props) => (
   <Elements stripe={getStripe()}>
-    <SavePaymentMethod onPurchase={onPurchase} />
+    <SavePaymentMethod
+      onPurchase={onPurchase}
+      loggedInUserId={loggedInUserId}
+    />
   </Elements>
 );
 

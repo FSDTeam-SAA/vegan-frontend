@@ -3,6 +3,7 @@ import AnimatedTabs, { VeganTab } from "@/components/ui/Vegan-Tab";
 import dynamic from "next/dynamic";
 import { useState } from "react";
 import OrganizationAbout from "./tab/about/organization-about";
+import OrganizationLiveSteam from "./tab/live-stream/organiization-live-steam";
 import OrganizationNewsContainer from "./tab/news/organization-news-container";
 import { OrganizationReviewContainer } from "./tab/organizatioin-review/organization-review-container";
 const OrganizationEventContainer = dynamic(
@@ -35,6 +36,10 @@ const lists = [
     label: "Volunteer",
   },
   {
+    id: "live-stream",
+    label: "Live Stream",
+  },
+  {
     id: "reviews",
     label: "Reviews",
   },
@@ -47,7 +52,7 @@ interface Props {
 
 const OrganizationTab = ({ organizationId, loggedInUserId }: Props) => {
   const [activeTab, setActiveTab] = useState<
-    "about" | "news" | "events" | "volunteer" | "reviews"
+    "about" | "news" | "events" | "volunteer" | "live-stream" | "reviews"
   >("about");
   return (
     <div className="container mt-[40px] md:mt-[56px]">
@@ -55,7 +60,13 @@ const OrganizationTab = ({ organizationId, loggedInUserId }: Props) => {
         tabs={lists}
         onTabChange={(id) =>
           setActiveTab(
-            id as "about" | "news" | "events" | "volunteer" | "reviews",
+            id as
+              | "about"
+              | "news"
+              | "events"
+              | "volunteer"
+              | "live-stream"
+              | "reviews",
           )
         }
       />
@@ -82,6 +93,12 @@ const OrganizationTab = ({ organizationId, loggedInUserId }: Props) => {
           <OrganizationVolunteerEventContainer
             organizationId={organizationId}
             loggedInUserId={loggedInUserId}
+          />
+        )}
+        {activeTab === "live-stream" && (
+          <OrganizationLiveSteam
+            organizationId={organizationId}
+            loggedinuserId={loggedInUserId}
           />
         )}
 

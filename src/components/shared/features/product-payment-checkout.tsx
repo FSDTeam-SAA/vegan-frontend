@@ -17,9 +17,10 @@ export interface BodyProps {
 
 interface Props {
   initialData?: MerchantProfile;
+  loggedinuserId: string;
 }
 
-const ProductPaymentCheckout = ({ initialData }: Props) => {
+const ProductPaymentCheckout = ({ initialData, loggedinuserId }: Props) => {
   const { checkoutModal, onCheckoutClose, setLoading } = useCartState();
   const { data } = useCartDataState();
   const amount = data.reduce((prev, curr) => {
@@ -94,7 +95,7 @@ const ProductPaymentCheckout = ({ initialData }: Props) => {
         Payment Information
       </h3>
 
-      <PaymentForm onSubmit={onSubmit} />
+      <PaymentForm onSubmit={onSubmit} userId={loggedinuserId} />
     </VeganModal>
   );
 };

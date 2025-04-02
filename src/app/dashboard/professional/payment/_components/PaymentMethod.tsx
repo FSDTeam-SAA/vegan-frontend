@@ -121,6 +121,7 @@ const PaymentMethod = ({ isPaymentAdded, userId }: Props) => {
 
       <VeganModal open={isOpen} onOpenChange={setIsOpen} className="">
         <PaymentForm
+          userId={userId}
           onSubmit={() => {
             router.refresh();
             handlePaymentMethodForm();
