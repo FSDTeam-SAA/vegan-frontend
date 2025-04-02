@@ -76,7 +76,7 @@ const OrganizationLiveStreamCard = ({
       userID: loggedInUserId,
       amount: data?.price ?? 0,
       organizationID: data?.organizationID,
-      goLiveID: data?._id,
+      organizationGoLiveID: data?._id,
     };
 
     if (!paymentAdded) {
