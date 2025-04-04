@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { truncateText } from "@/lib/helper";
 import { MerchantProduct } from "@/types/merchant";
 import { useCartDataState } from "@/zustand/features/cart/useCartState";
-import { Heart, ShoppingCart } from "lucide-react";
+import {  ShoppingCart } from "lucide-react";
 import Image from "next/image";
 
 interface Props {
@@ -35,13 +35,13 @@ const ProductCard = ({ data }: Props) => {
             <h3 className="font-lexend text-[18px] font-normal leading-[22.2px] text-[#1D3557]">
               {data?.productName}
             </h3>
-            <Button
+            {/* <Button
               size="icon"
               variant="outline"
               className="flex-initial border-none"
             >
               <Heart />
-            </Button>
+            </Button> */}
           </div>
           <p className="mt-[8px] font-inter text-[16px] font-normal leading-[24px] text-[#4B5563]">
             {description}
