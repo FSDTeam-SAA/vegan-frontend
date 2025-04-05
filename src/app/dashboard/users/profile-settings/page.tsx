@@ -6,7 +6,7 @@ export default function page() {
   return (
     <div>
       <DashboardHeading
-        title="Profile & Settings"
+        title="Profile & Settings "
         subTitle="Manage your account details and personalize your experience."
       />
       <DashboardProfileSettings />
