@@ -1,15 +1,70 @@
 "use client";
-import React from "react";
+import EmptyContainer from "@/components/shared/sections/empty-container";
+import ErrorContainer from "@/components/shared/sections/error-container";
+import { useQuery } from "@tanstack/react-query";
+import { Loader2 } from "lucide-react";
 import { useState } from "react";
-import { Calendar, Clock } from "lucide-react";
-import { eventsData } from "./goLiveData";
+import EventCardForUser from "./event-card";
 
-export default function GoLive() {
-  const [activeTab, setActiveTab] = useState<"upcoming" | "completed">(
-    "upcoming",
-  );
+interface Props {
+  userId: string;
+}
 
-  const events = eventsData[activeTab];
+export type GoLiveEvent = {
+  meetings: any[]; // Assuming `meetings` is an array of objects, but the structure isn't provided.
+  _id: string; // MongoDB ObjectId, typically represented as a string.
+  merchantID: string; // Merchant ID, also likely a MongoDB ObjectId as a string.
+  eventTitle: string; // Title of the event.
+  description: string; // Description of the event.
+  date: string; // Date in ISO format (e.g., "YYYY-MM-DD").
+  time: string; // Time in 24-hour format (e.g., "HH:mm").
+  eventType: string; // Type of event (e.g., "free event").
+  eventId: string; // Event ID, possibly another MongoDB ObjectId as a string.
+  createdAt: string; // Timestamp in ISO format (e.g., "YYYY-MM-DDTHH:mm:ss.sssZ").
+  updatedAt: string; // Timestamp in ISO format (e.g., "YYYY-MM-DDTHH:mm:ss.sssZ").
+  __v: number; // Version key, typically a number.
+  price: number; // Price of the event, likely in USD or another currency.
+};
+
+export type GoLiveEventTypeRes = {
+  events: GoLiveEvent[]; // Array of GoLiveEvent objects.
+  message: string; // Message string, possibly indicating success or error.
+  success: boolean; // Boolean indicating success or failure of the operation.
+};
+
+export default function GoLive({ userId }: Props) {
+  const [activeTab, setActiveTab] = useState<"upcoming" | "past">("upcoming");
+
+  const { data, isLoading, isError, error } = useQuery<GoLiveEventTypeRes>({
+    queryKey: ["go-live-for-user", activeTab],
+    queryFn: () =>
+      fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/usermerchantGoLive?type=${activeTab}&userID=${userId}`,
+      ).then((res) => res.json()),
+  });
+
+  let content;
+
+  if (isLoading) {
+    content = (
+      <div className="flex min-h-[600px] w-full items-center justify-center">
+        <Loader2 className="animate-spin" />
+        <span>Please wait...</span>
+      </div>
+    );
+  } else if (isError) {
+    content = <ErrorContainer message={error?.message} />;
+  } else if (data?.events?.length === 0) {
+    content = <EmptyContainer message="No Live Found" />;
+  } else if ((data?.events ?? []).length > 0) {
+    content = (
+      <div className="space-y-4 rounded-[16px] bg-[#f5efea] p-[10px] lg:p-[40px]">
+        {data?.events.map((event) => (
+          <EventCardForUser key={event._id} data={event} />
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen">
@@ -36,9 +91,9 @@ export default function GoLive() {
                 Upcoming Events
               </button>
               <button
-                onClick={() => setActiveTab("completed")}
+                onClick={() => setActiveTab("past")}
                 className={`relative pb-2 text-sm font-medium ${
-                  activeTab === "completed"
+                  activeTab === "past"
                     ? "border-b-2 border-black text-black"
                     : "text-gray-600"
                 }`}
@@ -47,52 +102,7 @@ export default function GoLive() {
               </button>
             </div>
           </div>
-
-          <div className="space-y-4 rounded-[16px] bg-[#f5efea] p-[10px] lg:p-[40px]">
-            {events.map((event) => (
-              <div key={event.id} className="space-y-4 rounded-lg bg-white p-6">
-                <div className="space-y-4">
-                  <div className="flex items-start justify-between">
-                    <span className="rounded-full bg-gray-100 px-2 py-1 text-xs">
-                      {event.eventType} Event
-                    </span>
-                    <span className="text-base font-semibold">
-                      $ {event.price}
-                    </span>
-                  </div>
-                  <div className="space-y-1">
-                    <div className="flex flex-col lg:flex-row">
-                      <h3 className="text-base font-semibold">{event.title}</h3>
-                      <h1 className="mx-2 hidden text-[16px] font-normal text-[#6A7282] lg:block">
-                        {" "}
-                        |
-                      </h1>
-                      <h4 className="text-[16px] font-normal text-[#6A7282]">
-                        {event.hosted} by Sarah Johnson
-                      </h4>
-                    </div>
-                  </div>
-                  <p className="text-sm text-gray-600">{event.description}</p>
-                  <div className="flex gap-4 text-sm text-gray-600">
-                    <div className="flex items-center gap-2">
-                      <Calendar className="h-4 w-4" />
-                      <span>Month {event.month}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Clock className="h-4 w-4" />
-                      <span>{event.duration}</span>
-                    </div>
-                  </div>
-                </div>
-                <button
-                  className="rounded bg-[#1a2b3b] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#1a2b3b]/90 disabled:cursor-not-allowed disabled:opacity-50"
-                  hidden={event.status === "completed"}
-                >
-                  {event.status === "completed" ? "Completed " : "Join Event"}
-                </button>
-              </div>
-            ))}
-          </div>
+          {content}
         </div>
       </div>
     </div>
