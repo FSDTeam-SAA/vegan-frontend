@@ -10,7 +10,7 @@ export default function GoLive({ email, userId }: Props) {
   return (
     <div className="space-y-10">
       <Header email={email} userId={userId} />
-      <EventsMangement />
+      <EventsMangement organizationID={userId} />
       <VideoTutorials />
     </div>
   );

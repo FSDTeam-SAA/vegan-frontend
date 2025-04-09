@@ -5,7 +5,7 @@ import GoLive from "../_components/go-live/go-live";
 
 export default async function page() {
   const currentUser = await auth();
-  if (!currentUser?.user) redirect("/");
+  if (!currentUser?.user) redirect("/onboarding");
   return (
     <div className="p-8">
       <StripeConnectionAlert

@@ -81,7 +81,11 @@ export function Header({ email, userId }: Props) {
           </Button>
         </div>
       </div>
-      <OrganizationEventDiolog open={open} onOpenChange={setOpen} />
+      <OrganizationEventDiolog
+        open={open}
+        onOpenChange={setOpen}
+        userId={userId}
+      />
     </header>
   );
 }

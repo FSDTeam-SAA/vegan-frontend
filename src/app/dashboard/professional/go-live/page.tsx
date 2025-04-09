@@ -6,7 +6,7 @@ import GoLive from "./_components/go-live";
 
 const Page = async () => {
   const currentUser = await auth();
-  if (!currentUser) redirect("/onboarding");
+  if (!currentUser?.user) redirect("/onboarding");
   return (
     <div className="mt-5 px-[24px] md:px-[32px] lg:px-[40px]">
       <StripeConnectionAlert
@@ -16,7 +16,10 @@ const Page = async () => {
         role="professional"
       />
       <div className="mt-[48px]">
-        <GoLive />
+        <GoLive
+          userId={currentUser.user.userId}
+          email={currentUser.user.email as string}
+        />
       </div>
 
       <div className="mt-[56px]">

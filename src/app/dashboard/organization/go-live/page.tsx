@@ -5,7 +5,7 @@ import GoLive from "../_components/go-live/go-live";
 export default async function page() {
   const session = await auth();
 
-  if (!session?.user) redirect("/login");
+  if (!session?.user) redirect("/onboarding");
   return (
     <div className="px-9 py-11">
       <GoLive
