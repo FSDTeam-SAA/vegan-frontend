@@ -5,7 +5,7 @@ import GoLive from "../_components/go-live/go-live";
 
 export default async function page() {
   const currentUser = await auth();
-  if (!currentUser) redirect("/");
+  if (!currentUser?.user) redirect("/");
   return (
     <div className="p-8">
       <StripeConnectionAlert
@@ -14,7 +14,10 @@ export default async function page() {
         rediretTo="/dashboard/merchant/payment"
         role="merchant"
       />
-      <GoLive userId={currentUser.user.userId} />
+      <GoLive
+        userId={currentUser.user.userId}
+        email={currentUser.user.email as string}
+      />
     </div>
   );
 }

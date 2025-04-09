@@ -16,8 +16,10 @@ const businessHoursSchema = z.object({
 
 // Base schema for common fields
 const baseSchema = {
-  address: z.string().min(1, "Address is required"),
   websiteURL: z.string().optional(),
+  country: z.string(),
+  state: z.string(),
+  city: z.string(),
 };
 
 // Define the type enum
