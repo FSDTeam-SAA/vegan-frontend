@@ -2,10 +2,15 @@ import dynamic from "next/dynamic";
 import { Header } from "./header";
 const EventsMangement = dynamic(() => import("./events"), { ssr: false });
 
-export default function GoLive() {
+interface Props {
+  userId: string;
+  email: string;
+}
+
+export default function GoLive({ userId, email }: Props) {
   return (
     <div>
-      <Header />
+      <Header userId={userId} email={email} />
       <EventsMangement />
     </div>
   );

@@ -26,13 +26,16 @@ import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { ProfileFormData, profileSchema } from "@/lib/ProfileSetupSchema";
 import { getProfileType } from "@/lib/utils";
+import { countries } from "./data";
 
 const dayOptions = [
   { value: "monday", label: "Monday" },
@@ -155,7 +158,6 @@ export default function ProfileSetupForm() {
     resolver: zodResolver(profileSchema),
     defaultValues: {
       type,
-      address: "",
       websiteURL: "",
       ...(type === "merchant" && {
         businessName: "",
@@ -221,7 +223,6 @@ export default function ProfileSetupForm() {
         formData.append("fullName", data.fullName ?? "");
         formData.append("businessName", data.businessName ?? "");
         formData.append("about", data.about ?? "");
-        formData.append("address", data.address ?? "");
         formData.append("websiteURL", data.websiteURL ?? "");
         formData.append("designation", data.designation);
 
@@ -278,7 +279,6 @@ export default function ProfileSetupForm() {
       formData.append("fullName", data.fullName ?? "");
       formData.append("businessName", data.businessName ?? "");
       formData.append("about", data.about ?? "");
-      formData.append("address", data.address ?? "");
       formData.append("websiteURL", data.websiteURL ?? "");
       formData.append("shortDescriptionOfStore", data.shortDescriptionOfStore);
 
@@ -307,7 +307,7 @@ export default function ProfileSetupForm() {
       formData.append("businessName", data.businessName ?? "");
       formData.append("organizationName", data.organizationName ?? "");
       formData.append("missionStatement", data.missionStatement);
-      formData.append("address", data.address ?? "");
+
       formData.append("about", data.about ?? "");
       formData.append(
         "shortDescriptionOfOrganization",
@@ -340,6 +340,12 @@ export default function ProfileSetupForm() {
       organizationMutate(formData);
     }
   }
+
+  const country = form.watch("country");
+  const state = form.watch("state");
+  // states
+  const states = countries.find((c) => c.value === country)?.states || [];
+  const cities = states.find((s) => s.value === state)?.cites || [];
 
   const isLoading =
     professionalPending || loading || merchantPending || organizationPending;
@@ -485,6 +491,117 @@ export default function ProfileSetupForm() {
                 />
               )}
 
+              <FormField
+                control={form.control}
+                name="country"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Country</FormLabel>
+                    <FormControl>
+                      <Select
+                        value={field.value}
+                        onValueChange={field.onChange}
+                      >
+                        <SelectTrigger className="h-[40px] w-full bg-white md:h-[48px]">
+                          <SelectValue placeholder="Select a Country" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectLabel>Country</SelectLabel>
+                            {countries.map((country) => (
+                              <SelectItem
+                                value={country.value}
+                                key={country.id}
+                              >
+                                {country.label}
+                              </SelectItem>
+                            ))}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+                <FormField
+                  control={form.control}
+                  name="state"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>States</FormLabel>
+                      <FormControl>
+                        <Select
+                          value={field.value}
+                          onValueChange={field.onChange}
+                        >
+                          <SelectTrigger className="h-[40px] w-full bg-white md:h-[48px]">
+                            <SelectValue placeholder="Select a State" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectGroup>
+                              <SelectLabel>
+                                {states.length === 0
+                                  ? "Select a country first"
+                                  : "State"}
+                              </SelectLabel>
+                              {states.map((state) => (
+                                <SelectItem value={state.value} key={state.id}>
+                                  {state.label}
+                                </SelectItem>
+                              ))}
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="city"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>City</FormLabel>
+                      <FormControl>
+                        <Select
+                          value={field.value}
+                          onValueChange={field.onChange}
+                        >
+                          <SelectTrigger className="h-[40px] w-full bg-white md:h-[48px]">
+                            <SelectValue placeholder="Select a State" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectGroup>
+                              <SelectLabel>
+                                {cities.length === 0
+                                  ? "Select a state "
+                                  : "City"}
+                              </SelectLabel>
+                              {cities.map(
+                                (city: {
+                                  id: number;
+                                  label: string;
+                                  value: string;
+                                }) => (
+                                  <SelectItem value={city.value} key={city.id}>
+                                    {city.label}
+                                  </SelectItem>
+                                ),
+                              )}
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
               {type === "professional" && (
                 <FormField
                   control={form.control}
@@ -507,7 +624,7 @@ export default function ProfileSetupForm() {
                 />
               )}
 
-              <FormField
+              {/* <FormField
                 control={form.control}
                 name="address"
                 render={({ field }) => (
@@ -525,7 +642,7 @@ export default function ProfileSetupForm() {
                     <FormMessage />
                   </FormItem>
                 )}
-              />
+              /> */}
 
               <FormField
                 control={form.control}

@@ -4,7 +4,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
-import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -62,12 +61,14 @@ interface EventDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   initialData?: OrganizationEvent;
+  userId?: string;
 }
 
 export default function OrganizationEventDiolog({
   open,
   onOpenChange,
   initialData,
+  userId,
 }: EventDialogProps) {
   const form = useForm<EventFormData>({
     resolver: zodResolver(eventFormSchema),
@@ -81,9 +82,6 @@ export default function OrganizationEventDiolog({
       price: initialData?.price?.toString() || "0",
     },
   });
-
-  const session = useSession();
-  const organizationID = session.data?.user.userId;
 
   const queryClient = useQueryClient();
 
@@ -99,7 +97,7 @@ export default function OrganizationEventDiolog({
           },
           body: JSON.stringify({
             ...body,
-            organizationID,
+            organizationID: userId,
           }),
         },
       ).then((res) => res.json()),

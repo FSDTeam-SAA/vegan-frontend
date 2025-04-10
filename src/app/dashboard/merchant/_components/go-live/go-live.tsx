@@ -5,12 +5,13 @@ const EventsMangement = dynamic(() => import("./events"), { ssr: false });
 
 interface Props {
   userId: string;
+  email: string;
 }
 
-export default function GoLive({ userId }: Props) {
+export default function GoLive({ userId, email }: Props) {
   return (
     <div className="space-y-10">
-      <Header userId={userId} />
+      <Header userId={userId} email={email} />
       <EventsMangement />
       <MerchantTutiorials />
     </div>
