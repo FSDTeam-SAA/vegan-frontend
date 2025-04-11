@@ -71,13 +71,15 @@ export function Header({ userId, email }: Props) {
               {isConnected ? "Calendar Connected" : "Connect Calendar"}
             </Link>
           </Button>
-          <Button
-            className="gap-2 bg-[#1f3a5f] hover:bg-[#162942]"
-            onClick={() => setOpen(true)}
-          >
-            <Plus className="h-4 w-4" />
-            Create New Event
-          </Button>
+          {isConnected && (
+            <Button
+              className="gap-2 bg-[#1f3a5f] hover:bg-[#162942]"
+              onClick={() => setOpen(true)}
+            >
+              <Plus className="h-4 w-4" />
+              Create New Event
+            </Button>
+          )}
         </div>
       </div>
       <EventDialog open={open} onOpenChange={setOpen} userId={userId} />

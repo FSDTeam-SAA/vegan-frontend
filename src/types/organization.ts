@@ -10,6 +10,8 @@ export interface OrganizationEvent {
   eventType: string; // e.g., "volunteer event"
   eventCategory: string; // e.g., "live"
   capacity: number;
+  meetingLink: string;
+  meetingId: string;
   Attendees: number;
   createdAt: string; // ISO date-time format (e.g., "YYYY-MM-DDTHH:mm:ss.SSSZ")
   updatedAt: string; // ISO date-time format (e.g., "YYYY-MM-DDTHH:mm:ss.SSSZ")

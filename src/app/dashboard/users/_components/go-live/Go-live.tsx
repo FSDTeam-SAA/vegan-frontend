@@ -11,8 +11,6 @@ interface Props {
 }
 
 export type GoLiveEvent = {
-  meetings: any[]; // Assuming `meetings` is an array of objects, but the structure isn't provided.
-  _id: string; // MongoDB ObjectId, typically represented as a string.
   merchantID: string; // Merchant ID, also likely a MongoDB ObjectId as a string.
   eventTitle: string; // Title of the event.
   description: string; // Description of the event.
@@ -24,10 +22,11 @@ export type GoLiveEvent = {
   updatedAt: string; // Timestamp in ISO format (e.g., "YYYY-MM-DDTHH:mm:ss.sssZ").
   __v: number; // Version key, typically a number.
   price: number; // Price of the event, likely in USD or another currency.
+  meetingLink: string;
 };
 
 export type GoLiveEventTypeRes = {
-  events: GoLiveEvent[]; // Array of GoLiveEvent objects.
+  data: GoLiveEvent[]; // Array of GoLiveEvent objects.
   message: string; // Message string, possibly indicating success or error.
   success: boolean; // Boolean indicating success or failure of the operation.
 };
@@ -39,7 +38,7 @@ export default function GoLive({ userId }: Props) {
     queryKey: ["go-live-for-user", activeTab],
     queryFn: () =>
       fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/usermerchantGoLive?type=${activeTab}&userID=${userId}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/findgolive/${userId}?type=${activeTab}&userID=${userId}`,
       ).then((res) => res.json()),
   });
 
@@ -54,13 +53,13 @@ export default function GoLive({ userId }: Props) {
     );
   } else if (isError) {
     content = <ErrorContainer message={error?.message} />;
-  } else if (data?.events?.length === 0) {
+  } else if (data?.data?.length === 0) {
     content = <EmptyContainer message="No Live Found" />;
-  } else if ((data?.events ?? []).length > 0) {
+  } else if ((data?.data ?? []).length > 0) {
     content = (
       <div className="space-y-4 rounded-[16px] bg-[#f5efea] p-[10px] lg:p-[40px]">
-        {data?.events.map((event) => (
-          <EventCardForUser key={event._id} data={event} />
+        {data?.data.map((event, i) => (
+          <EventCardForUser key={i} data={event} />
         ))}
       </div>
     );
