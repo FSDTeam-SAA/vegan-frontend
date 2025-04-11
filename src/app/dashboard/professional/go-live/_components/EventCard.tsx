@@ -131,7 +131,9 @@ function EventCard({ data }: Props) {
                   </span>
                 )}
                 <Button className="ml-4 bg-[#1D3557] px-[30px] py-[15px] text-center font-inter text-base !font-medium leading-[19.36px] text-white">
-                  Join Event
+                  <a href={data?.meetingLink} target="_blank">
+                    Join Event
+                  </a>
                 </Button>
               </div>
             </div>
