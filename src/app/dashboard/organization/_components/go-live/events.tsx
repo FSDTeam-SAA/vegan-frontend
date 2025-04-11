@@ -2,7 +2,6 @@
 
 // Packages
 import { useQuery } from "@tanstack/react-query";
-import { useSession } from "next-auth/react";
 import { useState } from "react";
 
 // Local imports
@@ -28,10 +27,12 @@ const tabs = [
   },
 ];
 
-export default function EventsMangement() {
+interface Props {
+  organizationID: string;
+}
+
+export default function EventsMangement({ organizationID }: Props) {
   const [activeTab, setActiveTab] = useState("upcoming");
-  const session = useSession();
-  const organizationID = session?.data?.user?.userId;
 
   const { isLoading, data, isError, error } =
     useQuery<OrganizationEventResponse>({

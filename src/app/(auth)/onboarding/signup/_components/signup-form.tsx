@@ -23,12 +23,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
+import { countries } from "@/app/(auth)/profile-setup/_components/data";
 import { Checkbox } from "@/components/ui/checkbox";
 import { PasswordInput } from "@/components/ui/password-input";
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -63,6 +66,9 @@ const formSchema = z
       message: "You must agree to the terms and conditions.",
     }),
     accountType: z.string().optional(),
+    country: z.string(),
+    state: z.string(),
+    city: z.string(),
   })
   .superRefine((data, ctx) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -207,6 +213,11 @@ export default function SignUpForm() {
   };
 
   const accountType = form.watch("accountType");
+  const country = form.watch("country");
+  const state = form.watch("state");
+  // states
+  const states = countries.find((c) => c.value === country)?.states || [];
+  const cities = states.find((s) => s.value === state)?.cites || [];
 
   const termsPage = ref
     ? `/terms?role=${role}&ref=${ref}&accountType=${accountType}`
@@ -277,7 +288,7 @@ export default function SignUpForm() {
                   <FormControl>
                     <Input
                       placeholder="John Doe"
-                      className="h-[48px] rounded-[10px] border-[1px] border-[#F4F0EB] font-inter"
+                      className="h-[40px] rounded-[10px] border-[1px] border-[#F4F0EB] font-inter"
                       {...field}
                     />
                   </FormControl>
@@ -299,7 +310,7 @@ export default function SignUpForm() {
                 <FormControl>
                   <Input
                     placeholder="johndoe@gmail.com"
-                    className="h-[48px] rounded-[10px] border-[1px] border-[#F4F0EB] font-inter"
+                    className="h-[40px] rounded-[10px] border-[1px] border-[#F4F0EB] font-inter"
                     {...field}
                   />
                 </FormControl>
@@ -308,6 +319,103 @@ export default function SignUpForm() {
               </FormItem>
             )}
           />
+
+          <FormField
+            control={form.control}
+            name="country"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Country</FormLabel>
+                <FormControl>
+                  <Select value={field.value} onValueChange={field.onChange}>
+                    <SelectTrigger className="h-[40px] rounded-[10px] border-[1px] border-[#F4F0EB] font-inter">
+                      <SelectValue placeholder="Select a Country" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>Country</SelectLabel>
+                        {countries.map((country) => (
+                          <SelectItem value={country.value} key={country.id}>
+                            {country.label}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+            <FormField
+              control={form.control}
+              name="state"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>States</FormLabel>
+                  <FormControl>
+                    <Select value={field.value} onValueChange={field.onChange}>
+                      <SelectTrigger className="h-[40px] w-full bg-white">
+                        <SelectValue placeholder="Select a State" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>
+                            {states.length === 0
+                              ? "Select a country first"
+                              : "State"}
+                          </SelectLabel>
+                          {states.map((state) => (
+                            <SelectItem value={state.value} key={state.id}>
+                              {state.label}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="city"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>City</FormLabel>
+                  <FormControl>
+                    <Select value={field.value} onValueChange={field.onChange}>
+                      <SelectTrigger className="h-[40px] w-full bg-white">
+                        <SelectValue placeholder="Select a City" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>
+                            {cities.length === 0 ? "Select a state " : "City"}
+                          </SelectLabel>
+                          {cities.map(
+                            (city: {
+                              id: number;
+                              label: string;
+                              value: string;
+                            }) => (
+                              <SelectItem value={city.value} key={city.id}>
+                                {city.label}
+                              </SelectItem>
+                            ),
+                          )}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
 
           <FormField
             control={form.control}
@@ -321,7 +429,7 @@ export default function SignUpForm() {
                   <PasswordInput
                     placeholder="Enter Password"
                     {...field}
-                    className="h-[48px] rounded-[10px] border-[1px] border-[#F4F0EB] font-inter"
+                    className="h-[40px] rounded-[10px] border-[1px] border-[#F4F0EB] font-inter"
                   />
                 </FormControl>
 

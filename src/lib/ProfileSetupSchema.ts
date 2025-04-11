@@ -16,7 +16,6 @@ const businessHoursSchema = z.object({
 
 // Base schema for common fields
 const baseSchema = {
-  address: z.string().min(1, "Address is required"),
   websiteURL: z.string().optional(),
 };
 

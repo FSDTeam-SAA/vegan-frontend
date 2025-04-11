@@ -1,22 +1,28 @@
-"use client"
+"use client";
 
-import type React from "react"
-import { useState, useEffect } from "react"
-import Image from "next/image"
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import * as z from "zod"
-import { useSession } from "next-auth/react"
-import { useQuery } from "@tanstack/react-query"
-import { ImagePlus } from "lucide-react"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useQuery } from "@tanstack/react-query";
+import { ImagePlus } from "lucide-react";
+import { useSession } from "next-auth/react";
+import Image from "next/image";
+import type React from "react";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
 
-
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { useToast } from "@/hooks/use-toast"
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/hooks/use-toast";
 
 const profileFormSchema = z.object({
   fullName: z.string(),
@@ -28,49 +34,51 @@ const profileFormSchema = z.object({
   website: z.string().url().optional().or(z.literal("")),
   bio: z.string().optional(),
   experience: z.string().optional(),
-})
+});
 
-type ProfileFormValues = z.infer<typeof profileFormSchema>
+type ProfileFormValues = z.infer<typeof profileFormSchema>;
 export type ProfileUser = {
-  _id: string
-  bio: string
-  userId: string
-  fullName: string
-  email: string
-  accountType: string | null
-  token: string
-  paymentAdded: boolean
-  isgratings: boolean
-  isVerified: string
-  createdAt: string
-  updatedAt: string
-  __v: number
-  phone: string
-}
+  _id: string;
+  bio: string;
+  userId: string;
+  fullName: string;
+  email: string;
+  accountType: string | null;
+  token: string;
+  paymentAdded: boolean;
+  isgratings: boolean;
+  isVerified: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+  phone: string;
+};
 
 export function ProfileForm() {
-  const [image, setImage] = useState<string | null>(null)
-  const [imageFile, setImageFile] = useState<File | null>(null)
-  const session = useSession()
-  const id = session.data?.user?.userId
-  const email = session.data?.user?.email
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const { toast } = useToast()
+  const [image, setImage] = useState<string | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const session = useSession();
+  const id = session.data?.user?.userId;
+  const email = session.data?.user?.email;
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast } = useToast();
 
   type ApiResponse = {
-    success: boolean
-    message: string
-    data: ProfileUser
-  }
+    success: boolean;
+    message: string;
+    data: ProfileUser;
+  };
 
   const { data } = useQuery<ApiResponse>({
     queryKey: ["profile"],
-    queryFn: () => fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/profile/${id}`).then((res) => res.json()),
+    queryFn: () =>
+      fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/profile/${id}`).then(
+        (res) => res.json(),
+      ),
     enabled: !!id,
-  })
+  });
 
-  const fullName = data?.data?.fullName
- 
+  const fullName = data?.data?.fullName;
 
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
@@ -80,45 +88,44 @@ export function ProfileForm() {
       phone: "",
       bio: data?.data?.bio || "",
     },
-  })
+  });
 
   useEffect(() => {
     // Clean up object URLs when component unmounts
     return () => {
       if (image && image.startsWith("blob:")) {
-        URL.revokeObjectURL(image)
+        URL.revokeObjectURL(image);
       }
-    }
-  }, [image])
+    };
+  }, [image]);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
-    console.log(file)
+    const file = event.target.files?.[0];
 
     if (file) {
       // Store the file object for form submission
-      setImageFile(file)
+      setImageFile(file);
 
       // Create a preview URL for the image
-      const previewUrl = URL.createObjectURL(file)
-      setImage(previewUrl)
+      const previewUrl = URL.createObjectURL(file);
+      setImage(previewUrl);
 
       // Clean up the form value to prevent React Hook Form from trying to process the file
-      event.target.value = ""
+      event.target.value = "";
     }
-  }
+  };
 
   const onSubmit = (data: ProfileFormValues) => {
-    setIsSubmitting(true)
-    const formData = new FormData()
-    formData.append("fullName", data.fullName)
-    formData.append("email", data.email)
-    formData.append("phone", data.phone)
-    formData.append("bio", data.bio ?? "")
+    setIsSubmitting(true);
+    const formData = new FormData();
+    formData.append("fullName", data.fullName);
+    formData.append("email", data.email);
+    formData.append("phone", data.phone);
+    formData.append("bio", data.bio ?? "");
 
     // Append the image file to FormData if it exists
     if (imageFile) {
-      formData.append("profilePhoto", imageFile)
+      formData.append("profilePhoto", imageFile);
     }
 
     // API call to submit the form data
@@ -132,20 +139,20 @@ export function ProfileForm() {
           title: "Success",
           description: "Your profile has been updated successfully.",
           variant: "default",
-        })
+        });
       })
       .catch((error) => {
-        console.error("Error:", error)
+        console.error("Error:", error);
         toast({
           title: "Error",
           description: "Failed to update profile. Please try again.",
           variant: "destructive",
-        })
+        });
       })
       .finally(() => {
-        setIsSubmitting(false)
-      })
-  }
+        setIsSubmitting(false);
+      });
+  };
 
   useEffect(() => {
     if (data?.data) {
@@ -155,9 +162,9 @@ export function ProfileForm() {
         phone: data.data.phone || "",
         bio: data.data.bio || "",
         // Add other fields as needed
-      })
+      });
     }
-  }, [data, email, form])
+  }, [data, email, form]);
 
   return (
     <Card className="bg-white">
@@ -167,7 +174,12 @@ export function ProfileForm() {
             <div className="flex items-center space-x-4">
               <div className="relative h-24 w-24">
                 {image ? (
-                  <Image src={image || "/placeholder.svg"} alt="Profile" className="rounded-full object-cover" fill />
+                  <Image
+                    src={image || "/placeholder.svg"}
+                    alt="Profile"
+                    className="rounded-full object-cover"
+                    fill
+                  />
                 ) : (
                   <div className="flex h-24 w-24 items-center justify-center rounded-full bg-muted">
                     <ImagePlus className="h-8 w-8 text-muted-foreground" />
@@ -176,8 +188,15 @@ export function ProfileForm() {
               </div>
               <div>
                 <h3 className="mb-1 font-medium">Profile photo</h3>
-                <p className="mb-2 text-sm text-muted-foreground">This image will be displayed on your profile</p>
-                <Input type="file" accept="image/*" onChange={handleImageUpload} className="max-w-[200px]" />
+                <p className="mb-2 text-sm text-muted-foreground">
+                  This image will be displayed on your profile
+                </p>
+                <Input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="max-w-[200px]"
+                />
               </div>
             </div>
 
@@ -231,7 +250,11 @@ export function ProfileForm() {
                 <FormItem>
                   <FormLabel>Bio</FormLabel>
                   <FormControl>
-                    <Textarea placeholder="Tell us about yourself" className="resize-none" {...field} />
+                    <Textarea
+                      placeholder="Tell us about yourself"
+                      className="resize-none"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -247,6 +270,5 @@ export function ProfileForm() {
         </Form>
       </CardContent>
     </Card>
-  )
+  );
 }
-

@@ -155,7 +155,6 @@ export default function ProfileSetupForm() {
     resolver: zodResolver(profileSchema),
     defaultValues: {
       type,
-      address: "",
       websiteURL: "",
       ...(type === "merchant" && {
         businessName: "",
@@ -221,7 +220,6 @@ export default function ProfileSetupForm() {
         formData.append("fullName", data.fullName ?? "");
         formData.append("businessName", data.businessName ?? "");
         formData.append("about", data.about ?? "");
-        formData.append("address", data.address ?? "");
         formData.append("websiteURL", data.websiteURL ?? "");
         formData.append("designation", data.designation);
 
@@ -278,7 +276,6 @@ export default function ProfileSetupForm() {
       formData.append("fullName", data.fullName ?? "");
       formData.append("businessName", data.businessName ?? "");
       formData.append("about", data.about ?? "");
-      formData.append("address", data.address ?? "");
       formData.append("websiteURL", data.websiteURL ?? "");
       formData.append("shortDescriptionOfStore", data.shortDescriptionOfStore);
 
@@ -307,7 +304,7 @@ export default function ProfileSetupForm() {
       formData.append("businessName", data.businessName ?? "");
       formData.append("organizationName", data.organizationName ?? "");
       formData.append("missionStatement", data.missionStatement);
-      formData.append("address", data.address ?? "");
+
       formData.append("about", data.about ?? "");
       formData.append(
         "shortDescriptionOfOrganization",
@@ -507,7 +504,7 @@ export default function ProfileSetupForm() {
                 />
               )}
 
-              <FormField
+              {/* <FormField
                 control={form.control}
                 name="address"
                 render={({ field }) => (
@@ -525,7 +522,7 @@ export default function ProfileSetupForm() {
                     <FormMessage />
                   </FormItem>
                 )}
-              />
+              /> */}
 
               <FormField
                 control={form.control}
