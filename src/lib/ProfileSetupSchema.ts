@@ -17,9 +17,6 @@ const businessHoursSchema = z.object({
 // Base schema for common fields
 const baseSchema = {
   websiteURL: z.string().optional(),
-  country: z.string(),
-  state: z.string(),
-  city: z.string(),
 };
 
 // Define the type enum
