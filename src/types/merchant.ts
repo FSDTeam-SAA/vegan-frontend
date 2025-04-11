@@ -38,6 +38,8 @@ export interface MerchantEvent {
   eventTitle: string;
   price?: string;
   userID?: string;
+  meetingLink: string;
+  meetingId: string;
 }
 
 export interface MerchantEventResponse {

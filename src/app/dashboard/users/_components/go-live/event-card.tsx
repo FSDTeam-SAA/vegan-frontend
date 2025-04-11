@@ -1,5 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { Calendar, Clock } from "lucide-react";
 import moment from "moment";
 import { GoLiveEvent } from "./Go-live";
@@ -12,6 +13,7 @@ const EventCardForUser = ({ data }: Props) => {
   const eventDate = data.date;
 
   const isPast = moment(eventDate).isBefore(moment(), "day");
+
   return (
     <div className="space-y-4 rounded-lg bg-white p-6">
       <div className="space-y-4">
@@ -43,12 +45,21 @@ const EventCardForUser = ({ data }: Props) => {
           </div>
         </div>
       </div>
-      <Button
-        className="rounded bg-[#1a2b3b] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#1a2b3b]/90 disabled:cursor-not-allowed disabled:opacity-50"
-        disabled={isPast}
-      >
-        {isPast ? "Completed" : "Join Event"}
-      </Button>
+      {data.meetingLink && (
+        <Button
+          className="rounded bg-[#1a2b3b] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#1a2b3b]/90 disabled:cursor-not-allowed disabled:opacity-50"
+          disabled={isPast}
+          asChild
+        >
+          <a
+            href={data.meetingLink}
+            target="_blank"
+            className={cn(isPast ? "cursor-not-allowed" : "cursor-pointer")}
+          >
+            {isPast ? "Completed" : "Join Event"}
+          </a>
+        </Button>
+      )}
     </div>
   );
 };
