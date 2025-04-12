@@ -19,7 +19,7 @@ const Dashboard = ({ userId }: Props) => {
       </div>
 
       {/* Dashboard Status  */}
-      <StatsDashboard />
+      <StatsDashboard userId={userId} />
 
       <ReferralTracking userId={userId} />
 
