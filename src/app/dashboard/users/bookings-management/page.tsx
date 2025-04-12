@@ -9,6 +9,7 @@ const BooklingManagementcontainerTab = dynamic(
 export default async function page() {
   const currentUser = await auth();
   if (!currentUser?.user) return;
+
   return (
     <div>
       <BookingManagementHeader />

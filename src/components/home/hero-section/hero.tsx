@@ -12,7 +12,7 @@ export default function HeroSection() {
     <div className="hero-section relative h-screen">
       {/* Background video */}
       <video
-        src="/alaska.mp4"
+        src="https://res.cloudinary.com/drdztqgcx/video/upload/v1744434704/alaska_t1zbcm.mp4"
         autoPlay
         loop
         muted
