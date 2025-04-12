@@ -380,6 +380,7 @@ export default function SignUpForm() {
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
               name="city"
