@@ -4,7 +4,7 @@ interface City {
   value: string;
 }
 
-interface State {
+export interface State {
   id: number;
   label: string;
   value: string;
@@ -160,16 +160,37 @@ export const countries = [
         id: 1,
         label: "Ontario",
         value: "ontario",
+        cites: [
+          {
+            id: 1,
+            label: "Toronto",
+            value: "toronto",
+          },
+        ],
       },
       {
         id: 2,
         label: "British Colombia",
         value: "bcolombia",
+        cites: [
+          {
+            id: 1,
+            label: "Vancouver",
+            value: "vancouver",
+          },
+        ],
       },
       {
         id: 3,
         label: "Quebec",
         value: "quebec",
+        cites: [
+          {
+            id: 1,
+            label: "Montreal",
+            value: "montreal  ",
+          },
+        ],
       },
     ],
   },
@@ -182,6 +203,13 @@ export const countries = [
         id: 1,
         label: "Ciudad de México",
         value: "cdmexico",
+        cites: [
+          {
+            id: 1,
+            label: "Mexico City",
+            value: "mexicocity",
+          },
+        ],
       },
     ],
   },
@@ -194,31 +222,78 @@ export const countries = [
         id: 1,
         label: "England",
         value: "england",
+        cites: [
+          {
+            id: 1,
+            label: "London",
+            value: "london",
+          },
+          {
+            id: 2,
+            label: "Manchester",
+            value: "manchester",
+          },
+        ],
       },
       {
         id: 2,
         label: "Germany",
         value: "germany",
+        cites: [
+          {
+            id: 1,
+            label: "Berlin",
+            value: "berlin",
+          },
+        ],
       },
       {
         id: 3,
         label: "Netherlands",
         value: "netherlands",
+        cites: [
+          {
+            id: 1,
+            label: "Amsterdam",
+            value: "amsterdam",
+          },
+        ],
       },
       {
         id: 4,
         label: "Denmark",
         value: "denmark",
+        cites: [
+          {
+            id: 1,
+            label: "Copenhagen",
+            value: "copenhagen",
+          },
+        ],
       },
       {
         id: 5,
         label: "Sweden",
         value: "sweden",
+        cites: [
+          {
+            id: 1,
+            label: "Stockholm",
+            value: "stockholm",
+          },
+        ],
       },
       {
         id: 6,
         label: "Scotland",
         value: "scotland",
+        cites: [
+          {
+            id: 1,
+            label: "Edinburgh",
+            value: "edinburgh",
+          },
+        ],
       },
     ],
   },
@@ -231,11 +306,30 @@ export const countries = [
         id: 1,
         label: "Australia",
         value: "australia",
+        cites: [
+          {
+            id: 1,
+            label: "Sydney",
+            value: "sydney",
+          },
+          {
+            id: 2,
+            label: "Sydney",
+            value: "auckland",
+          },
+        ],
       },
       {
         id: 2,
         label: "New Zealand",
         value: "newzealand",
+        cites: [
+          {
+            id: 1,
+            label: "Auckland",
+            value: "auckland",
+          },
+        ],
       },
     ],
   },
