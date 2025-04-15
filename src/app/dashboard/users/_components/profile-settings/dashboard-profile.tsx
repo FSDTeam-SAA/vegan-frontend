@@ -1,5 +1,4 @@
 import PaymentMethod from "@/app/dashboard/professional/payment/_components/PaymentMethod";
-import { NotificationSettings } from "@/app/dashboard/users/_components/profile-settings/notification-settings";
 import { ProfileForm } from "@/app/dashboard/users/_components/profile-settings/profile-form";
 import { auth } from "@/auth";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -24,12 +23,12 @@ export default async function DashboardProfileSettings() {
           >
             Payment Method
           </TabsTrigger>
-          <TabsTrigger
+          {/* <TabsTrigger
             value="notifications"
             className="rounded-none border-b-2 border-transparent px-0 pb-2 data-[state=active]:border-primary data-[state=active]:bg-transparent"
           >
             Notifications
-          </TabsTrigger>
+          </TabsTrigger> */}
         </TabsList>
         <TabsContent value="profile" className="mt-6">
           <ProfileForm />
@@ -40,9 +39,9 @@ export default async function DashboardProfileSettings() {
             userId={currentUser.user.userId}
           />
         </TabsContent>
-        <TabsContent value="notifications" className="mt-6">
+        {/* <TabsContent value="notifications" className="mt-6">
           <NotificationSettings />
-        </TabsContent>
+        </TabsContent> */}
       </Tabs>
     </main>
   );

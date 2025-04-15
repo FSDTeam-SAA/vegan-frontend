@@ -1,7 +1,6 @@
 "use client";
 
 import StatsDashboard from "./StatsDashboard";
-import ReferralEarningsChart from "./ReferralEarningsChart";
 
 export default function Overview() {
   return (
@@ -16,7 +15,7 @@ export default function Overview() {
       {/* Dashboard Status  */}
       <StatsDashboard />
 
-      <ReferralEarningsChart />
+      {/* <ReferralEarningsChart /> */}
     </div>
   );
 }
