@@ -86,6 +86,9 @@ export type OrganizationProfile = {
   photoWithID: string;
   professionalCertification: string;
   totalEvents: number;
+  country: string;
+  state: string;
+  city: string;
 };
 
 export type OrganizationProfileResponse = {

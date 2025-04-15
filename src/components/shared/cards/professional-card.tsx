@@ -77,7 +77,7 @@ const ProfessionalCard = ({ data }: Props) => {
         </div>
         <p className="flex items-center gap-x-[6px] font-inter text-[14px] font-normal leading-[16.94px] text-[#4B5563]">
           <MapPin className="h-[16px] w-[13.5px] text-[#4B5563]" />{" "}
-          {data?.address}
+          {data?.country}, {data?.state}
         </p>
         {/* <h3 className="font-lexend text-[20px] font-normal leading-[25px] text-[#1D3557]">
           $100/<span>hour</span>
