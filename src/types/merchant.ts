@@ -79,6 +79,9 @@ export type MerchantProfile = {
   governmentIssuedID: string;
   photoWithID: string;
   professionalCertification: string;
+  country: string;
+  state: string;
+  city: string;
 };
 
 export type MerchantProfileResponse = {

@@ -1,7 +1,6 @@
 "use client";
 
 import ReferralTracking from "@/app/dashboard/merchant/_components/ReferralTracking";
-import ReferralEarningsChart from "./ReferralEarningsChart";
 import StatsDashboard from "./StatsDashboard";
 
 interface Props {
@@ -23,7 +22,7 @@ const Dashboard = ({ userId }: Props) => {
 
       <ReferralTracking userId={userId} />
 
-      <ReferralEarningsChart />
+      {/* <ReferralEarningsChart /> */}
     </div>
   );
 };
