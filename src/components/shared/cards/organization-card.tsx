@@ -58,7 +58,7 @@ const OrganizationCard = ({ data }: Props) => {
         <div className="space-y-[8px] md:space-y-[12px]">
           <p className="flex items-center gap-x-[6px] font-inter text-[14px] font-normal leading-[16.94px] text-[#4B5563] md:text-[16px]">
             <MapPin className="h-[16.3px] w-[13.5px] text-[#4B5563] md:h-[20px] md:w-[20px]" />{" "}
-            {data?.address}
+            {data?.country}, {data?.state}
           </p>
           <p className="flex items-center gap-x-[6px] font-inter text-[14px] font-normal leading-[16.94px] text-[#4B5563] md:text-[16px]">
             <CalendarDays className="h-[16.3px] w-[13.5px] text-[#4B5563] md:h-[20px] md:w-[20px]" />{" "}

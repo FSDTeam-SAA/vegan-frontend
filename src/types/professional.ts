@@ -54,6 +54,9 @@ export type ProfessionalProfile = {
   updatedAt: string;
   totalReviews: number;
   averageRating: string;
+  country: string;
+  state: string;
+  city: string;
   __v: number;
 };
 
