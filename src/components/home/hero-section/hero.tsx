@@ -43,6 +43,12 @@ async function getCountries() {
 export default async function HeroSection() {
   const data = await getCountries();
 
+  console.log("countries detected ", data);
+
+  let dat = data;
+
+  console.log("countries detected ", data, dat);
+
   const selectedVideo =
     videoContent[data.mappedRegion as keyof typeof videoContent] ??
     videoContent["canada"];
