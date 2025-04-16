@@ -7,12 +7,51 @@ const HeroSearch = dynamic(() => import("./heroSearch"), {
   ssr: false,
 });
 
-export default function HeroSection() {
+// Define the interface for the given JSON structure
+export interface LocationResponse {
+  success: boolean; // Indicates if the API call was successful
+  ip: string; // The IP address as a string
+  country: string; // The country code (e.g., "CA" for Canada)
+  city: string; // The name of the city
+  region: string; // The region or province
+  mappedRegion: string; // A mapped or normalized region name
+}
+
+const videoContent: Record<
+  "usa" | "canada" | "mexico" | "australasia" | "neurope",
+  string
+> = {
+  usa: "https://res.cloudinary.com/drdztqgcx/video/upload/v1744797515/vegan/uxuqw7na8i4l9eyzc9ym.mp4",
+  canada:
+    "https://res.cloudinary.com/drdztqgcx/video/upload/v1744797742/vegan/nd33jfpvfann7fajnnd5.mp4",
+  mexico:
+    "https://res.cloudinary.com/drdztqgcx/video/upload/v1744434704/alaska_t1zbcm.mp4",
+  australasia:
+    "https://res.cloudinary.com/drdztqgcx/video/upload/v1744434704/alaska_t1zbcm.mp4",
+  neurope:
+    "https://res.cloudinary.com/drdztqgcx/video/upload/v1744434704/alaska_t1zbcm.mp4",
+};
+
+async function getCountries() {
+  const data: LocationResponse = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/getLocation`,
+  ).then((res) => res.json());
+
+  return data ?? null;
+}
+
+export default async function HeroSection() {
+  const data = await getCountries();
+
+  const selectedVideo =
+    videoContent[data.mappedRegion as keyof typeof videoContent] ??
+    videoContent["canada"];
+
   return (
     <div className="hero-section relative h-screen">
       {/* Background video */}
       <video
-        src="https://res.cloudinary.com/drdztqgcx/video/upload/v1744434704/alaska_t1zbcm.mp4"
+        src={selectedVideo}
         autoPlay
         loop
         muted
