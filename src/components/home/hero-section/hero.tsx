@@ -45,7 +45,7 @@ export default async function HeroSection() {
 
   console.log("countries detected ", data);
 
-  let dat = data;
+  const dat = data;
 
   console.log("countries detected ", data, dat);
 
