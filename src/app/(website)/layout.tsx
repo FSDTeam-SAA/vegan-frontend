@@ -17,6 +17,8 @@ const WebsiteLayout = async ({ children }: { children: ReactNode }) => {
     accounRole = "user";
   } else if (session?.user?.role === "vendor") {
     accounRole = session.user.accountType!;
+  } else if (session?.user?.role === "verifier") {
+    accounRole = "verifier";
   }
 
   return (
@@ -24,7 +26,12 @@ const WebsiteLayout = async ({ children }: { children: ReactNode }) => {
       <Navbar
         loggedin={!!session}
         role={
-          accounRole as "professional" | "merchant" | "organization" | "user"
+          accounRole as
+            | "professional"
+            | "merchant"
+            | "organization"
+            | "user"
+            | "verifier"
         }
       />
       {children}
