@@ -1,8 +1,10 @@
-"use client";
-
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
 import StatsDashboard from "./StatsDashboard";
 
-export default function Overview() {
+export default async function Overview() {
+  const cs = await auth();
+  if (!cs?.user) redirect("/");
   return (
     <div className="space-y-8 p-2">
       <div>
@@ -13,7 +15,7 @@ export default function Overview() {
       </div>
 
       {/* Dashboard Status  */}
-      <StatsDashboard />
+      <StatsDashboard userId={cs.user.id as string} />
 
       {/* <ReferralEarningsChart /> */}
     </div>
