@@ -25,11 +25,11 @@ const videoContent: Record<
   canada:
     "https://res.cloudinary.com/drdztqgcx/video/upload/v1744797742/vegan/nd33jfpvfann7fajnnd5.mp4",
   mexico:
-    "https://res.cloudinary.com/drdztqgcx/video/upload/v1744434704/alaska_t1zbcm.mp4",
+    "https://res.cloudinary.com/drdztqgcx/video/upload/v1744798204/vegan/aiabfsld2b1pom1jael0.mp4",
   australasia:
-    "https://res.cloudinary.com/drdztqgcx/video/upload/v1744434704/alaska_t1zbcm.mp4",
+    "https://res.cloudinary.com/drdztqgcx/video/upload/v1744798195/vegan/q3d2rfjfwl6hprimeeky.mp4",
   neurope:
-    "https://res.cloudinary.com/drdztqgcx/video/upload/v1744434704/alaska_t1zbcm.mp4",
+    "https://res.cloudinary.com/drdztqgcx/video/upload/v1744797980/vegan/EUROPEAN%20UNION.mp4",
 };
 
 async function getCountries() {
