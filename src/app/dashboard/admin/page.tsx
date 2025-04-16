@@ -17,9 +17,9 @@ const Page = () => {
       />
       <AdminOverviewStats />
 
-      <div className="pb-2 md:pb-[30px]">
+      {/* <div className="pb-2 md:pb-[30px]">
       <PendingVerificationContainer />
-      </div>
+      </div> */}
     </div>
   );
 };
