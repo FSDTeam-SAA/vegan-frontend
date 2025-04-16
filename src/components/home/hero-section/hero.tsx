@@ -52,8 +52,10 @@ export default async function HeroSection() {
   console.log("countries detected ", data, dat);
 
   const selectedVideo =
-    videoContent[data.mappedRegion as keyof typeof videoContent] ??
-    videoContent["canada"];
+    videoContent.hasOwnProperty(data.mappedRegion) &&
+    data.mappedRegion in videoContent
+      ? videoContent[data.mappedRegion as keyof typeof videoContent]
+      : videoContent["other"];
 
   return (
     <div className="hero-section relative h-screen">
