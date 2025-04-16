@@ -18,7 +18,7 @@ export interface LocationResponse {
 }
 
 const videoContent: Record<
-  "usa" | "canada" | "mexico" | "australasia" | "neurope" | "others",
+  "usa" | "canada" | "mexico" | "australasia" | "neurope" | "other",
   string
 > = {
   usa: "https://res.cloudinary.com/drdztqgcx/video/upload/v1744797515/vegan/uxuqw7na8i4l9eyzc9ym.mp4",
@@ -30,7 +30,7 @@ const videoContent: Record<
     "https://res.cloudinary.com/drdztqgcx/video/upload/v1744798195/vegan/q3d2rfjfwl6hprimeeky.mp4",
   neurope:
     "https://res.cloudinary.com/drdztqgcx/video/upload/v1744797980/vegan/EUROPEAN%20UNION.mp4",
-  others:
+  other:
     "https://res.cloudinary.com/drdztqgcx/video/upload/v1744797742/vegan/nd33jfpvfann7fajnnd5.mp4",
 };
 
