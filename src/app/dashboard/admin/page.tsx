@@ -1,9 +1,5 @@
 import dynamic from "next/dynamic";
 import DashboardPageHeader from "../_components/dash-page-header";
-const PendingVerificationContainer = dynamic(
-  () => import("../_components/pending-verification-container"),
-  { ssr: false },
-);
 const AdminOverviewStats = dynamic(() => import("./_components/overview"), {
   ssr: false,
 });
@@ -17,9 +13,9 @@ const Page = () => {
       />
       <AdminOverviewStats />
 
-      <div className="pb-2 md:pb-[30px]">
+      {/* <div className="pb-2 md:pb-[30px]">
       <PendingVerificationContainer />
-      </div>
+      </div> */}
     </div>
   );
 };

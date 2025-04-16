@@ -35,26 +35,36 @@ const hideRoutes = [
 
 interface Props {
   loggedin: boolean;
-  role: "professional" | "merchant" | "organization" | "user";
+  role: "professional" | "merchant" | "organization" | "user" | "verifier";
 }
 
 const profilePages: {
-  [key in "professional" | "merchant" | "organization" | "user"]: string;
+  [key in
+    | "professional"
+    | "merchant"
+    | "organization"
+    | "user"
+    | "verifier"]: string;
 } = {
   professional: "/dashboard/professional",
   merchant: "/dashboard/merchant",
   organization: "/dashboard/organization",
   user: "/dashboard/users",
+  verifier: "/dashboard/admin",
 };
 
 const Navbar = ({ loggedin, role }: Props) => {
   const [scrolling, setScrolling] = useState(false); // Track scrolling state for styling changes
 
+  console.log(role);
+
   const pathname = usePathname(); // Get current route to highlight active menu
   const router = useRouter();
 
   const dashboardPage =
-    profilePages[role as "professional" | "merchant" | "organization" | "user"];
+    profilePages[
+      role as "professional" | "merchant" | "organization" | "user" | "verifier"
+    ];
 
   const menus = [
     { id: 1, href: "/professionals", linkText: "Professional" },
