@@ -5,6 +5,7 @@ import "@smastrom/react-rating/style.css";
 import type { Metadata } from "next";
 import { SessionProvider } from "next-auth/react";
 import { Inter, Lexend_Deca } from "next/font/google";
+import Script from "next/script";
 import { Toaster } from "sonner";
 import "./globals.css";
 
@@ -42,6 +43,11 @@ export default async function RootLayout({
             {children}
             <NProgress />
             <Toaster />
+            <Script
+              strategy="afterInteractive"
+              data-domain="https://vegancollective.netlify.app"
+              src="https://plausible.io/js/plausible.js"
+            />
           </body>
         </html>
       </AppProvider>
